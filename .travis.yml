@@ -33,7 +33,7 @@ services:
 addons:
   apt:
     sources:
-    - sourceline: ppa:jonathonf/ffmpeg-3
+    - sourceline: ppa:jonathonf/ffmpeg-4
     packages:
     - libavutil-dev
     - libavcodec-dev
