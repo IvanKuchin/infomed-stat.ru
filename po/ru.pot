@@ -1,0 +1,1091 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-23 08:57-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#, c-format
+msgid "%d customers"
+msgid_plural "%d customers"
+msgstr[0] "%d заказчику"
+msgstr[1] "%d заказчикам"
+msgstr[2] "%d заказчикам"
+
+#, c-format
+msgid "%d employyes"
+msgid_plural "%d employyes"
+msgstr[0] "%d сотрудник"
+msgstr[1] "%d сотрудника"
+msgstr[2] "%d сотрудников"
+
+#, c-format
+msgid "%d records"
+msgid_plural "%d records"
+msgstr[0] "%d запись"
+msgstr[1] "%d записи"
+msgstr[2] "%d записей"
+
+#, c-format
+msgid "%d subcontractors"
+msgid_plural "%d subcontractors"
+msgstr[0] "%d субконтрактору"
+msgstr[1] "%d субконтракторам"
+msgstr[2] "%d субконтракторам"
+
+msgid "1C generation failed"
+msgstr "Ошибка в выгрузке 1С"
+
+msgid "1c filename is empty"
+msgstr "не указано имя фаила 1с"
+
+msgid "1c template not found"
+msgstr "не указан шаблон 1с"
+
+msgid "Access prohibited"
+msgstr "Нет доступа"
+
+msgid "Account"
+msgstr "Сч. №"
+
+msgid "Accountant"
+msgstr "Бухгалтер"
+
+msgid "Act"
+msgstr "Акт"
+
+msgid "Agency: cost center"
+msgstr "Данные агенства: центр затрат"
+
+msgid "Agency: cost center added"
+msgstr "Данные агенства: Добавлен центр затрат"
+
+msgid "Agency: cost center belongs to customer"
+msgstr "Данные агенства: центр затрат заказчика"
+
+msgid "Agency: cost center description updated"
+msgstr "Данные агенства: описание центра затрат изменено"
+
+msgid "Agency: cost center title updated"
+msgstr "Данные агенства: название центра затрат изменено"
+
+msgid "Agreement"
+msgstr "Договор"
+
+msgid "Agreement already signed"
+msgstr "Договор уже подписан"
+
+msgid "April"
+msgstr "Апрель"
+
+msgid "April declension"
+msgstr "Апреля"
+
+msgid "Assignment must be inside SoW"
+msgstr "Назначение должно быть в SoW"
+
+msgid "August"
+msgstr "Август"
+
+msgid "August declension"
+msgstr "Августа"
+
+msgid "BT doesn't belongs to agency"
+msgstr "Командировка не относится к агенству"
+
+msgid "BT not found"
+msgstr "Командировка не найдена"
+
+msgid "Bank Identifier"
+msgstr "БИК"
+
+msgid "Basis"
+msgstr "Основание"
+
+msgid "Buyer"
+msgstr "Покупатель"
+
+msgid "Can't remove"
+msgstr "Нельзя удалить"
+
+msgid "Company already exists"
+msgstr "такая компания уже есть"
+
+msgid "Company not found"
+msgstr "Компания не найдена"
+
+msgid "Cost Center"
+msgstr "Центр Затрат"
+
+msgid "Cost Center: number"
+msgstr "Центр Затрат: номер договора"
+
+msgid "Customer"
+msgstr "Заказчик"
+
+msgid "DB is not initialized"
+msgstr "Ошибка инициализации БД"
+
+msgid "Data has not been initialized"
+msgstr "Ошибка инициализации данных"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Dayrate"
+msgstr "Ежедневный тариф"
+
+msgid "December"
+msgstr "Декабрь"
+
+msgid "December declension"
+msgstr "Декабря"
+
+msgid "Department"
+msgstr "Отдел"
+
+msgid "Destination bank"
+msgstr "Банк получателя"
+
+msgid "Director"
+msgstr "Руководитель"
+
+msgid "Employee data"
+msgstr "Данные сотрудника"
+
+msgid "Excise"
+msgstr "Акциза"
+
+msgid "Expense"
+msgstr "Расход"
+
+msgid "February"
+msgstr "Февраль"
+
+msgid "February declension"
+msgstr "Февраля"
+
+msgid "Goods"
+msgstr "Товары"
+
+msgid "Incorrect bt list"
+msgstr "Некорректный список командировок"
+
+msgid "Incorrect timecard list"
+msgstr "Некорректный список таймкарт"
+
+msgid "Initials"
+msgstr "Ф.И.О."
+
+msgid "Invoice"
+msgstr "Счёт"
+
+msgid "Items short"
+msgstr "Ед."
+
+msgid "January"
+msgstr "Январь"
+
+msgid "January declension"
+msgstr "Января"
+
+msgid "July"
+msgstr "Июль"
+
+msgid "July declension"
+msgstr "Июля"
+
+msgid "June"
+msgstr "Июнь"
+
+msgid "June declension"
+msgstr "Июня"
+
+msgid "KPP"
+msgstr "КПП"
+
+msgid "Local service delivery"
+msgstr "Локальные услуги"
+
+msgid "Location"
+msgstr "Место"
+
+msgid "March"
+msgstr "Март"
+
+msgid "March declension"
+msgstr "Марта"
+
+msgid "Markup"
+msgstr "Наценка"
+
+msgid "May"
+msgstr "Май"
+
+msgid "May declension"
+msgstr "Мая"
+
+msgid "Measure unit (code)"
+msgstr "Ед. изм. (код)"
+
+msgid "Measure unit (name)"
+msgstr "Ед. изм. (имя)"
+
+msgid "Non-taxable sum"
+msgstr "Итого (налого-необлагаемая база)"
+
+msgid "November"
+msgstr "Ноябрь"
+
+msgid "November declension"
+msgstr "Ноября"
+
+msgid "Occupancy"
+msgstr "Должность"
+
+msgid "October"
+msgstr "Октябрь"
+
+msgid "October declension"
+msgstr "Октября"
+
+msgid "Only english alphabet allowed and -_."
+msgstr "Допустимы только буквы английского алфавита и -_."
+
+msgid "Only owner can recall an invoice"
+msgstr "Только владелец может отозвать счет"
+
+msgid "PSoW"
+msgstr "ТЗ"
+
+msgid "PSoW number already exists"
+msgstr "ТЗ с таким номером уже есть"
+
+msgid "PSoW: number"
+msgstr "Номер ТЗ"
+
+msgid "Price"
+msgstr "Цена"
+
+msgid "Project ID"
+msgstr "Идентификационный номер проекта"
+
+msgid "Provider"
+msgstr "Поставщик"
+
+msgid "Quantity short"
+msgstr "Кол-во"
+
+msgid "Rate exchange"
+msgstr "Курс"
+
+msgid "Recipient"
+msgstr "Получатель"
+
+msgid "Remote service report over period"
+msgstr "Отчет об оказанных услугах на удаленном участке"
+
+msgid "SQL syntax error"
+msgstr "Ошибка БД"
+
+msgid "SQL syntax issue"
+msgstr "Ошибка БД"
+
+msgid "Seller"
+msgstr "Продавец"
+
+msgid "September"
+msgstr "Сентябрь"
+
+msgid "September declension"
+msgstr "Сентября"
+
+msgid "Service report over period"
+msgstr "Отчет об оказанных услугах за период"
+
+msgid "Signature"
+msgstr "Подпись"
+
+msgid "SoW"
+msgstr "Договор"
+
+msgid "SoW number already exists"
+msgstr "Договор с таким номером уже есть"
+
+msgid "SoW: number"
+msgstr "Номер договора"
+
+msgid "Some timecards have no PSoW associated"
+msgstr "У некоторых таймкарт не хватает PSoW-контракта"
+
+msgid "Subcontractor reported time on"
+msgstr "Субконтрактор отчитался за"
+
+msgid "Sum (currency)"
+msgstr "Сумма (в валюте)"
+
+msgid "Sum (rur)"
+msgstr "Сумма (руб)"
+
+msgid "Sum expense"
+msgstr "Итого расходов по отчету"
+
+msgid "Sum items"
+msgstr "Всего наименований"
+
+msgid "Supplier"
+msgstr "Поставщик"
+
+msgid "TIN"
+msgstr "ИНН"
+
+msgid "Tax"
+msgstr "Налог"
+
+msgid "Tax amount"
+msgstr "Сумма налога"
+
+msgid "Tax rate"
+msgstr "Налоговая ставка"
+
+msgid "Taxable sum"
+msgstr "Итого (налогооблагаемая база)"
+
+msgid "Technical Requirement agreement short"
+msgstr "ТЗ"
+
+msgid "This task assigned to cost center"
+msgstr "Этой задаче назначена Центр Затрат"
+
+msgid "Timecard doesn't belongs to agency"
+msgstr "Таймкарта не принадлежит агенству"
+
+msgid "Timecard not found"
+msgstr "Таймкарта не найдена"
+
+msgid "Title"
+msgstr "Должность"
+
+msgid "Total"
+msgstr "Сумма"
+
+msgid "Total (tax free)"
+msgstr "Сумма (без налога)"
+
+msgid "Total days on duty"
+msgstr "Количество дней оказания услуг"
+
+msgid "Total hours on duty"
+msgstr "Количество часов оказания услуг"
+
+msgid "Total payment"
+msgstr "Всего к оплате"
+
+msgid "Total payment in reported timecard"
+msgstr "Стоимость услуг по настоящему отчету"
+
+msgid "VAT"
+msgstr "НДС"
+
+msgid "VAT comment1"
+msgstr "Валюта: наименование код Российский рубль, 643"
+
+msgid "VAT doc"
+msgstr "Счет-фактура"
+
+msgid "VAT short"
+msgstr "НДС"
+
+msgid "You are not agency employee"
+msgstr "Вы не сотрудник агенства"
+
+msgid "You are not authorized"
+msgstr "У Вас нет доступа"
+
+msgid "absence not found"
+msgstr "Заявка на отсутствие не найдена"
+
+msgid "absence overlaps"
+msgstr "отсутствие перекрывается"
+
+msgid "account is empty"
+msgstr "не указан счет"
+
+msgid "act number"
+msgstr "номер акта"
+
+msgid "act number is empty"
+msgstr "не указан номер акта"
+
+msgid "agency bank id not found"
+msgstr "банк не найден"
+
+msgid "agency company id not found"
+msgstr "агенство не найдено"
+
+msgid "agency id not found"
+msgstr "Агенство не найдено"
+
+msgid "agency not found"
+msgstr "агенство не найдено"
+
+msgid "agreement declensioned"
+msgstr "договора"
+
+msgid "agreement from"
+msgstr "от"
+
+msgid "agreement generation failed"
+msgstr "Не удалось сегенерировать набор документов"
+
+msgid "agreement number is empty"
+msgstr "не указан номер договора"
+
+msgid "airline not found"
+msgstr "авиалинии не найдены"
+
+msgid "already exists"
+msgstr "уже существует"
+
+msgid "and"
+msgstr "и"
+
+msgid "bank_id is empty"
+msgstr "не указан банк"
+
+msgid "bik issue"
+msgstr "Внутренняя ошибка с БИК"
+
+msgid "bik not found"
+msgstr "не указан БИК"
+
+msgid "birtday isn't defined"
+msgstr "укажите дату рождения"
+
+msgid "birthday is empty"
+msgstr "Не указана дата рождения"
+
+msgid "bt date finish is empty"
+msgstr "не указана дата окончания командировки"
+
+msgid "bt date start is empty"
+msgstr "не указана дата начала командировки"
+
+msgid "bt id is empty"
+msgstr "командировка не найдена"
+
+msgid "bt markup changed"
+msgstr "изменилась наценка комндировки"
+
+msgid "bt markup type changed"
+msgstr "изменился тип нацеки у командировки"
+
+msgid "bt-s reported"
+msgstr "командировок"
+
+msgid "but BIK is different"
+msgstr "но отличается БИК"
+
+msgid "but KPP is different"
+msgstr "но отличается КПП"
+
+msgid "but OGRN is different"
+msgstr "но отличается ОГРН"
+
+msgid "but account is different"
+msgstr "но отличается корр счет"
+
+msgid "can't change dates in past"
+msgstr "нельзя менять даты в прошлом"
+
+msgid "can't close archive"
+msgstr "не удалось закрыть фаил архива"
+
+msgid "can't create absence in the past"
+msgstr "нельзя создавать отпуск в прошлом"
+
+msgid "can't create archive"
+msgstr "не удалось создать фаил архива"
+
+msgid "can't remove absence in the past"
+msgstr "нельзя удаляить отпуск в прошлом"
+
+msgid "changed"
+msgstr "изменилось"
+
+msgid "citizenship code is empty"
+msgstr "не указано гражданство"
+
+msgid "code"
+msgstr "код"
+
+msgid "col index out of range"
+msgstr "недопустимый индекс"
+
+msgid "company already exists"
+msgstr "компания уже существует"
+
+msgid "company doesn't exists"
+msgstr "такой компании нет"
+
+msgid "company hosts"
+msgstr "в компании числится"
+
+msgid "company name should not be empty"
+msgstr "заполните название компании"
+
+msgid "company not defined"
+msgstr "компания не определена"
+
+msgid "company not found"
+msgstr "компания не найдена"
+
+msgid "company tin is empty"
+msgstr "не указан ИНН компании"
+
+msgid "confirmed"
+msgstr "подтвержден"
+
+msgid "cost center already exists"
+msgstr "такой центр затрат уже есть"
+
+msgid "cost center assigned"
+msgstr "центр затрат назначен"
+
+msgid "cost center doesn't belongs to your company"
+msgstr "Центр затрат не принадлежит компании"
+
+msgid "cost center end date not found"
+msgstr "Дата окончания договора с центром затрат не найдена"
+
+msgid "cost center id is empty"
+msgstr "Центр затрат не найден"
+
+msgid "cost center number not found"
+msgstr "Номер договора с центром затрат не найдена"
+
+msgid "cost center sign date not found"
+msgstr "Дата подписания договора с центром затрат не найдена"
+
+msgid "cost center start date not found"
+msgstr "Дата начала договора с центром затрат не найдена"
+
+msgid "cost center title not found"
+msgstr "Наименование центра затрат не найдено"
+
+msgid "cost_center bank id not found"
+msgstr "банк не найден"
+
+msgid "cost_center company id not found"
+msgstr "центр затрат не найден"
+
+msgid "cost_center id not found"
+msgstr "центр затрат не найден"
+
+msgid "country list is empty"
+msgstr "Список стран пустой"
+
+msgid "custom field"
+msgstr "доп. поле"
+
+msgid "customer assignment outside bt travel"
+msgstr "даты командировки вне периода назначения на заказчика"
+
+msgid "date is empty"
+msgstr "дата не указана"
+
+msgid "day rate"
+msgstr "дневная ставка"
+
+msgid "dayrate changed"
+msgstr "dayrate изменился"
+
+msgid "dayrate is empty"
+msgstr "не указан dayrate"
+
+msgid "dayrate not set"
+msgstr "не указан dayrate"
+
+msgid "db is not initialized"
+msgstr "ошибка БД"
+
+msgid "department"
+msgstr "отдел"
+
+msgid "description updated"
+msgstr "описание изменено"
+
+msgid "doctor submitted"
+msgstr "доктор зарегистрирован"
+
+msgid "email is empty"
+msgstr "не указан email"
+
+msgid "email missed"
+msgstr "не указан email"
+
+msgid "employeer not found"
+msgstr "не найден работодатель"
+
+msgid "empty vars list"
+msgstr "список не заданных переменных: "
+
+msgid "end date"
+msgstr "дата окончания"
+
+msgid "end date changed"
+msgstr "изменилась дата окончания контракта"
+
+msgid "end date is empty"
+msgstr "не указана дата окончания"
+
+msgid "exceeds allowed size"
+msgstr "превышает допустимый размер"
+
+msgid "fail to clean up"
+msgstr "ошибка удаления данных"
+
+msgid "fail to craft timecard obj"
+msgstr "ошибка создания объекта timecard"
+
+msgid "fail to create temp directory"
+msgstr "невозможно создать временное хранилище"
+
+msgid "fail to create user"
+msgstr "не удалось создать пользователя"
+
+msgid "fail to find company position title"
+msgstr "должность не найдена"
+
+msgid "fail to generate documents set"
+msgstr "не удалось сгенерировать набор документов"
+
+msgid "fail to initialize hpdf library"
+msgstr "ошибка инициализации библиотеки libharu"
+
+msgid "fail to initialize variable set"
+msgstr "ошибка инициализации переменных"
+
+msgid "fail to insert to db"
+msgstr "ошибка БД"
+
+msgid "fail to print header table"
+msgstr "не удалось напечатать таблицу"
+
+msgid "fail to produce object set"
+msgstr "не удалось собрать внутреннюю структуру"
+
+msgid "file not found"
+msgstr "фаил не найден"
+
+msgid "file size"
+msgstr "размер фаила"
+
+msgid "first name and last name are mandatory"
+msgstr "имя и фамилия обязательны"
+
+msgid "first or last name isn't defined"
+msgstr "имя и фамилия должны быть указаны"
+
+msgid "foreign last name is empty"
+msgstr "не указана фамилия как в загран паспорте"
+
+msgid "foreign name is empty"
+msgstr "не указано имя как в загран паспорте"
+
+msgid "foreign passport due date is empty"
+msgstr "не указана дата окончания действия загран паспорте"
+
+msgid "foreign passport number is empty"
+msgstr "не указан номер загран паспорта"
+
+msgid "foreign passport type is empty"
+msgstr "не указан тип загран паспорта"
+
+msgid "from"
+msgstr "с"
+
+msgid "hospital is required"
+msgstr "требуется мед. центр"
+
+msgid "hpdf: fail save to file"
+msgstr "hpdf: не удалось сохранить фаил"
+
+msgid "hpdf: fail to add page"
+msgstr "hpdf: не удалось добавить страницу к фаилу"
+
+msgid "hpdf: fail to draw rectangle"
+msgstr "hpdf: не удалось нарисовать фигуру"
+
+msgid "hpdf: fail to draw the line"
+msgstr "hpdf: не удалось нарисовать линию"
+
+msgid "hpdf: fail to draw timecard table body"
+msgstr "hpdf: не удалось нарисовать основную часть таймкарты"
+
+msgid "hpdf: fail to draw timecard table header"
+msgstr "hpdf: не удалось нарисовать заголовок таймкарты"
+
+msgid "hpdf: fail to print text"
+msgstr "hpdf: не удалось напечатать текст"
+
+msgid "hpdf: fail to print timecard footer"
+msgstr "hpdf: не удалось напечатать нижнюю часть таймкарты"
+
+msgid "hpdf: fail to print timecard title"
+msgstr "hpdf: не удалось напечатать заголовок таймкарты"
+
+msgid "hpdf: fail to print title"
+msgstr "hpdf: не удалось напечатать текст"
+
+msgid "hpdf: table top must be higher than bottom"
+msgstr "hpdf: верх таблицы должен быть выше чем нижняя часть"
+
+msgid "html to pdf conversation failed"
+msgstr "не удалось конвертировать HTML -> PDF"
+
+msgid "id is empty"
+msgstr "не указан идентификатор"
+
+msgid "in scope"
+msgstr "в рамках"
+
+msgid "incorrect confirmation code"
+msgstr "некорректный код"
+
+msgid "is empty"
+msgstr "не указан"
+
+msgid "is not a boolean"
+msgstr "is not a boolean"
+
+msgid "is not a number"
+msgstr "не число"
+
+msgid "is not a string"
+msgstr "не строка"
+
+msgid "is not an array"
+msgstr "не является массивом"
+
+msgid "is not true"
+msgstr "не 'истина'"
+
+msgid "item short"
+msgstr "шт"
+
+msgid "json_obj reponse error"
+msgstr "ошибка объекта JSON"
+
+msgid "kop."
+msgstr "коп."
+
+msgid "kpp is empty"
+msgstr "не указан КПП"
+
+msgid "last name is empty"
+msgstr "не указана фамилия"
+
+msgid "legal_address is empty"
+msgstr "не указан юр. адрес"
+
+msgid "legal_geo_zip_id is empty"
+msgstr "не указан юр. адрес"
+
+msgid "login or email or phone is required"
+msgstr "необходим логин, email или телефон"
+
+msgid "mailing_geo_zip_id is empty"
+msgstr "не указан адрес доставки"
+
+msgid "mandatory parameter missed"
+msgstr "пропущен обязательный параметр"
+
+msgid "member has missed"
+msgstr "нет атрибута"
+
+msgid "message"
+msgstr "сообщение"
+
+msgid "missed PSoW number"
+msgstr "не указан номер PSoW"
+
+msgid "missed occupancy title"
+msgstr "не указана должность"
+
+msgid "missed service description"
+msgstr "не указано описание должности"
+
+msgid "must be in 20-th century"
+msgstr "должна быть после 2000 г."
+
+msgid "name is empty"
+msgstr "не указано название"
+
+msgid "new email"
+msgstr "новый email"
+
+msgid "no VAT"
+msgstr "НДС не облагается"
+
+msgid "no VAT short"
+msgstr "без НДС"
+
+msgid "no bt found"
+msgstr "не найдена командировка"
+
+msgid "no excise"
+msgstr "без акциза"
+
+msgid "no timecard found"
+msgstr "не найдена таймкарта"
+
+msgid "noVAT"
+msgstr "БезНДС"
+
+msgid "not found"
+msgstr "не найден(о)"
+
+msgid "number"
+msgstr "номер"
+
+msgid "number is empty"
+msgstr "не указан номер"
+
+msgid "number uploaded images must be 1"
+msgstr "выберите один фаил"
+
+msgid "ogrn is empty"
+msgstr "не указан ОГРН"
+
+msgid "parameters incorrect"
+msgstr "некорректные параметры"
+
+msgid "password required"
+msgstr "укажите пароль"
+
+msgid "patient already exists"
+msgstr "пациент уже существует"
+
+msgid "period start have to precede period end"
+msgstr "начало должно быть раньше окончания"
+
+msgid "phone is not confirmed"
+msgstr "телефон не подтвержден"
+
+msgid "phone number is incorrect"
+msgstr "некорректный номер телефона"
+
+msgid "position changed"
+msgstr "изменили должность"
+
+msgid "print to XLS not valid"
+msgstr "невозможно сгенерировать XLS"
+
+msgid "promouted from"
+msgstr "перешел(шла) с должности"
+
+msgid "removal prohibited"
+msgstr "Нельзя удалить"
+
+msgid "removed"
+msgstr "удален"
+
+msgid "response failed to parse"
+msgstr "ошибка ответа сервера"
+
+msgid "result is not a string"
+msgstr "result is not a string"
+
+msgid "result is not an array"
+msgstr "result is not an array"
+
+msgid "result is not an object"
+msgstr "result is not an object"
+
+msgid "result is not null"
+msgstr "result is not null"
+
+msgid "root item is not an object"
+msgstr "ошибка ответа сервера"
+
+msgid "ru passport due date is empty"
+msgstr "не указана дата выдачи паспорта"
+
+msgid "ru passport number is empty"
+msgstr "не указан номер паспорта"
+
+msgid "ru passport type is empty"
+msgstr "не указана тип паспорта"
+
+msgid "rur."
+msgstr "руб."
+
+msgid "service is not reachable"
+msgstr "сервисе недоступен"
+
+msgid "sex is empty"
+msgstr "не указан пол"
+
+msgid "sign date"
+msgstr "дата подписания"
+
+msgid "sign date changed"
+msgstr "изменилась дата подписания контракта"
+
+msgid "sign date is empty"
+msgstr "не указана дата подписания контракта"
+
+msgid "signature title 1 is empty"
+msgstr "не указан подписант 1"
+
+msgid "signature title 2 is empty"
+msgstr "не указан подписант 2"
+
+msgid "sow declension"
+msgstr "договора"
+
+msgid "start date"
+msgstr "дата начала"
+
+msgid "start date changed"
+msgstr "изменилась дата подписания контракта"
+
+msgid "start date is empty"
+msgstr "не указана дата начала"
+
+msgid "subc company.id is empty"
+msgstr "не указан идентификатор компании субконтрактора"
+
+msgid "subcontractor_company_id is unknown"
+msgstr "не указан идентификатор компании"
+
+msgid "table is too wide"
+msgstr "таблица слишком широкая"
+
+msgid "template not found"
+msgstr "шаблон не найден"
+
+msgid "temporary file doesn't exists"
+msgstr "временный фаил не найден"
+
+msgid "this booking already exists"
+msgstr "этот букинг уже существует"
+
+msgid "this limit already exists"
+msgstr "такое ограничение уже есть"
+
+msgid "till"
+msgstr "до"
+
+msgid "timecard date finish is empty"
+msgstr "не определена дата окончания таймкарты"
+
+msgid "timecard date start is empty"
+msgstr "не определена дата окончания таймкарты"
+
+msgid "timecard id is empty"
+msgstr "таймкарта не найдена"
+
+msgid "timecards reported"
+msgstr "таймкарт"
+
+msgid "tin already exists"
+msgstr "компания с таким ИНН уже существует"
+
+msgid "tin is empty"
+msgstr "не указан ИНН"
+
+msgid "to"
+msgstr "на"
+
+msgid "token has missed"
+msgstr "токен не найден"
+
+msgid "token not found"
+msgstr "токен не найден"
+
+msgid "total amount"
+msgstr "на сумму"
+
+msgid "trip_id failure"
+msgstr "идентификатор поездки не найден"
+
+msgid "type is empty"
+msgstr "не указан тип"
+
+msgid "unable to create psow"
+msgstr "не удалось создать PSoW"
+
+msgid "unknown invoice"
+msgstr "Неизвестный счет"
+
+msgid "unknown method"
+msgstr "неизвестный метод"
+
+msgid "unknown smartway method"
+msgstr "неизвестный Smartway метод"
+
+msgid "up to"
+msgstr "по"
+
+msgid "updated"
+msgstr "изменен"
+
+msgid "user already enrolled"
+msgstr "пользователь уже дал согласие"
+
+msgid "user already exists"
+msgstr "пользователь уже существует"
+
+msgid "user employed in another agency"
+msgstr "сотрудник уже работает в другом агенстве"
+
+msgid "user is not initialized"
+msgstr "пользователь не существует"
+
+msgid "user not found"
+msgstr "пользователь не найден"
+
+msgid "variable not found"
+msgstr "перенеменная не найдена"
+
+msgid "vat"
+msgstr "НДС"
+
+msgid "w/o"
+msgstr "без"
+
+msgid "with"
+msgstr "с"
+
+msgid "wrong format"
+msgstr "некорректный формат"
+
+msgid "you are no authorized"
+msgstr "у Вас недостаточно прав"
+
+msgid "you are not assigned to customer"
+msgstr "вы не назначены на этого заказчика"
+
+msgid "you are not employeed at any medical center"
+msgstr "вы не назначены никакому мед. центру"
+
+msgid "za"
+msgstr "за"
+
+msgid "zip not found"
+msgstr "индекс не найден"

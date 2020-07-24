@@ -1,0 +1,4 @@
+#!/bin/bash
+
+xgettext -d infomed-stat.ru -j --no-location -o ./ru.pot -s ../src/pi/*.cpp
+xgettext -d infomed-stat.ru -j --no-location -o ./ru.pot -s ../src/pd/*.cpp

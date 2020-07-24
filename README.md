@@ -1,3 +1,3 @@
-# timecard.su
+# pancreas.center
 
 ![Travis (.com) branch](https://img.shields.io/travis/com/IvanKuchin/infomed-stat.ru/development.svg)
