@@ -13,6 +13,9 @@ zgrep -h "Ban " /var/log/fail2ban.log* | grep `date +%Y-%m-%d` | awk '{print $6,
 echo --------------- ${MAIN_DOMAIN_NAME} running time [sec]
 cat -v ${LOGDIR}${MAIN_DOMAIN_NAME}.log | grep "microseconds" | grep `date '+%b\s%d'` | awk '{ print $8/1000000; }' | sort -n | tail
 
+echo --------------- ${MAIN_DOMAIN_NAME} longest running time + action [sec]. number of lines could be less than prev if no action grepped
+cat -v ${LOGDIR}${MAIN_DOMAIN_NAME}.log* | grep "microseconds" | grep `date '+%b\s%d'` | awk '{ print $8; }' | sort -n | tail | xargs -I % sh -c "cat -v ${LOGDIR}${MAIN_DOMAIN_NAME}.log* | grep % | grep chrono " | awk '{ print $3; }' | awk -F \[ '{ print $2; }' | awk -F \] '{ print $1; }' | xargs -I % sh -c "cat -v ${LOGDIR}${MAIN_DOMAIN_NAME}.log* | grep \"\[%\]\" " | grep `date '+%b\s%d'` | grep "HTTP parameter" | grep "action=" | awk '{ print $1, $2, $3, $8 }'
+
 echo --------------- ${MAIN_DOMAIN_NAME} log: ERRORS
 cat -v ${LOGDIR}${MAIN_DOMAIN_NAME}.* | grep "ERROR" | grep `date '+%b\s%d'`
 

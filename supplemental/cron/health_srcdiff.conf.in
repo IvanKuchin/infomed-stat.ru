@@ -74,8 +74,12 @@ nodiff_files => [
     "cases_list.htmlt",
     "helpdesk_dashboard.htmlt",
 
+    "registered.htmlt",
     "forget.htmlt",
     "change_password.htmlt",
+
+    "helpdesk_notification_new_case.htmlt",
+    "helpdesk_notification_existing_case.htmlt",
 
     "admin_header.htmlt",
 
