@@ -4463,9 +4463,9 @@ string GetSpecificData_GetDataTypeByItemType(const string &itemType)
 // --- For example:
 // ---	*) university or school logo can be changed by administartor only.
 // ---	*) gift image could be changed by owner
-bool GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db, CUser *user)
+auto GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db, CUser *user) -> string
 {
-	bool	  result = false;
+	auto	  error_message = ""s;
 
 	MESSAGE_DEBUG("", "", "start");
 
@@ -4478,16 +4478,19 @@ bool GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db,
 							"SELECT `agency_company_id` FROM `contracts_sow` WHERE `id`=("
 								"SELECT `contract_sow_id` FROM `contract_sow_custom_fields` WHERE `id`=\"" + itemID + "\""
 							")"
-						");"))
-				result = true;
+						");")) 
+			{
+			}
 			else
 			{
-				MESSAGE_DEBUG("", "", "user.id(" + user->GetID() + ") doesn't allowed to change contract_sow_custom_fields.id(" + itemID + ")");
+				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change contract_sow_custom_fields.id(" + itemID + ")";
+				MESSAGE_DEBUG("", "", error_message);
 			}
 		}
 		else
 		{
-			MESSAGE_DEBUG("", "", "user.type(" + user->GetType() + ") must be agency employee to change");
+			error_message = "user.type(" + user->GetType() + ") must be an agency employee to change";
+			MESSAGE_DEBUG("", "", error_message);
 		}
 		
 	}
@@ -4502,15 +4505,18 @@ bool GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db,
 								")"
 							")"
 						");"))
-				result = true;
+			{
+			}
 			else
 			{
-				MESSAGE_DEBUG("", "", "user.id(" + user->GetID() + ") doesn't allowed to change contract_psow_custom_fields.id(" + itemID + ")");
+				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change contract_psow_custom_fields.id(" + itemID + ")";
+				MESSAGE_DEBUG("", "", error_message);
 			}
 		}
 		else
 		{
-			MESSAGE_DEBUG("", "", "user.type(" + user->GetType() + ") must be agency employee to change");
+			error_message = "user.type(" + user->GetType() + ") must be agency employee to change";
+			MESSAGE_DEBUG("", "", error_message);
 		}
 		
 	}
@@ -4523,15 +4529,18 @@ bool GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db,
 								"SELECT `cost_center_id` FROM `cost_center_custom_fields` WHERE `id`=\"" + itemID + "\""
 							")"
 						");"))
-				result = true;
+			{
+			}
 			else
 			{
-				MESSAGE_DEBUG("", "", "user.id(" + user->GetID() + ") doesn't allowed to change cost_center_custom_fields.id(" + itemID + ")");
+				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change cost_center_custom_fields.id(" + itemID + ")";
+				MESSAGE_DEBUG("", "", error_message);
 			}
 		}
 		else
 		{
-			MESSAGE_DEBUG("", "", "user.type(" + user->GetType() + ") must be agency employee to change");
+			error_message = "user.type(" + user->GetType() + ") must be agency employee to change";
+			MESSAGE_DEBUG("", "", error_message);
 		}
 		
 	}
@@ -4542,10 +4551,12 @@ bool GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db,
 			if(db->Query("SELECT `id` FROM `company_employees` WHERE `user_id`=\"" + user->GetID() + "\" AND `allowed_change_sow`=\"Y\" AND `company_id`=("
 							"SELECT `company_id` FROM `company_custom_fields` WHERE `id`=\"" + itemID + "\""
 						");"))
-				result = true;
+			{
+			}
 			else
 			{
-				MESSAGE_DEBUG("", "", "user.id(" + user->GetID() + ") doesn't allowed to change company_custom_fields.id(" + itemID + ")");
+				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change company_custom_fields.id(" + itemID + ")";
+				MESSAGE_DEBUG("", "", error_message);
 			}
 		}
 		else if((user->GetType() == "subcontractor"))
@@ -4553,15 +4564,18 @@ bool GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db,
 			if(db->Query("SELECT `id` FROM `company` WHERE `admin_userID`=\"" + user->GetID() + "\" AND `id`=("
 							"SELECT `company_id` FROM `company_custom_fields` WHERE `id`=\"" + itemID + "\""
 						");"))
-				result = true;
+			{
+			}
 			else
 			{
-				MESSAGE_DEBUG("", "", "user.id(" + user->GetID() + ") doesn't allowed to change company_custom_fields.id(" + itemID + ")");
+				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change company_custom_fields.id(" + itemID + ")";
+				MESSAGE_DEBUG("", "", error_message);
 			}
 		}
 		else
 		{
-			MESSAGE_DEBUG("", "", "user.type(" + user->GetType() + ") not allowerd to change company custom field");
+			error_message = "user.type(" + user->GetType() + ") not allowerd to change company custom field";
+			MESSAGE_DEBUG("", "", error_message);
 		}
 		
 	}
@@ -4572,15 +4586,18 @@ bool GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db,
 			if(db->Query("SELECT `id` FROM `company_employees` WHERE `user_id`=\"" + user->GetID() + "\" AND `allowed_change_sow`=\"Y\" AND `company_id`=("
 							"SELECT `company_id` FROM `company_agreement_files` WHERE `id`=\"" + itemID + "\""
 						");"))
-				result = true;
+			{
+			}
 			else
 			{
-				MESSAGE_DEBUG("", "", "user.id(" + user->GetID() + ") doesn't allowed to change company_agreement_files.id(" + itemID + ")");
+				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change company_agreement_files.id(" + itemID + ")";
+				MESSAGE_DEBUG("", "", error_message);
 			}
 		}
 		else
 		{
-			MESSAGE_DEBUG("", "", "user.type(" + user->GetType() + ") not allowerd to change company agreement files");
+			error_message = "user.type(" + user->GetType() + ") not allowerd to change company agreement files";
+			MESSAGE_DEBUG("", "", error_message);
 		}
 	}
 	else if(itemType == "template_agreement_sow")
@@ -4590,15 +4607,18 @@ bool GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db,
 			if(db->Query("SELECT `id` FROM `company_employees` WHERE `user_id`=\"" + user->GetID() + "\" AND `allowed_change_sow`=\"Y\" AND `company_id`=("
 							"SELECT `company_id` FROM `contract_sow_agreement_files` WHERE `id`=\"" + itemID + "\""
 						");"))
-				result = true;
+			{
+			}
 			else
 			{
-				MESSAGE_DEBUG("", "", "user.id(" + user->GetID() + ") doesn't allowed to change contract_sow_agreement_files.id(" + itemID + ")");
+				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change contract_sow_agreement_files.id(" + itemID + ")";
+				MESSAGE_DEBUG("", "", error_message);
 			}
 		}
 		else
 		{
-			MESSAGE_DEBUG("", "", "user.type(" + user->GetType() + ") not allowerd to change contract_sow agreement files");
+			error_message = "user.type(" + user->GetType() + ") not allowerd to change contract_sow agreement files";
+			MESSAGE_DEBUG("", "", error_message);
 		}
 	}
 	else if(itemType == "company_profile_logo")
@@ -4606,10 +4626,12 @@ bool GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db,
 		if((user->GetType() == "subcontractor"))
 		{
 			if(db->Query("SELECT `id` FROM `company` WHERE `id`=\"" + itemID + "\" AND `admin_userID`=\"" + user->GetID() + "\";"))
-				result = true;
+			{
+			}
 			else
 			{
-				MESSAGE_DEBUG("", "", "subcontractor user.id(" + user->GetID() + ") doesn't allowed to change company.id(" + itemID + ") logo");
+				error_message = "subcontractor user.id(" + user->GetID() + ") doesn't allowed to change company.id(" + itemID + ") logo";
+				MESSAGE_DEBUG("", "", error_message);
 			}
 		}
 		else if((user->GetType() == "agency"))
@@ -4619,97 +4641,93 @@ bool GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db,
 									"SELECT `admin_userID` FROM `company` WHERE `id`=\"" + itemID + "\""
 								")"
 							") AND `user_id`=\"" + user->GetID() + "\" AND `allowed_change_agency_data`=\"Y\""))
-				result = true;
+			{
+			}
 			else
 			{
-				MESSAGE_DEBUG("", "", "agency user.id(" + user->GetID() + ") doesn't allowed to change company.id(" + itemID + ") logo");
+				error_message = "agency user.id(" + user->GetID() + ") doesn't allowed to change company.id(" + itemID + ") logo";
+				MESSAGE_DEBUG("", "", error_message);
 			}
 		}
 		else
 		{
-			MESSAGE_DEBUG("", "", "user.type(" + user->GetType() + ") not allowed to change");
+			error_message = "user.type(" + user->GetType() + ") not allowed to change";
+			MESSAGE_DEBUG("", "", error_message);
 		}
 
 	}
 	else if(db->Query(GetSpecificData_SelectQueryItemByID(itemID, itemType))) // --- item itemID exists ?
 	{
-		if((itemType == "course") || (itemType == "university") || (itemType == "school") || (itemType == "language") || (itemType == "book") || (itemType == "company") || (itemType == "certification"))
-		{
-			string	  coverPhotoFolder = db->Get(0, GetSpecificData_GetDBCoverPhotoFolderString(itemType).c_str());
-			string	  coverPhotoFilename = db->Get(0, GetSpecificData_GetDBCoverPhotoFilenameString(itemType).c_str());
-
-			if(coverPhotoFolder.empty() && coverPhotoFilename.empty())
-				result = true;
-			else
+			if((itemType == "course") || (itemType == "university") || (itemType == "school") || (itemType == "language") || (itemType == "book") || (itemType == "company") || (itemType == "certification"))
 			{
-				result = false;
+				string	  coverPhotoFolder = db->Get(0, GetSpecificData_GetDBCoverPhotoFolderString(itemType).c_str());
+				string	  coverPhotoFilename = db->Get(0, GetSpecificData_GetDBCoverPhotoFilenameString(itemType).c_str());
+
+				if(coverPhotoFolder.empty() && coverPhotoFilename.empty()) {}
+				else
 				{
-					CLog	log;
+					error_message = "logo already uploaded";
+
 					MESSAGE_DEBUG("", "", "access to " + itemType + "(" + itemID + ") denied, because logo already uploaded");
 				}
 			}
-		}
-		else if(itemType == "event")
-		{
-			if(user)
+			else if(itemType == "event")
 			{
-				if(db->Query("SELECT `id` FROM `event_hosts` WHERE `event_id`=\"" + itemID + "\" AND `user_id`=\"" + user->GetID() + "\";"))
-					result = true;
+				if(user)
+				{
+					if(db->Query("SELECT `id` FROM `event_hosts` WHERE `event_id`=\"" + itemID + "\" AND `user_id`=\"" + user->GetID() + "\";")) {}
+					else
+					{
+						error_message = "you are not the event host";
+
+						MESSAGE_DEBUG("", "", "access to " + itemType + "(" + itemID + ") denied, you are not an event host");
+					}
+				}
 				else
 				{
-					result = false;
+					error_message = "user object is NULL";
+
+					MESSAGE_ERROR("", "", error_message);
+				}
+			}
+			else if(itemType == "gift")
+			{
+				string		user_id = db->Get(0, "user_id");
+
+				if(user)
+				{
+					if(user_id == user->GetID()) {}
+					else
 					{
-						CLog	log;
-						MESSAGE_DEBUG("", "", "access to " + itemType + "(" + itemID + ") denied, you are not the event host");
+						error_message = "you are not the gift owner";
+
+						MESSAGE_DEBUG("", "", "access to " + itemType + "(" + itemID + ") denied, you are not a gift owner");
 					}
+				}
+				else
+				{
+					error_message = "user object is NULL";
+
+					MESSAGE_ERROR("", "", error_message);
 				}
 			}
 			else
 			{
-				result = false;
+				error_message = "itemType [" + itemType + "] unknown";
 
-				MESSAGE_ERROR("", "", "user object is NULL")
+				MESSAGE_ERROR("", "", error_message);
 			}
-		}
-		else if(itemType == "gift")
-		{
-			string		user_id = db->Get(0, "user_id");
-
-			if(user)
-			{
-				if(user_id == user->GetID())
-					result = true;
-				else
-				{
-					result = false;
-					{
-						CLog	log;
-						MESSAGE_DEBUG("", "", "access to " + itemType + "(" + itemID + ") denied, you are not the gift owner");
-					}
-				}
-			}
-			else
-			{
-				result = false;
-
-				MESSAGE_ERROR("", "", "user object is NULL")
-			}
-		}
-		else
-		{
-			MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
-		}
 	}
 	else
 	{
-		result = false;
-		
-		MESSAGE_ERROR("", "", itemType + "(" + itemID + ") not found");
+		error_message = itemType + "(" + itemID + ") not found";
+
+		MESSAGE_ERROR("", "", error_message);
 	}
 
-	MESSAGE_DEBUG("", "", "finish (result: " + (result ? "true" : "false") + ")");
+	MESSAGE_DEBUG("", "", "finish (error_message: " + error_message + ")");
 
-	return result;
+	return error_message;
 }
 
 auto isAllowed_NoSession_Action(string action) -> bool

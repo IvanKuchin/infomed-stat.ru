@@ -2,7 +2,7 @@
 
 static bool ImageSaveAsJpg(const string src, const string dst, string itemType)
 {
-	MESSAGE_DEBUG("", "", "start");
+	MESSAGE_DEBUG("", "", "start (" + src + ", " + dst + ")");
 
 #ifndef IMAGEMAGICK_DISABLE
 	// Construct the image object. Seperating image construction from the
@@ -19,14 +19,7 @@ static bool ImageSaveAsJpg(const string src, const string dst, string itemType)
 		imageGeometry = image.size();
 		imageOrientation = image.orientation();
 
-		{
-			CLog	log;
-			ostringstream   ost;
-
-			ost.str("");
-			ost << "imageOrientation = " << imageOrientation << ", xRes = " << imageGeometry.width() << ", yRes = " << imageGeometry.height();
-			log.Write(DEBUG, string(__func__) + "(" + src + ", " + dst + ")[" + to_string(__LINE__) + "]: " + ost.str());
-		}
+		MESSAGE_DEBUG("", "", "imageOrientation = " + to_string(imageOrientation) + ", xRes = " + to_string(imageGeometry.width()) + ", yRes = " + to_string(imageGeometry.height()));
 
 		if(imageOrientation == Magick::TopRightOrientation) image.flop();
 		if(imageOrientation == Magick::BottomRightOrientation) image.rotate(180);
@@ -90,18 +83,15 @@ static bool BlindCopy(const string src, const string dst, string itemType)
 
 int main()
 {
-	CStatistics	 appStat;  // --- CStatistics must be firts statement to measure end2end param's
+	CStatistics		appStat;  // --- CStatistics must be firts statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
-	CUser		   user;
-	string		  action;
-	CMysql		  db;
-	struct timeval  tv;
-	ostringstream   ostJSONResult/*(static_cast<ostringstream&&>(ostringstream() << "["))*/;
+	CUser			user;
+	string			action;
+	CMysql			db;
+	struct timeval	tv;
+	ostringstream	ostJSONResult/*(static_cast<ostringstream&&>(ostringstream() << "["))*/;
 
-	{
-		CLog	log;
-		log.Write(DEBUG, __func__ + string("[") + to_string(__LINE__) + "]: " + __FILE__);
-	}
+	MESSAGE_DEBUG("", action, __FILE__);
 
     signal(SIGSEGV, crash_handler); 
 
@@ -115,17 +105,13 @@ int main()
 
 		if(!indexPage.SetTemplate("index.htmlt"))
 		{
-			CLog	log;
-
-			log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: template file was missing");
+			MESSAGE_ERROR("", "", "template file was missing");
 			throw CException("Template file was missing");
 		}
 
 		if(db.Connect(DB_NAME, DB_LOGIN, DB_PASSWORD) < 0)
 		{
-			CLog	log;
-
-			log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: Can not connect to mysql database");
+			MESSAGE_ERROR("", "", "Can not connect to mysql database");
 			throw CExceptionHTML("MySql connection");
 		}
 
@@ -173,8 +159,8 @@ int main()
 
 			if(itemID.length() && itemType.length())
 			{
-				// --- parameter itemID exists and not empty
-				if(GetSpecificData_AllowedToChange(itemID, itemType, &db, &user))
+				auto	scoped_error_message = GetSpecificData_AllowedToChange(itemID, itemType, &db, &user);
+				if(scoped_error_message.empty())
 				{
 					if(indexPage.GetFilesHandler()->Count() == 1)
 					{
@@ -246,10 +232,8 @@ int main()
 							f = fopen(originalFilename.c_str(), "w");
 							if(f == NULL)
 							{
-								{
-									MESSAGE_ERROR("", "", "fail to write file " + originalFilename);
-									throw CExceptionHTML("file write error", indexPage.GetFilesHandler()->GetName(filesCounter));
-								}
+								MESSAGE_ERROR("", "", "fail to write file " + originalFilename);
+								throw CExceptionHTML("file write error", indexPage.GetFilesHandler()->GetName(filesCounter));
 							}
 							fwrite(indexPage.GetFilesHandler()->Get(filesCounter), indexPage.GetFilesHandler()->GetSize(filesCounter), 1, f);
 							fclose(f);
@@ -261,7 +245,7 @@ int main()
 								if(file_type == "image")			save_func = ImageSaveAsJpg;
 								else if(file_type == "template")	save_func = BlindCopy;
 							}
-							// if(ImageSaveAsJpg(originalFilename, preFinalFilename, itemType))
+
 							if(save_func(originalFilename, preFinalFilename, itemType))
 							{
 
@@ -287,7 +271,7 @@ int main()
 
 								db.Query(GetSpecificData_UpdateQueryItemByID(itemID, itemType, to_string(folderID), filePrefix  + GetSpecificData_GetFinalFileExtenstion(itemType)));
 								{
-									if(filesCounter == 0) ostJSONResult << "[" << std::endl;
+									if(filesCounter == 0) ostJSONResult << "[";
 									if(filesCounter  > 0) ostJSONResult << ",";
 									ostJSONResult << "{";
 									ostJSONResult << "\"result\": \"success\",";
@@ -312,14 +296,14 @@ int main()
 							{
 								MESSAGE_DEBUG("", "", "fail to save " + indexPage.GetFilesHandler()->GetName(filesCounter) + ". Probably it is not an image file.");
 
-								if(filesCounter == 0) ostJSONResult << "[" << std::endl;
+								if(filesCounter == 0) ostJSONResult << "[";
 								if(filesCounter  > 0) ostJSONResult << ",";
-								ostJSONResult << "{" << std::endl;
-								ostJSONResult << "\"result\": \"error\"," << std::endl;
-								ostJSONResult << "\"textStatus\": \"" << (gettext("wrong format")) << "\"," << std::endl;
-								ostJSONResult << "\"fileName\": \"" << indexPage.GetFilesHandler()->GetName(filesCounter) << "\" ," << std::endl;
-								ostJSONResult << "\"jqXHR\": \"\"" << std::endl;
-								ostJSONResult << "}" << std::endl;
+								ostJSONResult << "{";
+								ostJSONResult << "\"result\": \"error\",";
+								ostJSONResult << "\"textStatus\": \"" << (gettext("wrong format")) << "\",";
+								ostJSONResult << "\"fileName\": \"" << indexPage.GetFilesHandler()->GetName(filesCounter) << "\" ,";
+								ostJSONResult << "\"jqXHR\": \"\"";
+								ostJSONResult << "}";
 								if(filesCounter == (indexPage.GetFilesHandler()->Count() - 1)) ostJSONResult << "]";
 							}
 							// --- Delete temporarily files
@@ -336,25 +320,22 @@ int main()
 						}
 
 						ostJSONResult.str("");
-						ostJSONResult << "{" << std::endl;
-						ostJSONResult << "\"result\": \"error\"," << std::endl;
-						ostJSONResult << "\"textStatus\": \"" << (gettext("number uploaded images must be 1")) << "\"," << std::endl;
-						ostJSONResult << "\"fileName\": \"\" ," << std::endl;
-						ostJSONResult << "\"jqXHR\": \"\"" << std::endl;
-						ostJSONResult << "}" << std::endl;
+						ostJSONResult << "{";
+						ostJSONResult << "\"result\": \"error\",";
+						ostJSONResult << "\"textStatus\": \"" << (gettext("number uploaded images must be 1")) << "\",";
+						ostJSONResult << "\"fileName\": \"\" ,";
+						ostJSONResult << "\"jqXHR\": \"\"";
+						ostJSONResult << "}";
 					} // --- if number uploaded files = 1
 				}
 				else
 				{
-					{
-						// --- it could be DEBUG level
-						MESSAGE_ERROR("", "", "access to " + itemType + "(" + itemID + ") denied for user(" + user.GetID() + ")");
-					}
+					MESSAGE_ERROR("", "", scoped_error_message);
 
 					ostJSONResult.str("");
 					ostJSONResult << "{";
 					ostJSONResult << "\"result\": \"error\",";
-					ostJSONResult << "\"textStatus\": \"" << (gettext("Access prohibited")) << "\",";
+					ostJSONResult << "\"textStatus\": " + quoted(scoped_error_message) + ",";
 					ostJSONResult << "\"fileName\": \"\" ,";
 					ostJSONResult << "\"jqXHR\": \"\"";
 					ostJSONResult << "}";
@@ -371,12 +352,12 @@ int main()
 				ostringstream   ost;
 				
 				ost.str("");
-				ost << "{" << std::endl;
-				ost << "\"result\": \"error\"," << std::endl;
-				ost << "\"textStatus\": \"" << (gettext("mandatory parameter missed")) << "\"," << std::endl;
-				ost << "\"fileName\": \"\" ," << std::endl;
-				ost << "\"jqXHR\": \"\"" << std::endl;
-				ost << "}" << std::endl;
+				ost << "{";
+				ost << "\"result\": \"error\",";
+				ost << "\"textStatus\": \"" << (gettext("mandatory parameter missed")) << "\",";
+				ost << "\"fileName\": \"\" ,";
+				ost << "\"jqXHR\": \"\"";
+				ost << "}";
 
 				indexPage.RegisterVariableForce("result", ost.str());
 			} // --- parameter itemID exists and not empty
@@ -391,12 +372,12 @@ int main()
 			ostringstream   ost;
 			
 			ost.str("");
-			ost << "{" << std::endl;
-			ost << "\"result\": \"error\"," << std::endl;
-			ost << "\"textStatus\": \"" << indexPage.GetVarsHandler()->Get("ErrorDescription") << "\"," << std::endl;
-			ost << "\"fileName\": \"\" ," << std::endl;
-			ost << "\"jqXHR\": \"\"" << std::endl;
-			ost << "}" << std::endl;
+			ost << "{";
+			ost << "\"result\": \"error\",";
+			ost << "\"textStatus\": \"" << indexPage.GetVarsHandler()->Get("ErrorDescription") << "\",";
+			ost << "\"fileName\": \"\" ,";
+			ost << "\"jqXHR\": \"\"";
+			ost << "}";
 
 			indexPage.RegisterVariableForce("result", ost.str());
 		} // --- user not Guest
@@ -422,9 +403,9 @@ int main()
 			ostringstream   ost;
 
 			ost.str("");
-			ost << "\"result\": \"error\"," << std::endl;
-			ost << "\"textStatus\": \"" << c.GetReason() << ", file: (" << c.GetParam1() << ")\"," << std::endl;
-			ost << "\"jqXHR\": \"\"" << std::endl;
+			ost << "\"result\": \"error\",";
+			ost << "\"textStatus\": \"" << c.GetReason() << ", file: (" << c.GetParam1() << ")\",";
+			ost << "\"jqXHR\": \"\"";
 			indexPage.RegisterVariableForce("result", ost.str());
 		}
 		if(c.GetReason() == "file size exceed")
@@ -432,9 +413,9 @@ int main()
 			ostringstream   ost;
 
 			ost.str("");
-			ost << "\"result\": \"error\"," << std::endl;
-			ost << "\"textStatus\": \"" << c.GetReason() << ", file: (" << c.GetParam1() << ")\"," << std::endl;
-			ost << "\"jqXHR\": \"\"" << std::endl;
+			ost << "\"result\": \"error\",";
+			ost << "\"textStatus\": \"" << c.GetReason() << ", file: (" << c.GetParam1() << ")\",";
+			ost << "\"jqXHR\": \"\"";
 			indexPage.RegisterVariableForce("result", ost.str());
 		}
 
@@ -449,14 +430,12 @@ int main()
 	}
 	catch(CException &c)
 	{
-		CLog 	log;
-
 		if(!indexPage.SetTemplateFile("templates/error.htmlt"))
 		{
 			return(-1);
 		}
 
-		log.Write(ERROR, "catch CException: exception: ", c.GetReason());
+		MESSAGE_ERROR("", "", "catch CException: exception: " + c.GetReason());
 
 		indexPage.RegisterVariable("content", c.GetReason());
 		indexPage.OutTemplate();

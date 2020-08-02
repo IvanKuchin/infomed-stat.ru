@@ -1,6 +1,7 @@
 nodiff_files => [
     "account.cpp",
     "avataruploader.cpp",
+    "generalimageuploader.cpp",
     "cmail.cpp",
     "c_smsc.cpp",
     "c_float.cpp",
