@@ -288,8 +288,7 @@ int main()
 						}
 						else
 						{
-							auto 	error_message = gettext("SQL syntax error");
-							MESSAGE_ERROR("", "", error_message);
+							MESSAGE_DEBUG("", "", "no active avatar");
 						}
 
 						CopyFile(tmpImageJPG, file2Check);
