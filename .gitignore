@@ -31,6 +31,9 @@
 *.out
 *.app
 
+# ignore private files
+*.original
+
 #Ignore build files
 CMakeCache.txt
 CMakeFiles
