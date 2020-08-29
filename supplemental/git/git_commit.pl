@@ -5,6 +5,7 @@ use strict;
 
 my	@anonimazition = ("src/pi/include/localy.h.in", "tests/selenium/login.py");
 my	$DEBUG;
+my	$git_commit_message;
 
 $|++;
 
@@ -12,8 +13,44 @@ $DEBUG = 1;
 
 if(isCurrentDirProjectRoot()) {} else { die "ERROR: run this script from project root directory\n"; }
 
+ParseParameters();
 AnonimizeFiles(@anonimazition);
 SaveLatestGitCommitID();
+
+sub ParseParameters()
+{
+	my ($key0, $val0) = @ARGV;
+	 
+	if (not defined $key0) 
+	{
+	}
+	else
+	{
+		if($key0 eq "-h")
+		{
+			PrintHelp();
+			exit(0);
+		}
+		if($key0 eq "-m")
+		{
+			if (defined $val0) 
+			{
+				$git_commit_message = $val0;
+			}
+			else
+			{
+				die "git commit message is empty"
+			}
+		}
+	}
+}
+
+sub PrintHelp()
+{
+	print("Usage:\n");
+	print("-h	print help\n");
+	print("-m	git commit message (for ex: -m \"test commit\"\n");
+}
 
 sub SaveLatestGitCommitID
 {
@@ -31,8 +68,15 @@ sub AnonimizeFiles
 			if(HideSensitiveInfoInFiles(@files))
 			{
 				system("git add .");
-				print("git commit message: ");
-				system("git commit --file -");
+				if(defined $git_commit_message)
+				{
+					system("git commit -m \"$git_commit_message\"");
+				}
+				else
+				{
+					print("git commit message: ");
+					system("git commit --file -");
+				}
 				system("git push origin development");
 
 				if(RestoreFiles(@files)) {}
