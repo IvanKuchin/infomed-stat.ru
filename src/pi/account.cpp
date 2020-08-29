@@ -1151,7 +1151,7 @@ int main()
 						indexPage.RegisterVariableForce("name", user.GetName());
 						indexPage.RegisterVariableForce("nameLast", user.GetNameLast());
 						indexPage.RegisterVariableForce("token", token);
-						mail.SendToEmail(email, user.GetLogin(), "change_password", indexPage.GetVarsHandler(), &db);
+						mail.SendToEmail(email, user.GetLogin(), "change_email", indexPage.GetVarsHandler(), &db);
 					}
 				}
 			}

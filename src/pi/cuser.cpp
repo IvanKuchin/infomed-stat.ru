@@ -342,9 +342,6 @@ void CUser::Create()
 			throw CExceptionHTML("error db");
 		}
 	}
-
-
-	// Email("registered");
 }
 
 void CUser::Email(string messageID)
