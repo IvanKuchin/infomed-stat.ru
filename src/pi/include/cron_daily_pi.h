@@ -16,6 +16,7 @@
 #include "cstatistics.h"
 #include "utilities.h"
 #include "utilities_common.h"
+#include "helpdesk.h"
 #include "localy.h"
 
 #endif

@@ -33,6 +33,8 @@ nodiff_files => [
 
     "cron_minute_pi.cpp",
     "cron_daily_pi.cpp",
+    "cron_minute_pi.h",
+    "cron_daily_pi.h",
     "system.cpp",
 
     "login.css",

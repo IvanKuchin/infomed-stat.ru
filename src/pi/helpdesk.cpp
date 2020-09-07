@@ -2,7 +2,7 @@
 
 // --- try to avoid using this function outside this header
 // --- function naming is confusing, state actually "not"
-inline auto	Get_HelpdeskTicketID_By_UserID_And_NotState_sqlquery(const string &id, const string &state)
+static auto	Get_HelpdeskTicketID_By_UserID_And_NotState_sqlquery(const string &id, const string &state)
 {
 	return (
 			"SELECT `helpdesk_ticket_history_last_case_state_view`.`helpdesk_ticket_id` "
@@ -16,11 +16,35 @@ inline auto	Get_HelpdeskTicketID_By_UserID_And_NotState_sqlquery(const string &i
 		);
 }
 
-inline auto	Get_OpenHelpdeskTicketIDByUserID_sqlquery(const string &id)
+static auto isUserAllowedToChangeTicket(string ticket_id, string user_id, CMysql *db, CUser *user) -> string
+{
+	MESSAGE_DEBUG("", "", "start (ticket_id:" + ticket_id + ", user_id:" + user_id + ")");
+
+	auto	result	 = ""s;
+
+	if((db->Query("SELECT `id` FROM `users` WHERE "
+					"(`id`=" + quoted(user_id) + " AND `type`=" + quoted(HELPDESK_USER_ROLE) + ") "
+					"OR "
+					"(" + quoted(user_id) + "=(SELECT `customer_user_id` FROM `helpdesk_tickets` WHERE `id`=" + quoted(ticket_id) + ")) "
+					"LIMIT 0,1;"))
+		)
+	{
+	}
+	else
+	{
+		result = gettext("you are not authorized");
+		MESSAGE_DEBUG("", "", "user (" + user_id + ") not allowed to change ticket")
+	}
+
+	MESSAGE_DEBUG("", "", "finish (" + result + ")");
+
+	return result;
+}
+
+static auto	Get_OpenHelpdeskTicketIDByUserID_sqlquery(const string &id)
 {
 	return Get_HelpdeskTicketID_By_UserID_And_NotState_sqlquery(id, "closed");
 }
-
 
 static auto amINewEngineer(string ticket_id, CMysql *db, CUser *user)
 {

@@ -1961,31 +1961,6 @@ auto	isHelpdeskTicketOwner(string ticket_id, string user_id, CMysql *db, CUser *
 	return result;
 }
 
-auto isUserAllowedToChangeTicket(string ticket_id, string user_id, CMysql *db, CUser *user) -> string
-{
-	MESSAGE_DEBUG("", "", "start (ticket_id:" + ticket_id + ", user_id:" + user_id + ")");
-
-	auto	result	 = ""s;
-
-	if((db->Query("SELECT `id` FROM `users` WHERE "
-					"(`id`=" + quoted(user_id) + " AND `type`=" + quoted(HELPDESK_USER_ROLE) + ") "
-					"OR "
-					"(" + quoted(user_id) + "=(SELECT `customer_user_id` FROM `helpdesk_tickets` WHERE `id`=" + quoted(ticket_id) + ")) "
-					"LIMIT 0,1;"))
-		)
-	{
-	}
-	else
-	{
-		result = gettext("you are not authorized");
-		MESSAGE_DEBUG("", "", "user (" + user_id + ") not allowed to change ticket")
-	}
-
-	MESSAGE_DEBUG("", "", "finish (" + result + ")");
-
-	return result;
-}
-
 auto	GetFAQInJSONFormat(string sqlQuery, CMysql *db, CUser *user) -> string
 {
 	MESSAGE_DEBUG("", "", "start");
