@@ -592,9 +592,7 @@ string	GetUserSubscriptionsInJSONFormat(string sqlQuery, CMysql *db)
 	int		affected;
 	string	result;
 
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	affected = db->Query(sqlQuery);
 	if(affected)
@@ -628,9 +626,7 @@ string	SubscribeToCompany(string companyID, CUser *user, CMysql *db)
 {
 	ostringstream	ostResult;
 
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	ostResult.str("");
 
@@ -638,11 +634,9 @@ string	SubscribeToCompany(string companyID, CUser *user, CMysql *db)
 	{
 		if(db->Query("SELECT * FROM `users_subscriptions` WHERE `user_id`=\"" + user->GetID() + "\" AND `entity_type`=\"company\" AND `entity_id`=\"" + companyID + "\";"))
 		{
-			{
-				MESSAGE_ERROR("", "", "already subscribed [companyID: " + companyID + ", userID: " + user->GetID() + "]");
-			}
+			MESSAGE_ERROR("", "", "already subscribed [companyID: " + companyID + ", userID: " + user->GetID() + "]");
 
-			ostResult << "\"result\": \"success\", \"description\": \"вы уже подписаны на новости этой компании\"";
+			ostResult << "\"result\": \"success\", \"description\": \""s + gettext("you are already subscribed") + "\"";
 		}
 		else
 		{
@@ -672,27 +666,21 @@ string	SubscribeToCompany(string companyID, CUser *user, CMysql *db)
 			}
 			else
 			{
-				{
-					MESSAGE_ERROR("", "", "error inserting into users subscription [companyID: " + companyID + ", userID: " + user->GetID() + "]");
-				}
+				MESSAGE_ERROR("", "", "error inserting into users subscription [companyID: " + companyID + ", userID: " + user->GetID() + "]");
 
-				ostResult << "\"result\": \"error\",\"description\": \"Ошибка БД\"";
+				ostResult << "\"result\": \"error\",\"description\": \""s + gettext("SQL syntax error") + "\"";
 			}
 		}
 	}
 	else
 	{
-		{
-			MESSAGE_ERROR("", "", "(companyID is empty) || (user == NULL) [companyID: " + companyID + ", userID: " + (user ? "not-NULL" : "NULL") + "]");
-		}
+		MESSAGE_ERROR("", "", "(companyID is empty) || (user == NULL) [companyID: " + companyID + ", userID: " + (user ? "not-NULL" : "NULL") + "]");
 
 		ostResult << "\"result\": \"error\",\"description\": \"Компания не найдена или пользователь неопределен\"";
 	}
 
 
-	{
-		MESSAGE_DEBUG("", "", "end (returning result length(" + to_string(ostResult.str().length()) + ")");
-	}
+	MESSAGE_DEBUG("", "", "end (returning result length(" + to_string(ostResult.str().length()) + ")");
 
 	return ostResult.str();
 }
@@ -701,9 +689,7 @@ string	UnsubscribeFromCompany(string companyID, CUser *user, CMysql *db)
 {
 	ostringstream	ostResult;
 
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	ostResult.str("");
 
@@ -772,9 +758,7 @@ string	SubscribeToGroup(string groupID, CUser *user, CMysql *db)
 {
 	ostringstream	ostResult;
 
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	ostResult.str("");
 
@@ -845,9 +829,7 @@ string	UnsubscribeFromGroup(string groupID, CUser *user, CMysql *db)
 {
 	ostringstream	ostResult;
 
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	ostResult.str("");
 
@@ -949,9 +931,7 @@ bool isBotIP(string ip)
 		string("66.249.95.")
 		};
 
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	if(ip.length())
 	{
@@ -984,9 +964,7 @@ bool isAdverseWordsHere(string text, CMysql *db)
 	bool			result = false;
 	int				affected;
 
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	affected = db->Query("SELECT * FROM `dictionary_adverse`;");
 	if(affected)
@@ -1281,9 +1259,7 @@ string	GetMySQLDateInJSONFormat(string dateString)
 	regex   format1("([[:digit:]]+)\\-([[:digit:]]+)\\-([[:digit:]]+)");
 	smatch  cm;
 
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	if(regex_match(dateString, cm, format1))
 	{
@@ -2655,7 +2631,7 @@ auto SendPhoneConfirmationCode(const string &country_code, const string &phone_n
 
 		if(phone_confirmation_id)
 		{
-			error_message = smsc.send_sms(country_code + phone_number, "Code " + confirmation_code, 0, "", 0, 0, SMSC_SENDER_NAME, "", "");
+			error_message = smsc.send_sms(country_code + phone_number, "Code " + confirmation_code, 0, "", 0, 1, SMSC_SENDER_NAME, "", "");
 
 			if(error_message.length())
 			{
