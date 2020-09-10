@@ -43,9 +43,10 @@ set(LIBXL_PROJECT_DIR		${PROJECT_SOURCE_DIR}/libxl-3.8.4.0/)
 # ---- install variables
 set(ROOTDIR			"/home/httpd/${MAIN_DOMAIN_NAME}")
 set(IMAGEROOTDIR		"/home/httpd/${IMAGE_DOMAIN_NAME}")
-set(LOGDIR			"/home/ikuchin/src_logs/")
 set(CGIDIR			${ROOTDIR}/cgi-bin)
 set(CGIADMINDIR			${ROOTDIR}/cgi-bin/admin)
+set(LOGDIR                      ${CMAKE_INSTALL_PREFIX}/share/${MAIN_DOMAIN_NAME}/log/)
+set(CONFIGDIR                   ${CMAKE_INSTALL_PREFIX}/share/${MAIN_DOMAIN_NAME}/config)
 set(CRON_INSTALL_DIR		${CMAKE_INSTALL_PREFIX}/share/${MAIN_DOMAIN_NAME}/cron)
 set(ARCHIVE_INSTALL_DIR		${CMAKE_INSTALL_PREFIX}/share/${MAIN_DOMAIN_NAME}/archive)
 set(MAXMIND_INSTALL_DIR		${CMAKE_INSTALL_PREFIX}/share/${MAIN_DOMAIN_NAME}/maxmind)
@@ -74,6 +75,10 @@ add_subdirectory(supplemental/ci-scripts/)
 add_subdirectory(supplemental/libpdf-font/)
 add_subdirectory(supplemental/git/)
 add_subdirectory(po/)
+
+# --- Install time
+install(DIRECTORY DESTINATION ${LOGDIR})
+install(DIRECTORY DESTINATION ${CONFIGDIR})
 
 # --- CTest
 include(CTest)
