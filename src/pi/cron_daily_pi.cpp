@@ -219,7 +219,7 @@ int main()
 	{
 		auto	error_message = ""s;
 
-		if(db.Connect(DB_NAME, DB_LOGIN, DB_PASSWORD) < 0)
+		if(db.Connect() < 0)
 		{
 			CLog	log;
 

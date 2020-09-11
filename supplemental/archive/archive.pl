@@ -7,7 +7,7 @@ use File::Path;
 use Cwd;
 use strict;
 my	($str, $key, $DEBUG, $outi, $command, $archive_filename);
-my	($mysqlhost, $mysqllogin, $mysqlpass, $mysqldb);
+# my	($mysqlhost, $mysqllogin, $mysqlpass, $mysqldb);
 my	($action);
 my	$timestamp = strftime "%Y%m%d%H%M%S", localtime;
 my	$num_args = $#ARGV + 1;
@@ -49,6 +49,7 @@ if($action eq "")
 }
 
 print "action = $action\n" if($DEBUG);
+
 
 if(($action =~ /^--restore_production/))
 {
@@ -100,7 +101,12 @@ if(($action =~ /^--restore_demo/))
 my	%config				= do 'archive.config.pl';
 my	%folders_to_backup	= do 'archive.folders_to_backup.pl';
 my	%persistent_folders	= do 'archive.persistent_folders.pl';
-my	$domainSuffix = $config{project_domain};
+my	$domainSuffix		= $config{project_domain};
+
+if(CheckDBConnectivity() == 0)
+{
+	die "ERROR: DB connectivity can't be establish. To configure DB credentials use:\n mysql_config_editor set --login-path=".$config{login_path}." --host=____ --user=___ -p\n"
+}
 
 if($action =~ /^--restore/)
 {
@@ -169,17 +175,12 @@ if($DEBUG)
 	}
 }
 
-DefineDBCredentials();
-
-print "\tMYSQL db: $mysqldb\n";
-print "\tMYSQL login: $mysqllogin\n";
-# print "\tMYSQL pass: $mysqlpass\n";
-print "\tMYSQL host: $mysqlhost\n";
+# DefineDBCredentials();
 
 #
 # Build archive filename
 #
-$archive_filename  = $mysqldb."_".($action eq "--backup" ? "full_" : "struct_").$timestamp.".tar.gz";
+$archive_filename  = $domainSuffix."_".($action eq "--backup" ? "full_" : "struct_").$timestamp.".tar.gz";
 
 #
 # Start main action
@@ -197,8 +198,8 @@ if($action =~ /^--backup/)
 	print "removing MaxMingDB...\t";
 	unlink (glob($config{binary_maxmind_dir}.'/*')) and print "[OK]\n" or print "[ERROR]\n";
 
-	print "removing old files (sql, *~, *.tar.gz, $mysqldb.tar.gz)\n";
-	unlink 'sql', 'sql_controltables', '$mysqldb.tar.gz';
+	print "removing old files (sql, *~, *.tar.gz, $domainSuffix.tar.gz)\n";
+	unlink 'sql', 'sql_controltables', '$domainSuffix.tar.gz';
 	unlink glob '*~';
 	unlink glob '*.tar.gz';
 
@@ -220,12 +221,12 @@ if($action =~ /^--backup/)
 	print "mysqldump ....\n";
 	if($action =~ /_structure/)
 	{
-		system("mysqldump --default-character-set=utf8mb4 --no-data -Q -u $mysqllogin -p$mysqlpass -h $mysqlhost $mysqldb > sql");
-		system("mysqldump --default-character-set=utf8mb4 --add-drop-table -Q -u $mysqllogin -p$mysqlpass -h $mysqlhost $mysqldb ".$config{tables_to_upgrade}." > sql_controltables");
+		system("mysqldump --login-path=".$config{login_path}." --default-character-set=utf8mb4 --no-data -Q $domainSuffix > sql");
+		system("mysqldump --login-path=".$config{login_path}." --default-character-set=utf8mb4 --add-drop-table -Q $domainSuffix ".$config{tables_to_upgrade}." > sql_controltables");
 	}
 	else
 	{
-		system("mysqldump --default-character-set=utf8mb4 -Q -u $mysqllogin -p$mysqlpass -h $mysqlhost $mysqldb > sql");
+		system("mysqldump --login-path=".$config{login_path}." --default-character-set=utf8mb4 -Q $domainSuffix > sql");
 	}
 
 	print "archiving ....\n";
@@ -233,8 +234,8 @@ if($action =~ /^--backup/)
 	if($system_err) { print "\n\narchiving\t[ERROR]\n"; }
 	else			{ print "archiving\t[OK]\n"; }
 
-	print "copying ".$domainSuffix." development environment ....\n";
-	$system_err = system("cp ".$archive_filename." /storage/".$config{backup_username}."/backup/".$domainSuffix."/");
+	print "copying ".$domainSuffix." environment ....\n";
+	$system_err = system("cp ".$archive_filename." /storage/".$config{backup_local_username}."/backup/".$domainSuffix."/");
 	if($system_err) { print "\n\copying\t[ERROR]\n"; }
 	else			{ print "copying\t[OK]\n"; }
 
@@ -242,15 +243,15 @@ if($action =~ /^--backup/)
 	{
 		# if(isMDev())
 		# {
-		# 	print "copying ".$domainSuffix." development environment ....\n";
+		# 	print "copying ".$domainSuffix." environment ....\n";
 
-		# 	system("cp ".$archive_filename." /storage/".$config{backup_username}."/backup/mdev.".$domainSuffix."/");
+		# 	system("cp ".$archive_filename." /storage/".$config{backup_local_username}."/backup/mdev.".$domainSuffix."/");
 		# }
 		# else
 		# {
-		# 	print "copying web development environment ....\n";
+		# 	print "copying ".$domainSuffix." environment ....\n";
 
-		# 	system("cp ".$archive_filename." /storage/".$config{backup_username}."/backup/dev.".$domainSuffix."/");
+		# 	system("cp ".$archive_filename." /storage/".$config{backup_local_username}."/backup/dev.".$domainSuffix."/");
 		# }
 
 	}
@@ -260,19 +261,19 @@ if($action =~ /^--backup/)
 		# {
 		# 	print "copying to backup location ....\n";
 
-		# 	system("cp ".$archive_filename." /storage/".$config{backup_username}."/backup/m.".$domainSuffix."/");
+		# 	system("cp ".$archive_filename." /storage/".$config{backup_local_username}."/backup/m.".$domainSuffix."/");
 		# }
 		# else
 		# {
 		# 	print "copying to backup location ....\n";
 
-		# 	system("cp ".$archive_filename." /storage/".$config{backup_username}."/backup/www.".$domainSuffix."/");
+		# 	system("cp ".$archive_filename." /storage/".$config{backup_local_username}."/backup/www.".$domainSuffix."/");
 
 		# }
 
 
 		print "rsync to remote server ....\n";
-		$system_err = system("rsync -rptgoDzhe ssh --exclude '*.tar.gz' ./ ".$config{backup_username}."\@".$config{backup_hostname}.":/storage/".$config{backup_username}."/backup/".$domainSuffix."/rsync/");
+		$system_err = system("rsync -rptgoDzhe ssh --exclude '*.tar.gz' ./ ".$config{backup_remote_username}."\@".$config{backup_remote_hostname}.":/storage/".$config{backup_remote_username}."/backup/".$domainSuffix."/rsync/");
 		if($system_err) { print "\n\nrsyncing\t[ERROR]\n"; }
 		else			{ print "rsyncing\t[OK]\n"; }
 
@@ -280,7 +281,7 @@ if($action =~ /^--backup/)
 		if($date[0] eq "Sat") # --- today is Friday least busy day, do full backup
 		{
 			print "full backup to remote server ....\n";
-			$system_err = system("scp ".$archive_filename." ".$config{backup_hostname}.":/storage/".$config{backup_username}."/backup/".$domainSuffix."/".$archive_filename."");
+			$system_err = system("scp ".$archive_filename." ".$config{backup_remote_hostname}.":/storage/".$config{backup_remote_username}."/backup/".$domainSuffix."/".$archive_filename."");
 			if($system_err) { print "\n\nscp to remote server\t[ERROR]\n"; }
 			else			{ print "scp to remote server\t[OK]\n"; }
 		}
@@ -291,16 +292,16 @@ if($action =~ /^--backup/)
 	unlink 'sql';
 	unlink 'sql_controltables';
 	Remove_Local_FoldersToBackup();
-	remove_dir_recursively("/home/".$config{backup_username}."/home/"); # Sublime create this folder, when "browse remote files"
+	remove_dir_recursively("/home/".$config{build_username}."/home/"); # Sublime create this folder, when "browse remote files"
 
 
 	if($action =~ /_structure/)
 	{
-		print "\n ---recover cli: \nsudo date && rm -rf ./tmp/recover/ && mkdir -p ./tmp/recover/ && cd tmp/recover/ && scp ".$config{backup_hostname}.":/storage/".$config{backup_username}."/backup/".$domainSuffix."/".$archive_filename." tmp/recover/ && tar -zxf ".$archive_filename." && time sudo ./archive.pl --restore_structure;\n\n";
+		print "\n ---recover cli: \nsudo date && rm -rf ./tmp/recover/ && mkdir -p ./tmp/recover/ && cd tmp/recover/ && scp ".$config{backup_remote_hostname}.":/storage/".$config{backup_remote_username}."/backup/".$domainSuffix."/".$archive_filename." tmp/recover/ && tar -zxf ".$archive_filename." && time sudo ./archive.pl --restore_structure;\n\n";
 	}
 	else
 	{
-		print "\n ---recover cli: \nsudo date && rm -rf ./tmp/recover/ && mkdir -p ./tmp/recover/ && cd ./tmp/recover/ && cp /storage/".$config{backup_username}."/backup/".$domainSuffix."/".$archive_filename." ./tmp/recover/ && tar -zxf ".$archive_filename." && time sudo ./archive.pl --restore;\n\n";
+		print "\n ---recover cli: \nsudo date && rm -rf ./tmp/recover/ && mkdir -p ./tmp/recover/ && cd ./tmp/recover/ && cp /storage/".$config{backup_remote_username}."/backup/".$domainSuffix."/".$archive_filename." ./tmp/recover/ && tar -zxf ".$archive_filename." && time sudo ./archive.pl --restore;\n\n";
 	}
 
 	print "cmake project on local server...\n";
@@ -410,7 +411,7 @@ if($action =~ /^--restore/)
 		# [IMPORTANT] supposed that sql file in current directory having only MySQL tables structure --no-data
 		#
 		print "adding MySQL production data to MySQL backup structure\n";
-		system("mysqldump --default-character-set=utf8mb4 --no-create-info --skip-add-drop-table -Q -u $mysqllogin -p$mysqlpass -h $mysqlhost $mysqldb >> sql");
+		system("mysqldump --login-path=".$config{login_path}." --default-character-set=utf8mb4 --no-create-info --skip-add-drop-table -Q $domainSuffix >> sql");
 	}
 
 	if(isDevServer())
@@ -449,10 +450,10 @@ if($action =~ /^--restore/)
 	Remove_Production_Folders();
 
 	print "restoring production DB from ./sql\n";
-	system("mysql -u $mysqllogin -p$mysqlpass -h $mysqlhost $mysqldb < sql");
+	system("mysql --login-path=".$config{login_path}." $domainSuffix < sql");
 	if($action =~ /_structure/)
 	{
-		system("mysql -u $mysqllogin -p$mysqlpass -h $mysqlhost $mysqldb < sql_controltables");
+		system("mysql --login-path=".$config{login_path}." $domainSuffix < sql_controltables");
 	}
 
 	print "restoring production folders\n";
@@ -464,7 +465,7 @@ if($action =~ /^--restore/)
 		# change ownership of html and cgi-bin folders
 		#
 		print "fix the owner and access rights ...\n";
-		system("chown -R ".$config{backup_username}.":".$config{backup_username}." ./*");
+		system("chown -R ".$config{build_username}.":".$config{build_username}." ./*");
 		FixOwnerAndAccessRights();
 	}
 	else
@@ -614,17 +615,17 @@ sub copy_data_dirs
     return;
 }
 
-sub CheckValidityLoadedVariables
-{
-	my $result;
+# sub CheckValidityLoadedVariables
+# {
+# 	my $result;
 
-	$result = 1;
-	$result = 0 unless(length $mysqldb);
-	$result = 0 unless(length $mysqllogin);
-	$result = 0 unless(length $mysqlhost);
+# 	$result = 1;
+# 	$result = 0 unless(length $mysqldb);
+# 	$result = 0 unless(length $mysqllogin);
+# 	$result = 0 unless(length $mysqlhost);
 
-	return $result;
-}
+# 	return $result;
+# }
 
 sub remove_data_dirs
 {
@@ -930,49 +931,63 @@ sub ChangeImagesToDevImages
 	return $result;
 }
 
-sub DefineDBCredentials
+# sub DefineDBCredentials
+# {
+# 	#
+# 	# Look for DB access credentials
+# 	#
+
+# 	if($action =~ /^--restore/)
+# 	{
+# 		print "find ".$config{localy_h_file_restore_location};
+# 		open(F, $config{localy_h_file_restore_location}) || die "\n(can't open ".$config{localy_h_file_restore_location}.")\n";
+# 	}
+# 	else
+# 	{
+# 		print "find ".$config{localy_h_file_backup_location};
+# 		open(F, $config{localy_h_file_backup_location}) || die "\n(can't open ".$config{localy_h_file_backup_location}.")\n";
+# 	}
+
+# 	print "....\n";
+
+# 	while (<F>)
+# 	{
+# 		$str = $_;
+# 		if($str =~ /#define\s+DB_NAME\s*\"(.*)\"/)
+# 		{
+# 			$mysqldb = $1;
+# 		}
+# 		if($str =~ /#define\s+DB_LOGIN\s*\"(.*)\"/)
+# 		{
+# 			$mysqllogin = $1;
+# 		}
+# 		if($str =~ /#define\s+DB_PASSWORD\s*\"(.*)\"/)
+# 		{
+# 			$mysqlpass = $1;
+# 		}
+# 		if($str =~ /#define\s+DB_HOST\s*\"(.*)\"/)
+# 		{
+# 			$mysqlhost = $1;
+# 		}
+# 	}
+# 	close(F);
+
+# 	CheckValidityLoadedVariables() || die "ERROR: following variables must be defined in ".$config{localy_h_file_backup_location}.": DB_NAME, DB_LOGIN, DB_PASSWORD, DB_HOST\n";
+# }
+
+sub CheckDBConnectivity
 {
-	#
-	# Look for DB access credentials
-	#
+	my	($result);
 
-	if($action =~ /^--restore/)
+	$result = 0;
+
+	if(system("mysql --login-path=".$config{login_path}." -e \"\"") == 0)
 	{
-		print "find ".$config{localy_h_file_restore_location};
-		open(F, $config{localy_h_file_restore_location}) || die "\n(can't open ".$config{localy_h_file_restore_location}.")\n";
-	}
-	else
-	{
-		print "find ".$config{localy_h_file_backup_location};
-		open(F, $config{localy_h_file_backup_location}) || die "\n(can't open ".$config{localy_h_file_backup_location}.")\n";
+		# --- good 2 go
+		$result = 1;
 	}
 
-	print "....\n";
-
-	while (<F>)
-	{
-		$str = $_;
-		if($str =~ /#define\s+DB_NAME\s*\"(.*)\"/)
-		{
-			$mysqldb = $1;
-			# $domainSuffix = $mysqldb;
-		}
-		if($str =~ /#define\s+DB_LOGIN\s*\"(.*)\"/)
-		{
-			$mysqllogin = $1;
-		}
-		if($str =~ /#define\s+DB_PASSWORD\s*\"(.*)\"/)
-		{
-			$mysqlpass = $1;
-		}
-		if($str =~ /#define\s+DB_HOST\s*\"(.*)\"/)
-		{
-			$mysqlhost = $1;
-		}
-	}
-	close(F);
-
-	CheckValidityLoadedVariables() || die "ERROR: reading variables any of following variable from ".$config{localy_h_file_backup_location}.": mysqldb, mysqllogin, mysqlhost\n";
+	return $result;
 }
 
 sub CleanBuildDirectory
@@ -1162,7 +1177,7 @@ sub	CreateRecoveryPoint
 		}
 
 		print "\tMySQL backup to $recovery_point_folder/sql\n";
-		system("mysqldump --default-character-set=utf8mb4 -Q -u $mysqllogin -p$mysqlpass -h $mysqlhost $mysqldb > $recovery_point_folder/sql");
+		system("mysqldump --login-path=".$config{login_path}." --default-character-set=utf8mb4 -Q $domainSuffix > $recovery_point_folder/sql");
 	}
 }
 
@@ -1172,7 +1187,7 @@ sub	FixOwnerAndAccessRights
 	{
 		if(isDirExists($folders_to_backup{$folder_id}))
 		{
-			system("chown -R www-data:www-data ".$folders_to_backup{$folder_id});
+			system("chown -R ".$config{http_username}.":".$config{http_username}." ".$folders_to_backup{$folder_id});
 			system("chmod -R g+rw ".$folders_to_backup{$folder_id});
 			system("chmod -R o-rw ".$folders_to_backup{$folder_id});
 		}
@@ -1182,8 +1197,12 @@ sub	FixOwnerAndAccessRights
 		}
 	}
 
-	system("chown -R ".$config{backup_username}.":".$config{backup_username}." ".$folders_to_backup{SRCDIR});
-	system("chown -R ".$config{backup_username}.":".$config{backup_username}." /usr/local/share/".$domainSuffix);
+	system("chown -R ".$config{build_username}.":".$config{build_username}." ".$folders_to_backup{SRCDIR});
+	system("chown -R ".$config{build_username}.":".$config{build_username}." ".$config{local_install_dir});
+
+	# --- if directory is empty then bash will drop an error due to inability to change ownership on empty file list
+	# --- redirect stderr to /dev/null applied as a workaround
+	system("chown -R ".$config{http_username}.":".$config{http_username}." ".$config{project_log_dir}."* 2>/dev/null");
 }
 
 sub usage

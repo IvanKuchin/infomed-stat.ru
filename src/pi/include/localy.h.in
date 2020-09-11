@@ -6,7 +6,7 @@
 #define	CURRENT_VERSION "${My_VERSION_MAJOR}.${My_VERSION_MINOR}"
 #define	ROOTDIR "${ROOTDIR}"
 #define	IMAGEROOTDIR "${IMAGEROOTDIR}"
-#define	LOGDIR "${LOGDIR}"
+#define	LOGDIR "${LOG_DIR}"
 #define	PDF_FONT_INSTALL_DIR "${PDF_FONT_INSTALL_DIR}"s
 #cmakedefine IMAGEMAGICK_DISABLE
 #cmakedefine MAXMIND_DISABLE
@@ -59,17 +59,18 @@
 #define SMARTWAY_VOUCHERS_DIRECTORY					string(IMAGEROOTDIR) + string("/html/smartway_vouchers/")
 #define	SMARTWAY_VOUCHERS_NUMBER_OF_FOLDERS			2048
 
+#define	CONFIG_FNAME								"${CONFIG_DIR}/config"
+
 #define	MMDB_fname									"${MAXMIND_INSTALL_DIR}/GeoLite2-City.mmdb"
 
 #define BROWSER_FILE_PREFIX							"/"	// for instance "\\server\folder" or "http://file.serever/com"
 
-#define	DB_NAME										"${MAIN_DOMAIN_NAME}"
-#define	DB_LOGIN									"${PROJECT_NAME}"
-#define	DB_PASSWORD									"${PROJECT_NAME}"
-#define	DB_HOST										"localhost"
-#define	DB_CHARSET									"utf8"s
+#define	DOMAIN_NAME									"${MAIN_DOMAIN_NAME}"s
 
-#define	DOMAIN_NAME									string(DB_NAME)
+#define	DB_FALLBACK_NAME							"${MAIN_DOMAIN_NAME}"s
+#define	DB_FALLBACK_LOGIN							"${PROJECT_NAME}"s
+#define	DB_FALLBACK_PASSWORD						"${PROJECT_NAME}"s
+#define	DB_FALLBACK_HOST							"localhost"s
 
 #define	LOCALE_RUSSIAN								"ru_RU.UTF-8"s
 #define	LOCALE_ENGLISH								"en_US.UTF-8"s
@@ -279,20 +280,6 @@
 #define	HPDF_TIMECARD_FONT_MULTIPLIER				1.2		// --- font_width calculated by HPDF_Font_TextWidth or HPDF_Page_TextWidth return incorrect width wich is lower than actual space taken by the string. To compensate it space utilization should be corrected with this multiplier.
 
 #define	TIMECARD_ENTRY_TITLE_SEPARATOR				" / "s
-
-#define	SMSC_LOGIN									"${PROJECT_NAME}"s
-#define	SMSC_PASSWORD								"${PROJECT_NAME}"s
-#define	SMSC_SENDER_NAME							GetDomain()					// --- check sender name in smsc.ru control panel
-#define	SMSC_EXPIRATION								120
-#define	SMSC_CHARSET								"utf-8"s
-
-/*
-#define	SMARTWAY_LOGIN								"${PROJECT_NAME}"s
-#define	SMARTWAY_PASSWORD							"${PROJECT_NAME}"s
-*/
-#define	SMARTWAY_LOGIN								"${PROJECT_NAME}"s
-#define	SMARTWAY_PASSWORD							"${PROJECT_NAME}"s
-#define	SMARTWAY_URL								"https://api.test.dev.smartway.today/v2"s
 
 #define	GIT_COMMIT_ID_FILE_NAME						"${GIT_INSTALL_DIR}/git_commit_id"s
 

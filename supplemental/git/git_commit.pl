@@ -14,7 +14,8 @@ $DEBUG = 1;
 if(isCurrentDirProjectRoot()) {} else { die "ERROR: run this script from project root directory\n"; }
 
 ParseParameters();
-AnonimizeFiles(@anonimazition);
+# AnonimizeFiles(@anonimazition); # not needed anymore
+AddAndCommit();
 SaveLatestGitCommitID();
 
 sub ParseParameters()
@@ -57,6 +58,23 @@ sub SaveLatestGitCommitID
 	system("git rev-parse HEAD > ./supplemental/git/git_commit_id");
 }
 
+
+
+sub AddAndCommit
+{
+	system("git add .");
+	if(defined $git_commit_message)
+	{
+		system("git commit -m \"$git_commit_message\"");
+	}
+	else
+	{
+		print("git commit message: ");
+		system("git commit --file -");
+	}
+	system("git push");
+}
+
 sub AnonimizeFiles
 {
 	my	@files = @_;
@@ -67,17 +85,7 @@ sub AnonimizeFiles
 		{
 			if(HideSensitiveInfoInFiles(@files))
 			{
-				system("git add .");
-				if(defined $git_commit_message)
-				{
-					system("git commit -m \"$git_commit_message\"");
-				}
-				else
-				{
-					print("git commit message: ");
-					system("git commit --file -");
-				}
-				system("git push origin development");
+				AddAndCommit();
 
 				if(RestoreFiles(@files)) {}
 				else

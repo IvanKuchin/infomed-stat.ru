@@ -184,109 +184,123 @@ string c_smsc::get_status(string id, string phone, int all)
 
 string c_smsc::_smsc_send_cmd(string cmd, string arg, string files) 
 {
-    CURL					*curl;
-    CURLcode				res;
-    // struct curl_slist *list = NULL;
-    struct curl_httppost*	cpost = NULL;
-    struct curl_httppost*	clast = NULL;
-    
-    auto					_arg = ""s, url = ""s;
-    char					post, i=0;
-    auto					result = ""s;
-
     MESSAGE_DEBUG("", "", "start");
 
-    struct MemoryStruct chunk;
-    chunk.memory = (char *)malloc(1); // will be grown as needed by the realloc above
-    chunk.memory[0] = 0;
-    chunk.size = 0; // no data at this point  
+    c_config            config;
+    auto                auth_map        = config.Read({"SMSC_LOGIN", "SMSC_PASSWORD"});
+    auto                is_auth_valid   = (auth_map["SMSC_LOGIN"].length() > 0);
+    auto                __SMSC_LOGIN    = (is_auth_valid ? auth_map["SMSC_LOGIN"] : "");
+    auto                __SMSC_PASSWORD = (is_auth_valid ? auth_map["SMSC_PASSWORD"] : "");
 
-    curl_global_init(CURL_GLOBAL_ALL);
-    curl = curl_easy_init();
-    if (curl) 
+    auto                result = ""s;
+
+    if(is_auth_valid)
     {
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *) &chunk);
-        _arg = "login=" + urlencode(__SMSC_LOGIN) + "&psw=" + urlencode(__SMSC_PASSWORD) + "&fmt=1&charset=" + SMSC_CHARSET + "&" + arg;
-    
-        post = __SMSC_POST || files.length() || (_arg.length() > 2000);
-        do {
-            url = "smsc.ru/sys/" + cmd + ".php";
-
-            if (i++)
-            	url = (__SMSC_HTTPS ? "https"s : "http"s) + "://www" + to_string(i) + "." + url;
-            else
-            	url = (__SMSC_HTTPS ? "https"s : "http"s) + "://" + url;
-
-            if (post) 
-            {
-            	MESSAGE_DEBUG("", "", "sending HTTP POST-request (NOT TESTED)");
-                // разбираем строку параметров
-
-            	auto current_pos = _arg.find_first_of("=&"); // --- init only for type deduction
-                current_pos = 0;
-                auto token_pos = _arg.find_first_of("=&", current_pos);
-
-                while (token_pos != string::npos) 
-                {
-                	if(_arg.find_first_of("=&", token_pos + 1) != string::npos)
-                	{
-                		auto 	dstr = _arg.substr(current_pos + 1, token_pos - current_pos);
-	                    auto 	istr = _arg.substr(token_pos + 1, _arg.find_first_of("=&", token_pos + 1) - token_pos);
-
-		            	MESSAGE_DEBUG("", "", dstr + "=" + istr);
-
-	                    curl_formadd(&cpost, &clast, CURLFORM_COPYNAME, dstr.c_str(), CURLFORM_COPYCONTENTS, urldecode(istr).c_str(), CURLFORM_END);
-
-                	}
-                	current_pos = token_pos + 1;
-                    token_pos = _arg.find_first_of("=&", current_pos);
-                }
-
-                if (files.length())
-                {
-                	MESSAGE_DEBUG("", "", "adding files to curl");
-
-                	// --- ATTENTON
-                	// --- no error check performed, add it in case using POST method
-                    curl_formadd(&cpost, &clast, CURLFORM_COPYNAME, "pictures", CURLFORM_FILE, files.c_str(), CURLFORM_END);
-                }
-
-                curl_easy_setopt(curl, CURLOPT_HTTPPOST, cpost);
-            }
-            else
-            {
-            	MESSAGE_DEBUG("", "", "sending HTTP GET-request")
-            	url = url + "?" + _arg;
-            }
+        CURL                    *curl;
+        CURLcode                res;
+        // struct curl_slist *list = NULL;
+        struct curl_httppost*    cpost = NULL;
+        struct curl_httppost*    clast = NULL;
         
+        auto                    _arg = ""s, url = ""s;
+        char                    post, i=0;
 
-			MESSAGE_DEBUG("", "", "URL to be requested by curl (" + url + ")");
+        struct MemoryStruct chunk;
+        chunk.memory = (char *)malloc(1); // will be grown as needed by the realloc above
+        chunk.memory[0] = 0;
+        chunk.size = 0; // no data at this point  
 
-            curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-            res = curl_easy_perform(curl);
-            if (res == CURLE_OK)
-            {
-				result = chunk.memory;
+        curl_global_init(CURL_GLOBAL_ALL);
+        curl = curl_easy_init();
+        if (curl) 
+        {
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *) &chunk);
+            _arg = "login=" + urlencode(__SMSC_LOGIN) + "&psw=" + urlencode(__SMSC_PASSWORD) + "&fmt=1&charset=" + SMSC_CHARSET + "&" + arg;
+        
+            post = __SMSC_POST || files.length() || (_arg.length() > 2000);
+            do {
+                url = "smsc.ru/sys/" + cmd + ".php";
 
-				MESSAGE_DEBUG("", "", to_string((long)chunk.size) + " bytes retrieved (result is " + result + ")");
+                if (i++)
+                    url = (__SMSC_HTTPS ? "https"s : "http"s) + "://www" + to_string(i) + "." + url;
+                else
+                    url = (__SMSC_HTTPS ? "https"s : "http"s) + "://" + url;
 
-				free(chunk.memory);
-            }
-            else
-            {
-				MESSAGE_DEBUG("", "", "curl_easy_perform() failed: (" + curl_easy_strerror(res) + ")");
-            }
+                if (post) 
+                {
+                    MESSAGE_DEBUG("", "", "sending HTTP POST-request (NOT TESTED)");
+                    // разбираем строку параметров
 
-        } while ((i < 5) && (res != CURLE_OK));
-        curl_easy_cleanup(curl);
+                    auto current_pos = _arg.find_first_of("=&"); // --- init only for type deduction
+                    current_pos = 0;
+                    auto token_pos = _arg.find_first_of("=&", current_pos);
+
+                    while (token_pos != string::npos) 
+                    {
+                        if(_arg.find_first_of("=&", token_pos + 1) != string::npos)
+                        {
+                            auto     dstr = _arg.substr(current_pos + 1, token_pos - current_pos);
+                            auto     istr = _arg.substr(token_pos + 1, _arg.find_first_of("=&", token_pos + 1) - token_pos);
+
+                            MESSAGE_DEBUG("", "", dstr + "=" + istr);
+
+                            curl_formadd(&cpost, &clast, CURLFORM_COPYNAME, dstr.c_str(), CURLFORM_COPYCONTENTS, urldecode(istr).c_str(), CURLFORM_END);
+
+                        }
+                        current_pos = token_pos + 1;
+                        token_pos = _arg.find_first_of("=&", current_pos);
+                    }
+
+                    if (files.length())
+                    {
+                        MESSAGE_DEBUG("", "", "adding files to curl");
+
+                        // --- ATTENTON
+                        // --- no error check performed, add it in case using POST method
+                        curl_formadd(&cpost, &clast, CURLFORM_COPYNAME, "pictures", CURLFORM_FILE, files.c_str(), CURLFORM_END);
+                    }
+
+                    curl_easy_setopt(curl, CURLOPT_HTTPPOST, cpost);
+                }
+                else
+                {
+                    MESSAGE_DEBUG("", "", "sending HTTP GET-request")
+                    url = url + "?" + _arg;
+                }
+            
+
+                MESSAGE_DEBUG("", "", "URL to be requested by curl (" + url + ")");
+
+                curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+                res = curl_easy_perform(curl);
+                if (res == CURLE_OK)
+                {
+                    result = chunk.memory;
+
+                    MESSAGE_DEBUG("", "", to_string((long)chunk.size) + " bytes retrieved (result is " + result + ")");
+
+                    free(chunk.memory);
+                }
+                else
+                {
+                    MESSAGE_DEBUG("", "", "curl_easy_perform() failed: (" + curl_easy_strerror(res) + ")");
+                }
+
+            } while ((i < 5) && (res != CURLE_OK));
+            curl_easy_cleanup(curl);
+        }
+        else
+        {
+            MESSAGE_ERROR("", "", "fail to initialize curl")
+        }
     }
     else
     {
-    	MESSAGE_ERROR("", "", "fail to initialize curl")
+        MESSAGE_ERROR("", "", gettext("service credentials not found"));
     }
 
-    MESSAGE_DEBUG("", "", "finish (result length is " + to_string(strlen(chunk.memory)) + ")");
+    MESSAGE_DEBUG("", "", "finish (result is " + result + ")");
 
     return(result);
 }

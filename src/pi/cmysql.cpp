@@ -1,7 +1,7 @@
 #include "cmysql.h"
 #include "cexception.h"
 
-int CMysqlSkel::InitDB(const char *dbName, const char *user = "root", const char *pass = "" )
+int CMysqlSkel::InitDB(const string &dbName, const string &user, const string &pass, const string &host)
 {
     MESSAGE_DEBUG("", "", "start (db/login: " + dbName + "/" + user + ")");
 
@@ -14,7 +14,7 @@ int CMysqlSkel::InitDB(const char *dbName, const char *user = "root", const char
 
 // --- that ma fix 
 
-    db = mysql_real_connect(db, DB_HOST, user, pass, dbName, 0, NULL, CLIENT_MULTI_STATEMENTS | CLIENT_MULTI_RESULTS);
+    db = mysql_real_connect(db, host.c_str(), user.c_str(), pass.c_str(), dbName.c_str(), 0, NULL, CLIENT_MULTI_STATEMENTS | CLIENT_MULTI_RESULTS);
 
     if( db == NULL )
     {
@@ -230,15 +230,9 @@ CMysql::CMysql()
     resultSet = NULL;
 }
 
-CMysql::CMysql(const char *dbName, const char *login, const char *pass)
+int CMysql::Connect(const string &dbName, const string &login, const string &pass, const string &host)
 {
-    resultSet = NULL;
-    InitDB(dbName, login, pass);
-}
-
-int CMysql::Connect(const char *dbName, const char *login, const char *pass)
-{
-    auto    result = InitDB(dbName, login, pass);
+    auto    result = InitDB(dbName, login, pass, host);
 
     if(result == 0)
     {
@@ -247,6 +241,24 @@ int CMysql::Connect(const char *dbName, const char *login, const char *pass)
     }
 
     return result;
+}
+
+int CMysql::Connect()
+{
+    c_config    config;
+    auto        credentials = config.Read({"DB_NAME"s, "DB_LOGIN"s, "DB_PASSWORD"s, "DB_HOST"s});
+    auto        valid_cred  = (credentials.size() ? true : false);
+    auto        db_name     = (valid_cred ? credentials["DB_NAME"]      : __DB_FALLBACK_NAME);
+    auto        db_login    = (valid_cred ? credentials["DB_LOGIN"]     : __DB_FALLBACK_LOGIN);
+    auto        db_pass     = (valid_cred ? credentials["DB_PASSWORD"]  : __DB_FALLBACK_PASSWORD);
+    auto        db_host     = (valid_cred ? credentials["DB_HOST"]      : __DB_FALLBACK_HOST);
+
+    if(!valid_cred)
+    {
+        MESSAGE_ERROR("", "", "no valid DB credentials found in the config file. Fallback credentials are used. This only acceptable for CI/CD workflow. Hardcoded credentials could be serious security flaw.");
+    }
+
+    return Connect(db_name, db_login, db_pass, db_host);
 }
 
 int CMysql::Query(const string &query)

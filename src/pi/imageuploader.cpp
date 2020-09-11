@@ -320,7 +320,7 @@ int main()
 			throw CException("Template file was missing");
 		}
 
-		if(db.Connect(DB_NAME, DB_LOGIN, DB_PASSWORD) < 0)
+		if(db.Connect() < 0)
 		{
 			CLog	log;
 
@@ -786,7 +786,7 @@ int main()
 												// --- create new DB-connection, due to parent will close the old one
 												CMysql  db1;		
 
-												if(db1.Connect(DB_NAME, DB_LOGIN, DB_PASSWORD) < 0)
+												if(db1.Connect() < 0)
 												{
 													CLog	log;
 

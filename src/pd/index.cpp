@@ -108,7 +108,7 @@ int main()
 			throw CException("Template file was missing");
 		}
 
-		if(db.Connect(DB_NAME, DB_LOGIN, DB_PASSWORD) < 0)
+		if(db.Connect() < 0)
 		{
 			MESSAGE_ERROR("", action, "can't connect to DB");
 			throw CExceptionHTML("MySql connection");
@@ -1932,7 +1932,7 @@ int main()
 				indexPage.Redirect("/" + GUEST_USER_DEFAULT_ACTION + "?rand=" + GetRandom(10));
 			}
 
-			if(db1.Connect(DB_NAME, DB_LOGIN, DB_PASSWORD) < 0)
+			if(db1.Connect() < 0)
 			{
 				CLog	log;
 				log.Write(ERROR, "Can not connect to mysql database");
@@ -2304,7 +2304,7 @@ int main()
 				indexPage.Redirect("/" + GUEST_USER_DEFAULT_ACTION + "?rand=" + GetRandom(10));
 			}
 
-			if(db1.Connect(DB_NAME, DB_LOGIN, DB_PASSWORD) < 0)
+			if(db1.Connect() < 0)
 			{
 				CLog	log;
 				log.Write(ERROR, "Can not connect to mysql database");

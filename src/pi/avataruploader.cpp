@@ -132,7 +132,7 @@ int main()
 			throw CException("Template file was missing");
 		}
 
-		if(db.Connect(DB_NAME, DB_LOGIN, DB_PASSWORD) < 0)
+		if(db.Connect() < 0)
 		{
 			CLog	log;
 
@@ -263,17 +263,10 @@ int main()
 					if(ImageSaveAsJpg(tmpFile2Check, tmpImageJPG))
 					{
 
-						{
-							CLog	log;
-							ostringstream   ost;
-
-							ost << string(__func__) + ": choosen filename for avatar [" << file2Check << "]";
-							log.Write(DEBUG, ost.str());
-						}
-
+						MESSAGE_DEBUG("", "", "choosen filename for avatar [" + file2Check + "]");
 
 						// --- remove previous logo
-						if(db.Query("select * from `users_avatars` where `userid`=\"" + user.GetID() + "\" and `isActive`=\"1\";"))
+						if(db.Query("SELECT * FROM `users_avatars` WHERE `userid`=\"" + user.GetID() + "\" AND `isActive`=\"1\";"))
 						{
 							auto	currLogo = string(IMAGE_AVATAR_DIRECTORY) + "/" + db.Get(0, "folder") + "/" + db.Get(0, "filename");
 							auto	id = db.Get(0, "id");
@@ -288,7 +281,7 @@ int main()
 						}
 						else
 						{
-							MESSAGE_DEBUG("", "", "no active avatar");
+							MESSAGE_ERROR("", "", gettext("no active avatar found"));
 						}
 
 						CopyFile(tmpImageJPG, file2Check);
@@ -308,29 +301,12 @@ int main()
 							// --- Update live feed
 							if(!db.InsertQuery("insert into `feed` (`title`, `userId`, `actionTypeId`, `actionId`, `eventTimestamp`) values(\"\",\"" + user.GetID() + "\", \"10\", \"" + to_string(avatarID) + "\", NOW())"))
 							{
-								{
-									ostringstream   ostTemp;
-									CLog			log;
-
-									ostTemp.str("");
-									ostTemp << string(__func__) + ": ERROR inserting into `feed` table (" << ost.str() << ")";
-									log.Write(ERROR, ostTemp.str());
-								}
+								MESSAGE_ERROR("", "", gettext("SQL syntax error"))
 							}
-
-							
 						}
 						else
 						{
-
-							{
-								ostringstream   ostTemp;
-								CLog			log;
-
-								ostTemp.str("");
-								ostTemp << string(__func__) + ": ERROR inserting into `user_avatars` table (" << ost.str() << ")";
-								log.Write(ERROR, ostTemp.str());
-							}
+							MESSAGE_ERROR("", "", gettext("SQL syntax error"))
 
 							if(filesCounter == 0) ostJSONResult << "[" << std::endl;
 							if(filesCounter  > 0) ostJSONResult << ",";

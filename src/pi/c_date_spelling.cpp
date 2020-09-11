@@ -51,7 +51,7 @@ auto C_Date_Spelling::Spell() -> string
 
 	result = to_string(date_struct.tm_mday) + " " + gettext(GetMonthDeclensionInEnglish(date_struct.tm_mon + 1).c_str()) + " " + to_string(1900 + date_struct.tm_year);
 
-	MESSAGE_DEBUG("", "", "end (result = " + result + ")");
+	MESSAGE_DEBUG("", "", "end (" + result + ")");
 
 	return result;
 }
