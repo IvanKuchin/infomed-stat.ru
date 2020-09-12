@@ -19,10 +19,6 @@ replace_dev_to_www_files => [
 
 	"ROOTDIR_CGI/admin/.htaccess",
 	"ROOTDIR_HTML/quality_assurance/.htaccess",
-
-	"ROOTDIR_HTML/js/pages/chat.js",
-	"ROOTDIR_HTML/quality_assurance/chat_checking.html",
-	"ROOTDIR_HTML/quality_assurance/chat_image_uploading_ddos.html",
 ],
 
 replace_devimages_to_images_files => [
