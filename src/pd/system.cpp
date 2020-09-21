@@ -391,13 +391,22 @@ int main()
 									// --- copy session from persisted user to his/her new session
 									if(db.Query("SELECT * FROM `sessions` WHERE `id`=\"" + sessidPersistence + "\";"))
 									{
-										string	persistedUserID = db.Get(0, "user_id");
-										string	persistedExpire = db.Get(0, "expire");
-										string	remove_flag = db.Get(0, "remove_flag");
-										string	remove_flag_timestamp = db.Get(0, "remove_flag_timestamp");
+										auto	persistedUserID = db.Get(0, "user_id");
+										auto	persistedExpire = db.Get(0, "expire");
+										auto	remove_flag = db.Get(0, "remove_flag");
+										auto	remove_flag_timestamp = db.Get(0, "remove_flag_timestamp");
 
 										if(remove_flag == "Y")
-											MESSAGE_ERROR("", action, "session(" + sessidPersistence + ") would be deleted at " + remove_flag_timestamp + " timestamp, but it is re-used. Potential root causes: (1) if device switches between (WiFi/cellular or LAN/Anyconnect) and changes IP(look for \"IP was changed\" in logs), then browser could re-send exact same request from new IP, in this case eventtimestamps must be few seconds apart, use bash date -d@" + remove_flag_timestamp + " to convert timestamp to local date. (2) on previous session end-user double-clicked favorites and send two HTTP-requests at the same time. 1-st request take normal call flow until redirect to the _DefaultActionPage_, 2-nd request has sent instead of _DefaultActionPage_. \"sessid\" won't be saved in LocalStorage due to _DefaultActionPage_ has not been viewed. Current session will be using \"sessid\" saved in LocalStorage from grand-previous session, instead of previous. To find previous request look for CheckSessionPersistence request at date -d@" + remove_flag_timestamp + " if instead _DefaultActionPage_ smth else triggered w/o HTTP_REFERRER, then this is the case");
+										{
+											time_t	rawtime = stol(remove_flag_timestamp);
+											MESSAGE_ERROR("", action, "session(" + sessidPersistence + ") would be deleted at " + ctime(&rawtime) + " timestamp, but it is re-used. "
+															"Potential root causes: "
+															"(1) device switches between (WiFi/cellular or LAN/Anyconnect) and changes IP(look for \"IP was changed\" in logs), then browser could re-send exactly same request from a new IP, in this case eventtimestamps must be few seconds apart (" + ctime(&rawtime) + "). "
+															"(2) end-user _double_clicked_ favorites, then browser sends two HTTP-requests at the same time. 1-st request took normal call-flow until redirect to the _DefaultActionPage_, 2-nd request has sent before _DefaultActionPage_ from (1). \"sessid\" won't be saved in LocalStorage due to _DefaultActionPage_ has not been viewed. Current session will be using \"sessid\" saved in LocalStorage from grand-previous session, instead of previous (timestamp difference should be less than 1 sec). To find previous request look for CheckSessionPersistence request at " + ctime(&rawtime) + " if instead _DefaultActionPage_ smth else triggered w/o HTTP_REFERRER, then this is the case. "
+															"(3) end-user autocompleted URL to &action=CheckSessionPersistence&rand=xxxx. In this case rand will be vary same as before. Search for rand=xxxx through the logs. Another sign of that is CheckSessionPersistence is the first URL during login. "
+															"(4) same as (3) but browser for some rason cached first page and didn't requested it, though html cache valid for only 1 sec."
+															);
+										}
 
 										if(sessidPersistence == sessidHTTP)
 										{
