@@ -16,19 +16,6 @@ CSession::CSession() : db(NULL), cookies(NULL)
 	MESSAGE_DEBUG("", "", "end");
 }
 
-string CSession::GetRandom(int len)
-{
-	string	result;
-	int	i;
-
-	for(i = 0; i < len; i++)
-	{
-		result += (char)('0' + (int)(rand()/(RAND_MAX + 1.0) * 10));
-	}
-
-	return result;
-}
-
 void CSession::InitMaxMind()
 {
 	MESSAGE_DEBUG("", "", "start");

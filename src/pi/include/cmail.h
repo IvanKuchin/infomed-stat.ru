@@ -38,7 +38,6 @@ class CMail
 		long long		getFileSize(string fname);
 		bool			isFileExist(string fname);
 
-		string			GetRandom(int len);
 		string			GetTimeStamp();
 		void			BuildUniqPostfix();
 

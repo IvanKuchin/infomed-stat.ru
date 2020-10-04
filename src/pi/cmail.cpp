@@ -414,20 +414,6 @@ string CMail::GetTimeStamp()
     return ost.str();
 }
 
-string CMail::GetRandom(int len)
-{
-	string	result;
-	int	i;
-
-	for(i = 0; i < len; i++)
-	{
-		result += (char)('0' + (int)(rand()/(RAND_MAX + 1.0) * 10));
-	}
-
-	return result;
-}
-
-
 void CMail::BuildUniqPostfix()
 {
 	string		uniqPostfix = "";

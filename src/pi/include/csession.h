@@ -38,7 +38,6 @@ class CSession
 		MMDB_lookup_result_s	MMDB_result;
 #endif
 
-		string		GetRandom(int len);
 		bool		Save();
 		string		DetectItem(string MMDB_itemName);
 		void		InitMaxMind();

@@ -22,7 +22,6 @@ class CActivator
 		string		time;
 		string		user;
 
-		string		GetRandom(int len);
 	public:
 					CActivator();
 
