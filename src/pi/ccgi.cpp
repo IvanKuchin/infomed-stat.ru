@@ -535,15 +535,7 @@ string CCgi::GlobalMessageReplace(string where, string src, string dst)
 // --- Session part
 string CCgi::SessID_Get_FromHTTP (void) 
 {
-/*
-	string sessid ;
-
-	sessid = "";
-	if (cookie.IsExist("sessid")) {
-		sessid = cookie.Get("sessid");
-	};
-*/
-	return cookie.Get("sessid");
+	return RemoveQuotas(cookie.Get("sessid"));
 }
 
 string CCgi::SessID_Create_HTTP_DB (int max_age)
