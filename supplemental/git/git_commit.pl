@@ -16,7 +16,7 @@ if(isCurrentDirProjectRoot()) {} else { die "ERROR: run this script from project
 ParseParameters();
 # AnonimizeFiles(@anonimazition); # not needed anymore
 AddAndCommit();
-SaveLatestGitCommitID();
+# SaveLatestGitCommitID();
 
 sub ParseParameters()
 {
