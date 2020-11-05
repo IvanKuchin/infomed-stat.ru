@@ -1,24 +1,4 @@
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/socket.h>
-#include <sys/time.h>
-#include <sys/stat.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <signal.h>
-#include <memory>
-
-#include <string>
-
 #include "cmail.h"
-#include "clog.h"
-#include "localy.h"
-#include "cmysql.h"
-#include "cvars.h"
-#include "cexception.h"
-#include "ctemplate.h"
 
 CMail::CMail() : smtpServer(SMTP_HOST), smtpPort(SMTP_PORT), smtpFlag(false)
 {
@@ -81,28 +61,25 @@ int CMail::WaitSocket(int s, int sec)
 	tv.tv_sec = RECEIVE_TIMEOUT;
 	tv.tv_usec = 0;
 
-	return(select(s + 1, &set, NULL, NULL, &tv));
+	return (select(s + 1, &set, NULL, NULL, &tv));
 }
 
 string CMail::SocketReceive(int s)
 {
-	int					block_size = 1024, offset = 0;
+	auto				block_size = 1024, offset = 0;
 	char				*buf;
 	string				result;
 
 	buf = (char *)malloc(sizeof(char) * block_size);
 	if (buf == NULL)
 	{
-		CLog	log;
-		log.Write(ERROR, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]: ERROR: error allocating buffer");
+		MESSAGE_ERROR("", "", "error allocating buffer");
 
 		return result;
 	}
 	for (offset = 0; WaitSocket(s, 3) == 1;)
 	{
-		int amt;
-
-		amt = recv(s, &buf[offset], block_size - 1,0);
+		auto	amt = recv(s, &buf[offset], block_size - 1,0);
 
 		if (amt == 0)
 		{
@@ -110,8 +87,7 @@ string CMail::SocketReceive(int s)
 		}
 		else if (amt == -1)
 		{
-			CLog	log;
-			log.Write(ERROR, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]: ERROR: error receiving from socket");
+			MESSAGE_ERROR("", "", "error receiving from socket");
 
 			free(buf);
 			return result;
@@ -121,8 +97,7 @@ string CMail::SocketReceive(int s)
 		buf = (char *)realloc(buf, offset+block_size);
 		if (buf == NULL)
 		{
-			CLog	log;
-			log.Write(ERROR, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]: ERROR: error reallocating buffer");
+			MESSAGE_ERROR("", "", "error reallocating buffer");
 
 			return result;
 		}
@@ -136,10 +111,9 @@ string CMail::SocketReceive(int s)
 
 void CMail::SocketSend(int s, string data)
 {
-	unsigned int	result;
-	string		sendData;
+	auto			sendData = ""s;
 
-	for(result = 0; result < data.length();)
+	for(auto result = 0u; result < data.length();)
 	{
 		sendData = data.substr(result);
 		result += send(s, sendData.c_str(), sendData.length(), 0);
@@ -148,20 +122,16 @@ void CMail::SocketSend(int s, string data)
 
 bool CMail::SendSMTP()
 {
+	MESSAGE_DEBUG("", "", "start");
+
 	struct		sockaddr_in	sa;
 	int			sock;
 	string		data;
 	int			isHeader;
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + ": start");
-	}
-
 	if((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 	{
-		CLog	log;
-		log.Write(ERROR, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: creating socket");
+		MESSAGE_ERROR("", "", "creating socket");
 
 		return false;
 	}
@@ -174,9 +144,7 @@ bool CMail::SendSMTP()
 	alarm(CONNECT_TIMEOUT);
 	if(connect(sock, (struct sockaddr *)&sa, sizeof(struct sockaddr))< 0)
 	{
-
-		CLog	log;
-		log.Write(ERROR, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: socket connect");
+		MESSAGE_ERROR("", "", "socket connect");
 
 		close(sock);
 		return false;
@@ -312,129 +280,42 @@ int CMail::Input (int fd)
 	return 1;
 }
 
-bool CMail::isFileExist(string fname)
-{
-	struct stat		sb;
-	bool			result = true;
-
-	{
-		CLog	log;
-		log.Write(DEBUG, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + ": start");
-	}
-
-	if(stat(fname.c_str(), &sb) == -1)
-	{
-		result = false;
-	}
-
-
-	{
-		CLog	log;
-		log.Write(DEBUG, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + ": end. file is ", (!result ? "not" : ""), "exist");
-	}
-
-	return result;
-
-}
-
-long long CMail::getFileSize(string fname)
-{
-	struct stat		sb;
-	long long		fileSize = 0;
-
-	{
-		CLog	log;
-		log.Write(DEBUG, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
-
-	if(stat(fname.c_str(), &sb) == -1)
-	{
-		fileSize = 0;
-	}
-	else
-	{
-		fileSize = sb.st_size;		
-	}
-
-	{
-		CLog	log;
-		log.Write(DEBUG, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]: end (" + fname + " size is " + to_string(fileSize) + " bytes)");
-	}
-
-	return fileSize;
-
-}
-
 string CMail::GetTimeStamp()
 {
+	MESSAGE_DEBUG("", "", "start");
+
 	time_t      	now_t;
     struct tm   	*local_tm;
     ostringstream	ost;
-
-    {
-		CLog	log;
-		ostringstream	ost;
-
-		ost.str("");
-		ost << "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]: start";
-		log.Write(DEBUG, ost.str());
-    }
-
 
     now_t = time(NULL);
     local_tm = localtime(&now_t);
     if(local_tm == NULL) 
     {
-		CLog	log;
-		ostringstream	ost;
-
-		ost.str("");
-		ost << "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]:: ERROR in running localtime(&t)";
-		log.Write(ERROR, ost.str());
+		MESSAGE_ERROR("", "", "fail from localtime(&t)");
     }
 
     ost.str("");
     ost << (local_tm->tm_year + 1900) << setw(2) << setfill('0') << (local_tm->tm_mon + 1) << setw(2) << (local_tm->tm_mday) << setw(2) << (local_tm->tm_hour) << setw(2) << (local_tm->tm_min) << setw(2) << (local_tm->tm_sec);
 
-    {
-		CLog	log;
-		
-		log.Write(DEBUG, "CMail::GetTimeStamp(): timestamp = ", ost.str());
-    }
-
-    {
-		CLog	log;
-		ostringstream	ost;
-
-		ost.str("");
-		ost << "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]: end";
-		log.Write(DEBUG, ost.str());
-    }
+	MESSAGE_DEBUG("", "", "finish (timestamp = " + ost.str() + ")");
 
     return ost.str();
 }
 
 void CMail::BuildUniqPostfix()
 {
-	string		uniqPostfix = "";
-	string		uniqFname;
+	MESSAGE_DEBUG("", "", "start");
+
+	auto		uniqPostfix = ""s;
+	auto		uniqFname = ""s;
 	bool		isStderrUniq, isStdoutUniq, isStdinUniq;
-
-    {
-		CLog	log;
-		ostringstream	ost;
-
-		ost.str("");
-		ost << "CMail::BuildUniqPostfix(): end";
-		log.Write(DEBUG, ost.str());
-    }
-
 
 	do
 	{
-		string 			fnameStdin = MAIL_FILE_NAME;
-		string 			fnameStderr = MAIL_STDERR;
-		string 			fnameStdout = MAIL_STDOUT;
+		auto 			fnameStdin = MAIL_FILE_NAME;
+		auto 			fnameStderr = MAIL_STDERR;
+		auto 			fnameStdout = MAIL_STDOUT;
 		struct stat		sb;
 
 
@@ -454,56 +335,8 @@ void CMail::BuildUniqPostfix()
 	SetStderrFname(MAIL_STDERR + GetUniqPostfix());
 	SetStdinFname(MAIL_FILE_NAME + GetUniqPostfix());
 
-    {
-		CLog	log;
-		ostringstream	ost;
-
-		ost.str("");
-		ost << "CMail::BuildUniqPostfix(): end [" << GetUniqPostfix() << "]";
-		log.Write(DEBUG, ost.str());
-    }
+	MESSAGE_DEBUG("", "", "finish (" + GetUniqPostfix() + ")");
 }
-
-// TODO: remove on July 1
-/*
-void CMail::RedirStdoutToFile()
-{
-	string		fname = GetStdoutFname();
-	FILE		*fRes;
-
-	fRes = freopen(fname.c_str(), "w", stdout);
-	if(!fRes)
-	{
-	    {
-			CLog	log;
-			ostringstream	ost;
-
-			ost.str("");
-			ost << "CMail::RedirStdoutToFile: ERROR: redirect stdout to " << fname << "";
-			log.Write(ERROR, ost.str());
-	    }
-	}
-}
-
-void CMail::RedirStderrToFile()
-{
-	string		fname = GetStderrFname();
-	FILE		*fRes;
-
-	fRes = freopen(fname.c_str(), "w", stderr);
-	if(!fRes)
-	{
-	    {
-			CLog	log;
-			ostringstream	ost;
-
-			ost.str("");
-			ost << "CMail::RedirStderrToFile: ERROR: redirect stderr to " << fname << "";
-			log.Write(ERROR, ost.str());
-	    }
-	}
-}
-*/
 
 int CMail::SendMailExec(const char *progr, char **av, int inp)
 {
@@ -596,44 +429,33 @@ int CMail::MakeMailFile(string text)
 {
 	MESSAGE_DEBUG("", "", "start");
 
-	int	fd, result;
-	string	fname = GetStdinFname();
+	auto	fname = GetStdinFname();
+	auto	fd = open(fname.c_str(), O_WRONLY | O_CREAT, 0666);
+	auto	result = 0;
 
-	fd = open(fname.c_str(), O_WRONLY | O_CREAT, 0666);
 	if(fd < 0)
 	{
-		{
-			CLog	log;
-			log.Write(ERROR, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]: ERROR: can't create mail file");
-		}
+		MESSAGE_ERROR("", "", "can't create mail file");
 		throw CException("mail error");
 	}
 	result = write(fd, text.c_str(), strlen(text.c_str()));
 	if(result < 0)
 	{
-		{
-			CLog	log;
-			log.Write(ERROR, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]: ERROR: can't write to mail file: ", strerror(errno));
-		}
+		MESSAGE_ERROR("", "", "can't write to mail file: " + strerror(errno));
 		throw CException("mail error");
 	}
 	result = fsync(fd);
 	if(result < 0)
 	{
-		{
-			CLog	log;
-			log.Write(ERROR, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]: ERROR: can't sync data: ", strerror(errno));
-		}
+		MESSAGE_ERROR("", "", "can't sync data: " + strerror(errno));
 		throw CException("mail error");
 	}
 	close(fd);
+
 	fd = open(fname.c_str(), O_RDONLY);
 	if(fd < 0)
 	{
-		{
-			CLog	log;
-			log.Write(ERROR, "CMail::" + string(__func__) + "[" + to_string(__LINE__) + "]: ERROR: can't open mail file for read");
-		}
+		MESSAGE_ERROR("", "", "can't open mail file for read");
 		throw CException("mail error");
 	}
 
@@ -701,18 +523,16 @@ bool CMail::Send()
 
 string CMailLocal::GetUserLng()
 {
-	ostringstream	ost;
-
 	MESSAGE_DEBUG("", "", "start");
 
-	ost.str("");
+	auto	sql_query = ""s;
 
 	if(GetUserLogin().empty() && GetUserID().empty())
 		throw CExceptionHTML("recipient before template");
 
-	if(!GetUserLogin().empty()) ost << "select lng from users where login=\"" << GetUserLogin() << "\"";
-	if(!GetUserID().empty()) ost << "select lng from usere where id=\"" << GetUserID() << "\"";
-	if(db->Query(ost.str()) == 0) throw CExceptionHTML("no user");
+	if(!GetUserLogin().empty()) sql_query = "SELECT `lng` FROM `users` WHERE `login`=\"" + GetUserLogin() + "\";";
+	if(!GetUserID().empty()) 	sql_query = "SELECT `lng` FROM `usere` WHERE `id`=\"" + GetUserID() + "\";";
+	if(db->Query(sql_query) == 0) throw CExceptionHTML("no user");
 
 	MESSAGE_DEBUG("", "", "finish");
 
@@ -743,18 +563,11 @@ string CMailLocal::SetTemplateFile(string fileName)
 
 void CMailLocal::Send(string login, string templID, CVars *v, CMysql *db)
 {
-	string			email;
-
 	MESSAGE_DEBUG("", "", "start (" + login + ", " + templID + ")");
 
-	if(db->Query("select `email` from `users` where `login`=\"" + login + "\";") == 0)
-	{
-		MESSAGE_ERROR("", "", "select email from table return empty result");
+	auto	email = GetValueFromDB("SELECT `email` FROM `users` WHERE `login`=\"" + login + "\";", db);
 
-		throw CExceptionHTML("user mail failed");
-	}
-
-	if((email = db->Get(0, "email")).empty())
+	if(email.empty())
 	{
 		MESSAGE_ERROR("", "", "mail length is zero");
 

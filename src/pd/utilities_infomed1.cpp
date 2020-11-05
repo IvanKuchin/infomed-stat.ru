@@ -1019,6 +1019,135 @@ string GetNewsFeedInJSONFormat(string whereStatement, int currPage, int newsOnSi
 		return ostResult.str();
 }
 
+string GetChatMessagesInJSONFormat(string dbQuery, CMysql *db)
+{
+	ostringstream	result, ost;
+	int				affected;
+
+	{
+		MESSAGE_DEBUG("", "", "start");
+	}
+	result.str("");
+
+	affected = db->Query(dbQuery);
+	if(affected)
+	{
+		for(int i = 0; i < affected; i++)
+		{
+			result << (i ? "," : "") << "{\
+				\"id\": \""						<< db->Get(i, "id") << "\", \
+				\"message\": \"" 				<< ReplaceDoubleQuoteToQuote(db->Get(i, "message")) << "\", \
+				\"fromType\": \"" 				<< db->Get(i, "fromType") << "\",\
+				\"fromID\": \""					<< db->Get(i, "fromID") << "\",\
+				\"toType\": \""			 		<< db->Get(i, "toType") << "\",\
+				\"toID\": \""	 				<< db->Get(i, "toID") << "\",\
+				\"messageStatus\": \""		  << db->Get(i, "messageStatus") << "\",\
+				\"messageType\": \""			<< db->Get(i, "messageType") << "\",\
+				\"eventTimestampDelta\": \""	<< GetHumanReadableTimeDifferenceFromNow(db->Get(i, "eventTimestamp")) << "\",\
+				\"secondsSinceY2k\": \""		<< db->Get(i, "secondsSinceY2k") << "\",\
+				\"eventTimestamp\": \""			<< db->Get(i, "eventTimestamp") << "\"\
+			}";
+		}
+	}
+
+	{
+		CLog	log;
+		log.Write(DEBUG, __func__ + string("[") + to_string(__LINE__) + string("]: end"));
+	}
+
+	return  result.str();
+}
+
+string GetUnreadChatMessagesInJSONFormat(CUser *user, CMysql *db)
+{
+	ostringstream	result, ost;
+	int				affected;
+
+	{
+		MESSAGE_DEBUG("", "", "start");
+	}
+
+	result.str("");
+
+	ost.str("");
+	ost << "select * from `chat_messages` where `toID`='" << user->GetID() << "' and (`messageStatus`='unread' or `messageStatus`='delivered' or `messageStatus`='sent');";
+	affected = db->Query(ost.str());
+	if(affected)
+	{
+		for(int i = 0; i < affected; i++)
+		{
+			result << (i ? "," : "") << "{\
+				\"id\": \""					<< db->Get(i, "id") << "\", \
+				\"message\": \"" 			<< ReplaceDoubleQuoteToQuote(db->Get(i, "message")) << "\", \
+				\"fromType\": \"" 			<< db->Get(i, "fromType") << "\",\
+				\"fromID\": \""				<< db->Get(i, "fromID") << "\",\
+				\"toType\": \""			 	<< db->Get(i, "toType") << "\",\
+				\"toID\": \""	 			<< db->Get(i, "toID") << "\",\
+				\"messageType\": \""		<< db->Get(i, "messageType") << "\",\
+				\"messageStatus\": \""		<< db->Get(i, "messageStatus") << "\",\
+				\"eventTimestamp\": \""		<< db->Get(i, "eventTimestamp") << "\"\
+			}";
+		}
+	}
+
+	{
+		MESSAGE_DEBUG("", "", "finish");
+	}
+
+	return	result.str();
+}
+
+
+// --- Function returns list of images belongs to imageSet
+// --- input: imageSetID, db
+// --- output: list of image objects
+string GetMessageImageList(string imageSetID, CMysql *db)
+{
+	ostringstream	ost;
+	string		  result = "";
+
+	{
+		MESSAGE_DEBUG("", "", "start");
+	}
+
+	if(imageSetID != "0")
+	{
+		int				affected;
+
+		ost.str("");
+		ost << "select * from `feed_images` where `setID`='" << imageSetID << "';";
+		affected = db->Query(ost.str());
+		if(affected > 0)
+		{
+			ost.str("");
+			for(int i = 0; i < affected; i++)
+			{
+				if(i > 0) ost << "," << std::endl;
+				ost << "{";
+				ost << "\"id\":\"" << db->Get(i, "id") << "\",";
+				ost << "\"folder\":\"" << db->Get(i, "folder") << "\",";
+				ost << "\"filename\":\"" << db->Get(i, "filename") << "\",";
+				ost << "\"mediaType\":\"" << db->Get(i, "mediaType") << "\",";
+				ost << "\"isActive\":\"" << db->Get(i, "isActive") << "\"";
+				ost << "}";
+			}
+
+			result = ost.str();
+		}
+	}
+
+	{
+		CLog			log;
+		ostringstream	ost;
+
+		ost.str();
+		ost <<  "GetMessageImageList: end. returning string length " << result.length();
+		log.Write(DEBUG, ost.str());
+	}
+
+	return result;
+}
+
 // --- Returns company list in JSON format grabbed from DB
 // --- Input:   dbQuery 		- SQL format returns users
 //			  db	  			- DB connection

@@ -504,3 +504,361 @@ string GetBookRatingUsersList(string bookID, CUser *user, CMysql *db)
 	return result;
 }
 
+string GetCompanyPositionIDByTitle(string positionTitle, CMysql *db)
+{
+	ostringstream   ost;
+	string		  	result = "";
+	string			positionID = "";
+
+	MESSAGE_DEBUG("", "", "start");
+
+	if(positionTitle.length())
+	{
+		if(db->Query("SELECT `id` FROM `company_position` WHERE `title`=\"" + positionTitle + "\";"))
+		{
+			positionID = db->Get(0, "id");
+		}
+		else
+		{
+			long int 	tmp;
+
+			MESSAGE_DEBUG("", "", "company position not found. Creating new one.");
+
+			tmp = db->InsertQuery("INSERT INTO `company_position` SET `area`=\"\", `title`=\"" + positionTitle + "\";");
+			if(tmp)
+				positionID = to_string(tmp);
+			else
+			{
+				MESSAGE_ERROR("", "", "fail to insert to company_position table");
+			}
+		}
+	}
+	else
+	{
+		MESSAGE_DEBUG("", "", "positionTitle is empty");
+	}
+
+	result = positionID;
+
+	MESSAGE_DEBUG("", "", "finish (returning string length " + to_string(result.length()) + ")");
+
+	return result;
+}
+
+string GetLanguageIDByTitle(string languageTitle, CMysql *db)
+{
+	ostringstream   ost;
+	string		  	result = "";
+	string			languageID = "0";
+
+	MESSAGE_DEBUG("", "", "start");
+
+	if(languageTitle.length())
+	{
+		if(db->Query("SELECT `id` FROM `language` WHERE `title`=\"" + languageTitle + "\";"))
+		{
+			languageID = db->Get(0, "id");
+		}
+		else
+		{
+			long int 	tmp;
+
+			MESSAGE_DEBUG("", "", "languageTitle [" + languageTitle + "] not found. Creating new one.");
+
+			tmp = db->InsertQuery("INSERT INTO `language` SET `title`=\"" + languageTitle + "\";");
+			if(tmp)
+				languageID = to_string(tmp);
+			else
+			{
+				CLog			log;
+				log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: insert into language");
+			}
+		}
+	}
+	else
+	{
+		MESSAGE_DEBUG("", "", "languageTitle is empty");
+	}
+
+	result = languageID;
+
+	MESSAGE_DEBUG("", "", "finish (returning string length " + to_string(result.length()) + ")");
+
+
+	return result;
+}
+
+string GetSkillIDByTitle(string skillTitle, CMysql *db)
+{
+	ostringstream   ost;
+	string		  	result = "";
+	string			languageID = "0";
+
+	MESSAGE_DEBUG("", "", "start");
+
+	if(skillTitle.length())
+	{
+		if(db->Query("SELECT `id` FROM `skill` WHERE `title`=\"" + skillTitle + "\";"))
+		{
+			languageID = db->Get(0, "id");
+		}
+		else
+		{
+			long int 	tmp;
+
+			MESSAGE_DEBUG("", "", "skillTitle [" + skillTitle + "] not found. Creating new one.");
+
+			tmp = db->InsertQuery("INSERT INTO `skill` SET `title`=\"" + skillTitle + "\";");
+			if(tmp)
+				languageID = to_string(tmp);
+			else
+			{
+				CLog			log;
+				log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: insert into skill");
+			}
+		}
+	}
+	else
+	{
+		MESSAGE_DEBUG("", "", "skillTitle is empty");
+	}
+
+	result = languageID;
+
+	MESSAGE_DEBUG("", "", "finish (returning string length " + to_string(result.length()) + ")");
+
+	return result;
+}
+
+// --- Function returns array of book rating
+// --- input: bookID, db
+// --- output: book rating array
+string GetBookRatingList(string bookID, CMysql *db)
+{
+	int			 affected;
+	string		  result = "";
+
+	MESSAGE_DEBUG("", "", "start");
+
+	affected = db->Query("select * from `users_books` where `bookID`=\"" + bookID + "\";");
+	if(affected > 0)
+	{
+		for(int i = 0; i < affected; ++i)
+		{
+			if(i) result += ",";
+			result += db->Get(i, "rating");
+		}
+	}
+
+	MESSAGE_DEBUG("", "", "finish (returning string length " + to_string(result.length()) + ")");
+
+	return result;
+}
+
+// --- Function returns array of course rating
+// --- input: courseID, db
+// --- output: course rating array
+string GetCourseRatingList(string courseID, CMysql *db)
+{
+	int				affected;
+	string			result = "";
+
+	MESSAGE_DEBUG("", "", "start");
+
+	affected = db->Query("select * from `users_courses` where `track_id`=\"" + courseID + "\";");
+	if(affected > 0)
+	{
+		for(int i = 0; i < affected; ++i)
+		{
+			if(i) result += ",";
+			result += db->Get(i, "rating");
+		}
+	}
+
+	MESSAGE_DEBUG("", "", "finish (returning string length " + to_string(result.length()) + ")");
+
+	return result;
+}
+
+string GetMessageCommentsCount(string messageID, CMysql *db)
+{
+	ostringstream   ost;
+	int			 affected;
+	string		  result = "0";
+
+	MESSAGE_DEBUG("", "", "start");
+
+	ost.str("");
+	ost << "select count(*) as `counter` from `feed_message_comment` where `type`=\"message\" and `messageID`='" << messageID << "';";
+	affected = db->Query(ost.str());
+	if(affected > 0)
+	{
+		result = db->Get(0, "counter");
+	}
+
+	MESSAGE_DEBUG("", "", "finish");
+
+
+	return result;
+}
+
+string GetCompanyCommentsCount(string messageID, CMysql *db)
+{
+	ostringstream   ost;
+	int			 affected;
+	string		  result = "0";
+
+	MESSAGE_DEBUG("", "", "start");
+
+	ost.str("");
+	ost << "select count(*) as `counter` from `feed_message_comment` where `type`=\"company\" and `messageID`='" << messageID << "';";
+	affected = db->Query(ost.str());
+	if(affected > 0)
+	{
+		result = db->Get(0, "counter");
+	}
+
+	MESSAGE_DEBUG("", "", "finish");
+
+
+	return result;
+}
+
+string GetLanguageCommentsCount(string messageID, CMysql *db)
+{
+	ostringstream   ost;
+	int			 affected;
+	string		  result = "0";
+
+	MESSAGE_DEBUG("", "", "start");
+
+	ost.str("");
+	ost << "select count(*) as `counter` from `feed_message_comment` where `type`=\"language\" and `messageID`='" << messageID << "';";
+	affected = db->Query(ost.str());
+	if(affected > 0)
+	{
+		result = db->Get(0, "counter");
+	}
+
+	MESSAGE_DEBUG("", "", "finish");
+
+
+	return result;
+}
+
+string GetBookCommentsCount(string messageID, CMysql *db)
+{
+	ostringstream   ost;
+	int			 affected;
+	string		  result = "0";
+
+	MESSAGE_DEBUG("", "", "start");
+
+	ost.str("");
+	ost << "select count(*) as `counter` from `feed_message_comment` where `type`=\"book\" and `messageID`='" << messageID << "';";
+	affected = db->Query(ost.str());
+	if(affected > 0)
+	{
+		result = db->Get(0, "counter");
+	}
+
+	MESSAGE_DEBUG("", "", "finish");
+
+
+	return result;
+}
+
+string GetCertificateCommentsCount(string messageID, CMysql *db)
+{
+	ostringstream   ost;
+	int			 affected;
+	string		  result = "0";
+
+	MESSAGE_DEBUG("", "", "start");
+
+	ost.str("");
+	ost << "select count(*) as `counter` from `feed_message_comment` where `type` in (\"certification\", \"course\") and `messageID`='" << messageID << "';";
+	affected = db->Query(ost.str());
+	if(affected > 0)
+	{
+		result = db->Get(0, "counter");
+	}
+
+	MESSAGE_DEBUG("", "", "finish");
+
+
+	return result;
+}
+
+string GetUniversityDegreeCommentsCount(string messageID, CMysql *db)
+{
+	ostringstream   ost;
+	int			 affected;
+	string		  result = "0";
+
+	MESSAGE_DEBUG("", "", "start");
+
+	ost.str("");
+	ost << "select count(*) as `counter` from `feed_message_comment` where `type`=\"university\" and `messageID`='" << messageID << "';";
+	affected = db->Query(ost.str());
+	if(affected > 0)
+	{
+		result = db->Get(0, "counter");
+	}
+
+	MESSAGE_DEBUG("", "", "finish");
+
+
+	return result;
+}
+
+string GetMessageSpam(string messageID, CMysql *db)
+{
+	ostringstream	ost;
+	int				affected;
+	string			result = "0";
+
+	MESSAGE_DEBUG("", "", "start");
+
+	ost.str("");
+	ost << "select count(*) as `counter` from `feed_message_params` where `parameter`='spam' and messageID='" << messageID << "';";
+	affected = db->Query(ost.str());
+
+
+	if(affected > 0)
+	{
+		result = db->Get(0, "counter");
+	}
+
+	MESSAGE_DEBUG("", "", "finish");
+
+
+	return result;
+}
+
+// --- Function returns true or false depends on userID "spamed" it or not
+// --- input: messageID, userID
+// --- output: was this message "spamed" by particular user or not
+string GetMessageSpamUser(string messageID, string userID, CMysql *db)
+{
+	ostringstream	ost;
+	int				affected;
+	string			result = "0";
+
+	MESSAGE_DEBUG("", "", "start");
+
+	ost.str("");
+	ost << "select count(*) as `counter` from `feed_message_params` where `parameter`='spam' and `messageID`='" << messageID << "' and `userID`='" << userID << "' ;";
+	affected = db->Query(ost.str());
+	if(affected > 0)
+	{
+		result = db->Get(0, "counter");
+	}
+
+
+	MESSAGE_DEBUG("", "", "finish");
+
+
+	return result;
+}
+

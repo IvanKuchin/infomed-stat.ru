@@ -33,13 +33,13 @@ auto GetLocale()
 {
 	auto	result = ""s;
 
-	MESSAGE_DEBUG("", "", "start");
+	// MESSAGE_DEBUG("", "", "start");
 
-	result = setlocale(LC_ALL, "");
+	result = setlocale(LC_ALL, NULL);
 
 	if(result.empty()) MESSAGE_ERROR("", "", "fail to define locale");
 
-	MESSAGE_DEBUG("", "", "finish(result length is " + to_string(result.length()) + ")");
+	// MESSAGE_DEBUG("", "", "finish(result length is " + to_string(result.length()) + ")");
 
 	return result;
 }
@@ -68,6 +68,19 @@ string	quoted(string src)
 	return '"' + src + '"';
 }
 
+vector<string>	quoted(const vector<string> &src)
+{
+	vector<string>	result;
+	result.reserve(src.size()); // --- reduce probablity of memory reallocation
+
+	for(const string &item: src)
+	{
+		result.push_back(quoted(item));
+	}
+
+	return result;
+}
+
 auto toUpper(const string &src) -> string
 {
 	auto	result(""s);
@@ -86,7 +99,7 @@ auto toUpper(const string &src) -> string
 	}
 	else
 	{
-		MESSAGE_ERROR("", "", "fail to define locale. Impossible run through toLower")
+		MESSAGE_ERROR("", "", "fail to define locale. Impossible run toUpper")
 	}
 
 	MESSAGE_DEBUG("", "", "finish");
@@ -112,7 +125,7 @@ auto toLower(const string &src) -> string
 	}
 	else
 	{
-		MESSAGE_ERROR("", "", "fail to define locale. Impossible run through toLower")
+		MESSAGE_ERROR("", "", "fail to define locale. Impossible run toLower")
 	}
 
 	MESSAGE_DEBUG("", "", "finish");
@@ -122,18 +135,17 @@ auto toLower(const string &src) -> string
 
 string	GetPasswordNounsList(CMysql *db)
 {
-	string 	result = "";
-	int		affected;
-
 	MESSAGE_DEBUG("", "", "start");
 
-	affected = db->Query("SELECT COUNT(*) as `total` FROM `password_dictionary_nouns`;");
+	auto 	result = ""s;
+	auto	affected = db->Query("SELECT COUNT(*) as `total` FROM `password_dictionary_nouns`;");
+
 	if(affected)
 	{
-		int		total_number_of_words = stoi(db->Get(0, "total")) - 1;
+		auto		total_number_of_words = stoi(db->Get(0, "total")) - 1;
 
 		affected = db->Query("SELECT * FROM `password_dictionary_nouns` WHERE `id` in (round(rand()*" + to_string(total_number_of_words) + ") + 1, round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1)");
-		for(int i = 0; i < affected; ++i)
+		for(auto i = 0; i < affected; ++i)
 		{
 			if(result.length()) result += ",";
 			result += string("\"") + db->Get(i, "word") + "\"";
@@ -151,18 +163,17 @@ string	GetPasswordNounsList(CMysql *db)
 
 string	GetPasswordCharacteristicsList(CMysql *db)
 {
-	string 	result = "";
-	int		affected;
-
 	MESSAGE_DEBUG("", "", "start");
 
-	affected = db->Query("SELECT COUNT(*) as `total` FROM `password_dictionary_characteristics`;");
+	auto 	result = ""s;
+	auto	affected = db->Query("SELECT COUNT(*) as `total` FROM `password_dictionary_characteristics`;");
+
 	if(affected)
 	{
-		int		total_number_of_words = stoi(db->Get(0, "total"));
+		auto		total_number_of_words = stoi(db->Get(0, "total"));
 
 		affected = db->Query("SELECT * FROM `password_dictionary_characteristics` WHERE `id` in (round(rand()*" + to_string(total_number_of_words) + ") + 1, round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1)");
-		for(int i = 0; i < affected; ++i)
+		for(auto i = 0; i < affected; ++i)
 		{
 			if(result.length()) result += ",";
 			result += string("\"") + db->Get(i, "word") + "\"";
@@ -180,18 +191,17 @@ string	GetPasswordCharacteristicsList(CMysql *db)
 
 string	GetPasswordAdjectivesList(CMysql *db)
 {
-	string 	result = "";
-	int		affected;
-
 	MESSAGE_DEBUG("", "", "start");
 
-	affected = db->Query("SELECT COUNT(*) as `total` FROM `password_dictionary_adjectives`;");
+	auto 	result = ""s;
+	auto	affected = db->Query("SELECT COUNT(*) as `total` FROM `password_dictionary_adjectives`;");
+
 	if(affected)
 	{
-		int		total_number_of_words = stoi(db->Get(0, "total"));
+		auto		total_number_of_words = stoi(db->Get(0, "total"));
 
 		affected = db->Query("SELECT * FROM `password_dictionary_adjectives` WHERE `id` in (round(rand()*" + to_string(total_number_of_words) + ") + 1, round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1,round(rand()*" + to_string(total_number_of_words) + ") + 1)");
-		for(int i = 0; i < affected; ++i)
+		for(auto i = 0; i < affected; ++i)
 		{
 			if(result.length()) result += ",";
 			result += string("\"") + db->Get(i, "word") + "\"";
@@ -209,10 +219,9 @@ string	GetPasswordAdjectivesList(CMysql *db)
 
 string GetRandom(int len)
 {
-	string	result;
-	int	i;
+	auto	result = ""s;
 
-	for(i = 0; i < len; i++)
+	for(auto i = 0; i < len; i++)
 	{
 		result += (char)('0' + (int)(rand()/(RAND_MAX + 1.0) * 10));
 	}
@@ -401,7 +410,7 @@ auto ReplaceCRtoHTML(string src) -> string
 
 string CleanUPText(const string messageBody, bool removeBR/* = true*/)
 {
-	string	  result = messageBody;
+	auto	  result = messageBody;
 
 	MESSAGE_DEBUG("", "", "start");
 
@@ -470,9 +479,10 @@ auto RemoveAllNonAlphabetSymbols(const string &src) -> string
 	return(wide_to_multibyte(RemoveAllNonAlphabetSymbols(multibyte_to_wide(src))));
 }
 
+
 string ConvertTextToHTML(const string &messageBody)
 {
-	string 		result = messageBody;
+	auto 		result = messageBody;
 
 	MESSAGE_DEBUG("", "", "start");
 
@@ -544,11 +554,9 @@ string CheckHTTPParam_Float(const string &srcText)
 
 string CheckHTTPParam_Date(string srcText)
 {
-	string	result = "";
+	auto	result = ""s;
 
-	{
-		MESSAGE_DEBUG("", "", "start param(" + srcText + ")");
-	}
+	MESSAGE_DEBUG("", "", "start param(" + srcText + ")");
 
 	if(srcText.length())
 	{
@@ -605,16 +613,14 @@ string CheckHTTPParam_Date(string srcText)
 		}
 	}
 
-	{
-		MESSAGE_DEBUG("", "", "finish (result length = " + to_string(result.length()) + ")");
-	}
+	MESSAGE_DEBUG("", "", "finish (result length = " + result + ")");
 
 	return	result;
 }
 
 string CheckHTTPParam_Email(const string &srcText)
 {
-	string		result = "";
+	auto		result = ""s;
 
     regex       positionRegex(".*([+-][[:digit:]]+\\.[[:digit:]]+)([+-][[:digit:]]+\\.[[:digit:]]+)([+-][[:digit:]]+\\.[[:digit:]]+).*");
     smatch      matchResult;
@@ -645,24 +651,6 @@ string CheckHTTPParam_Email(const string &srcText)
 	MESSAGE_DEBUG("", "", "finish ( result length = " + to_string(result.length()) + ")");
 
 	return	result;
-}
-
-string	GetDefaultActionFromUserType(CUser *user, CMysql *db)
-{
-	string	result = GUEST_USER_DEFAULT_ACTION;
-
-	MESSAGE_DEBUG("", "", "start");
-
-	if(user->GetType() == "guest") result = GUEST_USER_DEFAULT_ACTION;
-	else if(user->GetType() == "user") result = LOGGEDIN_DOCTOR_DEFAULT_ACTION;
-	else
-	{
-		MESSAGE_ERROR("", "", "unknown user type (" + user->GetType() + ")");
-	}
-
-	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
-
-	return result;
 }
 
 double GetSecondsSinceY2k()
@@ -696,7 +684,7 @@ string GetLocalFormattedTimestamp()
 	time_t	  now_t;
 	struct tm   *local_tm;
 	char		buffer[80];
-	string		result = "";
+	auto		result = ""s;
 
 	now_t = time(NULL);
 	local_tm = localtime(&now_t);
@@ -830,7 +818,7 @@ string GetMinutesDeclension(const int value)
 		{3, "минут"}
 	};
 
-	string				result;
+	auto				result = ""s;
 
 	if(value % 10 == 0) 						{ result = mapDeclension.at(3); };
 	if(value % 10 == 1) 						{ result = mapDeclension.at(1); };
@@ -848,7 +836,7 @@ string GetHoursDeclension(const int value)
 		{2, "часа"},
 		{3, "часов"}
 	};
-	string				result;
+	auto				result = ""s;
 
 	if(value % 10 == 0) 						{ result = mapDeclension.at(3); };
 	if(value % 10 == 1) 						{ result = mapDeclension.at(1); };
@@ -865,7 +853,7 @@ string GetDaysDeclension(const int value)
 		{2, "дня"},
 		{3, "дней"}
 	};
-	string				result;
+	auto				result = ""s;
 
 	if(value % 10 == 0) 						{ result = mapDeclension.at(3); };
 	if(value % 10 == 1) 						{ result = mapDeclension.at(1); };
@@ -882,7 +870,7 @@ string GetMonthsDeclension(const int value)
 		{2, "месяца"},
 		{3, "месяцев"}
 	};
-	string				result;
+	auto				result = ""s;
 
 	if(value % 10 == 0) 						{ result = mapDeclension.at(3); };
 	if(value % 10 == 1) 						{ result = mapDeclension.at(1); };
@@ -899,7 +887,7 @@ string GetYearsDeclension(const int value)
 		{2, "года"},
 		{3, "лет"}
 	};
-	string				result;
+	auto				result = ""s;
 
 	if(value % 10 == 0) 						{ result = mapDeclension.at(3); };
 	if(value % 10 == 1) 						{ result = mapDeclension.at(1); };
@@ -995,26 +983,22 @@ auto SymbolReplace_KeepDigitsOnly(const string &where) -> string
 bool CheckUserEmailExisting(string userNameToCheck, CMysql *db) {
 	CUser		user;
 
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	user.SetDB(db);
 	user.SetLogin(userNameToCheck);
 	user.SetEmail(userNameToCheck);
 
-	if(user.isLoginExist() or user.isEmailDuplicate()) {
-		{
-			CLog	log;
-			MESSAGE_DEBUG("", "", "login or email already registered");
-		}
+	if(user.isLoginExist() or user.isEmailDuplicate()) 
+	{
+		MESSAGE_DEBUG("", "", "login or email already registered");
+
 		return true;
 	}
-	else {
-		{
-			CLog	log;
-			MESSAGE_DEBUG("", "", "login or email not yet exists");
-		}
+	else 
+	{
+		MESSAGE_DEBUG("", "", "login or email not yet exists");
+
 		return false;
 	}
 }
@@ -1022,12 +1006,10 @@ bool CheckUserEmailExisting(string userNameToCheck, CMysql *db) {
 string UniqueUserIDInUserIDLine(string userIDLine) //-> decltype(static_cast<string>("123"))
 {
 	list<long int>	listUserID;
-	string			result {""};
+	auto			result = ""s;
 	std::size_t		prevPointer {0}, nextPointer;
 
-	{
-		MESSAGE_DEBUG("", "", "start (" + userIDLine + ")");
-	}
+	MESSAGE_DEBUG("", "", "start (" + userIDLine + ")");
 
 	do
 	{
@@ -1057,48 +1039,9 @@ string UniqueUserIDInUserIDLine(string userIDLine) //-> decltype(static_cast<str
 	return result;
 }
 
-string GetChatMessagesInJSONFormat(string dbQuery, CMysql *db)
+bool	isFilenameImage(const string &filename)
 {
-	ostringstream	result, ost;
-	int				affected;
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-	result.str("");
-
-	affected = db->Query(dbQuery);
-	if(affected)
-	{
-		for(int i = 0; i < affected; i++)
-		{
-			result << (i ? "," : "") << "{\
-				\"id\": \""						<< db->Get(i, "id") << "\", \
-				\"message\": \"" 				<< ReplaceDoubleQuoteToQuote(db->Get(i, "message")) << "\", \
-				\"fromType\": \"" 				<< db->Get(i, "fromType") << "\",\
-				\"fromID\": \""					<< db->Get(i, "fromID") << "\",\
-				\"toType\": \""			 		<< db->Get(i, "toType") << "\",\
-				\"toID\": \""	 				<< db->Get(i, "toID") << "\",\
-				\"messageStatus\": \""		  << db->Get(i, "messageStatus") << "\",\
-				\"messageType\": \""			<< db->Get(i, "messageType") << "\",\
-				\"eventTimestampDelta\": \""	<< GetHumanReadableTimeDifferenceFromNow(db->Get(i, "eventTimestamp")) << "\",\
-				\"secondsSinceY2k\": \""		<< db->Get(i, "secondsSinceY2k") << "\",\
-				\"eventTimestamp\": \""			<< db->Get(i, "eventTimestamp") << "\"\
-			}";
-		}
-	}
-
-	{
-		CLog	log;
-		log.Write(DEBUG, __func__ + string("[") + to_string(__LINE__) + string("]: end"));
-	}
-
-	return  result.str();
-}
-
-bool	isFilenameImage(string filename)
-{
-	bool	result = false;
+	auto	result = false;
 	regex   e1("[.](gif|jpg|jpeg|png)$", regex_constants::icase);
 	{
 		CLog	log;
@@ -1113,9 +1056,9 @@ bool	isFilenameImage(string filename)
 	return  result;
 }
 
-bool	isFilenameVideo(string filename)
+bool	isFilenameVideo(const string &filename)
 {
-	bool	result = false;
+	auto	result = false;
 	regex   e1("[.](mov|avi|mp4|webm)$", regex_constants::icase);
 	{
 		CLog	log;
@@ -1130,15 +1073,44 @@ bool	isFilenameVideo(string filename)
 	return  result;
 }
 
+string GetFileExtension(const string &filename)
+{
+	MESSAGE_DEBUG("", "", "start (" + filename + ")");
+
+	auto	result = ""s;
+	auto	dot_pos = filename.find(".");
+
+	if(dot_pos != string::npos) result = filename.substr(dot_pos + 1);
+
+	MESSAGE_DEBUG("", "", "finish (" + result + ")");
+
+	return result;
+}
+
+off_t getFileSize(const std::string& name) 
+{
+	off_t			result = -1;
+	struct stat		buffer;
+
+	if(stat(name.c_str(), &buffer) == -1)
+	{
+		MESSAGE_ERROR("", "", "fail to get file size (" + name + "), probably file doesn't exists");
+	}
+	else
+	{
+		result = buffer.st_size;
+	}
+
+	return result;
+}
+
 // --- extrasct all @[[:digit:]] patterns form srcMessage
 vector<string> GetUserTagsFromText(string srcMessage)
 {
 	vector<string>  result;
 	regex		   exp1("@([[:digit:]]+)");
 
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	regex_token_iterator<string::iterator>   rItr(srcMessage.begin(), srcMessage.end(), exp1, 1);
 	regex_token_iterator<string::iterator>   rItrEnd;
@@ -1156,617 +1128,11 @@ vector<string> GetUserTagsFromText(string srcMessage)
 	return result;
 }
 
-// input: ....
-//		  includeReaders will add readers counter
-string GetBookListInJSONFormat(string dbQuery, CMysql *db, bool includeReaders/* = false*/)
-{
-	struct BookClass {
-		string	id, title, authorID, authorName, isbn10, isbn13, photoCoverFolder, PhotoCoverFilename, readersUserID;
-	};
-
-	ostringstream				   ostResult;
-	int							 booksCount;
-	vector<BookClass>			   bookList;
-
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ostResult.str("");
-	booksCount = db->Query(dbQuery);
-	if(booksCount)
-	{
-		for(int i = 0; i < booksCount; i++)
-		{
-			BookClass   bookListItem;
-			bookListItem.id				 = db->Get(i, "id");
-			bookListItem.title			  = db->Get(i, "title");
-			bookListItem.authorID		   = db->Get(i, "authorID");
-			bookListItem.isbn10			 = db->Get(i, "isbn10");
-			bookListItem.isbn13			 = db->Get(i, "isbn13");
-			bookListItem.photoCoverFolder   = db->Get(i, "coverPhotoFolder");
-			bookListItem.PhotoCoverFilename = db->Get(i, "coverPhotoFilename");
-			bookListItem.readersUserID	  = "";
-
-			bookList.push_back(bookListItem);
-		}
-
-		for(int i = 0; i < booksCount; i++)
-		{
-				if(db->Query("select * from `book_author` where `id`=\"" + bookList.at(i).authorID + "\";"))
-					bookList.at(i).authorName = db->Get(0, "name");
-
-				if(includeReaders)
-				{
-					string temp = "";
-
-					for(int j = 0; j < db->Query("SELECT `userID` from `users_books` WHERE `bookID`=\"" + bookList.at(i).id + "\";"); ++j)
-					{
-						if(temp.length()) temp += ",";
-						temp += db->Get(j, "userID");
-					}
-
-					bookList.at(i).readersUserID = temp;
-				}
-
-				if(ostResult.str().length()) ostResult << ", ";
-
-				ostResult << "{"
-						  << "\"bookID\": \""				 << bookList.at(i).id << "\", "
-						  << "\"bookTitle\": \""			  << bookList.at(i).title << "\", "
-						  << "\"bookAuthorID\": \""		   << bookList.at(i).authorID << "\","
-						  << "\"bookAuthorName\": \""		 << bookList.at(i).authorName << "\","
-						  << "\"bookISBN10\": \""			 << bookList.at(i).isbn10 << "\","
-						  << "\"bookISBN13\": \""			 << bookList.at(i).isbn13 << "\","
-						  << "\"bookPhotoCoverFolder\": \""   << bookList.at(i).photoCoverFolder << "\","
-						  << "\"bookPhotoCoverFilename\": \"" << bookList.at(i).PhotoCoverFilename << "\","
-						  << "\"bookReadersUserID\": ["	   << bookList.at(i).readersUserID << "]"
-						  << "}";
-		} // --- for loop through user list
-	} // --- if sql-query on user selection success
-	else
-	{
-		MESSAGE_DEBUG("", "", "there are no books returned by the request [" + dbQuery + "]");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish (returning string length = " + to_string(ostResult.str().length()) + ")");
-	}
-
-	return ostResult.str();
-}
-
-// input: ....
-//		  includeReaders will add readers counter
-string GetComplainListInJSONFormat(string dbQuery, CMysql *db, bool includeReaders/* = false*/)
-{
-	struct ComplainClass {
-		string	  id;
-		string	  userID;
-		string	  entityID;
-		string	  type;
-		string	  subtype;
-		string	  complainComment;
-		string	  resolveComment;
-		string	  state;
-		string	  openEventTimestamp;
-		string	  closeEventTimestamp;
-	};
-
-	ostringstream				   ostResult;
-	int							 complainsCount;
-	vector<ComplainClass>		   complainList;
-
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ostResult.str("");
-	complainsCount = db->Query(dbQuery);
-	if(complainsCount)
-	{
-		for(int i = 0; i < complainsCount; i++)
-		{
-			ComplainClass   complainListItem;
-			complainListItem.id				 = db->Get(i, "id");
-			complainListItem.userID			 = db->Get(i, "userID");
-			complainListItem.entityID		   = db->Get(i, "entityID");
-			complainListItem.type			   = db->Get(i, "type");
-			complainListItem.subtype			= db->Get(i, "subtype");
-			complainListItem.complainComment	= db->Get(i, "complainComment");
-			complainListItem.resolveComment	 = db->Get(i, "resolveComment");
-			complainListItem.state			  = db->Get(i, "state");
-			complainListItem.openEventTimestamp = db->Get(i, "openEventTimestamp");
-			complainListItem.closeEventTimestamp= db->Get(i, "closeEventTimestamp");
-
-			complainList.push_back(complainListItem);
-		}
-
-		for(int i = 0; i < complainsCount; i++)
-		{
-				if(ostResult.str().length()) ostResult << ", ";
-
-				ostResult << "{"
-						  << "\"id\": \""			  << complainList.at(i).id << "\", "
-						  << "\"userID\": \""		  << complainList.at(i).userID << "\", "
-						  << "\"entityID\": \""		<< complainList.at(i).entityID << "\","
-						  << "\"type\": \""			<< complainList.at(i).type << "\","
-						  << "\"subtype\": \""		 << complainList.at(i).subtype << "\","
-						  << "\"complainComment\": \"" << complainList.at(i).complainComment << "\","
-						  << "\"resolveComment\": \""  << complainList.at(i).resolveComment << "\","
-						  << "\"state\": \""		   << complainList.at(i).state << "\","
-						  << "\"openEventTimestamp\": \""  << complainList.at(i).openEventTimestamp << "\","
-						  << "\"closeEventTimestamp\": \"" << complainList.at(i).closeEventTimestamp << "\""
-						  << "}";
-		} // --- for loop through user list
-	} // --- if sql-query on user selection success
-	else
-	{
-		MESSAGE_DEBUG("", "", "there are no complains returned by the request [" + dbQuery + "]");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish (returning string length = " + to_string(ostResult.str().length()) + ")");
-	}
-
-	return ostResult.str();
-}
-
-// input: ....
-//		  includeDevoted will add student counter
-string GetCertificationListInJSONFormat(string dbQuery, CMysql *db, bool includeDevoted/* = false*/)
-{
-	struct ItemClass {
-		string	  id, title, photoFolder, photoFilename, devotedUserList;
-		string	  vendorID, vendorName;
-		string	  isComplained, complainedUserList;
-	};
-
-	ostringstream	   ostResult;
-	int				 itemsCount;
-	vector<ItemClass>   itemsList;
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ostResult.str("");
-	itemsCount = db->Query(dbQuery);
-	if(itemsCount)
-	{
-		for(int i = 0; i < itemsCount; i++)
-		{
-			ItemClass   item;
-
-			item.id				 = db->Get(i, "id");
-			item.title			  = db->Get(i, "title");
-			item.vendorID		   = db->Get(i, "vendor_id");
-			item.vendorName		 = "";
-			item.photoFolder		= db->Get(i, "logo_folder");
-			item.photoFilename	  = db->Get(i, "logo_filename");
-			item.devotedUserList	= "";
-
-			itemsList.push_back(item);
-		}
-
-		for(int i = 0; i < itemsCount; i++)
-		{
-				if(db->Query("SELECT `name` FROM `company` WHERE `id`=\"" + itemsList.at(i).vendorID + "\";"))
-					itemsList.at(i).vendorName = db->Get(0, "name");
-
-				if(includeDevoted)
-				{
-					string temp = "";
-
-					for(int j = 0; j < db->Query("SELECT * from `users_certifications` WHERE `track_id`=\"" + itemsList.at(i).id + "\";"); ++j)
-					{
-						if(temp.length()) temp += ",";
-						temp += db->Get(j, "user_id");
-					}
-
-					itemsList.at(i).devotedUserList = temp;
-				}
-
-				if(ostResult.str().length()) ostResult << ", ";
-
-				ostResult << "{"
-						  << "\"certificationID\": \""				 << itemsList.at(i).id << "\", "
-						  << "\"certificationTitle\": \""			  << itemsList.at(i).title << "\", "
-						  << "\"certificationVendorID\": \""		   << itemsList.at(i).vendorID << "\", "
-						  << "\"certificationVendorName\": \""		 << itemsList.at(i).vendorName << "\", "
-						  << "\"certificationPhotoCoverFolder\": \""   << itemsList.at(i).photoFolder << "\","
-						  << "\"certificationPhotoCoverFilename\": \"" << itemsList.at(i).photoFilename << "\","
-						  << "\"certificationReadersUserID\": ["	   << itemsList.at(i).devotedUserList << "]"
-						  << "}";
-		} // --- for loop through user list
-	} // --- if sql-query on user selection success
-	else
-	{
-		MESSAGE_DEBUG("", "", "there are no certifications returned by the request [" + dbQuery + "]");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish (returning string length = " + to_string(ostResult.str().length()) + ")");
-	}
-
-	return ostResult.str();
-}
-
-// input: ....
-//		  includeStudents will add student counter
-string GetCourseListInJSONFormat(string dbQuery, CMysql *db, bool includeStudents/* = false*/)
-{
-	struct ItemClass {
-		string	  id, title, photoFolder, photoFilename, studentUserList;
-		string	  vendorID, vendorName;
-		string	  isComplained, complainedUserList;
-	};
-
-	ostringstream	   ostResult;
-	int				 itemsCount;
-	vector<ItemClass>   itemsList;
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ostResult.str("");
-	itemsCount = db->Query(dbQuery);
-	if(itemsCount)
-	{
-		for(int i = 0; i < itemsCount; i++)
-		{
-			ItemClass   item;
-
-			item.id				 = db->Get(i, "id");
-			item.title			  = db->Get(i, "title");
-			item.vendorID		   = db->Get(i, "vendor_id");
-			item.vendorName		 = "";
-			item.photoFolder		= db->Get(i, "logo_folder");
-			item.photoFilename	  = db->Get(i, "logo_filename");
-			item.studentUserList	= "";
-
-			itemsList.push_back(item);
-		}
-
-		for(int i = 0; i < itemsCount; i++)
-		{
-				if(db->Query("SELECT `name` FROM `company` WHERE `id`=\"" + itemsList.at(i).vendorID + "\";"))
-					itemsList.at(i).vendorName = db->Get(0, "name");
-
-				if(includeStudents)
-				{
-					string temp = "";
-
-					for(int j = 0; j < db->Query("SELECT * from `users_courses` WHERE `track_id`=\"" + itemsList.at(i).id + "\";"); ++j)
-					{
-						if(temp.length()) temp += ",";
-						temp += db->Get(j, "user_id");
-					}
-
-					itemsList.at(i).studentUserList = temp;
-				}
-
-				if(ostResult.str().length()) ostResult << ", ";
-
-				ostResult << "{"
-						  << "\"courseID\": \""				 << itemsList.at(i).id << "\", "
-						  << "\"courseTitle\": \""			  << itemsList.at(i).title << "\", "
-						  << "\"courseVendorID\": \""		   << itemsList.at(i).vendorID << "\", "
-						  << "\"courseVendorName\": \""		 << itemsList.at(i).vendorName << "\", "
-						  << "\"coursePhotoCoverFolder\": \""   << itemsList.at(i).photoFolder << "\","
-						  << "\"coursePhotoCoverFilename\": \"" << itemsList.at(i).photoFilename << "\","
-						  << "\"courseStudentsUserID\": ["	   << itemsList.at(i).studentUserList << "]"
-						  << "}";
-		} // --- for loop through user list
-	} // --- if sql-query on user selection success
-	else
-	{
-		MESSAGE_DEBUG("", "", "there are no courses returned by the request [" + dbQuery + "]");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish (returning string length = " + to_string(ostResult.str().length()) + ")");
-	}
-
-	return ostResult.str();
-}
-
-// input: ....
-//		  includeStudents will add student counter
-string GetLanguageListInJSONFormat(string dbQuery, CMysql *db, bool includeStudents/* = false*/)
-{
-	struct ItemClass {
-		string	  id, title, photoFolder, photoFilename, studentUserList;
-		string	  isComplained, complainedUserList;
-	};
-
-	ostringstream	   ostResult;
-	int				 itemsCount;
-	vector<ItemClass>   itemsList;
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ostResult.str("");
-	itemsCount = db->Query(dbQuery);
-	if(itemsCount)
-	{
-		for(int i = 0; i < itemsCount; i++)
-		{
-			ItemClass   item;
-
-			item.id				 = db->Get(i, "id");
-			item.title			  = db->Get(i, "title");
-			item.photoFolder		= db->Get(i, "logo_folder");
-			item.photoFilename	  = db->Get(i, "logo_filename");
-			item.studentUserList	= "";
-
-			itemsList.push_back(item);
-		}
-
-		for(int i = 0; i < itemsCount; i++)
-		{
-
-				if(includeStudents)
-				{
-					string temp = "";
-
-					for(int j = 0; j < db->Query("SELECT * from `users_language` WHERE `language_id`=\"" + itemsList.at(i).id + "\";"); ++j)
-					{
-						if(temp.length()) temp += ",";
-						temp += db->Get(j, "user_id");
-					}
-
-					itemsList.at(i).studentUserList = temp;
-				}
-
-				if(ostResult.str().length()) ostResult << ", ";
-
-				ostResult << "{"
-						  << "\"languageID\": \""				 << itemsList.at(i).id << "\", "
-						  << "\"languageTitle\": \""			  << itemsList.at(i).title << "\", "
-						  << "\"languagePhotoCoverFolder\": \""   << itemsList.at(i).photoFolder << "\","
-						  << "\"languagePhotoCoverFilename\": \"" << itemsList.at(i).photoFilename << "\","
-						  << "\"languageStudentsUserID\": ["	   << itemsList.at(i).studentUserList << "]"
-						  << "}";
-		} // --- for loop through user list
-	} // --- if sql-query on user selection success
-	else
-	{
-		MESSAGE_DEBUG("", "", "there are no languages returned by the request [" + dbQuery + "]");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish (returning string length = " + to_string(ostResult.str().length()) + ")");
-	}
-
-	return ostResult.str();
-}
-
-string GetSkillListInJSONFormat(string dbQuery, CMysql *db)
-{
-	struct ItemClass {
-		string	  id, title;
-		string	  isComplained, complainedUserList;
-	};
-
-	ostringstream	   ostResult;
-	int				 itemsCount;
-	vector<ItemClass>   itemsList;
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ostResult.str("");
-	itemsCount = db->Query(dbQuery);
-	if(itemsCount)
-	{
-		for(int i = 0; i < itemsCount; i++)
-		{
-			ItemClass   item;
-
-			item.id				 = db->Get(i, "id");
-			item.title			  = db->Get(i, "title");
-
-			itemsList.push_back(item);
-		}
-
-		for(int i = 0; i < itemsCount; i++)
-		{
-
-				if(ostResult.str().length()) ostResult << ", ";
-
-				ostResult << "{"
-						  << "\"id\": \""		<< itemsList.at(i).id << "\", "
-						  << "\"title\": \""	<< itemsList.at(i).title << "\" "
-						  << "}";
-		} // --- for loop through user list
-	} // --- if sql-query on user selection success
-	else
-	{
-		MESSAGE_DEBUG("", "", "there are no skills returned by the request [" + dbQuery + "]");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish (returning string length = " + to_string(ostResult.str().length()) + ")");
-	}
-
-	return ostResult.str();
-}
-
-
-// input: ....
-//		  includeStudents will add student counter
-string GetUniversityListInJSONFormat(string dbQuery, CMysql *db, bool includeStudents/* = false*/)
-{
-	struct ItemClass {
-		string	  id, title, photoFolder, photoFilename, studentUserList;
-		string	  regionID, regionTitle;
-		string	  isComplained, complainedUserList;
-	};
-
-	ostringstream	   ostResult;
-	int				 itemsCount;
-	vector<ItemClass>   itemsList;
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ostResult.str("");
-	itemsCount = db->Query(dbQuery);
-	if(itemsCount)
-	{
-		for(int i = 0; i < itemsCount; i++)
-		{
-			ItemClass   item;
-
-			item.id				 = db->Get(i, "id");
-			item.title			  = db->Get(i, "title");
-			item.regionID		   = db->Get(i, "geo_region_id");
-			item.regionTitle		= "";
-			item.photoFolder		= db->Get(i, "logo_folder");
-			item.photoFilename	  = db->Get(i, "logo_filename");
-			item.studentUserList	= "";
-
-			itemsList.push_back(item);
-		}
-
-		for(int i = 0; i < itemsCount; i++)
-		{
-				if(db->Query("SELECT `title` FROM `geo_region` WHERE `id`=\"" + itemsList.at(i).regionID + "\";"))
-					itemsList.at(i).regionTitle = db->Get(0, "title");
-
-				if(includeStudents)
-				{
-					string temp = "";
-
-					for(int j = 0; j < db->Query("SELECT * from `users_university` WHERE `university_id`=\"" + itemsList.at(i).id + "\";"); ++j)
-					{
-						if(temp.length()) temp += ",";
-						temp += db->Get(j, "user_id");
-					}
-
-					itemsList.at(i).studentUserList = temp;
-				}
-
-				if(ostResult.str().length()) ostResult << ", ";
-
-				ostResult << "{"
-						  << "\"universityID\": \""				 << itemsList.at(i).id << "\", "
-						  << "\"universityTitle\": \""			  << itemsList.at(i).title << "\", "
-						  << "\"universityRegionID\": \""		   << itemsList.at(i).regionID << "\", "
-						  << "\"universityRegionName\": \""		 << itemsList.at(i).regionTitle << "\", "
-						  << "\"universityPhotoCoverFolder\": \""   << itemsList.at(i).photoFolder << "\","
-						  << "\"universityPhotoCoverFilename\": \"" << itemsList.at(i).photoFilename << "\","
-						  << "\"universityStudentsUserID\": ["	   << itemsList.at(i).studentUserList << "]"
-						  << "}";
-		} // --- for loop through user list
-	} // --- if sql-query on user selection success
-	else
-	{
-		MESSAGE_DEBUG("", "", "there are no university's returned by the request [" + dbQuery + "]");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish (returning string length = " + to_string(ostResult.str().length()) + ")");
-	}
-
-	return ostResult.str();
-}
-
-// input: ....
-//		  includeStudents will add student counter
-string GetSchoolListInJSONFormat(string dbQuery, CMysql *db, bool includeStudents/* = false*/)
-{
-	struct ItemClass {
-		string	  id, title, photoFolder, photoFilename, studentUserList;
-		string	  regionID, regionTitle;
-		string	  isComplained, complainedUserList;
-	};
-
-	ostringstream	   ostResult;
-	int				 itemsCount;
-	vector<ItemClass>   itemsList;
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ostResult.str("");
-	itemsCount = db->Query(dbQuery);
-	if(itemsCount)
-	{
-		for(int i = 0; i < itemsCount; i++)
-		{
-			ItemClass   item;
-
-			item.id				 = db->Get(i, "id");
-			item.title			  = db->Get(i, "title");
-			item.regionID		   = db->Get(i, "geo_locality_id");
-			item.regionTitle		= "";
-			item.photoFolder		= db->Get(i, "logo_folder");
-			item.photoFilename	  = db->Get(i, "logo_filename");
-			item.studentUserList	= "";
-
-			itemsList.push_back(item);
-		}
-
-		for(int i = 0; i < itemsCount; i++)
-		{
-				if(db->Query("SELECT `title` FROM `geo_locality` WHERE `id`=\"" + itemsList.at(i).regionID + "\";"))
-					itemsList.at(i).regionTitle = db->Get(0, "title");
-
-				if(includeStudents)
-				{
-					string temp = "";
-
-					for(int j = 0; j < db->Query("SELECT * from `users_school` WHERE `school_id`=\"" + itemsList.at(i).id + "\";"); ++j)
-					{
-						if(temp.length()) temp += ",";
-						temp += db->Get(j, "user_id");
-					}
-
-					itemsList.at(i).studentUserList = temp;
-				}
-
-				if(ostResult.str().length()) ostResult << ", ";
-
-				ostResult << "{"
-						  << "\"schoolID\": \""				 << itemsList.at(i).id << "\", "
-						  << "\"schoolTitle\": \""			  << itemsList.at(i).title << "\", "
-						  << "\"schoolLocalityID\": \""		 << itemsList.at(i).regionID << "\", "
-						  << "\"schoolLocalityTitle\": \""	   << itemsList.at(i).regionTitle << "\", "
-						  << "\"schoolPhotoCoverFolder\": \""   << itemsList.at(i).photoFolder << "\","
-						  << "\"schoolPhotoCoverFilename\": \"" << itemsList.at(i).photoFilename << "\","
-						  << "\"schoolStudentsUserID\": ["	  << itemsList.at(i).studentUserList << "]"
-						  << "}";
-		} // --- for loop through user list
-	} // --- if sql-query on user selection success
-	else
-	{
-		MESSAGE_DEBUG("", "", "there are no school's returned by the request [" + dbQuery + "]");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish (returning string length = " + to_string(ostResult.str().length()) + ")");
-	}
-
-	return ostResult.str();
-}
-
 string	AutodetectSexByName(string name, CMysql *db)
 {
 	string		result = "";
 
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	if(db->Query("SELECT * FROM `name_sex` WHERE `name`=\"" + name + "\";"))
 		result = db->Get(0, "sex");
@@ -1778,1270 +1144,13 @@ string	AutodetectSexByName(string name, CMysql *db)
 	return result;
 }
 
-/*
-string GetNewsFeedInJSONFormat(string whereStatement, int currPage, int newsOnSinglePage, CUser *user, CMysql *db)
-{
-		struct  ItemClass
-		{
-			string  action_category_title;
-			string  action_category_title_female;
-			string  action_category_title_male;
-			string  action_types_title;
-			string  action_types_title_female;
-			string  action_types_title_male;
-			string  feed_actionId;
-			string  feed_actionTypeId;
-			string  feed_eventTimestamp;
-			string  feed_id;
-			string  src_id;
-			string  src_type;
-			string  src_name;
-			string  src_nameLast;
-			string  src_sex;
-			string  dst_id;
-			string  dst_type;
-			string  dst_name;
-			string  dst_nameLast;
-			string  dst_sex;
-		};
-		vector<ItemClass>   itemsList;
-
-		ostringstream	  ostResult;
-		int			  affected;
-		vector<string>	vectorFriendList;
-
-		ostResult.str("");
-		ostResult << "SELECT `users_friends`.`friendID` \
-				from `users_friends` \
-				left join `users` on `users`.`id`=`users_friends`.`friendID` \
-				where `users_friends`.`userID`='" << user->GetID() << "' and `users_friends`.`state`='confirmed' and `users`.`isactivated`='Y' and `users`.`isblocked`='N';";
-
-		affected = db->Query(ostResult.str());
-		for(int i = 0; i < affected; i++)
-		{
-			vectorFriendList.push_back(db->Get(i, "friendID"));
-		}
-
-		ostResult.str("");
-		ostResult << "SELECT "
-			<< "`feed`.`id` as `feed_id`, `feed`.`eventTimestamp` as `feed_eventTimestamp`, `feed`.`actionId` as `feed_actionId` , `feed`.`actionTypeId` as `feed_actionTypeId`, `feed`.`srcType` as `feed_srcType`, `feed`.`userId` as `feed_srcID`, `feed`.`dstType` as `feed_dstType`, `feed`.`dstID` as `feed_dstID`, "
-			<< "`action_types`.`title` as `action_types_title`, "
-			<< "`action_types`.`title_male` as `action_types_title_male`, "
-			<< "`action_types`.`title_female` as `action_types_title_female`, "
-			<< "`action_category`.`title` as `action_category_title`, "
-			<< "`action_category`.`title_male` as `action_category_title_male`, "
-			<< "`action_category`.`title_female` as `action_category_title_female` "
-			<< "FROM `feed` "
-			<< "INNER JOIN  `action_types`  ON `feed`.`actionTypeId`=`action_types`.`id` "
-			<< "INNER JOIN  `action_category`   ON `action_types`.`categoryID`=`action_category`.`id` "
-			<< "WHERE (" << whereStatement << ") and `action_types`.`isShowFeed`='1' "
-			<< "ORDER BY  `feed`.`eventTimestamp` DESC LIMIT " << currPage * newsOnSinglePage << " , " << newsOnSinglePage;
-
-		affected = db->Query(ostResult.str());
-		for(int i = 0; i < affected; i++)
-		{
-			ItemClass   item;
-
-			item.action_category_title = db->Get(i, "action_category_title");
-			item.action_category_title_female = db->Get(i, "action_category_title_female");
-			item.action_category_title_male = db->Get(i, "action_category_title_male");
-			item.action_types_title = db->Get(i, "action_types_title");
-			item.action_types_title_female = db->Get(i, "action_types_title_female");
-			item.action_types_title_male = db->Get(i, "action_types_title_male");
-			item.feed_actionId = db->Get(i, "feed_actionId");
-			item.feed_actionTypeId = db->Get(i, "feed_actionTypeId");
-			item.feed_eventTimestamp = db->Get(i, "feed_eventTimestamp");
-			item.feed_id = db->Get(i, "feed_id");
-			item.src_id = db->Get(i, "feed_srcID");
-			item.src_type = db->Get(i, "feed_srcType");
-			item.dst_id = db->Get(i, "feed_dstID");
-			item.dst_type = db->Get(i, "feed_dstType");
-
-			itemsList.push_back(item);
-		}
-
-		ostResult.str("");
-		for(int i = 0; i < affected; i++)
-		{
-			ostringstream   ost1;
-			string		  srcAvatarPath;
-			string		  dstAvatarPath;
-			string		  feedID = itemsList[i].feed_id;
-			string		  feedActionTypeId = itemsList[i].feed_actionTypeId;
-			string		  feedActionId = itemsList[i].feed_actionId;
-			string		  feedMessageOwner = itemsList[i].src_id;
-			string		  feedMessageTimestamp = itemsList[i].feed_eventTimestamp;
-			string		  messageSrcObject = "";
-			string		  messageDstObject = "";
-
-			// --- avatar for srcObj
-			if(itemsList[i].src_type == "user")
-			{
-				if(db->Query("SELECT `id`, `name`, `nameLast`, `sex` FROM `users` WHERE `id`=\"" + itemsList[i].src_id + "\";"))
-				{
-					messageSrcObject = "\"type\":\"" + itemsList[i].src_type + "\",\"id\":\"" + itemsList[i].src_id + "\",\"name\":\"" + db->Get(0, "name") + "\",\"nameLast\":\"" + db->Get(0, "nameLast") + "\",\"sex\":\"" + db->Get(0, "sex") + "\",\"link\":\"\"";
-
-					if(db->Query("SELECT * FROM `users_avatars` WHERE `userid`='" + itemsList[i].src_id + "' and `isActive`='1';"))
-						srcAvatarPath = "/images/avatars/avatars" + string(db->Get(0, "folder")) + "/" + string(db->Get(0, "filename"));
-					else
-						srcAvatarPath = "empty";
-
-					messageSrcObject = messageSrcObject + ",\"avatar\":\"" + srcAvatarPath + "\"";
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + string("[") + to_string(__LINE__) + "]:ERROR: user.id [" + itemsList[i].src_id + "] not found");
-				}
-			}
-			else if(itemsList[i].src_type == "company")
-			{
-				if(db->Query("SELECT `id`, `type`, `name`, `link`, `logo_folder`, `logo_filename` FROM `company` WHERE `id`=\"" + itemsList[i].src_id + "\";"))
-				{
-					string  logo_filename = db->Get(0, "logo_filename");
-
-					messageSrcObject = "\"type\":\"" + itemsList[i].src_type + "\",\"id\":\"" + itemsList[i].src_id + "\",\"companyType\":\"" + string(db->Get(0, "type")) + "\",\"name\":\"" + string(db->Get(0, "name")) + "\",\"nameLast\":\"\",\"sex\":\"F\",\"link\":\"" + db->Get(0, "link") + "\"";
-
-					if(logo_filename.length())
-						srcAvatarPath = "/images/companies/" + string(db->Get(0, "logo_folder")) + "/" + string(db->Get(0, "logo_filename"));
-					else
-						srcAvatarPath = "empty";
-
-					messageSrcObject = messageSrcObject + ",\"avatar\":\"" + srcAvatarPath + "\"";
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + string("[") + to_string(__LINE__) + "]:ERROR: company.id [" + itemsList[i].src_id + "] not found");
-				}
-			}
-			else if(itemsList[i].src_type == "group")
-			{
-				if(db->Query("SELECT * FROM `groups` WHERE `id`=\"" + itemsList[i].src_id + "\";"))
-				{
-					string  logo_filename = db->Get(0, "logo_filename");
-
-					messageSrcObject = "\"type\":\"" + itemsList[i].src_type + "\",\"id\":\"" + itemsList[i].src_id + "\",\"name\":\"" + db->Get(0, "title") + "\",\"nameLast\":\"\",\"sex\":\"F\",\"link\":\"" + db->Get(0, "link") + "\"";
-
-					if(logo_filename.length())
-						srcAvatarPath = "/images/groups/" + string(db->Get(0, "logo_folder")) + "/" + string(db->Get(0, "logo_filename"));
-					else
-						srcAvatarPath = "empty";
-
-					messageSrcObject = messageSrcObject + ",\"avatar\":\"" + srcAvatarPath + "\"";
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + string("[") + to_string(__LINE__) + "]:ERROR: company.id [" + itemsList[i].src_id + "] not found");
-				}
-			}
-			else
-			{
-				CLog	log;
-				log.Write(ERROR, string(__func__) + string("[") + to_string(__LINE__) + "]:ERROR: unknown srcType [" + itemsList[i].src_type + "]");
-			}
-
-			// --- avatar for dstObj
-			if(itemsList[i].dst_type == "group")
-			{
-				if(db->Query("SELECT * FROM `groups` WHERE `id`=\"" + itemsList[i].dst_id + "\";"))
-				{
-					string  logo_filename = db->Get(0, "logo_filename");
-
-					messageDstObject = "\"type\":\"" + itemsList[i].dst_type + "\",\"id\":\"" + itemsList[i].dst_id + "\",\"name\":\"" + db->Get(0, "title") + "\",\"nameLast\":\"\",\"sex\":\"F\",\"link\":\"" + db->Get(0, "link") + "\"";
-
-					if(logo_filename.length())
-						dstAvatarPath = "/images/groups/" + string(db->Get(0, "logo_folder")) + "/" + string(db->Get(0, "logo_filename"));
-					else
-						dstAvatarPath = "empty";
-
-					messageDstObject = messageDstObject + ",\"avatar\":\"" + dstAvatarPath + "\"";
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + string("[") + to_string(__LINE__) + "]:ERROR: company.id [" + itemsList[i].dst_id + "] not found");
-				}
-			}
-			// --- avatar for dstObj
-			if(itemsList[i].dst_type == "event")
-			{
-				if(db->Query("SELECT * FROM `events` WHERE `id`=\"" + itemsList[i].dst_id + "\";"))
-				{
-					string  logo_filename = db->Get(0, "logo_filename");
-
-					messageDstObject = "\"type\":\"" + itemsList[i].dst_type + "\",\"id\":\"" + itemsList[i].dst_id + "\",\"name\":\"" + db->Get(0, "title") + "\",\"nameLast\":\"\",\"sex\":\"\",\"link\":\"" + db->Get(0, "link") + "\"";
-
-					if(logo_filename.length())
-						dstAvatarPath = "/images/events/" + string(db->Get(0, "logo_folder")) + "/" + string(db->Get(0, "logo_filename"));
-					else
-						dstAvatarPath = "empty";
-
-					messageDstObject = messageDstObject + ",\"avatar\":\"" + dstAvatarPath + "\"";
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + string("[") + to_string(__LINE__) + "]:ERROR: company.id [" + itemsList[i].dst_id + "] not found");
-				}
-			}
-
-			if(feedActionTypeId == "11")
-			{
-				// --- 11 - message
-
-				if(db->Query("SELECT * FROM `feed_message` WHERE `id`='" + feedActionId + "';"))
-				{
-					string  messageId = db->Get(0, "id");
-					string  messageTitle = db->Get(0, "title");
-					string  messageLink = db->Get(0, "link");
-					string  messageMessage = db->Get(0, "message");
-					string  messageImageSetID = db->Get(0, "imageSetID");
-					string  messageAccessRights = db->Get(0, "access");
-					string  messageImageList =			GetMessageImageList(messageImageSetID, db);
-					string  messageParamLikesUserList =  GetMessageLikesUsersList(messageId, user, db);
-					string  messageParamCommentsCount =  GetMessageCommentsCount(messageId, db);
-					string  messageParamSpam =			GetMessageSpam(messageId, db);
-					string  messageParamSpamMe =			GetMessageSpamUser(messageId, user->GetID(), db);
-
-					if(AllowMessageInNewsFeed(user, feedMessageOwner, messageAccessRights, &vectorFriendList))
-					{
-						if(ostResult.str().length() > 10) ostResult << ",";
-
-						ostResult << "{";
-						ostResult << "\"srcObj\":{"			 << messageSrcObject << "},";
-						ostResult << "\"dstObj\":{"			 << messageDstObject << "},";
-						ostResult << "\"actionCategoryTitle\":\"" << itemsList[i].action_category_title		   << "\",";
-						ostResult << "\"actionCategoryTitleMale\":\"" << itemsList[i].action_category_title_male	<< "\",";
-						ostResult << "\"actionCategoryTitleFemale\":\""<< itemsList[i].action_category_title_female   << "\",";
-						ostResult << "\"actionTypesTitle\":\""  << itemsList[i].action_types_title			  << "\",";
-						ostResult << "\"actionTypesTitleMale\":\""<< itemsList[i].action_types_title_male		 << "\",";
-						ostResult << "\"actionTypesTitleFemale\":\""<< itemsList[i].action_types_title_female		<< "\",";
-						ostResult << "\"actionTypesId\":\""	<< itemsList[i].feed_actionTypeId				   << "\",";
-
-						ostResult << "\"messageId\":\""		<< messageId							 << "\",";
-						ostResult << "\"messageTitle\":\""	  << messageTitle						  << "\",";
-						ostResult << "\"messageLink\":\""		<< messageLink						   << "\",";
-						ostResult << "\"messageMessage\":\""	  << messageMessage						<< "\",";
-						ostResult << "\"messageImageSetID\":\""   << messageImageSetID					  << "\",";
-						ostResult << "\"messageImageList\":["	<< messageImageList						 << "],";
-						ostResult << "\"messageLikesUserList\":[" << messageParamLikesUserList			  << "],";
-						ostResult << "\"messageCommentsCount\":\""<< messageParamCommentsCount			  << "\",";
-						ostResult << "\"messageSpam\":\""		<< messageParamSpam						 << "\",";
-						ostResult << "\"messageSpamMe\":\""	<< messageParamSpamMe					   << "\",";
-						ostResult << "\"messageAccessRights\":\"" << messageAccessRights					  << "\",";
-
-						ostResult << "\"eventTimestamp\":\""	  << itemsList[i].feed_eventTimestamp										<< "\",";
-						ostResult << "\"eventTimestampDelta\":\"" << to_string(GetTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp))  << "\"";
-
-						ostResult << "}";
-
-						// if(i < (affected - 1)) ostResult << ",";
-					} // --- Message Access Rights onot allow to post it into feed
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + string("[") + to_string(__LINE__) + "]:ERROR: can't get message [" + feedActionId + "] FROM feed_message");
-				} // --- Message in news feed not found
-			}
-			else if((feedActionTypeId == "14") || (feedActionTypeId == "15") || (feedActionTypeId == "16"))
-			{
-				// --- 14 friendship established
-				// --- 15 friendship broken
-				// --- 16 friendship request sent
-
-				string  friendID = feedActionId;
-
-				ost1.str("");
-				ost1 << "SELECT `users`.`name` as `users_name`, `users`.`nameLast` as `users_nameLast` FROM `users` WHERE `id`=\"" << friendID << "\" and `isblocked`='N';";
-				if(db->Query(ost1.str()))
-				{
-					string  friendAvatar = "empty";
-					string  friendName;
-					string  friendNameLast;
-					string  friendCompanyName;
-					string  friendCompanyID;
-					string  friendUsersCompanyPositionTitle;
-
-					friendName = db->Get(0, "users_name");
-					friendNameLast = db->Get(0, "users_nameLast");
-
-					ost1.str("");
-					ost1 << "SELECT * FROM `users_avatars` WHERE `userid`='" << friendID << "' and `isActive`='1';";
-					if(db->Query(ost1.str()))
-					{
-						ost1.str("");
-						ost1 << "/images/avatars/avatars" << db->Get(0, "folder") << "/" << db->Get(0, "filename");
-						friendAvatar = ost1.str();
-					}
-
-					ost1.str("");
-					ost1 << "SELECT `company_position`.`title` as `users_company_position_title`,  \
-							`company`.`id` as `company_id`, `company`.`name` as `company_name` \
-							FROM `users_company` \
-							LEFT JOIN  `company_position` ON `company_position`.`id`=`users_company`.`position_title_id` \
-							LEFT JOIN  `company`				ON `company`.`id`=`users_company`.`company_id` \
-							WHERE `users_company`.`user_id`=\"" << friendID << "\" and `users_company`.`current_company`='1' \
-							ORDER BY  `users_company`.`occupation_start` DESC ";
-					if(db->Query(ost1.str()))
-					{
-						friendCompanyName = db->Get(0, "company_name");
-						friendCompanyID = db->Get(0, "company_id");
-						friendUsersCompanyPositionTitle = db->Get(0, "users_company_position_title");
-					}
-					else
-					{
-						MESSAGE_DEBUG("", "", "can't get information [" + itemsList[i].feed_actionId + "] about his/her employment");
-					} // --- Message in news feed not found
-
-					{
-						if(ostResult.str().length() > 10) ostResult << ",";
-
-						ostResult << "{";
-						ostResult << "\"avatar\":\""			  << srcAvatarPath									<< "\",";
-						ostResult << "\"srcObj\":{"			 << messageSrcObject << "},";
-						ostResult << "\"messageOwner\":{" << messageSrcObject << "},";
-						ostResult << "\"actionCategoryTitle\":\"" << itemsList[i].action_category_title		   << "\",";
-						ostResult << "\"actionCategoryTitleMale\":\"" << itemsList[i].action_category_title_male	<< "\",";
-						ostResult << "\"actionCategoryTitleFemale\":\""<< itemsList[i].action_category_title_female   << "\",";
-						ostResult << "\"actionTypesTitle\":\""  << itemsList[i].action_types_title			  << "\",";
-						ostResult << "\"actionTypesTitleMale\":\""<< itemsList[i].action_types_title_male		 << "\",";
-						ostResult << "\"actionTypesTitleFemale\":\""<< itemsList[i].action_types_title_female	 << "\",";
-						ostResult << "\"actionTypesId\":\""	<< itemsList[i].feed_actionTypeId				   << "\",";
-
-						ostResult << "\"friendAvatar\":\""	  << friendAvatar								  << "\",";
-						ostResult << "\"friendID\":\""		  << friendID									  << "\",";
-						ostResult << "\"friendName\":\""		  << friendName									<< "\",";
-						ostResult << "\"friendNameLast\":\""	  << friendNameLast								<< "\",";
-						ostResult << "\"friendCompanyID\":\""	<< friendCompanyID							   << "\",";
-						ostResult << "\"friendCompanyName\":\""   << friendCompanyName							  << "\",";
-						ostResult << "\"friendUsersCompanyPositionTitle\":\"" << friendUsersCompanyPositionTitle	  << "\",";
-
-						ostResult << "\"eventTimestamp\":\""	  << itemsList[i].feed_eventTimestamp										<< "\",";
-						// ostResult << "\"eventTimestampDelta\":\""  << GetHumanReadableTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp)   << "\"";
-						ostResult << "\"eventTimestampDelta\":\"" << to_string(GetTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp))  << "\"";
-						ostResult << "}";
-
-						// if(i < (affected - 1)) ostResult << ",";
-					} // --- Message Access Rights onot allow to post it into feed
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + string("[") + to_string(__LINE__) + "]:ERROR: user [", friendID, "] not found or blocked");
-				}
-			}
-			else if((feedActionTypeId == "41"))
-			{
-				// --- 41 skill added
-
-				string  users_skillID = feedActionId;
-
-				ost1.str("");
-				ost1 << "SELECT * FROM `users_skill` WHERE `id`=\"" << users_skillID << "\";";
-				if(db->Query(ost1.str()))
-				{
-					string  skillID = db->Get(0, "skill_id");
-
-					ost1.str("");
-					ost1 << "SELECT * FROM `skill` WHERE `id`=\"" << skillID << "\";";
-					if(db->Query(ost1.str()))
-					{
-						string	skillTitle = db->Get(0, "title");
-
-						if(ostResult.str().length() > 10) ostResult << ",";
-
-						ostResult << "{";
-						ostResult << "\"avatar\":\""			  << srcAvatarPath									<< "\",";
-						ostResult << "\"srcObj\":{"			 << messageSrcObject << "},";
-						ostResult << "\"messageOwner\":{" << messageSrcObject << "},";
-						ostResult << "\"actionCategoryTitle\":\"" << itemsList[i].action_category_title		   << "\",";
-						ostResult << "\"actionCategoryTitleMale\":\"" << itemsList[i].action_category_title_male	<< "\",";
-						ostResult << "\"actionCategoryTitleFemale\":\""<< itemsList[i].action_category_title_female   << "\",";
-						ostResult << "\"actionTypesTitle\":\""  << itemsList[i].action_types_title			  << "\",";
-						ostResult << "\"actionTypesTitleMale\":\""<< itemsList[i].action_types_title_male		 << "\",";
-						ostResult << "\"actionTypesTitleFemale\":\""<< itemsList[i].action_types_title_female	 << "\",";
-						ostResult << "\"actionTypesId\":\""	<< itemsList[i].feed_actionTypeId				   << "\",";
-
-						ostResult << "\"skillID\":\""			<< skillID									   << "\",";
-						ostResult << "\"skillTitle\":\""		  << skillTitle									<< "\",";
-
-						ostResult << "\"eventTimestamp\":\""	  << itemsList[i].feed_eventTimestamp							<< "\",";
-						// ostResult << "\"eventTimestampDelta\":\""  << GetHumanReadableTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp)   << "\"";
-						ostResult << "\"eventTimestampDelta\":\"" << to_string(GetTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp))  << "\"";
-						ostResult << "}";
-
-					}
-					else
-					{
-						CLog	log;
-						log.Write(ERROR, string(__func__) + string("[") + to_string(__LINE__) + "]:ERROR: skill_id [", skillID, "] not found");
-					}
-
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + string("[") + to_string(__LINE__) + "]:ERROR: users_skill_id [", users_skillID, "] not found");
-				}
-			}
-			else if((feedActionTypeId == "54") || (feedActionTypeId == "53"))
-			{
-				// --- book read
-				string  usersBooksID = itemsList[i].feed_actionId;
-				string  bookID = "";
-				string  readerUserID = "";
-				string  bookReadTimestamp = "";
-
-				if(db->Query("SELECT * FROM `users_books` WHERE `id`=\"" + feedActionId + "\";"))
-				{
-					bookID = db->Get(0, "bookID");
-					readerUserID = db->Get(0, "userID");
-					bookReadTimestamp = db->Get(0, "bookReadTimestamp");
-
-
-					if(bookID.length() && db->Query("SELECT * FROM `book` WHERE `id`=\"" + bookID + "\";"))
-					{
-						string  bookTitle = db->Get(0, "title");
-						string  bookAuthorID = db->Get(0, "authorID");
-						string  bookISBN10 = db->Get(0, "isbn10");
-						string  bookISBN13 = db->Get(0, "isbn13");
-						string  bookCoverPhotoFolder = db->Get(0, "coverPhotoFolder");
-						string  bookCoverPhotoFilename = db->Get(0, "coverPhotoFilename");
-
-						if(bookAuthorID.length() && db->Query("SELECT * FROM `book_author` WHERE `id`=\"" + bookAuthorID + "\";"))
-						{
-							string  bookAuthorName = db->Get(0, "name");
-							string  bookReadersRatingList =	 GetBookRatingList(bookID, db);
-							string  messageParamLikesUserList = GetBookLikesUsersList(usersBooksID, user, db);
-							string  messageParamCommentsCount = GetBookCommentsCount(bookID, db);
-							string  bookMyRating = "0";
-
-							if(db->Query("SELECT * FROM `users_books` WHERE `userID`=\"" + user->GetID() + "\" AND `bookID`=\"" + bookID + "\";"))
-								bookMyRating = db->Get(0, "rating");
-
-							if(ostResult.str().length() > 10) ostResult << ",";
-
-							ostResult << "{";
-
-							ostResult << "\"bookID\":\""			<< bookID << "\",";
-							ostResult << "\"bookTitle\":\""	   << bookTitle << "\",";
-							ostResult << "\"bookAuthorID\":\""	  << bookAuthorID << "\",";
-							ostResult << "\"bookAuthorName\":\""	<< bookAuthorName << "\",";
-							ostResult << "\"bookISBN10\":\""		<< bookISBN10 << "\",";
-							ostResult << "\"bookISBN13\":\""		<< bookISBN13 << "\",";
-							ostResult << "\"bookMyRating\":\""		<< bookMyRating << "\",";
-							ostResult << "\"bookCoverPhotoFolder\":\""<< bookCoverPhotoFolder << "\",";
-							ostResult << "\"bookCoverPhotoFilename\":\""<< bookCoverPhotoFilename << "\",";
-							ostResult << "\"bookReadTimestamp\":\""   << bookReadTimestamp << "\",";
-							ostResult << "\"bookReadersRatingList\":["<< bookReadersRatingList << "],";
-							ostResult << "\"bookCommentsCount\":\""   << messageParamCommentsCount << "\",";
-
-							ostResult << "\"usersBooksID\":\""	  << usersBooksID << "\",";
-							ostResult << "\"messageLikesUserList\":[" << messageParamLikesUserList << "],";
-
-							ostResult << "\"avatar\":\""			<< srcAvatarPath << "\",";
-							ostResult << "\"srcObj\":{"			 << messageSrcObject << "},";
-							ostResult << "\"messageOwner\":{" << messageSrcObject << "},";
-							ostResult << "\"actionCategoryTitle\":\"" << itemsList[i].action_category_title		   << "\",";
-							ostResult << "\"actionCategoryTitleMale\":\"" << itemsList[i].action_category_title_male	<< "\",";
-							ostResult << "\"actionCategoryTitleFemale\":\""<< itemsList[i].action_category_title_female   << "\",";
-							ostResult << "\"actionTypesTitle\":\""  << itemsList[i].action_types_title			  << "\",";
-							ostResult << "\"actionTypesTitleMale\":\""<< itemsList[i].action_types_title_male		 << "\",";
-							ostResult << "\"actionTypesTitleFemale\":\""<< itemsList[i].action_types_title_female	 << "\",";
-							ostResult << "\"actionTypesId\":\""   << itemsList[i].feed_actionTypeId << "\",";
-							ostResult << "\"actionID\":\""		  << itemsList[i].feed_actionId << "\",";
-							ostResult << "\"eventTimestamp\":\""	<< itemsList[i].feed_eventTimestamp << "\",";
-							ostResult << "\"eventTimestampDelta\":\"" << to_string(GetTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp)) << "\"";
-							ostResult << "}";
-						}
-						else
-						{
-							CLog	log;
-							log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: books_author_id [" + bookAuthorID + "] not found");
-						}
-
-					}
-					else
-					{
-						CLog	log;
-						log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: books_id [" + bookID + "] not found");
-					}
-
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: users_books_id [" + feedActionId + "] not found");
-				}
-			}
-			else if((feedActionTypeId == "64") || (feedActionTypeId == "65"))
-			{
-				// --- group created / subscribed
-				string  groupID = feedActionId;
-
-				if(groupID.length())
-				{
-					if(db->Query("SELECT * FROM `groups` WHERE `id`=\"" + groupID + "\""))
-					{
-						string		isBlocked = db->Get(0, "isBlocked");
-
-						if(isBlocked == "N")
-						{
-							if(ostResult.str().length() > 10) ostResult << ",";
-
-							ostResult << "{";
-							ostResult << "\"groups\":["			<< GetGroupListInJSONFormat("SELECT * FROM `groups` WHERE `id`=\"" + groupID + "\" AND `isBlocked`=\"N\";", db, user) << "],";
-							ostResult << "\"avatar\":\""		<< srcAvatarPath << "\",";
-							ostResult << "\"srcObj\":{"			<< messageSrcObject << "},";
-							ostResult << "\"messageOwner\":{"	<< messageSrcObject << "},";
-							ostResult << "\"actionCategoryTitle\":\"" << itemsList[i].action_category_title		   << "\",";
-							ostResult << "\"actionCategoryTitleMale\":\"" << itemsList[i].action_category_title_male	<< "\",";
-							ostResult << "\"actionCategoryTitleFemale\":\""<< itemsList[i].action_category_title_female   << "\",";
-							ostResult << "\"actionTypesTitle\":\""  << itemsList[i].action_types_title			  << "\",";
-							ostResult << "\"actionTypesTitleMale\":\""<< itemsList[i].action_types_title_male		 << "\",";
-							ostResult << "\"actionTypesTitleFemale\":\""<< itemsList[i].action_types_title_female	 << "\",";
-							ostResult << "\"actionTypesId\":\""   << itemsList[i].feed_actionTypeId << "\",";
-							ostResult << "\"actionID\":\""		  << itemsList[i].feed_actionId << "\",";
-							ostResult << "\"eventTimestamp\":\""	<< itemsList[i].feed_eventTimestamp << "\",";
-							ostResult << "\"eventTimestampDelta\":\"" << to_string(GetTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp)) << "\"";
-							ostResult << "}";
-						}
-						else
-						{
-							CLog	log;
-							MESSAGE_DEBUG("", "", "`group`.`id` [" + groupID + "] blocked");
-						}
-					}
-					else
-					{
-						CLog	log;
-						log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: `group`.`id` [" + groupID + "] not found");
-					}
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: `group`.`id` [" + groupID + "] is empty");
-				}
-			}
-			else if(feedActionTypeId == "63")
-			{
-				// --- group created / subscribed
-				string  companyID = feedActionId;
-
-				if(companyID.length() && db->Query("SELECT * FROM `company` WHERE `id`=\"" + companyID + "\" AND `isBlocked`=\"N\";"))
-				{
-					if(ostResult.str().length() > 10) ostResult << ",";
-
-					ostResult << "{";
-					ostResult << "\"companies\":["		<< GetCompanyListInJSONFormat("SELECT * FROM `company` WHERE `id`=\"" + companyID + "\" AND `isBlocked`=\"N\";", db, user) << "],";
-					ostResult << "\"avatar\":\""		<< srcAvatarPath << "\",";
-					ostResult << "\"srcObj\":{"			<< messageSrcObject << "},";
-					ostResult << "\"messageOwner\":{"	<< messageSrcObject << "},";
-					ostResult << "\"actionCategoryTitle\":\"" << itemsList[i].action_category_title		   << "\",";
-					ostResult << "\"actionCategoryTitleMale\":\"" << itemsList[i].action_category_title_male	<< "\",";
-					ostResult << "\"actionCategoryTitleFemale\":\""<< itemsList[i].action_category_title_female   << "\",";
-					ostResult << "\"actionTypesTitle\":\""  << itemsList[i].action_types_title			  << "\",";
-					ostResult << "\"actionTypesTitleMale\":\""<< itemsList[i].action_types_title_male		 << "\",";
-					ostResult << "\"actionTypesTitleFemale\":\""<< itemsList[i].action_types_title_female	 << "\",";
-					ostResult << "\"actionTypesId\":\""   << itemsList[i].feed_actionTypeId << "\",";
-					ostResult << "\"actionID\":\""		  << itemsList[i].feed_actionId << "\",";
-					ostResult << "\"eventTimestamp\":\""	<< itemsList[i].feed_eventTimestamp << "\",";
-					ostResult << "\"eventTimestampDelta\":\"" << to_string(GetTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp)) << "\"";
-					ostResult << "}";
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: books_id [" + companyID + "] not found");
-				}
-			}
-			else if(feedActionTypeId == "22")
-			{
-				// --- cretificate received
-
-				if(db->Query("SELECT * FROM `users_certifications` WHERE `id`=\"" + feedActionId + "\";"))
-				{
-					string  certificationNumber = "";
-					string  certificationTrackID = "";
-					string  certifiedUserID = "";
-					string  usersCertificationID = "";
-
-					usersCertificationID = db->Get(0, "id");
-					certificationNumber = db->Get(0, "certification_number");
-					certificationTrackID = db->Get(0, "track_id");
-					certifiedUserID = db->Get(0, "user_id");
-
-					if(certificationTrackID.length() && db->Query("SELECT * FROM `certification_tracks` WHERE `id`=\"" + certificationTrackID + "\";"))
-					{
-						string  certificationVendorID = db->Get(0, "vendor_id");
-						string  certificationVendorName = "";
-						string  certificationTrackTitle = db->Get(0, "title");
-						string  certificationVendorLogoFolder = db->Get(0, "logo_folder");
-						string  certificationVendorLogoFilename = db->Get(0, "logo_filename");
-						string  messageParamLikesUserList = GetCertificationLikesUsersList(usersCertificationID, user, db);
-						string  messageParamCommentsCount = GetCertificateCommentsCount(certificationTrackID, db);
-
-						if(certificationVendorID.length() && db->Query("SELECT * FROM `company` WHERE `id`=\"" + certificationVendorID + "\";"))
-							certificationVendorName = db->Get(0, "name");
-						else
-						{
-							CLog	log;
-							log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: certification vendor [" + certificationVendorID + "] not found");
-						}
-
-						if(ostResult.str().length() > 10) ostResult << ",";
-
-						ostResult << "{";
-
-						ostResult << "\"certificationID\":\"" << usersCertificationID << "\",";
-						ostResult << "\"certificationTrackID\":\"" << certificationTrackID << "\",";
-						ostResult << "\"certificationNumber\":\"" << certificationNumber << "\",";
-						ostResult << "\"certificationVendorID\":\"" << certificationVendorID << "\",";
-						ostResult << "\"certificationVendorName\":\"" << certificationVendorName << "\",";
-						ostResult << "\"certificationTrackTitle\":\"" << certificationTrackTitle << "\",";
-						ostResult << "\"certificationVendorLogoFolder\":\""<< certificationVendorLogoFolder << "\",";
-						ostResult << "\"certificationVendorLogoFilename\":\""<< certificationVendorLogoFilename << "\",";
-
-						ostResult << "\"certificationCommentsCount\":\"" << messageParamCommentsCount << "\",";
-						ostResult << "\"messageLikesUserList\":[" << messageParamLikesUserList << "],";
-
-						ostResult << "\"avatar\":\""			<< srcAvatarPath << "\",";
-						ostResult << "\"srcObj\":{"			 << messageSrcObject << "},";
-						ostResult << "\"messageOwner\":{" << messageSrcObject << "},";
-						ostResult << "\"actionCategoryTitle\":\"" << itemsList[i].action_category_title		   << "\",";
-						ostResult << "\"actionCategoryTitleMale\":\"" << itemsList[i].action_category_title_male	<< "\",";
-						ostResult << "\"actionCategoryTitleFemale\":\""<< itemsList[i].action_category_title_female   << "\",";
-						ostResult << "\"actionTypesTitle\":\""  << itemsList[i].action_types_title			  << "\",";
-						ostResult << "\"actionTypesTitleMale\":\""<< itemsList[i].action_types_title_male		 << "\",";
-						ostResult << "\"actionTypesTitleFemale\":\""<< itemsList[i].action_types_title_female	 << "\",";
-						ostResult << "\"actionTypesId\":\""   << itemsList[i].feed_actionTypeId << "\",";
-						ostResult << "\"eventTimestamp\":\""	<< itemsList[i].feed_eventTimestamp << "\",";
-						ostResult << "\"eventTimestampDelta\":\"" << to_string(GetTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp)) << "\"";
-						ostResult << "}";
-					}
-					else
-					{
-						CLog	log;
-						log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: certification track [" + certificationTrackID + "] not found");
-					}
-
-
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: users_certification_id [" + feedActionId + "] not found");
-				}
-
-			}
-			else if(feedActionTypeId == "23")
-			{
-				// --- course received
-
-				if(db->Query("SELECT * FROM `users_courses` WHERE `id`=\"" + feedActionId + "\";"))
-				{
-					string  courseTrackID = "";
-					string  courseUserID = "";
-					string  courseMyRating = "0";
-					string  usersCourseID = "";
-					string  eventTimestamp = "";
-
-					usersCourseID = db->Get(0, "id");
-					courseTrackID = db->Get(0, "track_id");
-					courseUserID = db->Get(0, "user_id");
-					eventTimestamp = db->Get(0, "eventTimestamp");
-
-					if(courseTrackID.length() && db->Query("SELECT * FROM `certification_tracks` WHERE `id`=\"" + courseTrackID + "\";"))
-					{
-						string  courseVendorID = db->Get(0, "vendor_id");
-						string  courseVendorName = "";
-						string  courseTrackTitle = db->Get(0, "title");
-						string  courseVendorLogoFolder = db->Get(0, "logo_folder");
-						string  courseVendorLogoFilename = db->Get(0, "logo_filename");
-						string  courseRatingList =			GetCourseRatingList(courseTrackID, db);
-						string  messageParamLikesUserList = GetCourseLikesUsersList(usersCourseID, user, db);
-						string  messageParamCommentsCount = GetCertificateCommentsCount(courseTrackID, db);
-
-						if(courseVendorID.length() && db->Query("SELECT * FROM `company` WHERE `id`=\"" + courseVendorID + "\";"))
-							courseVendorName = db->Get(0, "name");
-						else
-						{
-							CLog	log;
-							log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: course vendor [" + courseVendorID + "] not found");
-						}
-
-						if(db->Query("SELECT * FROM `users_courses` WHERE `user_id`=\"" + user->GetID() + "\" AND `track_id`=\"" + courseTrackID + "\";"))
-							courseMyRating = db->Get(0, "rating");
-
-						if(ostResult.str().length() > 10) ostResult << ",";
-
-						ostResult << "{";
-
-						ostResult << "\"courseID\":\""		  << courseTrackID << "\",";
-						ostResult << "\"usersCourseID\":\""   << usersCourseID << "\",";
-						ostResult << "\"courseTrackID\":\""   << courseTrackID << "\",";
-						ostResult << "\"courseVendorID\":\""	<< courseVendorID << "\",";
-						ostResult << "\"courseVendorName\":\""  << courseVendorName << "\",";
-						ostResult << "\"courseTrackTitle\":\""  << courseTrackTitle << "\",";
-						ostResult << "\"courseVendorLogoFolder\":\""<< courseVendorLogoFolder << "\",";
-						ostResult << "\"courseVendorLogoFilename\":\""<< courseVendorLogoFilename << "\",";
-						ostResult << "\"courseMyRating\":\""	<< courseMyRating << "\",";
-						ostResult << "\"courseRatingList\":["  << courseRatingList << "],";
-						ostResult << "\"courseEventTimestamp\":\""<< eventTimestamp << "\",";
-
-						ostResult << "\"courseCommentsCount\":\"" << messageParamCommentsCount << "\",";
-						ostResult << "\"messageLikesUserList\":[" << messageParamLikesUserList << "],";
-
-						ostResult << "\"avatar\":\""			<< srcAvatarPath << "\",";
-						ostResult << "\"srcObj\":{"			 << messageSrcObject << "},";
-						ostResult << "\"messageOwner\":{" << messageSrcObject << "},";
-						ostResult << "\"actionCategoryTitle\":\"" << itemsList[i].action_category_title		   << "\",";
-						ostResult << "\"actionCategoryTitleMale\":\"" << itemsList[i].action_category_title_male	<< "\",";
-						ostResult << "\"actionCategoryTitleFemale\":\""<< itemsList[i].action_category_title_female   << "\",";
-						ostResult << "\"actionTypesTitle\":\""  << itemsList[i].action_types_title			  << "\",";
-						ostResult << "\"actionTypesTitleMale\":\""<< itemsList[i].action_types_title_male		 << "\",";
-						ostResult << "\"actionTypesTitleFemale\":\""<< itemsList[i].action_types_title_female	 << "\",";
-						ostResult << "\"actionTypesId\":\""   << itemsList[i].feed_actionTypeId << "\",";
-						ostResult << "\"eventTimestamp\":\""	<< itemsList[i].feed_eventTimestamp << "\",";
-						ostResult << "\"eventTimestampDelta\":\"" << to_string(GetTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp)) << "\"";
-						ostResult << "}";
-					}
-					else
-					{
-						CLog	log;
-						log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: course track [" + courseTrackID + "] not found");
-					}
-
-
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: users_course_id [" + feedActionId + "] not found");
-				}
-
-			}
-			else if(feedActionTypeId == "39")
-			{
-				// --- university degree received
-
-				if(db->Query("SELECT * FROM `users_university` WHERE `id`=\"" + feedActionId + "\";"))
-				{
-					string  scienceDegreeTitle = "";
-					string  scienceDegreeUniversityID = "";
-					string  scienceDegreeStart = "";
-					string  scienceDegreeFinish = "";
-					string  degreedUserID = "";
-					string  usersUniversityDegreeID = "";
-
-					usersUniversityDegreeID = db->Get(0, "id");
-					degreedUserID = db->Get(0, "user_id");
-					scienceDegreeUniversityID = db->Get(0, "university_id");
-					scienceDegreeTitle = db->Get(0, "degree");
-					scienceDegreeStart = db->Get(0, "occupation_start");
-					scienceDegreeFinish = db->Get(0, "occupation_finish");
-
-					if(scienceDegreeUniversityID.length() && db->Query("SELECT * FROM `university` WHERE `id`=\"" + scienceDegreeUniversityID + "\";"))
-					{
-						string  scienceDegreeUniversityID = db->Get(0, "id");
-						string  scienceDegreeUniversityTitle = db->Get(0, "title");
-						string  scienceDegreeUniversityRegionID = db->Get(0, "geo_region_id");
-						string  scienceDegreeUniversityRegionTitle = "";
-						string  scienceDegreeUniversityCountryID = "";
-						string  scienceDegreeUniversityCountryTitle = "";
-						string  scienceDegreeUniversityLogoFolder = db->Get(0, "logo_folder");
-						string  scienceDegreeUniversityLogoFilename = db->Get(0, "logo_filename");
-
-						if(scienceDegreeUniversityRegionID.length() && db->Query("SELECT * FROM `geo_region` WHERE `id`=\"" + scienceDegreeUniversityRegionID + "\";"))
-						{
-							scienceDegreeUniversityRegionTitle = db->Get(0, "title");
-							scienceDegreeUniversityCountryID = db->Get(0, "geo_country_id");
-							if(scienceDegreeUniversityCountryID.length() && db->Query("SELECT * FROM `geo_country` WHERE `id`=\"" + scienceDegreeUniversityCountryID + "\";"))
-							{
-								scienceDegreeUniversityCountryTitle = db->Get(0, "title");
-							}
-							else
-							{
-								CLog	log;
-								log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]: university [" + scienceDegreeUniversityID + "] geo_region [" + scienceDegreeUniversityRegionID + "] geo_country [" + scienceDegreeUniversityCountryID + "] not found");
-							}
-
-						}
-						else
-						{
-							CLog	log;
-							log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]: university [" + scienceDegreeUniversityID + "] geo_region [" + scienceDegreeUniversityRegionID + "] not found");
-						}
-
-						{
-							string  messageParamLikesUserList = GetUniversityDegreeLikesUsersList(usersUniversityDegreeID, user, db);
-							string  messageParamCommentsCount = GetUniversityDegreeCommentsCount(scienceDegreeUniversityID, db);
-
-							if(ostResult.str().length() > 10) ostResult << ",";
-
-							ostResult << "{";
-
-							ostResult << "\"scienceDegreeID\":\"" << usersUniversityDegreeID << "\",";
-							ostResult << "\"scienceDegreeTitle\":\"" << scienceDegreeTitle << "\",";
-							ostResult << "\"scienceDegreeUniversityTitle\":\"" << scienceDegreeUniversityTitle << "\",";
-							ostResult << "\"scienceDegreeUniversityID\":\"" << scienceDegreeUniversityID << "\",";
-							ostResult << "\"scienceDegreeUniversityRegionID\":\"" << scienceDegreeUniversityRegionID << "\",";
-							ostResult << "\"scienceDegreeUniversityRegionTitle\":\"" << scienceDegreeUniversityRegionTitle << "\",";
-							ostResult << "\"scienceDegreeUniversityCountryID\":\"" << scienceDegreeUniversityCountryID << "\",";
-							ostResult << "\"scienceDegreeUniversityCountryTitle\":\"" << scienceDegreeUniversityCountryTitle << "\",";
-							ostResult << "\"scienceDegreeUniversityLogoFolder\":\""<< scienceDegreeUniversityLogoFolder << "\",";
-							ostResult << "\"scienceDegreeUniversityLogoFilename\":\""<< scienceDegreeUniversityLogoFilename << "\",";
-							ostResult << "\"scienceDegreeStart\":\""<< scienceDegreeStart << "\",";
-							ostResult << "\"scienceDegreeFinish\":\""<< scienceDegreeFinish << "\",";
-
-							ostResult << "\"scienceDegreeCommentsCount\":\"" << messageParamCommentsCount << "\",";
-							ostResult << "\"messageLikesUserList\":[" << messageParamLikesUserList << "],";
-
-							ostResult << "\"avatar\":\""			<< srcAvatarPath << "\",";
-							ostResult << "\"srcObj\":{"			 << messageSrcObject << "},";
-							ostResult << "\"messageOwner\":{" << messageSrcObject << "},";
-							ostResult << "\"actionCategoryTitle\":\"" << itemsList[i].action_category_title		   << "\",";
-							ostResult << "\"actionCategoryTitleMale\":\"" << itemsList[i].action_category_title_male	<< "\",";
-							ostResult << "\"actionCategoryTitleFemale\":\""<< itemsList[i].action_category_title_female   << "\",";
-							ostResult << "\"actionTypesTitle\":\""  << itemsList[i].action_types_title			  << "\",";
-							ostResult << "\"actionTypesTitleMale\":\""<< itemsList[i].action_types_title_male		 << "\",";
-							ostResult << "\"actionTypesTitleFemale\":\""<< itemsList[i].action_types_title_female	 << "\",";
-							ostResult << "\"actionTypesId\":\""   << itemsList[i].feed_actionTypeId << "\",";
-							ostResult << "\"eventTimestamp\":\""	<< itemsList[i].feed_eventTimestamp << "\",";
-							ostResult << "\"eventTimestampDelta\":\"" << to_string(GetTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp)) << "\"";
-							ostResult << "}";
-						}
-
-					}
-					else
-					{
-						CLog	log;
-						log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: university ID [" + scienceDegreeUniversityID + "] not found");
-					}
-
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: users_university_id [" + feedActionId + "] not found");
-				}
-			}
-			else if(feedActionTypeId == "40")
-			{
-				// --- language improved
-
-				if(db->Query("SELECT * FROM `users_language` WHERE `id`=\"" + feedActionId + "\";"))
-				{
-					string  usersLanguageID = "";
-					string  languageID = "";
-					string  languageUserID = "";
-					string  languageLevel = "";
-
-					usersLanguageID = db->Get(0, "id");
-					languageID = db->Get(0, "language_id");
-					languageUserID = db->Get(0, "user_id");
-					languageLevel = db->Get(0, "level");
-
-					if(languageID.length() && db->Query("SELECT * FROM `language` WHERE `id`=\"" + languageID + "\";"))
-					{
-						string  languageTitle = db->Get(0, "title");
-						string  languageLogoFolder = db->Get(0, "logo_folder");
-						string  languageLogoFilename = db->Get(0, "logo_filename");
-						string  messageParamLikesUserList = GetLanguageLikesUsersList(usersLanguageID, user, db);
-						string  messageParamCommentsCount = GetLanguageCommentsCount(languageID, db);
-
-						if(ostResult.str().length() > 10) ostResult << ",";
-
-						ostResult << "{";
-
-						ostResult << "\"languageID\":\""		  << languageID << "\",";
-						ostResult << "\"usersLanguageID\":\""   << usersLanguageID << "\",";
-						ostResult << "\"languageTitle\":\""   << languageTitle << "\",";
-						ostResult << "\"languageLogoFolder\":\""<< languageLogoFolder << "\",";
-						ostResult << "\"languageLogoFilename\":\""<< languageLogoFilename << "\",";
-						ostResult << "\"languageLevel\":\""  << languageLevel << "\",";
-
-						ostResult << "\"languageCommentsCount\":\"" << messageParamCommentsCount << "\",";
-						ostResult << "\"messageLikesUserList\":[" << messageParamLikesUserList << "],";
-
-						ostResult << "\"avatar\":\""			<< srcAvatarPath << "\",";
-						ostResult << "\"srcObj\":{"			 << messageSrcObject << "},";
-						ostResult << "\"messageOwner\":{" << messageSrcObject << "},";
-						ostResult << "\"actionCategoryTitle\":\"" << itemsList[i].action_category_title		   << "\",";
-						ostResult << "\"actionCategoryTitleMale\":\"" << itemsList[i].action_category_title_male	<< "\",";
-						ostResult << "\"actionCategoryTitleFemale\":\""<< itemsList[i].action_category_title_female   << "\",";
-						ostResult << "\"actionTypesTitle\":\""  << itemsList[i].action_types_title			  << "\",";
-						ostResult << "\"actionTypesTitleMale\":\""<< itemsList[i].action_types_title_male		 << "\",";
-						ostResult << "\"actionTypesTitleFemale\":\""<< itemsList[i].action_types_title_female	 << "\",";
-						ostResult << "\"actionTypesId\":\""   << itemsList[i].feed_actionTypeId << "\",";
-						ostResult << "\"eventTimestamp\":\""	<< itemsList[i].feed_eventTimestamp << "\",";
-						ostResult << "\"eventTimestampDelta\":\"" << to_string(GetTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp)) << "\"";
-						ostResult << "}";
-					}
-					else
-					{
-						CLog	log;
-						log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: language[" + languageID + "] not found");
-					}
-
-
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: users_language_id [" + feedActionId + "] not found");
-				}
-
-			}
-			else if(feedActionTypeId == "1")
-			{
-				// --- change employment
-
-				if(db->Query("SELECT * FROM `users_company` WHERE `id`=\"" + feedActionId + "\";"))
-				{
-					string  usersCompanyID = "";
-					string  companyID = "";
-					string  companyUserID = "";
-					string  companyPositionTitleID = "";
-
-					usersCompanyID = db->Get(0, "id");
-					companyID = db->Get(0, "company_id");
-					companyUserID = db->Get(0, "user_id");
-					companyPositionTitleID = db->Get(0, "position_title_id");
-
-					if(companyID.length() && db->Query("SELECT * FROM `company` WHERE `id`=\"" + companyID + "\";"))
-					{
-						string  companyTitle = db->Get(0, "name");
-						string  companyLogoFolder = db->Get(0, "logo_folder");
-						string  companyLogoFilename = db->Get(0, "logo_filename");
-						string  companyPositionTitle = "";
-						string  messageParamLikesUserList = GetCompanyLikesUsersList(usersCompanyID, user, db);
-						string  messageParamCommentsCount = GetCompanyCommentsCount(companyID, db);
-
-						if(companyPositionTitleID.length() && db->Query("SELECT * FROM `company_position` WHERE `id`=\"" + companyPositionTitleID + "\";"))
-							companyPositionTitle = db->Get(0, "title");
-
-						if(ostResult.str().length() > 10) ostResult << ",";
-
-						ostResult << "{";
-
-						ostResult << "\"companyID\":\""		<< companyID << "\",";
-						ostResult << "\"usersCompanyID\":\""	 << usersCompanyID << "\",";
-						ostResult << "\"companyTitle\":\""  << companyTitle << "\",";
-						ostResult << "\"companyLogoFolder\":\""<< companyLogoFolder << "\",";
-						ostResult << "\"companyLogoFilename\":\""<< companyLogoFilename << "\",";
-						ostResult << "\"companyPositionTitleID\":\""	<< companyPositionTitleID << "\",";
-						ostResult << "\"companyPositionTitle\":\""	<< companyPositionTitle << "\",";
-
-						ostResult << "\"companyCommentsCount\":\"" << messageParamCommentsCount << "\",";
-						ostResult << "\"messageLikesUserList\":[" << messageParamLikesUserList << "],";
-
-						ostResult << "\"avatar\":\""			<< srcAvatarPath << "\",";
-						ostResult << "\"srcObj\":{"			 << messageSrcObject << "},";
-						ostResult << "\"messageOwner\":{" << messageSrcObject << "},";
-						ostResult << "\"actionCategoryTitle\":\"" << itemsList[i].action_category_title		   << "\",";
-						ostResult << "\"actionCategoryTitleMale\":\"" << itemsList[i].action_category_title_male	<< "\",";
-						ostResult << "\"actionCategoryTitleFemale\":\""<< itemsList[i].action_category_title_female   << "\",";
-						ostResult << "\"actionTypesTitle\":\""  << itemsList[i].action_types_title			  << "\",";
-						ostResult << "\"actionTypesTitleMale\":\""<< itemsList[i].action_types_title_male		 << "\",";
-						ostResult << "\"actionTypesTitleFemale\":\""<< itemsList[i].action_types_title_female	 << "\",";
-						ostResult << "\"actionTypesId\":\""   << itemsList[i].feed_actionTypeId << "\",";
-						ostResult << "\"eventTimestamp\":\""	<< itemsList[i].feed_eventTimestamp << "\",";
-						ostResult << "\"eventTimestampDelta\":\"" << to_string(GetTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp)) << "\"";
-						ostResult << "}";
-					}
-					else
-					{
-						CLog	log;
-						log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: company[" + companyID + "] not found");
-					}
-
-
-				}
-				else
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: users_company_id [" + feedActionId + "] not found");
-				}
-
-			}
-			else
-			{
-
-				if(ostResult.str().length() > 10) ostResult << ",";
-
-				ostResult << "{";
-				ostResult << "\"avatar\":\""			  << srcAvatarPath															<< "\",";
-				ostResult << "\"srcObj\":{"	<< messageSrcObject << "},";
-				ostResult << "\"actionCategoryTitle\":\"" << itemsList[i].action_category_title		   << "\",";
-				ostResult << "\"actionCategoryTitleMale\":\"" << itemsList[i].action_category_title_male	<< "\",";
-				ostResult << "\"actionCategoryTitleFemale\":\""<< itemsList[i].action_category_title_female   << "\",";
-				ostResult << "\"actionTypesTitle\":\""  << itemsList[i].action_types_title			  << "\",";
-				ostResult << "\"actionTypesTitleMale\":\""<< itemsList[i].action_types_title_male		 << "\",";
-				ostResult << "\"actionTypesTitleFemale\":\""<< itemsList[i].action_types_title_female	 << "\",";
-				ostResult << "\"actionTypesId\":\""	<< itemsList[i].feed_actionTypeId										   << "\",";
-				ostResult << "\"eventTimestamp\":\""	  << itemsList[i].feed_eventTimestamp										<< "\",";
-				// ostResult << "\"eventTimestampDelta\":\""  << GetHumanReadableTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp)   << "\"";
-				ostResult << "\"eventTimestampDelta\":\"" << to_string(GetTimeDifferenceFromNow(itemsList[i].feed_eventTimestamp))  << "\"";
-				ostResult << "}";
-
-				// if(i < (affected - 1)) ostResult << ",";
-			}
-		}
-
-		return ostResult.str();
-}
-*/
-
-string GetUnreadChatMessagesInJSONFormat(CUser *user, CMysql *db)
-{
-	ostringstream	result, ost;
-	int				affected;
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	result.str("");
-
-	ost.str("");
-	ost << "select * from `chat_messages` where `toID`='" << user->GetID() << "' and (`messageStatus`='unread' or `messageStatus`='delivered' or `messageStatus`='sent');";
-	affected = db->Query(ost.str());
-	if(affected)
-	{
-		for(int i = 0; i < affected; i++)
-		{
-			result << (i ? "," : "") << "{\
-				\"id\": \""					<< db->Get(i, "id") << "\", \
-				\"message\": \"" 			<< ReplaceDoubleQuoteToQuote(db->Get(i, "message")) << "\", \
-				\"fromType\": \"" 			<< db->Get(i, "fromType") << "\",\
-				\"fromID\": \""				<< db->Get(i, "fromID") << "\",\
-				\"toType\": \""			 	<< db->Get(i, "toType") << "\",\
-				\"toID\": \""	 			<< db->Get(i, "toID") << "\",\
-				\"messageType\": \""		<< db->Get(i, "messageType") << "\",\
-				\"messageStatus\": \""		<< db->Get(i, "messageStatus") << "\",\
-				\"eventTimestamp\": \""		<< db->Get(i, "eventTimestamp") << "\"\
-			}";
-		}
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish");
-	}
-
-	return	result.str();
-}
-
-
-// --- Function returns list of images belongs to imageSet
-// --- input: imageSetID, db
-// --- output: list of image objects
-string GetMessageImageList(string imageSetID, CMysql *db)
-{
-	ostringstream	ost;
-	string		  result = "";
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	if(imageSetID != "0")
-	{
-		int				affected;
-
-		ost.str("");
-		ost << "select * from `feed_images` where `setID`='" << imageSetID << "';";
-		affected = db->Query(ost.str());
-		if(affected > 0)
-		{
-			ost.str("");
-			for(int i = 0; i < affected; i++)
-			{
-				if(i > 0) ost << "," << std::endl;
-				ost << "{";
-				ost << "\"id\":\"" << db->Get(i, "id") << "\",";
-				ost << "\"folder\":\"" << db->Get(i, "folder") << "\",";
-				ost << "\"filename\":\"" << db->Get(i, "filename") << "\",";
-				ost << "\"mediaType\":\"" << db->Get(i, "mediaType") << "\",";
-				ost << "\"isActive\":\"" << db->Get(i, "isActive") << "\"";
-				ost << "}";
-			}
-
-			result = ost.str();
-		}
-	}
-
-	{
-		CLog			log;
-		ostringstream	ost;
-
-		ost.str();
-		ost <<  "GetMessageImageList: end. returning string length " << result.length();
-		log.Write(DEBUG, ost.str());
-	}
-
-	return result;
-}
-
-string GetCompanyPositionIDByTitle(string positionTitle, CMysql *db)
-{
-	ostringstream   ost;
-	string		  	result = "";
-	string			positionID = "";
-
-	MESSAGE_DEBUG("", "", "start");
-
-	if(positionTitle.length())
-	{
-		if(db->Query("SELECT `id` FROM `company_position` WHERE `title`=\"" + positionTitle + "\";"))
-		{
-			positionID = db->Get(0, "id");
-		}
-		else
-		{
-			long int 	tmp;
-
-			MESSAGE_DEBUG("", "", "company position not found. Creating new one.");
-
-			tmp = db->InsertQuery("INSERT INTO `company_position` SET `area`=\"\", `title`=\"" + positionTitle + "\";");
-			if(tmp)
-				positionID = to_string(tmp);
-			else
-			{
-				MESSAGE_ERROR("", "", "fail to insert to company_position table");
-			}
-		}
-	}
-	else
-	{
-		MESSAGE_DEBUG("", "", "positionTitle is empty");
-	}
-
-	result = positionID;
-
-	MESSAGE_DEBUG("", "", "finish (returning string length " + to_string(result.length()) + ")");
-
-	return result;
-}
-
-string GetLanguageIDByTitle(string languageTitle, CMysql *db)
-{
-	ostringstream   ost;
-	string		  	result = "";
-	string			languageID = "0";
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	if(languageTitle.length())
-	{
-		if(db->Query("SELECT `id` FROM `language` WHERE `title`=\"" + languageTitle + "\";"))
-		{
-			languageID = db->Get(0, "id");
-		}
-		else
-		{
-			long int 	tmp;
-			{
-				CLog			log;
-				MESSAGE_DEBUG("", "", "languageTitle [" + languageTitle + "] not found. Creating new one.");
-			}
-
-			tmp = db->InsertQuery("INSERT INTO `language` SET `title`=\"" + languageTitle + "\";");
-			if(tmp)
-				languageID = to_string(tmp);
-			else
-			{
-				CLog			log;
-				log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: insert into language");
-			}
-		}
-	}
-	else
-	{
-		{
-			CLog			log;
-			MESSAGE_DEBUG("", "", "languageTitle is empty");
-		}
-	}
-
-	result = languageID;
-
-	{
-		CLog			log;
-		MESSAGE_DEBUG("", "", "finish (returning string length " + to_string(result.length()) + ")");
-	}
-
-
-	return result;
-}
-
-string GetSkillIDByTitle(string skillTitle, CMysql *db)
-{
-	ostringstream   ost;
-	string		  	result = "";
-	string			languageID = "0";
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	if(skillTitle.length())
-	{
-		if(db->Query("SELECT `id` FROM `skill` WHERE `title`=\"" + skillTitle + "\";"))
-		{
-			languageID = db->Get(0, "id");
-		}
-		else
-		{
-			long int 	tmp;
-			{
-				CLog			log;
-				MESSAGE_DEBUG("", "", "skillTitle [" + skillTitle + "] not found. Creating new one.");
-			}
-
-			tmp = db->InsertQuery("INSERT INTO `skill` SET `title`=\"" + skillTitle + "\";");
-			if(tmp)
-				languageID = to_string(tmp);
-			else
-			{
-				CLog			log;
-				log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: insert into skill");
-			}
-		}
-	}
-	else
-	{
-		{
-			CLog			log;
-			MESSAGE_DEBUG("", "", "skillTitle is empty");
-		}
-	}
-
-	result = languageID;
-
-	{
-		CLog			log;
-		MESSAGE_DEBUG("", "", "finish (returning string length " + to_string(result.length()) + ")");
-	}
-
-	return result;
-}
-
 string GetGeoLocalityIDByCityAndRegion(string regionName, string cityName, CMysql *db)
 {
 	ostringstream   ost;
 	string		 	result = "";
 	string			regionID = "", cityID = "";
 
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	if(regionName.length())
 	{
@@ -3052,10 +1161,8 @@ string GetGeoLocalityIDByCityAndRegion(string regionName, string cityName, CMysq
 		else
 		{
 			long int 	tmp;
-			{
-				CLog			log;
-				MESSAGE_DEBUG("", "", "region[" + regionName + "] not found. Creating new one.");
-			}
+
+			MESSAGE_DEBUG("", "", "region[" + regionName + "] not found. Creating new one.");
 
 			tmp = db->InsertQuery("INSERT INTO `geo_region` SET `geo_country_id`=\"0\", `title`=\"" + regionName + "\";");
 			if(tmp)
@@ -3069,10 +1176,7 @@ string GetGeoLocalityIDByCityAndRegion(string regionName, string cityName, CMysq
 	}
 	else
 	{
-		{
-			CLog			log;
-			MESSAGE_DEBUG("", "", "regionName is empty");
-		}
+		MESSAGE_DEBUG("", "", "regionName is empty");
 	}
 
 	if(cityName.length())
@@ -3084,10 +1188,8 @@ string GetGeoLocalityIDByCityAndRegion(string regionName, string cityName, CMysq
 		else
 		{
 			long int 	tmp;
-			{
-				CLog			log;
-				MESSAGE_DEBUG("", "", "region[" + cityName + "] not found. Creating new one.");
-			}
+
+			MESSAGE_DEBUG("", "", "region[" + cityName + "] not found. Creating new one.");
 
 			tmp = db->InsertQuery("INSERT INTO `geo_locality` SET " + (regionID.length() ? "`geo_region_id`=\"" + regionID + "\"," : "") + " `title`=\"" + cityName + "\";");
 			if(tmp)
@@ -3102,282 +1204,10 @@ string GetGeoLocalityIDByCityAndRegion(string regionName, string cityName, CMysq
 	}
 	else
 	{
-		{
-			CLog			log;
-			MESSAGE_DEBUG("", "", "cityName is empty");
-		}
+		MESSAGE_DEBUG("", "", "cityName is empty");
 	}
 
-	{
-		CLog			log;
-		MESSAGE_DEBUG("", "", "finish (returning string length " + to_string(result.length()) + ")");
-	}
-
-	return result;
-}
-
-// --- Function returns array of book rating
-// --- input: bookID, db
-// --- output: book rating array
-string GetBookRatingList(string bookID, CMysql *db)
-{
-	int			 affected;
-	string		  result = "";
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	affected = db->Query("select * from `users_books` where `bookID`=\"" + bookID + "\";");
-	if(affected > 0)
-	{
-		for(int i = 0; i < affected; ++i)
-		{
-			if(i) result += ",";
-			result += db->Get(i, "rating");
-		}
-	}
-
-	{
-		CLog			log;
-		MESSAGE_DEBUG("", "", "finish (returning string length " + to_string(result.length()) + ")");
-	}
-
-	return result;
-}
-
-// --- Function returns array of course rating
-// --- input: courseID, db
-// --- output: course rating array
-string GetCourseRatingList(string courseID, CMysql *db)
-{
-	int				affected;
-	string			result = "";
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	affected = db->Query("select * from `users_courses` where `track_id`=\"" + courseID + "\";");
-	if(affected > 0)
-	{
-		for(int i = 0; i < affected; ++i)
-		{
-			if(i) result += ",";
-			result += db->Get(i, "rating");
-		}
-	}
-
-	{
-		CLog			log;
-		MESSAGE_DEBUG("", "", "finish (returning string length " + to_string(result.length()) + ")");
-	}
-
-	return result;
-}
-
-string GetMessageCommentsCount(string messageID, CMysql *db)
-{
-	ostringstream   ost;
-	int			 affected;
-	string		  result = "0";
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ost.str("");
-	ost << "select count(*) as `counter` from `feed_message_comment` where `type`=\"message\" and `messageID`='" << messageID << "';";
-	affected = db->Query(ost.str());
-	if(affected > 0)
-	{
-		result = db->Get(0, "counter");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish");
-	}
-
-	return result;
-}
-
-string GetCompanyCommentsCount(string messageID, CMysql *db)
-{
-	ostringstream   ost;
-	int			 affected;
-	string		  result = "0";
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ost.str("");
-	ost << "select count(*) as `counter` from `feed_message_comment` where `type`=\"company\" and `messageID`='" << messageID << "';";
-	affected = db->Query(ost.str());
-	if(affected > 0)
-	{
-		result = db->Get(0, "counter");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish");
-	}
-
-	return result;
-}
-
-string GetLanguageCommentsCount(string messageID, CMysql *db)
-{
-	ostringstream   ost;
-	int			 affected;
-	string		  result = "0";
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ost.str("");
-	ost << "select count(*) as `counter` from `feed_message_comment` where `type`=\"language\" and `messageID`='" << messageID << "';";
-	affected = db->Query(ost.str());
-	if(affected > 0)
-	{
-		result = db->Get(0, "counter");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish");
-	}
-
-	return result;
-}
-
-string GetBookCommentsCount(string messageID, CMysql *db)
-{
-	ostringstream   ost;
-	int			 affected;
-	string		  result = "0";
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ost.str("");
-	ost << "select count(*) as `counter` from `feed_message_comment` where `type`=\"book\" and `messageID`='" << messageID << "';";
-	affected = db->Query(ost.str());
-	if(affected > 0)
-	{
-		result = db->Get(0, "counter");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish");
-	}
-
-	return result;
-}
-
-string GetCertificateCommentsCount(string messageID, CMysql *db)
-{
-	ostringstream   ost;
-	int			 affected;
-	string		  result = "0";
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ost.str("");
-	ost << "select count(*) as `counter` from `feed_message_comment` where `type` in (\"certification\", \"course\") and `messageID`='" << messageID << "';";
-	affected = db->Query(ost.str());
-	if(affected > 0)
-	{
-		result = db->Get(0, "counter");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish");
-	}
-
-	return result;
-}
-
-string GetUniversityDegreeCommentsCount(string messageID, CMysql *db)
-{
-	ostringstream   ost;
-	int			 affected;
-	string		  result = "0";
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ost.str("");
-	ost << "select count(*) as `counter` from `feed_message_comment` where `type`=\"university\" and `messageID`='" << messageID << "';";
-	affected = db->Query(ost.str());
-	if(affected > 0)
-	{
-		result = db->Get(0, "counter");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish");
-	}
-
-	return result;
-}
-
-string GetMessageSpam(string messageID, CMysql *db)
-{
-	ostringstream	ost;
-	int				affected;
-	string			result = "0";
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ost.str("");
-	ost << "select count(*) as `counter` from `feed_message_params` where `parameter`='spam' and messageID='" << messageID << "';";
-	affected = db->Query(ost.str());
-
-
-	if(affected > 0)
-	{
-		result = db->Get(0, "counter");
-	}
-
-	{
-		MESSAGE_DEBUG("", "", "finish");
-	}
-
-	return result;
-}
-
-// --- Function returns true or false depends on userID "spamed" it or not
-// --- input: messageID, userID
-// --- output: was this message "spamed" by particular user or not
-string GetMessageSpamUser(string messageID, string userID, CMysql *db)
-{
-	ostringstream	ost;
-	int				affected;
-	string			result = "0";
-
-	{
-		MESSAGE_DEBUG("", "", "start");
-	}
-
-	ost.str("");
-	ost << "select count(*) as `counter` from `feed_message_params` where `parameter`='spam' and `messageID`='" << messageID << "' and `userID`='" << userID << "' ;";
-	affected = db->Query(ost.str());
-	if(affected > 0)
-	{
-		result = db->Get(0, "counter");
-	}
-
-
-	{
-		MESSAGE_DEBUG("", "", "finish");
-	}
+	MESSAGE_DEBUG("", "", "finish (returning string length " + to_string(result.length()) + ")");
 
 	return result;
 }
@@ -3385,10 +1215,7 @@ string GetMessageSpamUser(string messageID, string userID, CMysql *db)
 bool AllowMessageInNewsFeed(CUser *me, const string messageOwnerID, const string messageAccessRights, vector<string> *messageFriendList)
 {
 
-	{
-		CLog			log;
-		MESSAGE_DEBUG("", "", "parameters (user [" + me->GetID() + "], messageOwnerID [" + messageOwnerID + "], messageAccessRights [" + messageAccessRights + "]): start");
-	}
+	MESSAGE_DEBUG("", "", "parameters (user [" + me->GetID() + "], messageOwnerID [" + messageOwnerID + "], messageAccessRights [" + messageAccessRights + "]): start");
 
 	// --- messages belons to yourself must be shown unconditionally
 	// --- must be checked before message access private
@@ -3454,7 +1281,7 @@ bool isPersistenceRateLimited(string REMOTE_ADDR, CMysql *db)
 	{
 		MESSAGE_DEBUG("", "", "REMOTE_ADDR not in rate-limit table.")
 
-		db->Query("INSERT INTO `sessions_persistence_ratelimit` set `attempts`='1', `ip`='" + REMOTE_ADDR + "', `eventTimestamp`=NOW();");
+		db->Query("insert into `sessions_persistence_ratelimit` set `attempts`='1', `ip`='" + REMOTE_ADDR + "', `eventTimestamp`=NOW();");
 
 		result = false;
 	}
@@ -3508,7 +1335,7 @@ string GetCompanyDuplicates(CMysql *db)
 	ostResult.str("");
 	ost.str("");
 	ost << "select * from `company`;";
-	for(int i = 0; i < db->Query(ost.str()); i++)
+	for(auto i = 0; i < db->Query(ost.str()); i++)
 	{
 		string		companyToTestName, companyToTestID;
 
@@ -3570,7 +1397,7 @@ string GetPicturesWithEmptySet(CMysql *db)
 	ost.str("");
 	ost << "SELECT * FROM `feed_images` where `setID`='0';";
 	affected = db->Query(ost.str());
-	for(int i = 0; i < affected; i++)
+	for(auto i = 0; i < affected; i++)
 	{
 		if(ostResult.str().length()) ostResult << ",";
 		ostResult << "{\"id\":\"" << db->Get(i, "id") << "\",\"srcType\":\"" << db->Get(i, "srcType") << "\",\"userID\":\"" << db->Get(i, "userID") << "\",\"folder\":\"" << db->Get(i, "folder") << "\",\"filename\":\"" << db->Get(i, "filename") << "\"}";
@@ -3609,7 +1436,7 @@ string GetPicturesWithUnknownMessage(CMysql *db)
 	ost.str("");
 	ost << "SELECT `setID` FROM `feed_images`;";
 	affected = db->Query(ost.str());
-	for(int i = 0; i < affected; i++)
+	for(auto i = 0; i < affected; i++)
 	{
 		allImageSets.insert(stol(db->Get(i, "setID")));
 	}
@@ -3630,7 +1457,7 @@ string GetPicturesWithUnknownMessage(CMysql *db)
 	{
 		ost.str("");
 		ost << "select * from `feed_images` where `setID`=\"" << id << "\";";
-		for(int i = 0; i < db->Query(ost.str()); i++, lostCount++)
+		for(auto i = 0; i < db->Query(ost.str()); i++, lostCount++)
 		{
 			if(ostResult.str().length()) ostResult << ",";
 			ostResult << "{\"id\":\"" << db->Get(i, "id") << "\",\"srcType\":\"" << db->Get(i, "srcType") << "\",\"userID\":\"" << db->Get(i, "userID") << "\",\"setID\":\"" << db->Get(i, "setID") << "\",\"folder\":\"" << db->Get(i, "folder") << "\",\"filename\":\"" << db->Get(i, "filename") << "\"}";
@@ -3670,7 +1497,7 @@ string GetPicturesWithUnknownUser(CMysql *db)
 	ost.str("");
 	ost << "SELECT `srcType`,`userID` FROM `feed_images`;";
 	affected = db->Query(ost.str());
-	for(int i = 0; i < affected; i++)
+	for(auto i = 0; i < affected; i++)
 		allImageOwners.insert(string(db->Get(i, "srcType")) + string(db->Get(i, "userID")));
 
 	for(auto &item: allImageOwners)
@@ -3699,7 +1526,7 @@ string GetPicturesWithUnknownUser(CMysql *db)
 	{
 		ost.str("");
 		ost << "select * from `feed_images` where `userID`=\"" << id << "\";";
-		for(int i = 0; i < db->Query(ost.str()); i++, lostCount++)
+		for(auto i = 0; i < db->Query(ost.str()); i++, lostCount++)
 		{
 			if(ostResult.str().length()) ostResult << ",";
 			ostResult << "{\"id\":\"" << db->Get(i, "id") << "\",\"srcType\":\"" << db->Get(i, "srcType") << "\",\"userID\":\"" << db->Get(i, "userID") << "\",\"setID\":\"" << db->Get(i, "setID") << "\",\"folder\":\"" << db->Get(i, "folder") << "\",\"filename\":\"" << db->Get(i, "filename") << "\"}";
@@ -3731,7 +1558,7 @@ string GetRecommendationAdverse(CMysql *db)
 	affected = db->Query(ost.str());
 	if(affected)
 	{
-		for(int i = 0; i < affected; i++)
+		for(auto i = 0; i < affected; i++)
 		{
 			if(i) dictionaryStatement << " or ";
 			dictionaryStatement << "(`title` like \"%" << db->Get(i, "word") << "%\")";
@@ -3743,7 +1570,7 @@ string GetRecommendationAdverse(CMysql *db)
 	affected = db->Query(ost.str());
 	if(affected)
 	{
-		for(int i = 0; i < affected; i++)
+		for(auto i = 0; i < affected; i++)
 		{
 			if(i) ostResult << ",";
 			ostResult << "{";
@@ -3798,7 +1625,7 @@ void	RemoveMessageImages(string sqlWhereStatement, CMysql *db)
 	affected = db->Query(ost.str());
 	if(affected)
 	{
-		for(int i = 0; i < affected; i++)
+		for(auto i = 0; i < affected; i++)
 		{
 			string  filename = "";
 			string  mediaType = db->Get(i, "mediaType");
@@ -3871,7 +1698,7 @@ void	RemoveBookCover(string sqlWhereStatement, CMysql *db)
 	affected = db->Query(ost.str());
 	if(affected)
 	{
-		for(int i = 0; i < affected; i++)
+		for(auto i = 0; i < affected; i++)
 		{
 			string  filename = "";
 			string  mediaType = "image";
@@ -3941,7 +1768,7 @@ bool	RemoveSpecifiedCover(string itemID, string itemType, CMysql *db)
 	affected = db->Query(GetSpecificData_SelectQueryItemByID(itemID, itemType));
 	if(affected)
 	{
-		for(int i = 0; i < affected; i++)
+		for(auto i = 0; i < affected; i++)
 		{
 			string  filename = "";
 			string  mediaType = "image";
@@ -4121,615 +1948,6 @@ bool RedirStderrToFile(string fname)
 	return  result;
 }
 
-
-
-
-int GetSpecificData_GetNumberOfFolders(string itemType)
-{
-	int	  result = 0;
-
-	MESSAGE_DEBUG("", "", "start");
-
-	if(itemType == "certification")					result = CERTIFICATIONSLOGO_NUMBER_OF_FOLDERS;
-	else if(itemType == "course")					result = CERTIFICATIONSLOGO_NUMBER_OF_FOLDERS;
-	else if(itemType == "university")				result = UNIVERSITYLOGO_NUMBER_OF_FOLDERS;
-	else if(itemType == "school")					result = SCHOOLLOGO_NUMBER_OF_FOLDERS;
-	else if(itemType == "language")					result = FLAG_NUMBER_OF_FOLDERS;
-	else if(itemType == "book")						result = BOOKCOVER_NUMBER_OF_FOLDERS;
-	else if(itemType == "company")					result = COMPANYLOGO_NUMBER_OF_FOLDERS;
-	else if(itemType == "company_profile_logo")		result = COMPANYLOGO_NUMBER_OF_FOLDERS;
-	else if(itemType == "gift")						result = GIFTIMAGE_NUMBER_OF_FOLDERS;
-	else if(itemType == "event")					result = EVENTIMAGE_NUMBER_OF_FOLDERS;
-	else if(itemType == "expense_line")				result = EXPENSELINE_NUMBER_OF_FOLDERS;
-	else if(itemType == "template_sow")				result = TEMPLATE_SOW_NUMBER_OF_FOLDERS;
-	else if(itemType == "template_psow")			result = TEMPLATE_PSOW_NUMBER_OF_FOLDERS;
-	else if(itemType == "template_costcenter")		result = TEMPLATE_CC_NUMBER_OF_FOLDERS;
-	else if(itemType == "template_company")			result = TEMPLATE_COMPANY_NUMBER_OF_FOLDERS;
-	else if(itemType == "template_agreement_company") result = TEMPLATE_AGREEMENT_COMPANY_NUMBER_OF_FOLDERS;
-	else if(itemType == "template_agreement_sow")	result = TEMPLATE_AGREEMENT_SOW_NUMBER_OF_FOLDERS;
-	else
-	{
-		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
-	}
-
-	MESSAGE_DEBUG("", "", "finish (result = " + to_string(result) + ")");
-
-	return result;
-}
-
-int GetSpecificData_GetMaxFileSize(string itemType)
-{
-	int	  result = 0;
-
-	MESSAGE_DEBUG("", "", "start");
-
-	if(itemType == "certification")					result = CERTIFICATIONSLOGO_MAX_FILE_SIZE;
-	else if(itemType == "course")					result = CERTIFICATIONSLOGO_MAX_FILE_SIZE;
-	else if(itemType == "university")				result = UNIVERSITYLOGO_MAX_FILE_SIZE;
-	else if(itemType == "school")					result = SCHOOLLOGO_MAX_FILE_SIZE;
-	else if(itemType == "language")					result = FLAG_MAX_FILE_SIZE;
-	else if(itemType == "book")						result = BOOKCOVER_MAX_FILE_SIZE;
-	else if(itemType == "company")					result = COMPANYLOGO_MAX_FILE_SIZE;
-	else if(itemType == "company_profile_logo")		result = COMPANYLOGO_MAX_FILE_SIZE;
-	else if(itemType == "gift")						result = GIFTIMAGE_MAX_FILE_SIZE;
-	else if(itemType == "event")					result = EVENTIMAGE_MAX_FILE_SIZE;
-	else if(itemType == "expense_line")				result = EXPENSELINE_MAX_FILE_SIZE;
-	else if(itemType == "template_sow")				result = TEMPLATE_SOW_MAX_FILE_SIZE;
-	else if(itemType == "template_psow")			result = TEMPLATE_PSOW_MAX_FILE_SIZE;
-	else if(itemType == "template_costcenter")		result = TEMPLATE_CC_MAX_FILE_SIZE;
-	else if(itemType == "template_company")			result = TEMPLATE_COMPANY_MAX_FILE_SIZE;
-	else if(itemType == "template_agreement_company") result = TEMPLATE_AGREEMENT_COMPANY_MAX_FILE_SIZE;
-	else if(itemType == "template_agreement_sow")	result = TEMPLATE_AGREEMENT_SOW_MAX_FILE_SIZE;
-	else
-	{
-		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
-	}
-
-	MESSAGE_DEBUG("", "", "finish (result = " + to_string(result) + ")");
-
-	return result;
-}
-
-unsigned int GetSpecificData_GetMaxWidth(string itemType)
-{
-	int	  result = 0;
-
-	MESSAGE_DEBUG("", "", "start");
-
-	if(itemType == "certification")					result = CERTIFICATIONSLOGO_MAX_WIDTH;
-	else if(itemType == "course")					result = CERTIFICATIONSLOGO_MAX_WIDTH;
-	else if(itemType == "university")				result = UNIVERSITYLOGO_MAX_WIDTH;
-	else if(itemType == "school")					result = SCHOOLLOGO_MAX_WIDTH;
-	else if(itemType == "language")					result = FLAG_MAX_WIDTH;
-	else if(itemType == "book")						result = BOOKCOVER_MAX_WIDTH;
-	else if(itemType == "company")					result = COMPANYLOGO_MAX_WIDTH;
-	else if(itemType == "company_profile_logo")		result = COMPANYLOGO_MAX_WIDTH;
-	else if(itemType == "gift")						result = GIFTIMAGE_MAX_WIDTH;
-	else if(itemType == "event")					result = EVENTIMAGE_MAX_WIDTH;
-	else if(itemType == "expense_line")				result = EXPENSELINE_IMAGE_MAX_WIDTH;
-	else
-	{
-		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
-	}
-
-	MESSAGE_DEBUG("", "", "finish (result = " + to_string(result) + ")");
-
-	return result;
-}
-
-unsigned int GetSpecificData_GetMaxHeight(string itemType)
-{
-	int	  result = 0;
-
-	MESSAGE_DEBUG("", "", "start");
-
-	if(itemType == "certification")					result = CERTIFICATIONSLOGO_MAX_HEIGHT;
-	else if(itemType == "course")					result = CERTIFICATIONSLOGO_MAX_HEIGHT;
-	else if(itemType == "university")				result = UNIVERSITYLOGO_MAX_HEIGHT;
-	else if(itemType == "school")					result = SCHOOLLOGO_MAX_HEIGHT;
-	else if(itemType == "language")					result = FLAG_MAX_HEIGHT;
-	else if(itemType == "book")						result = BOOKCOVER_MAX_HEIGHT;
-	else if(itemType == "company")					result = COMPANYLOGO_MAX_HEIGHT;
-	else if(itemType == "company_profile_logo")		result = COMPANYLOGO_MAX_HEIGHT;
-	else if(itemType == "gift")	  					result = GIFTIMAGE_MAX_HEIGHT;
-	else if(itemType == "event")	  				result = EVENTIMAGE_MAX_HEIGHT;
-	else if(itemType == "expense_line")				result = EXPENSELINE_IMAGE_MAX_HEIGHT;
-	else
-	{
-		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
-	}
-
-	MESSAGE_DEBUG("", "", "finish (result = " + to_string(result) + ")");
-
-	return result;
-}
-
-string GetSpecificData_GetBaseDirectory(string itemType)
-{
-	string	  result = "";
-
-	MESSAGE_DEBUG("", "", "start");
-
-	if(itemType == "certification")					result = IMAGE_CERTIFICATIONS_DIRECTORY;
-	else if(itemType == "course")					result = IMAGE_CERTIFICATIONS_DIRECTORY;
-	else if(itemType == "university")				result = IMAGE_UNIVERSITIES_DIRECTORY;
-	else if(itemType == "school")					result = IMAGE_SCHOOLS_DIRECTORY;
-	else if(itemType == "language")					result = IMAGE_FLAGS_DIRECTORY;
-	else if(itemType == "book")						result = IMAGE_BOOKS_DIRECTORY;
-	else if(itemType == "company")					result = IMAGE_COMPANIES_DIRECTORY;
-	else if(itemType == "company_profile_logo")		result = IMAGE_COMPANIES_DIRECTORY;
-	else if(itemType == "gift")						result = IMAGE_GIFTS_DIRECTORY;
-	else if(itemType == "event")					result = IMAGE_EVENTS_DIRECTORY;
-	else if(itemType == "expense_line")				result = IMAGE_EXPENSELINES_DIRECTORY;
-	else if(itemType == "template_sow")				result = TEMPLATE_SOW_DIRECTORY;
-	else if(itemType == "template_psow")			result = TEMPLATE_PSOW_DIRECTORY;
-	else if(itemType == "template_costcenter")		result = TEMPLATE_CC_DIRECTORY;
-	else if(itemType == "template_company")			result = TEMPLATE_COMPANY_DIRECTORY;
-	else if(itemType == "template_agreement_company") result = TEMPLATE_AGREEMENT_COMPANY_DIRECTORY;
-	else if(itemType == "template_agreement_sow")	result = TEMPLATE_AGREEMENT_SOW_DIRECTORY;
-	else
-	{
-		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
-	}
-
-	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
-
-	return result;
-}
-
-string GetSpecificData_GetFinalFileExtenstion(string itemType)
-{
-	string	  result = ".jpg";
-
-	MESSAGE_DEBUG("", "", "start");
-
-	if(itemType == "template_sow")						result = ".txt";
-	else if(itemType == "template_psow")				result = ".txt";
-	else if(itemType == "template_costcenter")			result = ".txt";
-	else if(itemType == "template_company")				result = ".txt";
-	else if(itemType == "template_agreement_company")	result = ".txt";
-	else if(itemType == "template_agreement_sow")		result = ".txt";
-	else
-	{
-		MESSAGE_DEBUG("", "", "default extension(" + result + ") taken");
-	}
-
-	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
-
-	return result;
-}
-
-string GetSpecificData_SelectQueryItemByID(string itemID, string itemType)
-{
-	string	  result = "";
-
-	MESSAGE_DEBUG("", "", "start");
-
-	if(itemType == "certification")						result = "SELECT * FROM `certification_tracks` WHERE `id`=\"" + itemID + "\";";
-	else if(itemType == "course")						result = "SELECT * FROM `certification_tracks` WHERE `id`=\"" + itemID + "\";";
-	else if(itemType == "university")					result = "SELECT * FROM `university` WHERE `id`=\"" + itemID + "\";";
-	else if(itemType == "school")						result = "SELECT * FROM `school` WHERE `id`=\"" + itemID + "\";";
-	else if(itemType == "language")						result = "SELECT * FROM `language` WHERE `id`=\"" + itemID + "\";";
-	else if(itemType == "book")							result = "SELECT * FROM `book` WHERE `id`=\"" + itemID + "\";";
-	else if(itemType == "company")						result = "SELECT * FROM `company` WHERE `id`=\"" + itemID + "\";";
-	else if(itemType == "company_profile_logo")			result = "SELECT * FROM `company` WHERE `id`=\"" + itemID + "\";";
-	else if(itemType == "gift")							result = "SELECT * FROM `gifts` WHERE `id`=\"" + itemID + "\";";
-	else if(itemType == "event")						result = "SELECT * FROM `events` WHERE `id`=\"" + itemID + "\";";
-	else if(itemType == "template_sow")					result = "SELECT * FROM `contract_sow_custom_fields` WHERE `id`=\"" + itemID + "\" AND `type`=\"file\";";
-	else if(itemType == "template_psow")				result = "SELECT * FROM `contract_psow_custom_fields` WHERE `id`=\"" + itemID + "\" AND `type`=\"file\";";
-	else if(itemType == "template_costcenter")			result = "SELECT * FROM `cost_center_custom_fields` WHERE `id`=\"" + itemID + "\" AND `type`=\"file\";";
-	else if(itemType == "template_company")				result = "SELECT * FROM `company_custom_fields` WHERE `id`=\"" + itemID + "\" AND `type`=\"file\";";
-	else if(itemType == "template_agreement_company")	result = "SELECT * FROM `company_agreement_files` WHERE `id`=\"" + itemID + "\";";
-	else if(itemType == "template_agreement_sow")		result = "SELECT * FROM `contract_sow_agreement_files` WHERE `id`=\"" + itemID + "\";";
-	else
-	{
-		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
-	}
-
-	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
-
-	return result;
-}
-
-string GetSpecificData_UpdateQueryItemByID(string itemID, string itemType, string folderID, string fileName)
-{
-	string		result = "";
-	string		logo_folder = "";
-	string		logo_filename = "";
-
-	MESSAGE_DEBUG("", "", "start");
-
-	logo_folder = GetSpecificData_GetDBCoverPhotoFolderString(itemType);
-	logo_filename = GetSpecificData_GetDBCoverPhotoFilenameString(itemType);
-
-	if(logo_filename.length())
-	{
-		if(itemType == "certification")						result = "UPDATE `certification_tracks` 		SET	`" + logo_folder + "`='" + folderID + "', `" + logo_filename + "`='" + fileName + "' WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "course")						result = "UPDATE `certification_tracks` 		SET `" + logo_folder + "`='" + folderID + "', `" + logo_filename + "`='" + fileName + "' WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "university")					result = "UPDATE `university`					SET	`" + logo_folder + "`='" + folderID + "', `" + logo_filename + "`='" + fileName + "' WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "school")						result = "UPDATE `school`						SET `" + logo_folder + "`='" + folderID + "', `" + logo_filename + "`='" + fileName + "' WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "language")						result = "UPDATE `language`						SET `" + logo_folder + "`='" + folderID + "', `" + logo_filename + "`='" + fileName + "' WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "book")							result = "UPDATE `book`							SET `" + logo_folder + "`='" + folderID + "', `" + logo_filename + "`='" + fileName + "' WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "company")						result = "UPDATE `company`						SET `" + logo_folder + "`='" + folderID + "', `" + logo_filename + "`='" + fileName + "' WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "company_profile_logo")			result = "UPDATE `company`						SET `" + logo_folder + "`='" + folderID + "', `" + logo_filename + "`='" + fileName + "' WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "gift")							result = "UPDATE `gifts`						SET `" + logo_folder + "`='" + folderID + "', `" + logo_filename + "`='" + fileName + "' WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "event")						result = "UPDATE `events`						SET `" + logo_folder + "`='" + folderID + "', `" + logo_filename + "`='" + fileName + "' WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "template_sow")					result = "UPDATE `contract_sow_custom_fields`	SET `" + logo_filename + "`='" + folderID + "/" + fileName + "', `eventTimestamp`=UNIX_TIMESTAMP() WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "template_psow")				result = "UPDATE `contract_psow_custom_fields`	SET `" + logo_filename + "`='" + folderID + "/" + fileName + "', `eventTimestamp`=UNIX_TIMESTAMP() WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "template_costcenter")			result = "UPDATE `cost_center_custom_fields`	SET `" + logo_filename + "`='" + folderID + "/" + fileName + "', `eventTimestamp`=UNIX_TIMESTAMP() WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "template_company")				result = "UPDATE `company_custom_fields`		SET `" + logo_filename + "`='" + folderID + "/" + fileName + "', `eventTimestamp`=UNIX_TIMESTAMP() WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "template_agreement_company")	result = "UPDATE `company_agreement_files`		SET `" + logo_filename + "`='" + folderID + "/" + fileName + "', `eventTimestamp`=UNIX_TIMESTAMP() WHERE `id`=\"" + itemID + "\";";
-		else if(itemType == "template_agreement_sow")		result = "UPDATE `contract_sow_agreement_files`	SET `" + logo_filename + "`='" + folderID + "/" + fileName + "', `eventTimestamp`=UNIX_TIMESTAMP() WHERE `id`=\"" + itemID + "\";";
-		else
-		{
-			MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
-		}
-	}
-	else
-	{
-		MESSAGE_ERROR("", "", "logo_filename not found for itemType (" + itemType + ")");
-	}
-
-
-	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
-
-	return result;
-}
-
-string GetSpecificData_GetDBCoverPhotoFolderString(string itemType)
-{
-	string	  result = "";
-
-	MESSAGE_DEBUG("", "", "start");
-
-	if(itemType == "certification")	 					result = "logo_folder";
-	else if(itemType == "course")	   					result = "logo_folder";
-	else if(itemType == "university")   				result = "logo_folder";
-	else if(itemType == "school")	   					result = "logo_folder";
-	else if(itemType == "language")	 					result = "logo_folder";
-	else if(itemType == "book")		 					result = "coverPhotoFolder";
-	else if(itemType == "company")						result = "logo_folder";
-	else if(itemType == "company_profile_logo")			result = "logo_folder";
-	else if(itemType == "gift")	  						result = "logo_folder";
-	else if(itemType == "event")	  					result = "logo_folder";
-	else if(itemType == "template_sow")					result = "";
-	else if(itemType == "template_psow")				result = "";
-	else if(itemType == "template_costcenter")			result = "";
-	else if(itemType == "template_company")				result = "";
-	else if(itemType == "template_agreement_company")	result = "";
-	else if(itemType == "template_agreement_sow")		result = "";
-	else
-	{
-		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
-	}
-
-	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
-
-	return result;
-}
-
-string GetSpecificData_GetDBCoverPhotoFilenameString(string itemType)
-{
-	string	  result = "";
-
-	MESSAGE_DEBUG("", "", "start");
-
-	if(itemType == "certification")						result = "logo_filename";
-	else if(itemType == "course")						result = "logo_filename";
-	else if(itemType == "university")					result = "logo_filename";
-	else if(itemType == "school")						result = "logo_filename";
-	else if(itemType == "language")						result = "logo_filename";
-	else if(itemType == "book")							result = "coverPhotoFilename";
-	else if(itemType == "company")						result = "logo_filename";
-	else if(itemType == "company_profile_logo")			result = "logo_filename";
-	else if(itemType == "gift")							result = "logo_filename";
-	else if(itemType == "event")						result = "logo_filename";
-	else if(itemType == "template_sow")					result = "value";
-	else if(itemType == "template_psow")				result = "value";
-	else if(itemType == "template_costcenter")			result = "value";
-	else if(itemType == "template_company")				result = "value";
-	else if(itemType == "template_agreement_company")	result = "filename";
-	else if(itemType == "template_agreement_sow")		result = "filename";
-	else
-	{
-		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
-	}
-
-	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
-
-	return result;
-}
-
-string GetSpecificData_GetDataTypeByItemType(const string &itemType)
-{
-	auto	result = "image"s;
-
-	MESSAGE_DEBUG("", "", "start");
-
-	if(itemType == "template_sow")					result = "template";
-	if(itemType == "template_psow")					result = "template";
-	if(itemType == "template_costcenter")			result = "template";
-	if(itemType == "template_company")				result = "template";
-	if(itemType == "template_agreement_company")	result = "template";
-	if(itemType == "template_agreement_sow")		result = "template";
-
-	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
-
-	return result;
-}
-
-
-// --- Does the owner user allowed to change it ?
-// --- For example:
-// ---	*) university or school logo can be changed by administartor only.
-// ---	*) gift image could be changed by owner
-auto GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db, CUser *user) -> string
-{
-	auto	  error_message = ""s;
-
-	MESSAGE_DEBUG("", "", "start");
-
-
-	if(itemType == "template_sow")
-	{
-		if((user->GetType() == "agency"))
-		{
-			if(db->Query("SELECT `id` FROM `company_employees` WHERE `user_id`=\"" + user->GetID() + "\" AND `allowed_change_sow`=\"Y\" AND `company_id`=("
-							"SELECT `agency_company_id` FROM `contracts_sow` WHERE `id`=("
-								"SELECT `contract_sow_id` FROM `contract_sow_custom_fields` WHERE `id`=\"" + itemID + "\""
-							")"
-						");")) 
-			{
-			}
-			else
-			{
-				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change contract_sow_custom_fields.id(" + itemID + ")";
-				MESSAGE_DEBUG("", "", error_message);
-			}
-		}
-		else
-		{
-			error_message = "user.type(" + user->GetType() + ") must be an agency employee to change";
-			MESSAGE_DEBUG("", "", error_message);
-		}
-		
-	}
-	else if(itemType == "template_psow")
-	{
-		if((user->GetType() == "agency"))
-		{
-			if(db->Query("SELECT `id` FROM `company_employees` WHERE `user_id`=\"" + user->GetID() + "\" AND `allowed_change_sow`=\"Y\" AND `company_id`=("
-							"SELECT `agency_company_id` FROM `contracts_sow` WHERE `id`=("
-								"SELECT `contract_sow_id` FROM `contracts_psow` WHERE `id`=("
-									"SELECT `contract_psow_id` FROM `contract_psow_custom_fields` WHERE `id`=\"" + itemID + "\""
-								")"
-							")"
-						");"))
-			{
-			}
-			else
-			{
-				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change contract_psow_custom_fields.id(" + itemID + ")";
-				MESSAGE_DEBUG("", "", error_message);
-			}
-		}
-		else
-		{
-			error_message = "user.type(" + user->GetType() + ") must be agency employee to change";
-			MESSAGE_DEBUG("", "", error_message);
-		}
-		
-	}
-	else if(itemType == "template_costcenter")
-	{
-		if((user->GetType() == "agency"))
-		{
-			if(db->Query("SELECT `id` FROM `company_employees` WHERE `user_id`=\"" + user->GetID() + "\" AND `allowed_change_sow`=\"Y\" AND `company_id`=("
-							"SELECT `agency_company_id` FROM `cost_centers` WHERE `id`=("
-								"SELECT `cost_center_id` FROM `cost_center_custom_fields` WHERE `id`=\"" + itemID + "\""
-							")"
-						");"))
-			{
-			}
-			else
-			{
-				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change cost_center_custom_fields.id(" + itemID + ")";
-				MESSAGE_DEBUG("", "", error_message);
-			}
-		}
-		else
-		{
-			error_message = "user.type(" + user->GetType() + ") must be agency employee to change";
-			MESSAGE_DEBUG("", "", error_message);
-		}
-		
-	}
-	else if(itemType == "template_company")
-	{
-		if((user->GetType() == "agency"))
-		{
-			if(db->Query("SELECT `id` FROM `company_employees` WHERE `user_id`=\"" + user->GetID() + "\" AND `allowed_change_sow`=\"Y\" AND `company_id`=("
-							"SELECT `company_id` FROM `company_custom_fields` WHERE `id`=\"" + itemID + "\""
-						");"))
-			{
-			}
-			else
-			{
-				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change company_custom_fields.id(" + itemID + ")";
-				MESSAGE_DEBUG("", "", error_message);
-			}
-		}
-		else if((user->GetType() == "subcontractor"))
-		{
-			if(db->Query("SELECT `id` FROM `company` WHERE `admin_userID`=\"" + user->GetID() + "\" AND `id`=("
-							"SELECT `company_id` FROM `company_custom_fields` WHERE `id`=\"" + itemID + "\""
-						");"))
-			{
-			}
-			else
-			{
-				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change company_custom_fields.id(" + itemID + ")";
-				MESSAGE_DEBUG("", "", error_message);
-			}
-		}
-		else
-		{
-			error_message = "user.type(" + user->GetType() + ") not allowerd to change company custom field";
-			MESSAGE_DEBUG("", "", error_message);
-		}
-		
-	}
-	else if(itemType == "template_agreement_company")
-	{
-		if((user->GetType() == "agency"))
-		{
-			if(db->Query("SELECT `id` FROM `company_employees` WHERE `user_id`=\"" + user->GetID() + "\" AND `allowed_change_sow`=\"Y\" AND `company_id`=("
-							"SELECT `company_id` FROM `company_agreement_files` WHERE `id`=\"" + itemID + "\""
-						");"))
-			{
-			}
-			else
-			{
-				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change company_agreement_files.id(" + itemID + ")";
-				MESSAGE_DEBUG("", "", error_message);
-			}
-		}
-		else
-		{
-			error_message = "user.type(" + user->GetType() + ") not allowerd to change company agreement files";
-			MESSAGE_DEBUG("", "", error_message);
-		}
-	}
-	else if(itemType == "template_agreement_sow")
-	{
-		if((user->GetType() == "agency"))
-		{
-			if(db->Query("SELECT `id` FROM `company_employees` WHERE `user_id`=\"" + user->GetID() + "\" AND `allowed_change_sow`=\"Y\" AND `company_id`=("
-							"SELECT `company_id` FROM `contract_sow_agreement_files` WHERE `id`=\"" + itemID + "\""
-						");"))
-			{
-			}
-			else
-			{
-				error_message = "user.id(" + user->GetID() + ") doesn't allowed to change contract_sow_agreement_files.id(" + itemID + ")";
-				MESSAGE_DEBUG("", "", error_message);
-			}
-		}
-		else
-		{
-			error_message = "user.type(" + user->GetType() + ") not allowerd to change contract_sow agreement files";
-			MESSAGE_DEBUG("", "", error_message);
-		}
-	}
-	else if(itemType == "company_profile_logo")
-	{
-		if((user->GetType() == "subcontractor"))
-		{
-			if(db->Query("SELECT `id` FROM `company` WHERE `id`=\"" + itemID + "\" AND `admin_userID`=\"" + user->GetID() + "\";"))
-			{
-			}
-			else
-			{
-				error_message = "subcontractor user.id(" + user->GetID() + ") doesn't allowed to change company.id(" + itemID + ") logo";
-				MESSAGE_DEBUG("", "", error_message);
-			}
-		}
-		else if((user->GetType() == "agency"))
-		{
-			if(db->Query(	"SELECT `id` FROM `company_employees` WHERE `company_id`=("
-								"SELECT `company_id` FROM `company_employees` WHERE `user_id`=("
-									"SELECT `admin_userID` FROM `company` WHERE `id`=\"" + itemID + "\""
-								")"
-							") AND `user_id`=\"" + user->GetID() + "\" AND `allowed_change_agency_data`=\"Y\""))
-			{
-			}
-			else
-			{
-				error_message = "agency user.id(" + user->GetID() + ") doesn't allowed to change company.id(" + itemID + ") logo";
-				MESSAGE_DEBUG("", "", error_message);
-			}
-		}
-		else
-		{
-			error_message = "user.type(" + user->GetType() + ") not allowed to change";
-			MESSAGE_DEBUG("", "", error_message);
-		}
-
-	}
-	else if(db->Query(GetSpecificData_SelectQueryItemByID(itemID, itemType))) // --- item itemID exists ?
-	{
-			if((itemType == "course") || (itemType == "university") || (itemType == "school") || (itemType == "language") || (itemType == "book") || (itemType == "company") || (itemType == "certification"))
-			{
-				string	  coverPhotoFolder = db->Get(0, GetSpecificData_GetDBCoverPhotoFolderString(itemType).c_str());
-				string	  coverPhotoFilename = db->Get(0, GetSpecificData_GetDBCoverPhotoFilenameString(itemType).c_str());
-
-				if(coverPhotoFolder.empty() && coverPhotoFilename.empty()) {}
-				else
-				{
-					error_message = "logo already uploaded";
-
-					MESSAGE_DEBUG("", "", "access to " + itemType + "(" + itemID + ") denied, because logo already uploaded");
-				}
-			}
-			else if(itemType == "event")
-			{
-				if(user)
-				{
-					if(db->Query("SELECT `id` FROM `event_hosts` WHERE `event_id`=\"" + itemID + "\" AND `user_id`=\"" + user->GetID() + "\";")) {}
-					else
-					{
-						error_message = "you are not the event host";
-
-						MESSAGE_DEBUG("", "", "access to " + itemType + "(" + itemID + ") denied, you are not an event host");
-					}
-				}
-				else
-				{
-					error_message = "user object is NULL";
-
-					MESSAGE_ERROR("", "", error_message);
-				}
-			}
-			else if(itemType == "gift")
-			{
-				string		user_id = db->Get(0, "user_id");
-
-				if(user)
-				{
-					if(user_id == user->GetID()) {}
-					else
-					{
-						error_message = "you are not the gift owner";
-
-						MESSAGE_DEBUG("", "", "access to " + itemType + "(" + itemID + ") denied, you are not a gift owner");
-					}
-				}
-				else
-				{
-					error_message = "user object is NULL";
-
-					MESSAGE_ERROR("", "", error_message);
-				}
-			}
-			else
-			{
-				error_message = "itemType [" + itemType + "] unknown";
-
-				MESSAGE_ERROR("", "", error_message);
-			}
-	}
-	else
-	{
-		error_message = itemType + "(" + itemID + ") not found";
-
-		MESSAGE_ERROR("", "", error_message);
-	}
-
-	MESSAGE_DEBUG("", "", "finish (error_message: " + error_message + ")");
-
-	return error_message;
-}
-
 auto isAllowed_NoSession_Action(string action) -> bool
 {
 	auto			result = false;
@@ -4751,52 +1969,128 @@ auto isAllowed_NoSession_Action(string action) -> bool
 	return result;
 }
 
+pair<struct tm, struct tm> GetFirstAndLastMonthDaysByDate(const struct tm &_date)
+{
+	struct tm end_of_mon, start_of_mon;
+
+	MESSAGE_DEBUG("", "", "start(" + to_string(_date.tm_mday) + "/" + to_string(_date.tm_mon + 1) + "/" + to_string(_date.tm_year + 1900) + ")");
+
+	start_of_mon.tm_sec		= 0;   // seconds of minutes from 0 to 61
+	start_of_mon.tm_min		= 0;   // minutes of hour from 0 to 59
+	start_of_mon.tm_hour	= 0;  // hours of day from 0 to 24
+	start_of_mon.tm_mday	= 0;  // day of month from 1 to 31
+	start_of_mon.tm_mon		= 0;   // month of year from 0 to 11
+	start_of_mon.tm_year	= 0;  // year since 1900
+	start_of_mon.tm_wday	= 0;  // days since sunday
+	start_of_mon.tm_yday	= 0;  // days since January 1st
+	start_of_mon.tm_isdst	= 0; // hours of daylight savings time
+
+	end_of_mon.tm_sec		= 0;   // seconds of minutes from 0 to 61
+	end_of_mon.tm_min		= 0;   // minutes of hour from 0 to 59
+	end_of_mon.tm_hour		= 0;  // hours of day from 0 to 24
+	end_of_mon.tm_mday		= 0;  // day of month from 1 to 31
+	end_of_mon.tm_mon		= 0;   // month of year from 0 to 11
+	end_of_mon.tm_year		= 0;  // year since 1900
+	end_of_mon.tm_wday		= 0;  // days since sunday
+	end_of_mon.tm_yday		= 0;  // days since January 1st
+	end_of_mon.tm_isdst		= 0; // hours of daylight savings time
+
+	start_of_mon.tm_year	= _date.tm_year;
+	start_of_mon.tm_mon		= _date.tm_mon;
+	start_of_mon.tm_mday	= 1;
+
+	end_of_mon.tm_year		= _date.tm_year;
+	end_of_mon.tm_mon		= _date.tm_mon + 1;
+	end_of_mon.tm_mday		= 0;
+
+	mktime(&start_of_mon);
+	mktime(&end_of_mon);
+
+	MESSAGE_DEBUG("", "", "finish (" + to_string(start_of_mon.tm_mday) + "/" + to_string(start_of_mon.tm_mon + 1) + "/" + to_string(start_of_mon.tm_year + 1900) + " - " + to_string(end_of_mon.tm_mday) + "/" + to_string(end_of_mon.tm_mon + 1) + "/" + to_string(end_of_mon.tm_year + 1900) + ")");
+
+	return make_pair(start_of_mon, end_of_mon);
+}
+
+pair<struct tm, struct tm> GetFirstAndLastWeekDaysByDate(const struct tm &_date)
+{
+	struct tm end_of_week, start_of_week;
+
+	MESSAGE_DEBUG("", "", "start(" + to_string(_date.tm_mday) + "/" + to_string(_date.tm_mon + 1) + "/" + to_string(_date.tm_year + 1900) + ")");
+
+	start_of_week.tm_sec	= 0;   // seconds of minutes from 0 to 61
+	start_of_week.tm_min	= 0;   // minutes of hour from 0 to 59
+	start_of_week.tm_hour	= 0;  // hours of day from 0 to 24
+	start_of_week.tm_mday	= 0;  // day of month from 1 to 31
+	start_of_week.tm_mon	= 0;   // month of year from 0 to 11
+	start_of_week.tm_year	= 0;  // year since 1900
+	start_of_week.tm_wday	= 0;  // days since sunday
+	start_of_week.tm_yday	= 0;  // days since January 1st
+	start_of_week.tm_isdst	= 0; // hours of daylight savings time
+
+	end_of_week.tm_sec		= 0;   // seconds of minutes from 0 to 61
+	end_of_week.tm_min		= 0;   // minutes of hour from 0 to 59
+	end_of_week.tm_hour		= 0;  // hours of day from 0 to 24
+	end_of_week.tm_mday		= 0;  // day of month from 1 to 31
+	end_of_week.tm_mon		= 0;   // month of year from 0 to 11
+	end_of_week.tm_year		= 0;  // year since 1900
+	end_of_week.tm_wday		= 0;  // days since sunday
+	end_of_week.tm_yday		= 0;  // days since January 1st
+	end_of_week.tm_isdst	= 0; // hours of daylight savings time
+
+	start_of_week.tm_year	= _date.tm_year;
+	start_of_week.tm_mon	= _date.tm_mon;
+	start_of_week.tm_mday	= _date.tm_mday;
+
+	end_of_week.tm_year		= _date.tm_year;
+	end_of_week.tm_mon		= _date.tm_mon;
+	end_of_week.tm_mday		= _date.tm_mday;
+
+	mktime(&start_of_week);
+	mktime(&end_of_week);
+
+	start_of_week.tm_mday	= start_of_week.tm_mday - start_of_week.tm_wday + 1;
+
+	end_of_week.tm_mday		= end_of_week.tm_mday - end_of_week.tm_wday + 7;
+
+	mktime(&start_of_week);
+	mktime(&end_of_week);
+
+	MESSAGE_DEBUG("", "", "finish (" + to_string(start_of_week.tm_mday) + "/" + to_string(start_of_week.tm_mon + 1) + "/" + to_string(start_of_week.tm_year + 1900) + " - " + to_string(end_of_week.tm_mday) + "/" + to_string(end_of_week.tm_mon + 1) + "/" + to_string(end_of_week.tm_year + 1900) + ")");
+
+	return make_pair(start_of_week, end_of_week);
+}
+
 pair<struct tm, struct tm> GetFirstAndLastDateOfThisMonth()
 {
 	time_t rawtime;
 	struct tm * timeinfo;
 
-	struct tm end_of_curr_mon, start_of_curr_mon;
+	struct tm _date;
 
 	MESSAGE_DEBUG("", "", "start");
 
-	start_of_curr_mon.tm_sec	= 0;   // seconds of minutes from 0 to 61
-	start_of_curr_mon.tm_min	= 0;   // minutes of hour from 0 to 59
-	start_of_curr_mon.tm_hour	= 0;  // hours of day from 0 to 24
-	start_of_curr_mon.tm_mday	= 0;  // day of month from 1 to 31
-	start_of_curr_mon.tm_mon	= 0;   // month of year from 0 to 11
-	start_of_curr_mon.tm_year	= 0;  // year since 1900
-	start_of_curr_mon.tm_wday	= 0;  // days since sunday
-	start_of_curr_mon.tm_yday	= 0;  // days since January 1st
-	start_of_curr_mon.tm_isdst	= 0; // hours of daylight savings time
-
-	end_of_curr_mon.tm_sec	= 0;   // seconds of minutes from 0 to 61
-	end_of_curr_mon.tm_min	= 0;   // minutes of hour from 0 to 59
-	end_of_curr_mon.tm_hour	= 0;  // hours of day from 0 to 24
-	end_of_curr_mon.tm_mday	= 0;  // day of month from 1 to 31
-	end_of_curr_mon.tm_mon	= 0;   // month of year from 0 to 11
-	end_of_curr_mon.tm_year	= 0;  // year since 1900
-	end_of_curr_mon.tm_wday	= 0;  // days since sunday
-	end_of_curr_mon.tm_yday	= 0;  // days since January 1st
-	end_of_curr_mon.tm_isdst	= 0; // hours of daylight savings time
+	_date.tm_sec	= 0;   // seconds of minutes from 0 to 61
+	_date.tm_min	= 0;   // minutes of hour from 0 to 59
+	_date.tm_hour	= 0;  // hours of day from 0 to 24
+	_date.tm_mday	= 0;  // day of month from 1 to 31
+	_date.tm_mon	= 0;   // month of year from 0 to 11
+	_date.tm_year	= 0;  // year since 1900
+	_date.tm_wday	= 0;  // days since sunday
+	_date.tm_yday	= 0;  // days since January 1st
+	_date.tm_isdst	= 0; // hours of daylight savings time
 
 	time ( &rawtime );
 	timeinfo = localtime ( &rawtime );
 
-	start_of_curr_mon.tm_year	= timeinfo->tm_year;
-	start_of_curr_mon.tm_mon	= timeinfo->tm_mon;
-	start_of_curr_mon.tm_mday	= 1;
+	_date.tm_year	= timeinfo->tm_year;
+	_date.tm_mon	= timeinfo->tm_mon;
+	_date.tm_mday	= 1;
 
-	end_of_curr_mon.tm_year		= start_of_curr_mon.tm_year;
-	end_of_curr_mon.tm_mon		= start_of_curr_mon.tm_mon + 1;
-	end_of_curr_mon.tm_mday		= 0;
-
-	mktime(&start_of_curr_mon);
-	mktime(&end_of_curr_mon);
+	mktime(&_date);
 
 	MESSAGE_DEBUG("", "", "finish");
 
-	return make_pair(start_of_curr_mon, end_of_curr_mon);
+	return GetFirstAndLastMonthDaysByDate(_date);
 }
 
 pair<struct tm, struct tm> GetFirstAndLastDateOfLastMonth()
@@ -4804,78 +2098,115 @@ pair<struct tm, struct tm> GetFirstAndLastDateOfLastMonth()
 	time_t rawtime;
 	struct tm * timeinfo;
 
-	struct tm end_of_last_mon, start_of_last_mon;
+	struct tm _date;
 
 	MESSAGE_DEBUG("", "", "start");
 
-	start_of_last_mon.tm_sec	= 0;   // seconds of minutes from 0 to 61
-	start_of_last_mon.tm_min	= 0;   // minutes of hour from 0 to 59
-	start_of_last_mon.tm_hour	= 0;  // hours of day from 0 to 24
-	start_of_last_mon.tm_mday	= 0;  // day of month from 1 to 31
-	start_of_last_mon.tm_mon	= 0;   // month of year from 0 to 11
-	start_of_last_mon.tm_year	= 0;  // year since 1900
-	start_of_last_mon.tm_wday	= 0;  // days since sunday
-	start_of_last_mon.tm_yday	= 0;  // days since January 1st
-	start_of_last_mon.tm_isdst	= 0; // hours of daylight savings time
-
-	end_of_last_mon.tm_sec	= 0;   // seconds of minutes from 0 to 61
-	end_of_last_mon.tm_min	= 0;   // minutes of hour from 0 to 59
-	end_of_last_mon.tm_hour	= 0;  // hours of day from 0 to 24
-	end_of_last_mon.tm_mday	= 0;  // day of month from 1 to 31
-	end_of_last_mon.tm_mon	= 0;   // month of year from 0 to 11
-	end_of_last_mon.tm_year	= 0;  // year since 1900
-	end_of_last_mon.tm_wday	= 0;  // days since sunday
-	end_of_last_mon.tm_yday	= 0;  // days since January 1st
-	end_of_last_mon.tm_isdst	= 0; // hours of daylight savings time
-
+	_date.tm_sec	= 0;   // seconds of minutes from 0 to 61
+	_date.tm_min	= 0;   // minutes of hour from 0 to 59
+	_date.tm_hour	= 0;  // hours of day from 0 to 24
+	_date.tm_mday	= 0;  // day of month from 1 to 31
+	_date.tm_mon	= 0;   // month of year from 0 to 11
+	_date.tm_year	= 0;  // year since 1900
+	_date.tm_wday	= 0;  // days since sunday
+	_date.tm_yday	= 0;  // days since January 1st
+	_date.tm_isdst	= 0; // hours of daylight savings time
 
 	time ( &rawtime );
 	timeinfo = localtime ( &rawtime );
 
-	start_of_last_mon.tm_year	= timeinfo->tm_year;
-	start_of_last_mon.tm_mon	= timeinfo->tm_mon - 1;
-	start_of_last_mon.tm_mday	= 1;
+	_date.tm_year	= timeinfo->tm_year;
+	_date.tm_mon	= timeinfo->tm_mon;
+	_date.tm_mday	= 0;
 
-	end_of_last_mon.tm_year		= start_of_last_mon.tm_year;
-	end_of_last_mon.tm_mon		= start_of_last_mon.tm_mon + 1;
-	end_of_last_mon.tm_mday		= 0;
-
-	mktime(&start_of_last_mon);
-	mktime(&end_of_last_mon);
+	mktime(&_date);
 
 	MESSAGE_DEBUG("", "", "finish");
 
-	return make_pair(start_of_last_mon, end_of_last_mon);
+	return GetFirstAndLastMonthDaysByDate(_date);
+}
+
+pair<struct tm, struct tm> GetFirstAndLastDateOfThisWeek()
+{
+	time_t rawtime;
+	struct tm * timeinfo;
+
+	struct tm _date;
+
+	MESSAGE_DEBUG("", "", "start");
+
+	_date.tm_sec	= 0;   // seconds of minutes from 0 to 61
+	_date.tm_min	= 0;   // minutes of hour from 0 to 59
+	_date.tm_hour	= 0;  // hours of day from 0 to 24
+	_date.tm_mday	= 0;  // day of month from 1 to 31
+	_date.tm_mon	= 0;   // month of year from 0 to 11
+	_date.tm_year	= 0;  // year since 1900
+	_date.tm_wday	= 0;  // days since sunday
+	_date.tm_yday	= 0;  // days since January 1st
+	_date.tm_isdst	= 0; // hours of daylight savings time
+
+	time ( &rawtime );
+	timeinfo = localtime ( &rawtime );
+
+	_date.tm_year	= timeinfo->tm_year;
+	_date.tm_mon	= timeinfo->tm_mon;
+	_date.tm_mday	= timeinfo->tm_mday;
+
+	mktime(&_date);
+
+	MESSAGE_DEBUG("", "", "finish");
+
+	return GetFirstAndLastWeekDaysByDate(_date);
+}
+
+pair<struct tm, struct tm> GetFirstAndLastDateOfLastWeek()
+{
+	time_t rawtime;
+	struct tm * timeinfo;
+
+	struct tm _date;
+
+	MESSAGE_DEBUG("", "", "start");
+
+	_date.tm_sec	= 0;   // seconds of minutes from 0 to 61
+	_date.tm_min	= 0;   // minutes of hour from 0 to 59
+	_date.tm_hour	= 0;  // hours of day from 0 to 24
+	_date.tm_mday	= 0;  // day of month from 1 to 31
+	_date.tm_mon	= 0;   // month of year from 0 to 11
+	_date.tm_year	= 0;  // year since 1900
+	_date.tm_wday	= 0;  // days since sunday
+	_date.tm_yday	= 0;  // days since January 1st
+	_date.tm_isdst	= 0; // hours of daylight savings time
+
+	time ( &rawtime );
+	timeinfo = localtime ( &rawtime );
+
+	_date.tm_year	= timeinfo->tm_year;
+	_date.tm_mon	= timeinfo->tm_mon;
+	_date.tm_mday	= timeinfo->tm_mday - 7;
+
+	mktime(&_date);
+
+	MESSAGE_DEBUG("", "", "finish");
+
+	return GetFirstAndLastWeekDaysByDate(_date);
+}
+
+auto GetSpellingDate(long int seconds_since_epoch) -> string
+{
+	C_Date_Spelling	date_spelling(*(localtime(&seconds_since_epoch)));
+
+	return date_spelling.Spell();
 }
 
 auto GetSpellingFormattedDate(string date, string format) -> string
 {
-/*	MESSAGE_DEBUG("", "", "start");
-
-	auto	result = ""s;
-	char	buffer[100];
-	auto	date_obj = GetTMObject(date);
-
-	if(strftime(buffer, sizeof(buffer), format.c_str(), &date_obj))
-	{
-		result = buffer;
-	}
-	else
-	{
-		MESSAGE_ERROR("", "", "strftime returns 0");
-	}
-
-
-	MESSAGE_DEBUG("", "", "finish");
-
-	return result;
-*/
 	return GetSpellingFormattedDate(GetTMObject(date), format);
 }
 
 auto GetSpellingFormattedDate(struct tm date_obj, string format) -> string
 {
-	MESSAGE_DEBUG("", "", "start");
+	MESSAGE_DEBUG("", "", "start (" + format + ")");
 
 	auto	result = ""s;
 	char	buffer[100];
@@ -4892,7 +2223,7 @@ auto GetSpellingFormattedDate(struct tm date_obj, string format) -> string
 	}
 
 
-	MESSAGE_DEBUG("", "", "finish");
+	MESSAGE_DEBUG("", "", "finish (" + result + ")");
 
 	return result;
 }
@@ -4901,10 +2232,10 @@ auto GetSpellingFormattedDate(struct tm date_obj, string format) -> string
 
 struct tm GetTMObject(string date)
 {
+	MESSAGE_DEBUG("", "", "start (" + date + ")");
+
 	struct tm	result;
 	smatch		sm;
-
-	MESSAGE_DEBUG("", "", "start");
 	
 	result.tm_sec	= 0;   // seconds of minutes from 0 to 61
 	result.tm_min	= 0;   // minutes of hour from 0 to 59

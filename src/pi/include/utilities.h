@@ -19,6 +19,7 @@
 #include <codecvt>
 
 #include "c_smsc.h"
+#include "c_date_spelling.h"
 #include "cfiles.h"
 #include "cmysql.h"
 #include "cuser.h"
@@ -90,7 +91,6 @@ auto			GetPasswordCharacteristicsList(CMysql *) -> string;
 auto			isAllowed_NoSession_Action(string action) -> bool;
 auto			CutTrailingZeroes(string number) -> string;
 
-auto      		GetChatMessagesInJSONFormat(string dbQuery, CMysql *) -> string;
 auto			GetBaseUserInfoInJSONFormat(string dbQuery, CMysql *db, CUser *user) -> string;
 auto      		GetGeoCountryListInJSONFormat(string dbQuery, CMysql *, CUser *) -> string;
 auto 			GetBookListInJSONFormat(string dbQuery, CMysql *, bool includeReaders = false) -> string;
@@ -101,28 +101,11 @@ auto 			GetLanguageListInJSONFormat(string dbQuery, CMysql *, bool includeStuden
 auto 			GetSkillListInJSONFormat(string dbQuery, CMysql *) -> string;
 auto 			GetUniversityListInJSONFormat(string dbQuery, CMysql *, bool includeStudents = false) -> string;
 auto 			GetSchoolListInJSONFormat(string dbQuery, CMysql *, bool includeStudents = false) -> string;
-// auto 			GetNewsFeedInJSONFormat(string whereStatement, int currPage, int newsOnSinglePage, CUser *, CMysql *) -> string;
-auto      		GetUnreadChatMessagesInJSONFormat(CUser *, CMysql *) -> string;
 auto			GetGiftListInJSONFormat(string dbQuery, CMysql *, CUser *) -> string;
 auto 			GetGiftToGiveListInJSONFormat(string dbQuery, CMysql *, CUser *) -> string;
-// auto			GetEventListInJSONFormat(string dbQuery, CMysql *, CUser *) -> string;
 auto			GetEventHostsListInJSONFormat(string dbQuery, CMysql *, CUser *) -> string;
 auto			GetEventGuestsListInJSONFormat(string dbQuery, CMysql *, CUser *) -> string;
 auto			GetMySQLDateInJSONFormat(string dateString) -> string;
-auto      		GetMessageImageList(string imageSetID, CMysql *) -> string;
-auto 			GetBookRatingList(string bookID, CMysql *) -> string;
-auto 			GetCourseRatingList(string courseID, CMysql *) -> string;
-auto      		GetMessageCommentsCount(string messageID, CMysql *) -> string;
-auto 			GetCompanyCommentsCount(string messageID, CMysql *) -> string;
-auto 			GetLanguageCommentsCount(string messageID, CMysql *) -> string;
-auto 			GetBookCommentsCount(string messageID, CMysql *) -> string;
-auto 			GetCertificateCommentsCount(string messageID, CMysql *) -> string;
-auto 			GetUniversityDegreeCommentsCount(string messageID, CMysql *) -> string;
-auto      		GetMessageSpam(string messageID, CMysql *) -> string;
-auto      		GetMessageSpamUser(string messageID, string userID, CMysql *) -> string;
-auto			GetLanguageIDByTitle(string title, CMysql *) -> string;
-auto			GetSkillIDByTitle(string title, CMysql *) -> string;
-auto			GetCompanyPositionIDByTitle(string title, CMysql *) -> string;
 auto 			GetCandidatesListAppliedToVacancyInJSONFormat(string dbQuery, CMysql *) -> string;
 auto 			GetOpenVacanciesInJSONFormat(string companyID, CMysql *, CUser * = NULL) -> string;
 auto			GetGeoLocalityIDByCityAndRegion(string regionName, string cityName, CMysql *) -> string;
@@ -132,8 +115,8 @@ auto			CreateDir(const string &dir) -> bool;
 auto 			RmDirRecursive(const char *dirname) -> bool;
 auto        	isDirExists(const std::string& name) -> bool;
 auto        	isFileExists(const std::string& name) -> bool;
-auto			isFilenameImage(string	filename) -> bool;
-auto			isFilenameVideo(string	filename) -> bool;
+auto			isFilenameImage(const string &filename) -> bool;
+auto			isFilenameVideo(const string &filename) -> bool;
 auto			CleanupFilename(string	filename) -> string;
 auto        	CopyFile(const string src, const string dst) -> void;
 auto      		GetCompanyDuplicates(CMysql *) -> string;
@@ -202,6 +185,18 @@ auto			GetValuesFromDB(string sql, CMysql *) -> vector<string>;
 
 // --- login functions
 auto			GetCountryCodeAndPhoneNumberBySMSCode(const string &confirmation_code, const string &session, CMysql *) -> tuple<string, string, string>;
+
+// --- file system functions
+auto			CreateDir(const string &dir) -> bool;
+auto 			RmDirRecursive(const char *dirname) -> bool;
+auto        	isDirExists(const std::string& name) -> bool;
+auto        	isFileExists(const std::string& name) -> bool;
+auto			isFilenameImage(const string &filename) -> bool;
+auto			isFilenameVideo(const string &filename) -> bool;
+auto			GetFileExtension(const string &filename) -> string;
+auto 			getFileSize(const std::string& name) -> off_t;
+auto			CleanupFilename(string	filename) -> string;
+auto        	CopyFile(const string src, const string dst) -> void;
 
 // --- helpdesk
 auto			GetHelpDeskTicketsInJSONFormat(string sqlQuery, CMysql *db, CUser *user) -> string;

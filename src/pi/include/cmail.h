@@ -7,8 +7,19 @@
 #include <iomanip>
 #include <cstdlib>
 
-#include "cmysql.h"
-#include "cvars.h"
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/stat.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <signal.h>
+#include <memory>
+
+#include "ctemplate.h"
 #include "utilities.h"
 
 using namespace std;
@@ -34,9 +45,6 @@ class CMail
 		int				SendMailExec(const char *progr, char **av, int inp);
 		int				MakeMailFile(string text);
 		int				Input(int fd);
-
-		long long		getFileSize(string fname);
-		bool			isFileExist(string fname);
 
 		string			GetTimeStamp();
 		void			BuildUniqPostfix();

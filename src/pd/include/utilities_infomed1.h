@@ -8,6 +8,9 @@
 // --- do NOT add any header file with potentialy recursive indludes
 
 
+auto      		GetChatMessagesInJSONFormat(string dbQuery, CMysql *) -> string;
+auto      		GetUnreadChatMessagesInJSONFormat(CUser *, CMysql *) -> string;
+auto      		GetMessageImageList(string imageSetID, CMysql *) -> string;
 auto      		GetMessageLikesUsersList(string messageID, CUser *, CMysql *) -> string;
 auto			GetUserAAARole(string user_id, CMysql *db) -> string;
 auto			GetUserAAARole(CUser *user, CMysql *db) -> string;
@@ -19,6 +22,20 @@ auto 			GetCertificationLikesUsersList(string usersCertificationID, CUser *, CMy
 auto 			GetCourseLikesUsersList(string usersCourseID, CUser *, CMysql *) -> string;
 auto 			GetUniversityDegreeLikesUsersList(string messageID, CUser *, CMysql *) -> string;
 auto 			GetBookRatingUsersList(string bookID, CUser *, CMysql *) -> string;
+
+auto			GetCompanyPositionIDByTitle(string title, CMysql *) -> string;
+auto			GetLanguageIDByTitle(string title, CMysql *) -> string;
+auto			GetSkillIDByTitle(string title, CMysql *) -> string;
+auto 			GetBookRatingList(string bookID, CMysql *) -> string;
+auto 			GetCourseRatingList(string courseID, CMysql *) -> string;
+auto 	     	GetMessageCommentsCount(string messageID, CMysql *) -> string;
+auto 			GetCompanyCommentsCount(string messageID, CMysql *) -> string;
+auto 			GetLanguageCommentsCount(string messageID, CMysql *) -> string;
+auto 			GetBookCommentsCount(string messageID, CMysql *) -> string;
+auto 			GetCertificateCommentsCount(string messageID, CMysql *) -> string;
+auto 			GetUniversityDegreeCommentsCount(string messageID, CMysql *) -> string;
+auto    	  	GetMessageSpam(string messageID, CMysql *) -> string;
+auto    	  	GetMessageSpamUser(string messageID, string userID, CMysql *) -> string;
 
 
 // --- timecard functions
