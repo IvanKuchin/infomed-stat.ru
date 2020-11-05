@@ -15,6 +15,7 @@ nodiff_files => [
     "noauth.cpp",
     "csession.cpp",
     "utilities_common.cpp",
+    "utilities1.cpp",
     "utilities2.cpp",
     "cuser.cpp",
     "cactivator.cpp",

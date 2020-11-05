@@ -423,6 +423,14 @@ bool convert_cp1251_to_utf8(const char *in, char *out, int size)
 }
 
 // --- basic string operators
+
+// --- Quote Words: split string into vector<string> words
+// --- input: 
+//        	src string, 
+//        	reference to dst vector
+// --- output: success status
+//			1 - success
+//			0 - fail
 int	qw(const string src, vector<string> &dst)
 {
 	istringstream iss(src);
