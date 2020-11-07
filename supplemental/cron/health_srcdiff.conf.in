@@ -71,6 +71,7 @@ nodiff_files => [
     "cases_list.js",
     "helpdesk_dashboard.js",
 
+    "ru/pages/user_notifications.htmlt",
     "ru/pages/faq.htmlt",
     "ru/pages/login.htmlt",
     "ru/pages/autologin.htmlt",
