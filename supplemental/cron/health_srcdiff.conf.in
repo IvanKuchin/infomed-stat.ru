@@ -110,6 +110,9 @@ nodiff_files => [
     "health_srcdiff.conf.in",
     "cron_config.in",
 
+    ".github/workflows/spell_check.yml",
+    ".github/actions/spell_check/only.txt",
+    ".github/actions/spell_check/excludes.txt",
 ],
 
 exclude_domains => [
