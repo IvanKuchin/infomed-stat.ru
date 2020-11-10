@@ -13,7 +13,7 @@ set(EXECUTABLE_CRONs
     )
 
 # --- Libraries
-# ---- big joint librabry
+# ---- big joint library
 set(JOINT_LIBRARY_SRCs
     cuser.cpp
     cactivator.cpp
@@ -171,7 +171,7 @@ foreach(INDEPENDENT_LIBRARY_SRC ${INDEPENDENT_LIBRARIES_SRC})
     set_pi_lib_properties(${file_without_ext} "${file_without_ext}.cpp" "${PROJECT_PI_INCLUDE_DIRECTORIES}" "")
 endforeach()
 
-# ---- big joint librabry
+# ---- big joint library
 # ---- ATTENTION !!!
 # ---- order is important: joint_lib must follow INDEPENDENT LIBS to help g++-linker resolve dependencies
 set_pi_lib_properties(__joint_pi "${JOINT_LIBRARY_SRCs}" "${PROJECT_PI_INCLUDE_DIRECTORIES}" "")

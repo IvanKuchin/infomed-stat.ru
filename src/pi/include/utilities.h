@@ -27,7 +27,7 @@
 #include "clog.h"
 #include "localy.h"
 // --- IMPORTANT !!!
-// --- do NOT add any header file with potentialy recursive indludes
+// --- do NOT add any header file with potentially recursive includes
 
 using namespace std;
 

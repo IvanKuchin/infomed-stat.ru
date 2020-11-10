@@ -26,8 +26,8 @@ msgstr[1] "%d заказчикам"
 msgstr[2] "%d заказчикам"
 
 #, c-format
-msgid "%d employyes"
-msgid_plural "%d employyes"
+msgid "%d employees"
+msgid_plural "%d employees"
 msgstr[0] "%d сотрудник"
 msgstr[1] "%d сотрудника"
 msgstr[2] "%d сотрудников"
@@ -472,7 +472,7 @@ msgstr "Внутренняя ошибка с БИК"
 msgid "bik not found"
 msgstr "не указан БИК"
 
-msgid "birtday isn't defined"
+msgid "birthday isn't defined"
 msgstr "укажите дату рождения"
 
 msgid "birthday is empty"
@@ -1081,7 +1081,7 @@ msgstr "у Вас недостаточно прав"
 msgid "you are not assigned to customer"
 msgstr "вы не назначены на этого заказчика"
 
-msgid "you are not employeed at any medical center"
+msgid "you are not employed at any medical center"
 msgstr "вы не назначены никакому мед. центру"
 
 msgid "za"

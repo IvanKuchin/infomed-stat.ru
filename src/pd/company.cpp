@@ -2,7 +2,7 @@
 
 int main()
 {
-	CStatistics		appStat;  // --- CStatistics must be firts statement to measure end2end param's
+	CStatistics		appStat;  // --- CStatistics must be first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
 	CUser			user;
 	string			action, partnerID;
@@ -1921,27 +1921,27 @@ int main()
 
 				if(companyID.length())
 				{
-					if(db.Query("SELECT `id` FROM `company_posession_request` WHERE "
+					if(db.Query("SELECT `id` FROM `company_possession_request` WHERE "
 									"`requested_company_id`=\"" + companyID + "\" AND "
 									"`requester_user_id`=\"" + user.GetID() + "\" AND"
 									"`eventTimestamp` >= UNIX_TIMESTAMP() - 86400*30;")) // --- ratelimiter once per month
 					{
 						{
 							CLog	log;
-							log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]: action == AJAX_companyPosessionRequest: posession request already exists [id = " + db.Get(0, "id") + "]");
+							log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]: action == AJAX_companyPosessionRequest: possession request already exists [id = " + db.Get(0, "id") + "]");
 						}
 
 						ostResult << "{\"result\": \"error\", \"description\": \"Такой запрос уже существует\"}";
 					}
 					else
 					{
-						if(db.Query("SELECT `id` FROM `company_posession_request` WHERE "
+						if(db.Query("SELECT `id` FROM `company_possession_request` WHERE "
 									"`requested_company_id`=\"" + companyID + "\" AND "
 									"`requester_user_id`=\"" + user.GetID() + "\";"))
 						{
 							string		requestID = db.Get(0, "id");
 
-							db.Query("DELETE FROM `company_posession_request` WHERE `id`\"" + requestID + "\";");
+							db.Query("DELETE FROM `company_possession_request` WHERE `id`\"" + requestID + "\";");
 							db.Query("DELETE FROM `user_notification` WHERE `actionTypeId`=\"60\" AND `id`\"" + requestID + "\";");
 						}
 						// --- check if company available
@@ -1953,7 +1953,7 @@ int main()
 							{
 								long  int	requestID = 0;
 
-								requestID = db.InsertQuery("INSERT INTO `company_posession_request` SET "
+								requestID = db.InsertQuery("INSERT INTO `company_possession_request` SET "
 																		"`requested_company_id`=\"" + companyID + "\","
 																		"`requester_user_id`=\"" + user.GetID() + "\","
 																		"`status`=\"requested\","
@@ -1984,7 +1984,7 @@ int main()
 								{
 									{
 										CLog	log;
-										log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]: action == AJAX_companyPosessionRequest: ERROR: inserting posession request to `company_posession_request` table");
+										log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]: action == AJAX_companyPosessionRequest: ERROR: inserting possession request to `company_possession_request` table");
 									}
 
 									ostResult << "{\"result\": \"error\", \"description\": \"Ошибка БД\"}";
@@ -2064,9 +2064,9 @@ int main()
 
 				if(db.Query("SELECT `actionId` FROM `users_notification` WHERE `id`=\"" + notificationID + "\" AND `userId`=\"" + user.GetID() + "\" AND `actionTypeId`=\"60\";"))
 				{
-					string		posessionRequestID = db.Get(0, "actionId");
+					string		possessionRequestID = db.Get(0, "actionId");
 
-					if(db.Query("SELECT * FROM `company_posession_request` WHERE `id`=\"" + posessionRequestID + "\";"))
+					if(db.Query("SELECT * FROM `company_possession_request` WHERE `id`=\"" + possessionRequestID + "\";"))
 					{
 						string	requested_company_id = db.Get(0, "requested_company_id");
 						string	requester_user_id = db.Get(0, "requester_user_id");
@@ -2113,7 +2113,7 @@ int main()
 													  	 "\"result\":\"success\""
 													  	 "}";
 
-											db.Query("UPDATE `company_posession_request` SET `status`=\"approved\", `eventTimestamp`=UNIX_TIMESTAMP() WHERE `id`=\"" + posessionRequestID + "\";");
+											db.Query("UPDATE `company_possession_request` SET `status`=\"approved\", `eventTimestamp`=UNIX_TIMESTAMP() WHERE `id`=\"" + possessionRequestID + "\";");
 											db.Query("DELETE FROM `users_notification` WHERE `id`=\"" + notificationID + "\";");
 											if(db.InsertQuery("INSERT INTO `users_notification` (`title`, `userId`, `actionTypeId`, `actionId`, `eventTimestamp`) values(\"\",\"" + requester_user_id + "\", \"61\", \"" + requested_company_id + "\", UNIX_TIMESTAMP());"))
 											{
@@ -2163,7 +2163,7 @@ int main()
 						{
 							{
 								CLog	log;
-								log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]::AJAX_grantPosessionRequest: ERROR: posession request in wrong state [state: " + status + "], must be in `requested` state");
+								log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]::AJAX_grantPosessionRequest: ERROR: possession request in wrong state [state: " + status + "], must be in `requested` state");
 							}
 
 							ostResult << "{\"result\": \"error\", \"description\": \"ОШИБКА: невозможно найти запрос на владение\"}";
@@ -2173,7 +2173,7 @@ int main()
 					{
 						{
 							CLog	log;
-							log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]::AJAX_grantPosessionRequest: ERROR: posession request [id: " + posessionRequestID + "] not found");
+							log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]::AJAX_grantPosessionRequest: ERROR: possession request [id: " + possessionRequestID + "] not found");
 						}
 
 						ostResult << "{\"result\": \"error\", \"description\": \"ОШИБКА: невозможно найти запрос на владение\"}";
@@ -2305,9 +2305,9 @@ int main()
 
 				if(db.Query("SELECT `actionId` FROM `users_notification` WHERE `id`=\"" + notificationID + "\" AND `userId`=\"" + user.GetID() + "\" AND `actionTypeId`=\"60\";"))
 				{
-					string		posessionRequestID = db.Get(0, "actionId");
+					string		possessionRequestID = db.Get(0, "actionId");
 
-					if(db.Query("SELECT * FROM `company_posession_request` WHERE `id`=\"" + posessionRequestID + "\";"))
+					if(db.Query("SELECT * FROM `company_possession_request` WHERE `id`=\"" + possessionRequestID + "\";"))
 					{
 						string	requested_company_id = db.Get(0, "requested_company_id");
 						string	requester_user_id = db.Get(0, "requester_user_id");
@@ -2325,7 +2325,7 @@ int main()
 									
 									if(admin_userID == user.GetID())
 									{
-										db.Query("UPDATE `company_posession_request` SET `status`=\"rejected\", `eventTimestamp`=UNIX_TIMESTAMP() WHERE `id`=\"" + posessionRequestID + "\";");
+										db.Query("UPDATE `company_possession_request` SET `status`=\"rejected\", `eventTimestamp`=UNIX_TIMESTAMP() WHERE `id`=\"" + possessionRequestID + "\";");
 
 										if(db.isError())
 										{
@@ -2396,7 +2396,7 @@ int main()
 						{
 							{
 								CLog	log;
-								log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]::AJAX_rejectPosessionRequest: ERROR: posession request in wrong state [state: " + status + "], must be in `requested` state");
+								log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]::AJAX_rejectPosessionRequest: ERROR: possession request in wrong state [state: " + status + "], must be in `requested` state");
 							}
 
 							ostResult << "{\"result\": \"error\", \"description\": \"ОШИБКА: невозможно найти запрос на владение\"}";
@@ -2406,7 +2406,7 @@ int main()
 					{
 						{
 							CLog	log;
-							log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]::AJAX_rejectPosessionRequest: ERROR: posession request [id: " + posessionRequestID + "] not found");
+							log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]::AJAX_rejectPosessionRequest: ERROR: possession request [id: " + possessionRequestID + "] not found");
 						}
 
 						ostResult << "{\"result\": \"error\", \"description\": \"ОШИБКА: невозможно найти запрос на владение\"}";

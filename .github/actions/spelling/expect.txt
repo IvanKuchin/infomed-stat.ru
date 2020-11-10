@@ -650,4 +650,19 @@ xxxx
 xxxxxxxx
 xxxxxxxxxxxx
 yxxx
+anketa
+eventtimestamps
+expenseline
+infomed
+kompanii
+kpp
+Libwkhtmltox
+multiwork
+ngettext
+ogrn
+Rapidjson
+rpath
+setprecision
+timeentry
+WKHTMLTOX
 

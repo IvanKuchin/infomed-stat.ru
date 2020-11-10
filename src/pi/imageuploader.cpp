@@ -281,7 +281,7 @@ bool ImageConvertToJpg (const string src, const string dst, struct ExifInfo &exi
 
 int main()
 {
-	CStatistics		appStat;  // --- CStatistics must be firts statement to measure end2end param's
+	CStatistics		appStat;  // --- CStatistics must be first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
 	CUser			user;
 	string			action, partnerID, imageTempSet, messageID;
@@ -402,7 +402,7 @@ int main()
 					FILE			*f;
 					int			 folderID = (int)(rand()/(RAND_MAX + 1.0) * FEEDIMAGE_NUMBER_OF_FOLDERS) + 1;
 					string		  filePrefix = GetRandom(20);
-					string		  finalFile, tmpFile2Check, tmpImageJPG, fileName, fileExtention;
+					string		  finalFile, tmpFile2Check, tmpImageJPG, fileName, fileExtension;
 					ostringstream   ost;
 					struct ExifInfo exifInfo;
 					int			 currFileType = FILETYPE_UNDEFINED;
@@ -421,7 +421,7 @@ int main()
 
 						{
 							ost.str("");
-							ost << __func__ << "[" << __LINE__ << "]: ERROR: feed image file [" << indexPage.GetFilesHandler()->GetName(filesCounter) << "] size exceed permited maximum: " << indexPage.GetFilesHandler()->GetSize(filesCounter);
+							ost << __func__ << "[" << __LINE__ << "]: ERROR: feed image file [" << indexPage.GetFilesHandler()->GetName(filesCounter) << "] size exceed permitted maximum: " << indexPage.GetFilesHandler()->GetSize(filesCounter);
 							log.Write(ERROR, ost.str());
 						}
 
@@ -463,11 +463,11 @@ int main()
 
 								if((foundPos = tmp.rfind(".")) != string::npos) 
 								{
-									fileExtention = tmp.substr(foundPos, tmp.length() - foundPos);
+									fileExtension = tmp.substr(foundPos, tmp.length() - foundPos);
 								}
 								else
 								{
-									fileExtention = ".jpg";
+									fileExtension = ".jpg";
 								}
 
 								ost.str("");
@@ -475,7 +475,7 @@ int main()
 								finalFile = ost.str();
 
 								ost.str("");
-								ost << "/tmp/tmp_" << filePrefix << fileExtention;
+								ost << "/tmp/tmp_" << filePrefix << fileExtension;
 								tmpFile2Check = ost.str();
 
 								ost.str("");
@@ -515,7 +515,7 @@ int main()
 									CLog	log;
 									ostringstream   ost;
 
-									ost << __func__ << "[" << __LINE__ << "]: choosen filename for feed image [" << finalFile << "]";
+									ost << __func__ << "[" << __LINE__ << "]: chosen filename for feed image [" << finalFile << "]";
 									log.Write(DEBUG, ost.str());
 								}
 
@@ -713,7 +713,7 @@ int main()
 
 									// --- fork here
 									// --- parent process: return response to user (to avoid long waiting)
-									// --- child process: continue video converting to webm-format (very long convertion)
+									// --- child process: continue video converting to webm-format (very long conversion)
 									// --- !!! IMPORTANT !!!
 									// --- no need to add additional functionality here
 									forkPID = fork();
@@ -721,7 +721,7 @@ int main()
 									{
 										pid_t	   sid;
 
-										// --- child proccess
+										// --- child process
 										{
 											CLog	log;
 											log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: child process after fork");
