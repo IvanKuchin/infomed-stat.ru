@@ -740,7 +740,7 @@ int main()
 											{
 												{
 													CLog	log;
-													log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: can't daemonize SecondStageVideoConvertion-process setsid returns error [" + to_string(EXIT_FAILURE) + "]");
+													log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: can't daemonize SecondStageVideoConversion-process setsid returns error [" + to_string(EXIT_FAILURE) + "]");
 												}
 
 												// --- it must be caught by "catch" in child process
