@@ -75,7 +75,7 @@ bool ImageConvertToJpg (const string src, const string dst, struct ExifInfo &exi
 	}
 
 #ifndef IMAGEMAGICK_DISABLE
-	// Construct the image object. Seperating image construction from the
+	// Construct the image object. Separating image construction from the
 	// the read operation ensures that a failure to read the image file
 	// doesn't render the image object useless.
 	try {
@@ -638,7 +638,7 @@ int main()
 								ostJSONResult << "\"jqXHR\": \"\"" << std::endl;
 								ostJSONResult << "}" << std::endl;
 								if(filesCounter == (indexPage.GetFilesHandler()->Count() - 1)) ostJSONResult << "]";
-							} // --- if image sucessfully converted and saved to image folder
+							} // --- if image successfully converted and saved to image folder
 						} // --- if uploaded file image 
 						else if( (messageMedia == MESSAGE_HAVENO_MEDIA) && (currFileType == FILETYPE_VIDEO) )
 						{

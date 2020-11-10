@@ -2086,7 +2086,7 @@ int main()
 						}
 						else
 						{
-							// --- here code will be run only if multiwork search was not sucessfull on previous step
+							// --- here code will be run only if multiwork search was not successful on previous step
 							// --- earlier: user _and_ company is not success
 							// --- here: user _or_ company
 							{
@@ -2160,7 +2160,7 @@ int main()
 						}
 						else
 						{
-							// --- here code will be run only if multiwork search was not sucessfull on previous step
+							// --- here code will be run only if multiwork search was not successful on previous step
 							// --- earlier: user _and_ company is not success
 							// --- here: user _or_ company
 							{
