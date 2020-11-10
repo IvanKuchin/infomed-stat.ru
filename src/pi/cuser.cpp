@@ -603,7 +603,7 @@ bool CUser::UpdatePresence()
 
 	if(db->Query("update `users` set `last_online`=now(), `last_onlineSecondsSinceY2k`=\"" + to_string(GetSecondsSinceY2k()) + "\" where `id`=\"" + GetID() + "\";"))
 	{
-		MESSAGE_ERROR("", "", "update presense SQL-query must return 0. It is not zero, means userID [" + GetID() + "] having more than 1 users.");
+		MESSAGE_ERROR("", "", "update presence SQL-query must return 0. It is not zero, means userID [" + GetID() + "] having more than 1 users.");
 		result = false;
 	}
 

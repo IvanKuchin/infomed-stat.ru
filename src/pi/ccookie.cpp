@@ -276,7 +276,7 @@ string CCookies::GetAll()
 			{
 				temp += "; path=" + cookie.GetPath();
 			}
-			MESSAGE_DEBUG("", "", " add cookie: " + temp); // --- keep it here to avoud \n appears in the log
+			MESSAGE_DEBUG("", "", " add cookie: " + temp); // --- keep it here to avoid \n appears in the log
 
 			temp += "\n";
 

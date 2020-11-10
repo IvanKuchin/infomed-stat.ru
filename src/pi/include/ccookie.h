@@ -12,7 +12,7 @@ class CCookie
 {
 	private:
 		string		name = "", value = "", domain = "", path = "", secure = "";
-		bool		isNew;		// this parameter control sentback coockie to server
+		bool		isNew;		// this parameter control sentback cookie to server
 		struct tm	expiration_tm;
 
 	public:

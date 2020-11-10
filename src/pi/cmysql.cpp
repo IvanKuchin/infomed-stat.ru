@@ -236,7 +236,7 @@ int CMysql::Connect(const string &dbName, const string &login, const string &pas
 
     if(result == 0)
     {
-        // --- sucessfull init
+        // --- successful init
         Query("set names " + DB_CHARSET);
     }
 

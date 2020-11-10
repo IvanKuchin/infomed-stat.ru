@@ -2,31 +2,19 @@
 
 CVideoConverter::CVideoConverter()
 {
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 	
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish");
-	}
+	MESSAGE_DEBUG("", "", "finish");
 }
 
 CVideoConverter::CVideoConverter(string originalFilename)
 {
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 	
 	PickUniqPrefix(originalFilename);
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish");
-	}
+	MESSAGE_DEBUG("", "", "finish");
 }
 
 bool CVideoConverter::PickUniqPrefix(string srcFileName)
@@ -34,10 +22,7 @@ bool CVideoConverter::PickUniqPrefix(string srcFileName)
 	bool	result = false;
 	bool	tryAgain;
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	do
 	{
@@ -51,11 +36,11 @@ bool CVideoConverter::PickUniqPrefix(string srcFileName)
 
 		if((foundPos = srcFileName.rfind(".")) != string::npos) 
 		{
-			_originalFileExtention = toLower(srcFileName.substr(foundPos, srcFileName.length() - foundPos));
+			_originalFileExtension = toLower(srcFileName.substr(foundPos, srcFileName.length() - foundPos));
 		}
 		else
 		{
-			_originalFileExtention = ".avi";
+			_originalFileExtension = ".avi";
 		}
 
 
@@ -72,31 +57,24 @@ bool CVideoConverter::PickUniqPrefix(string srcFileName)
 			if(isFileExists(GetStderrFullFilename(i))) tryAgain = true;
 			
 		} 
-		if(isFileExists("/tmp/tmp_" + _filePrefix + _originalFileExtention)) tryAgain = true;
+		if(isFileExists("/tmp/tmp_" + _filePrefix + _originalFileExtension)) tryAgain = true;
 
 	} while(tryAgain);
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish (result = " + to_string(result) + ")");
-	}
+	MESSAGE_DEBUG("", "", "finish (result = " + to_string(result) + ")");
+
 	return  result;
 }
 
 string CVideoConverter::GetFinalFolder()
 {
 	string	result = "";
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	result = _folderID;
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish (result = " + result + ")");
-	}
+	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
+
 	return result;
 }
 
@@ -104,7 +82,7 @@ string CVideoConverter::GetTempFilename()
 {
 	string	result;
 
-	result = _filePrefix + _originalFileExtention;
+	result = _filePrefix + _originalFileExtension;
 
 	return result;
 }
@@ -116,10 +94,7 @@ string CVideoConverter::GetPreFinalFilename(unsigned int order)
 	if(order < _exts.size())
 		result = _filePrefix + _exts[order];
 	else
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: order[" + to_string(order) + "] can't be bigger than _exts.size() [" + to_string(_exts.size()) + "])");
-	}
+	MESSAGE_DEBUG("", "", "order[" + to_string(order) + "] can't be bigger than _exts.size() [" + to_string(_exts.size()) + "])");
 
 	return result;
 }
@@ -131,10 +106,7 @@ string CVideoConverter::GetFinalFilename(unsigned int order)
 	if(order < _exts.size())
 		result = _filePrefix + _exts[order];
 	else
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: order[" + to_string(order) + "] can't be bigger than _exts.size() [" + to_string(_exts.size()) + "])");
-	}
+	MESSAGE_DEBUG("", "", "order[" + to_string(order) + "] can't be bigger than _exts.size() [" + to_string(_exts.size()) + "])");
 
 	return result;
 }
@@ -142,109 +114,67 @@ string CVideoConverter::GetFinalFilename(unsigned int order)
 string CVideoConverter::GetTempFullFilename()
 {
 	string	result;
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	result = "/tmp/tmp_" + GetTempFilename();
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish (result = " + result + ")");
-	}
+	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
 	return result;
 }
 
 string CVideoConverter::GetPreFinalFullFilename(unsigned int order)
 {
 	string	result = "";
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	if(order < _exts.size())
 		result = "/tmp/" + GetPreFinalFilename(order);
 	else
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: order[" + to_string(order) + "] can't be bigger than _exts.size() [" + to_string(_exts.size()) + "])");
-	}
+	MESSAGE_DEBUG("", "", "order[" + to_string(order) + "] can't be bigger than _exts.size() [" + to_string(_exts.size()) + "])");
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish (result = " + result + ")");
-	}
+	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
 	return result;
 }
 
 string CVideoConverter::GetFinalFullFilename(unsigned int order)
 {
 	string	result = "";
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	if(order < _exts.size())
 		result = VIDEO_FEED_DIRECTORY + "/" + _folderID + "/" + GetFinalFilename(order);
 	else
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: order[" + to_string(order) + "] can't be bigger than _exts.size() [" + to_string(_exts.size()) + "])");
-	}
+	MESSAGE_DEBUG("", "", "order[" + to_string(order) + "] can't be bigger than _exts.size() [" + to_string(_exts.size()) + "])");
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish (result = " + result + ")");
-	}
+	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
 	return result;
 }
 
 string CVideoConverter::GetStdoutFullFilename(unsigned int order)
 {
 	string	result = "";
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	if(order < _exts.size())
 		result = FEEDVIDEO_STDOUT + string("_") + _filePrefix + _exts[order];
 	else
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: order[" + to_string(order) + "] can't be bigger than _exts.size() [" + to_string(_exts.size()) + "])");
-	}
+	MESSAGE_DEBUG("", "", "order[" + to_string(order) + "] can't be bigger than _exts.size() [" + to_string(_exts.size()) + "])");
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish (result = " + result + ")");
-	}
+	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
 	return result;
 }
 
 string CVideoConverter::GetStderrFullFilename(unsigned int order)
 {
 	string	result = "";
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	if(order < _exts.size())
 		result = FEEDVIDEO_STDERR + string("_") + _filePrefix + _exts[order];
 	else
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: order[" + to_string(order) + "] can't be bigger than _exts.size() [" + to_string(_exts.size()) + "])");
-	}
+	MESSAGE_DEBUG("", "", "order[" + to_string(order) + "] can't be bigger than _exts.size() [" + to_string(_exts.size()) + "])");
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish (result = " + result + ")");
-	}
+	MESSAGE_DEBUG("", "", "finish (result = " + result + ")");
 	return result;
 }
 
@@ -254,10 +184,7 @@ bool CVideoConverter::ParseLocationToComponents(string src)
 	regex	 positionRegex(".*([+-][[:digit:]]+\\.[[:digit:]]+)([+-][[:digit:]]+\\.[[:digit:]]+)([+-][[:digit:]]+\\.[[:digit:]]+).*");
 	smatch	matchResult;
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	if(regex_search(src, matchResult, positionRegex))
 	{
@@ -268,10 +195,7 @@ bool CVideoConverter::ParseLocationToComponents(string src)
 		result = true;
 	}
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish (result = " + to_string(result) + ")");
-	}
+	MESSAGE_DEBUG("", "", "finish (result = " + to_string(result) + ")");
 	return result;
 }
 
@@ -279,10 +203,7 @@ bool CVideoConverter::ReadMetadataAndResolution()
 {
 	bool				result = false;
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 #ifndef FFPMPEG_DISABLE
 
@@ -332,7 +253,7 @@ bool CVideoConverter::ReadMetadataAndResolution()
 				MESSAGE_DEBUG("", "", "video stream dimensions [" + to_string(_width) + "x" + to_string(_height) + "]");
 
 				// --- check video stream meta data
-				// --- is it roteted dimensions
+				// --- is it rotated dimensions
 				tag = nullptr;
 				while ((tag = av_dict_get(stream->metadata, "", tag, AV_DICT_IGNORE_SUFFIX)))
 				{
@@ -366,10 +287,7 @@ bool CVideoConverter::ReadMetadataAndResolution()
 	result = true;
 #endif
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish (result = " + to_string(result) + ")");
-	}
+	MESSAGE_DEBUG("", "", "finish (result = " + to_string(result) + ")");
 	return result;
 
 }
@@ -378,7 +296,7 @@ bool CVideoConverter::FirstPhase()
 {
 	bool	result = false;
 	char	scaleArg[30];
-	char	add_overlay_and_blur[512];
+	// char	add_overlay_and_blur[512];
 	char	*argv[10];
 
 	string	tmpSrcFile, tmpDstFile;
@@ -393,7 +311,28 @@ bool CVideoConverter::FirstPhase()
 
 		if(_width && _height)
 		{
+			double	videoScaleWidth			= _width / FEEDVIDEO_MAX_WIDTH;
+			double	videoScaleHeight		= _height / FEEDVIDEO_MAX_HEIGHT;
+			double	videoScaleMax			= (videoScaleWidth > videoScaleHeight ? videoScaleWidth : videoScaleHeight);
+			double	videoScaleFinalWidth	= videoScaleMax > 1 ? _width / videoScaleMax : _width;
+			double	videoScaleFinalHeight	= videoScaleMax > 1 ? _height / videoScaleMax : _height;
 
+			memset(scaleArg, 0, sizeof(scaleArg));
+			sprintf(scaleArg, "scale=%d:%d", (int)videoScaleFinalWidth, (int)videoScaleFinalHeight);
+
+			argv[0] = const_cast<char *>("ffmpeg");
+			argv[1] = const_cast<char *>("-i");
+			argv[2] = const_cast<char *>(tmpSrcFile.c_str());
+			argv[3] = const_cast<char *>("-vf");
+			argv[4] = const_cast<char *>(scaleArg);
+			argv[5] = const_cast<char *>(tmpDstFile.c_str());
+			argv[6] = NULL;
+
+			MESSAGE_DEBUG("", "", "video scaled down to " + scaleArg);
+
+/*
+			// --- horizontal video , just scale
+			// --- vertical vide add overlay to make it horizontal
 			if(_width > _height)
 			{
 				double	videoScaleWidth = _width / FEEDVIDEO_MAX_WIDTH;
@@ -423,6 +362,7 @@ bool CVideoConverter::FirstPhase()
 			}
 			else
 			{
+
 				memset(add_overlay_and_blur, 0, sizeof(add_overlay_and_blur));
 				sprintf(add_overlay_and_blur, "split [original][copy]; [copy] crop=ih*9/16:ih:iw/2-ow/2:0, scale=%d:%d, gblur=sigma=20[blurred]; [original] scale=iw/ih*%d:%d [originalscaled]; [blurred][originalscaled]overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2", (int)FEEDVIDEO_MAX_WIDTH, (int)FEEDVIDEO_MAX_HEIGHT, (int)FEEDVIDEO_MAX_HEIGHT, (int)FEEDVIDEO_MAX_HEIGHT);
 
@@ -436,7 +376,7 @@ bool CVideoConverter::FirstPhase()
 
 				MESSAGE_DEBUG("", "", "video overlayed and blured (" + add_overlay_and_blur + ")");
 			}
-
+*/
 		}
 		else
 		{
@@ -485,10 +425,7 @@ bool CVideoConverter::SecondPhase()
 
 	string	tmpSrcFile, tmpDstFile;
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	tmpSrcFile = GetTempFullFilename();
 	tmpDstFile = GetPreFinalFullFilename(1);
@@ -513,10 +450,7 @@ bool CVideoConverter::SecondPhase()
 		log.Write(ERROR, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: fail to convert " + GetTempFullFilename() + " -> " + GetPreFinalFullFilename(0));
 	}
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish (result = " + to_string(result) + ")");
-	}
+	MESSAGE_DEBUG("", "", "finish (result = " + to_string(result) + ")");
 	return result;
 }
 
@@ -526,10 +460,7 @@ bool	CVideoConverter::VideoConvert(int dstIndex, char **argv)
 	void		(*del)(int), (*quit)(int);
 	int		 pid;
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
+	MESSAGE_DEBUG("", "", "start");
 
 	del = signal(SIGINT, SIG_IGN); quit = signal(SIGQUIT, SIG_IGN);
 	if( ! (pid = fork()))
@@ -627,20 +558,14 @@ bool	CVideoConverter::VideoConvert(int dstIndex, char **argv)
 	/* восстановить реакции на сигналы от клавиатуры */
 	signal(SIGINT, del); signal(SIGQUIT, quit);
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish (result = " + to_string(result) + ")");
-	}
+	MESSAGE_DEBUG("", "", "finish (result = " + to_string(result) + ")");
 	return result;	
 }
 
 
 void CVideoConverter::Cleanup()
 {
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start (_isSuccessConvert = " + to_string(_isSuccessConvert) + ")");
-	}
+	MESSAGE_DEBUG("", "", "start (_isSuccessConvert = " + to_string(_isSuccessConvert) + ")");
 
 	if(_isSuccessConvert)
 	{
@@ -653,21 +578,6 @@ void CVideoConverter::Cleanup()
 		unlink(GetTempFullFilename().c_str());
 	}
 
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish");
-	}
+	MESSAGE_DEBUG("", "", "finish");
 }
 
-CVideoConverter::~CVideoConverter()
-{
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: start");
-	}
-
-	{
-		CLog	log;
-		log.Write(DEBUG, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]: finish");
-	}
-}

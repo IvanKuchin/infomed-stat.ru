@@ -12,7 +12,7 @@ bool ImageSaveAsJpg (const string src, const string dst)
 	}
 
 #ifndef IMAGEMAGICK_DISABLE
-	// Construct the image object. Seperating image construction from the
+	// Construct the image object. Separating image construction from the
 	// the read operation ensures that a failure to read the image file
 	// doesn't render the image object useless.
 	try {
@@ -100,7 +100,7 @@ bool ImageSaveAsJpg (const string src, const string dst)
 
 int main()
 {
-	CStatistics	 appStat;  // --- CStatistics must be firts statement to measure end2end param's
+	CStatistics	 appStat;  // --- CStatistics must be a first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
 	CUser		   user;
 	string		  action, partnerID;
@@ -175,7 +175,7 @@ int main()
 				FILE			*f;
 				int				folderID = (int)(rand()/(RAND_MAX + 1.0) * AVATAR_NUMBER_OF_FOLDERS) + 1;
 				string			filePrefix = GetRandom(20);
-				string			file2Check, tmpFile2Check, tmpImageJPG, fileName, fileExtention;
+				string			file2Check, tmpFile2Check, tmpImageJPG, fileName, fileExtension;
 				ostringstream   ost;
 				int			 affected;
 
@@ -197,7 +197,7 @@ int main()
 						ostringstream	ost;
 
 						ost.str("");
-						ost << string(__func__) + ": ERROR avatar file [" << indexPage.GetFilesHandler()->GetName(filesCounter) << "] size exceed permited maximum: " << indexPage.GetFilesHandler()->GetSize(filesCounter) << " > " << AVATAR_MAX_FILE_SIZE;
+						ost << string(__func__) + ": ERROR avatar file [" << indexPage.GetFilesHandler()->GetName(filesCounter) << "] size exceed permitted maximum: " << indexPage.GetFilesHandler()->GetSize(filesCounter) << " > " << AVATAR_MAX_FILE_SIZE;
 
 						log.Write(ERROR, ost.str());
 						throw CExceptionHTML("avatar file size exceed", indexPage.GetFilesHandler()->GetName(filesCounter));
@@ -216,11 +216,11 @@ int main()
 
 						if((foundPos = tmp.rfind(".")) != string::npos) 
 						{
-							fileExtention = tmp.substr(foundPos, tmp.length() - foundPos);
+							fileExtension = tmp.substr(foundPos, tmp.length() - foundPos);
 						}
 						else
 						{
-							fileExtention = ".jpg";
+							fileExtension = ".jpg";
 						}
 
 						ost.str("");
@@ -228,7 +228,7 @@ int main()
 						file2Check = ost.str();
 
 						ost.str("");
-						ost << "/tmp/tmp_" << filePrefix << fileExtention;
+						ost << "/tmp/tmp_" << filePrefix << fileExtension;
 						tmpFile2Check = ost.str();
 
 						ost.str("");
@@ -263,7 +263,7 @@ int main()
 					if(ImageSaveAsJpg(tmpFile2Check, tmpImageJPG))
 					{
 
-						MESSAGE_DEBUG("", "", "choosen filename for avatar [" + file2Check + "]");
+						MESSAGE_DEBUG("", "", "chosen filename for avatar [" + file2Check + "]");
 
 						// --- remove previous logo
 						if(db.Query("SELECT * FROM `users_avatars` WHERE `userid`=\"" + user.GetID() + "\" AND `isActive`=\"1\";"))

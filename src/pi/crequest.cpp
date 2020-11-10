@@ -125,7 +125,7 @@ int CPost::CalculateVars()
     if(tmp == NULL)
     {
 		CLog	log;
-		log.Write(ERROR, "CPost::" + string(__func__) + "[" + to_string(__LINE__) + "]: ERROR: POST data is empy");
+		log.Write(ERROR, "CPost::" + string(__func__) + "[" + to_string(__LINE__) + "]: ERROR: POST data is empty");
 		return -1;
     }
 
@@ -558,10 +558,7 @@ char *CPost::ParamValue(int number)
 			Content-Disposition: form-data; name="files[]"; filename="1616285.jpg"
 			Content-Type: image/jpeg
 
-			......JFIF.............;CREATOR: gd-jpeg v1.0 (using IJG JPEG v62), quality = 90
-			...C......................
-			.....
-			...
+			......JFIF.....................
 
 			------WebKitFormBoundary651GAAbkidp9Dwrr--
 

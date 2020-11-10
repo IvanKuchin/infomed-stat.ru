@@ -1,6 +1,6 @@
 #include "c_cache_obj.h"
 
-// --- static variable definition makes chache allocation permanent to the process
+// --- static variable definition makes cache allocation permanent to the process
 map<string, string>	c_cache_obj::cache;
 
 auto c_cache_obj::GetFromCache(string _key) -> string

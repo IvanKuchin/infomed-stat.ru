@@ -71,7 +71,7 @@ string	quoted(string src)
 vector<string>	quoted(const vector<string> &src)
 {
 	vector<string>	result;
-	result.reserve(src.size()); // --- reduce probablity of memory reallocation
+	result.reserve(src.size()); // --- reduce probability of memory reallocation
 
 	for(const string &item: src)
 	{
@@ -768,7 +768,7 @@ double GetTimeDifferenceFromNow(const string timeAgo)
 
 	// --- For testing purposes try to use the same Daylight saving as in local clock
 	// --- Test starts on 9/11. If there is no side effect, comment-out previous line.
-	if(local_tm) check_tm.tm_isdst = local_tm->tm_isdst;	// --- "Summer time" is the same as locak clock.
+	if(local_tm) check_tm.tm_isdst = local_tm->tm_isdst;	// --- "Summer time" is the same as local clock.
 
 /*
 	{
@@ -1104,7 +1104,7 @@ off_t getFileSize(const std::string& name)
 	return result;
 }
 
-// --- extrasct all @[[:digit:]] patterns form srcMessage
+// --- extract all @[[:digit:]] patterns form srcMessage
 vector<string> GetUserTagsFromText(string srcMessage)
 {
 	vector<string>  result;
@@ -1217,7 +1217,7 @@ bool AllowMessageInNewsFeed(CUser *me, const string messageOwnerID, const string
 
 	MESSAGE_DEBUG("", "", "parameters (user [" + me->GetID() + "], messageOwnerID [" + messageOwnerID + "], messageAccessRights [" + messageAccessRights + "]): start");
 
-	// --- messages belons to yourself must be shown unconditionally
+	// --- messages belongs to yourself must be shown unconditionally
 	// --- must be checked before message access private
 	if(me->GetID() == messageOwnerID) return true;
 

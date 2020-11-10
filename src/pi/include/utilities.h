@@ -213,7 +213,7 @@ auto 			GetSpecificData_GetMaxFileSize(string itemType) -> int;
 auto		 	GetSpecificData_GetMaxWidth(string itemType) -> unsigned int;
 auto		 	GetSpecificData_GetMaxHeight(string itemType) -> unsigned int;
 auto 			GetSpecificData_GetBaseDirectory(string itemType) -> string;
-auto			GetSpecificData_GetFinalFileExtenstion(string itemType) -> string;
+auto			GetSpecificData_GetFinalFileExtension(string itemType) -> string;
 auto 			GetSpecificData_SelectQueryItemByID(string itemID, string itemType) -> string;
 auto 			GetSpecificData_UpdateQueryItemByID(string itemID, string itemType, string folderID, string fileName) -> string;
 auto 			GetSpecificData_GetDBCoverPhotoFolderString(string itemType) -> string;

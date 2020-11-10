@@ -2,7 +2,7 @@
 
 int main()
 {
-	CStatistics		appStat;  // --- CStatistics must be firts statement to measure end2end param's
+	CStatistics		appStat;  // --- CStatistics must be a first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
 	CUser			user;
 	string			action, partnerID;
@@ -1363,7 +1363,7 @@ int main()
 				}
 				else
 				{
-					MESSAGE_DEBUG("", action, "previous erros prevent to change subscription mode");
+					MESSAGE_DEBUG("", action, "previous errors prevent to change subscription mode");
 				}
 			}
 			else

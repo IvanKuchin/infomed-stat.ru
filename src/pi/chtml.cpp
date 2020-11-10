@@ -72,7 +72,7 @@ string CHTML::GetAttributeValue(string tag_name, string attr_name, string name_c
 
     auto        result = ""s;
     auto        tag_start = headTag.find("<" + tag_name);
-    auto        tag_close = tag_start; // --- type drivation only
+    auto        tag_close = tag_start; // --- type derivation only
     
 
     while(tag_start != string::npos)
@@ -110,7 +110,7 @@ string CHTML::GetAttributeValue(string tag_name, string attr_name, string name_c
                         }
                         else
                         {
-                        	MESSAGE_ERROR("", "", "content start position at the end of attribule list");
+                        	MESSAGE_ERROR("", "", "content start position at the end of attribute list");
                         }
                     }
                     else
@@ -289,7 +289,7 @@ string CHTML::GetDirectoryByType()
 
 tuple<string, string, string> CHTML::PickFileName()
 {
-	string		filePrefix = "", fileExtention = "";
+	string		filePrefix = "", fileExtension = "";
 	int			folderID;
 	string		finalFile, tmpFile2Check, tmpImageJPG;
 
@@ -308,18 +308,18 @@ tuple<string, string, string> CHTML::PickFileName()
 
         if((foundPos = tmp.rfind(".")) != string::npos)
         {
-            fileExtention = tmp.substr(foundPos, tmp.length() - foundPos);
+            fileExtension = tmp.substr(foundPos, tmp.length() - foundPos);
             
             // --- filter wrong fileExtension (for ex: .com?action=fake_action) 
-            if(fileExtention.find("jpeg")) fileExtention = ".jpeg";
-            else if(fileExtention.find("png")) fileExtention = ".png";
-            else if(fileExtention.find("gif")) fileExtention = ".gif";
-            else if(fileExtention.find("svg")) fileExtention = ".svg";
-            else fileExtention = ".jpg";
+            if(fileExtension.find("jpeg")) fileExtension = ".jpeg";
+            else if(fileExtension.find("png")) fileExtension = ".png";
+            else if(fileExtension.find("gif")) fileExtension = ".gif";
+            else if(fileExtension.find("svg")) fileExtension = ".svg";
+            else fileExtension = ".jpg";
         }
         else
         {
-            fileExtention = ".jpg";
+            fileExtension = ".jpg";
         }
 
 		ost.str("");
@@ -327,7 +327,7 @@ tuple<string, string, string> CHTML::PickFileName()
         finalFile = ost.str();
 
         ost.str("");
-        ost << "/tmp/tmp_" << filePrefix << fileExtention;
+        ost << "/tmp/tmp_" << filePrefix << fileExtension;
         tmpFile2Check = ost.str();
 
         ost.str("");
@@ -335,9 +335,9 @@ tuple<string, string, string> CHTML::PickFileName()
         tmpImageJPG = ost.str();
 	} while(isFileExists(finalFile) || isFileExists(tmpFile2Check) || isFileExists(tmpImageJPG));
 
-	MESSAGE_DEBUG("", "", "finish (return: folderID: " + to_string(folderID) + ", filePrefix:" + filePrefix + ", fileExtention:" + fileExtention + ")");
+	MESSAGE_DEBUG("", "", "finish (return: folderID: " + to_string(folderID) + ", filePrefix:" + filePrefix + ", fileExtension:" + fileExtension + ")");
 
-	return make_tuple(to_string(folderID), filePrefix, fileExtention);
+	return make_tuple(to_string(folderID), filePrefix, fileExtension);
 }
 
 bool CHTML::DownloadFile(string urlPreview, FILE *f)
@@ -439,14 +439,14 @@ bool CHTML::ParseHTMLPage()
 				// download it
 				FILE	*f;
 
-				tie(folderID, filePrefix, fileExtention) = PickFileName();
+				tie(folderID, filePrefix, fileExtension) = PickFileName();
 	
 	    		{
-					MESSAGE_DEBUG("", "", "Save preview (" + metaPreviewImageURL + ") to /tmp for checking of image validity [" + "/tmp/tmp_" + filePrefix + fileExtention + "]");
+					MESSAGE_DEBUG("", "", "Save preview (" + metaPreviewImageURL + ") to /tmp for checking of image validity [" + "/tmp/tmp_" + filePrefix + fileExtension + "]");
 	    		}
 
 	            // --- Save file to "/tmp/" for checking of image validity
-	            f = fopen(string("/tmp/tmp_" + filePrefix + fileExtention).c_str(), "w");
+	            f = fopen(string("/tmp/tmp_" + filePrefix + fileExtension).c_str(), "w");
 	            if(f != NULL)
 	            {
 	            	if(DownloadFile(metaPreviewImageURL, f))
@@ -461,19 +461,19 @@ bool CHTML::ParseHTMLPage()
 		                metaPreviewImageURL = "";
 		                folderID = "";
 		                filePrefix = "";
-		                fileExtention = "";
+		                fileExtension = "";
 	            	}
 
 		            fclose(f);
 	            }
 	            else
 	            {
-                    MESSAGE_ERROR("CHTML", "", "writing file: /tmp/tmp_" + filePrefix + fileExtention);
+                    MESSAGE_ERROR("CHTML", "", "writing file: /tmp/tmp_" + filePrefix + fileExtension);
 
 	                metaPreviewImageURL = "";
 	                folderID = "";
 	                filePrefix = "";
-	                fileExtention = "";
+	                fileExtension = "";
 	            }
 			}
 		}
@@ -548,7 +548,7 @@ bool CHTML::PerformRequest(string param)
 
 			if(curlRes == CURLE_OK)
 			{
-				// --- can't move it behind ParseHTMLPage, beacause ParseHTMLPage also calls culr_easy_cleanup
+				// --- can't move it behind ParseHTMLPage, because ParseHTMLPage also calls culr_easy_cleanup
 				curl_easy_cleanup(curl);
 
 
@@ -614,7 +614,7 @@ void CHTML::ResetMetaValues()
 	metaPreviewImageURL = "";
 	folderID = "";
 	filePrefix = "";
-	fileExtention = "";
+	fileExtension = "";
 
 	MESSAGE_DEBUG("", "", "finish");
 }

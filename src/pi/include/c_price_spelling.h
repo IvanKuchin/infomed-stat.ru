@@ -53,7 +53,7 @@ class C_Price_Spelling
                                                     };
         vector<int>     gender_order_of_magnitude = {
                                                         MALE_GENDER, // --- index[0] - doesn't matter
-                                                        FEMALE_GENDER, // --- thouthand is female gender
+                                                        FEMALE_GENDER, // --- thousand is female gender
                                                         MALE_GENDER, // --- million is male gender
                                                         MALE_GENDER, // --- milliard is male gender
                                                         MALE_GENDER, // --- trillion is male gender
@@ -73,7 +73,7 @@ class C_Price_Spelling
         auto	GetFraction(double param) -> long;
         auto	DeclensionIndex(long number) -> int;
         auto	SpellOrderOfMagnitude(int order_of_magnitude, long number) -> string;
-        auto	SpellUpToThouthand(long, int gender) -> string;
+        auto	SpellUpToThousand(long, int gender) -> string;
         auto	SpellHundreds(long, int gender) -> string;
         auto	Spell11_19(long, int gender) -> string;
         auto	SpellTenths(long, int gender) -> string;

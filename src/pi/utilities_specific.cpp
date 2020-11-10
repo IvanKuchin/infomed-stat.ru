@@ -173,7 +173,7 @@ string GetSpecificData_GetBaseDirectory(string itemType)
 	return result;
 }
 
-string GetSpecificData_GetFinalFileExtenstion(string itemType)
+string GetSpecificData_GetFinalFileExtension(string itemType)
 {
 	string	  result = ".jpg";
 

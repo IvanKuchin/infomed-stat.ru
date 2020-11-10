@@ -256,7 +256,7 @@ string c_smsc::_smsc_send_cmd(string cmd, string arg, string files)
                     {
                         MESSAGE_DEBUG("", "", "adding files to curl");
 
-                        // --- ATTENTON
+                        // --- ATTENTION
                         // --- no error check performed, add it in case using POST method
                         curl_formadd(&cpost, &clast, CURLFORM_COPYNAME, "pictures", CURLFORM_FILE, files.c_str(), CURLFORM_END);
                     }

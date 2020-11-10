@@ -151,15 +151,15 @@ int convert_utf8_to_windows1251(const char* utf8, char* windows1251, size_t n)
 			{'\\', (char)0xe2, (char)0x83, (char)0xa5}, //COMBINING REVERSE SOLIDUS OVERLAY
 			{'|', (char)0xe2, (char)0x83, (char)0xa6}, // COMBINING DOUBLE VERTICAL STROKE OVERLAY
 			{'/', (char)0xe2, (char)0x83, (char)0xab}, // COMBINING LONG DOUBLE SOLIDUS OVERLAY
-			{'\'', (char)0xe2, (char)0x80, (char)0x9b}, // SINGLE HIGN-REVERSED-9 QUATATION MARK
+			{'\'', (char)0xe2, (char)0x80, (char)0x9b}, // SINGLE HIGN-REVERSED-9 QUOTATION MARK
 			{'\\', (char)0xe2, (char)0x80, (char)0xb2}, // PRIME
 			{'\\', (char)0xe2, (char)0x80, (char)0xb5}, // REVERSED PRIME
-			{'"', (char)0xe2, (char)0x80, (char)0x9c}, // LEFT DOUBLE QUATATION MARK
+			{'"', (char)0xe2, (char)0x80, (char)0x9c}, // LEFT DOUBLE QUOTATION MARK
 			{'"', (char)0xe2, (char)0x80, (char)0xb3}, // DOUBLE PRIME
 			{'"', (char)0xe2, (char)0x80, (char)0xb6}, // REVERSED DOUBLE PRIME
-			{'"', (char)0xe2, (char)0x80, (char)0x9c}, // RIGHT DOUBLE QUATATION MARK
-			{'"', (char)0xe2, (char)0x80, (char)0x9e}, // DOUBLE LOW-9 QUATATION MARK
-			{'"', (char)0xe2, (char)0x80, (char)0x9f}, // DOUBLE HIGH-REVERSED-9 QUATATION MARK
+			{'"', (char)0xe2, (char)0x80, (char)0x9c}, // RIGHT DOUBLE QUOTATION MARK
+			{'"', (char)0xe2, (char)0x80, (char)0x9e}, // DOUBLE LOW-9 QUOTATION MARK
+			{'"', (char)0xe2, (char)0x80, (char)0x9f}, // DOUBLE HIGH-REVERSED-9 QUOTATION MARK
 			{'*', (char)0xe2, (char)0x80, (char)0xA2}, //  BULLET
 			{'%', (char)0xe2, (char)0x80, (char)0xb0}, // PER MILLE SIGN
 			{'%', (char)0xe2, (char)0x80, (char)0xb1}, // PER TEN THOUSAND SIGN
@@ -252,7 +252,7 @@ NEXT_LETTER:
 					}
 					else
 					{
-						MESSAGE_ERROR("", "", ": ERROR: emojy detected but dst string not lenghty enough, dst buffer size(" + to_string(n) + ") < current position (" + to_string(i) + "+3)");
+						MESSAGE_ERROR("", "", ": ERROR: emojy detected but dst string not lengthy enough, dst buffer size(" + to_string(n) + ") < current position (" + to_string(i) + "+3)");
 						return 0;
 					}
 				}
@@ -304,7 +304,7 @@ NEXT_LETTER:
 					}
 					else
 					{
-						MESSAGE_ERROR("", "", "general punctuation detected but dst string not lenghty enough, dst buffer size(" + to_string(n) + ") < current position (" + to_string(i) + "+2)");
+						MESSAGE_ERROR("", "", "general punctuation detected but dst string not lengthy enough, dst buffer size(" + to_string(n) + ") < current position (" + to_string(i) + "+2)");
 						return 0;
 					}
 
@@ -723,7 +723,7 @@ string	UnsubscribeFromCompany(string companyID, CUser *user, CMysql *db)
 					db->Query("DELETE FROM `feed` WHERE `userId`=\"" + user->GetID() + "\" AND `actionTypeId`=\"63\" AND `actionId`=\"" + companyID + "\";");
 					if(db->isError())
 					{
-						MESSAGE_ERROR("", "", "removeing form `feed` table");
+						MESSAGE_ERROR("", "", "removing form `feed` table");
 					}
 				}
 				else
@@ -863,7 +863,7 @@ string	UnsubscribeFromGroup(string groupID, CUser *user, CMysql *db)
 					db->Query("DELETE FROM `feed` WHERE `userId`=\"" + user->GetID() + "\" AND `actionTypeId`=\"64\" AND `actionId`=\"" + groupID + "\";");
 					if(db->isError())
 					{
-						MESSAGE_ERROR("", "", "removeing form `feed` table");
+						MESSAGE_ERROR("", "", "removing form `feed` table");
 					}
 				}
 				else
@@ -1316,7 +1316,7 @@ string GetCompanyPositionsInJSONFormat(string dbQuery, CMysql *db, CUser *user)
 		int						eventCounter = affected;
 
 		eventsList.reserve(eventCounter);  // --- reserving allows avoid moving vector in memory
-											// --- to fit vector into continous memory piece
+											// --- to fit vector into continuous memory piece
 
 		for(int i = 0; i < affected; i++)
 		{
@@ -1380,7 +1380,7 @@ string GetSiteThemesInJSONFormat(string dbQuery, CMysql *db, CUser *user)
 		int						eventCounter = affected;
 
 		eventsList.reserve(eventCounter);  // --- reserving allows avoid moving vector in memory
-											// --- to fit vector into continous memory piece
+											// --- to fit vector into continuous memory piece
 
 		for(int i = 0; i < affected; i++)
 		{
@@ -2054,7 +2054,7 @@ static bool CheckImageFileInTempFolder(string src, string dst, string f_type)
 	MESSAGE_DEBUG("", "", "start (src: " + src + ", dst: " + dst + ")");
 
 #ifndef IMAGEMAGICK_DISABLE
-	// Construct the image object. Seperating image construction from the
+	// Construct the image object. Separating image construction from the
 	// the read operation ensures that a failure to read the image file
 	// doesn't render the image object useless.
 	try {
@@ -2104,7 +2104,7 @@ static bool CheckImageFileInTempFolder(string src, string dst, string f_type)
 	}
 	catch( Magick::Exception &error_ )
 	{
-		MESSAGE_DEBUG("", "", "ImageMagick read/write trown exception [" + error_.what() + "]");
+		MESSAGE_DEBUG("", "", "ImageMagick read/write thrown exception [" + error_.what() + "]");
 	}
 #else
 
@@ -2130,7 +2130,7 @@ static string SaveOrCheckFileFromHandler(string f_name, string f_type, CFiles *f
 	auto		originalFilename = ""s;
 	auto		preFinalFilename = ""s;
 	auto		fileName = ""s;
-	auto		fileExtention = ""s;
+	auto		fileExtension = ""s;
 	auto		filePrefix = ""s;
 	auto		folderID = 0;
 	
@@ -2151,16 +2151,16 @@ static string SaveOrCheckFileFromHandler(string f_name, string f_type, CFiles *f
 					filePrefix = GetRandom(20);
 
 					if((foundPos = f_name.rfind(".")) != string::npos) 
-						fileExtention = f_name.substr(foundPos, f_name.length() - foundPos);
+						fileExtension = f_name.substr(foundPos, f_name.length() - foundPos);
 					else
 					{
 						MESSAGE_ERROR("", "", "fileExtension MUST be predefined, if workflow gets here then filename doesn't contains extension which is wrong. Require to check subcontractor.cpp:AJAX_sumitBT part");
-						fileExtention = ".jpg";
+						fileExtension = ".jpg";
 					}
 
-					originalFilename = "/tmp/tmp_" + filePrefix + fileExtention;
-					preFinalFilename = "/tmp/" + filePrefix + fileExtention;
-					finalFilename = GetSpecificData_GetBaseDirectory(f_type) + "/" + to_string(folderID) + "/" + filePrefix + fileExtention;
+					originalFilename = "/tmp/tmp_" + filePrefix + fileExtension;
+					preFinalFilename = "/tmp/" + filePrefix + fileExtension;
+					finalFilename = GetSpecificData_GetBaseDirectory(f_type) + "/" + to_string(folderID) + "/" + filePrefix + fileExtension;
 				} while(isFileExists(finalFilename) || isFileExists(originalFilename) || isFileExists(preFinalFilename));
 
 				MESSAGE_DEBUG("", "", "Save file to /tmp for checking of image validity [" + originalFilename + "]");
@@ -2240,7 +2240,7 @@ static string SaveOrCheckFileFromHandler(string f_name, string f_type, CFiles *f
 
 			unlink(preFinalFilename.c_str());
 
-			result = to_string(folderID) + "/" + filePrefix + fileExtention;
+			result = to_string(folderID) + "/" + filePrefix + fileExtension;
 		}
 		else
 		{
@@ -2596,7 +2596,7 @@ auto SendPhoneConfirmationCode(const string &country_code, const string &phone_n
 	if(country_code.length() && phone_number.length() && session.length())
 	{
 		// --- don't move it behind InsertQuery, 
-		// --- first clean-up, then inser new token
+		// --- first clean-up, then insert new token
 		RemovePhoneConfirmationCodes(session, db);
 
 		auto	phone_confirmation_id = db->InsertQuery("INSERT INTO `phone_confirmation` (`session`, `confirmation_code`, `country_code`, `phone_number`, `eventTimestamp`)"
