@@ -281,7 +281,7 @@ int main()
 						}
 						else
 						{
-							MESSAGE_ERROR("", "", gettext("no active avatar found"));
+							MESSAGE_DEBUG("", "", gettext("no active avatar found"));
 						}
 
 						CopyFile(tmpImageJPG, file2Check);
