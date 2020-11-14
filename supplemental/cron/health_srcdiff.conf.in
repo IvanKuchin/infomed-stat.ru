@@ -119,6 +119,7 @@ nodiff_files => [
     ".github/workflows/spell_check.yml",
     ".github/actions/spell_check/only.txt",
     ".github/actions/spell_check/excludes.txt",
+    ".github/linters/.eslintrc.yaml",
 ],
 
 exclude_domains => [
