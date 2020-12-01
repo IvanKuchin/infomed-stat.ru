@@ -58,6 +58,7 @@ nodiff_files => [
 
     # "src/pi/CMakeLists.txt",
 
+    "helpdesk.css",
     "login.css",
     "admin/common.css",
     "ru/pages/common.css",
@@ -75,6 +76,7 @@ nodiff_files => [
     "helpdesk_ticket_obj.js",
     "view_case.js",
     "cases_list.js",
+    "open_case.js",
     "helpdesk_dashboard.js",
 
     "ru/pages/user_notifications.htmlt",
@@ -94,6 +96,7 @@ nodiff_files => [
     "ru/pages/privacy_policy.htmlt",
     "ru/pages/eula.htmlt",
     "ru/pages/guest_navigation_menu.htmlt",
+    "ru/pages/navigation_menu_profile.htmlt",
     "ru/pages/user_account_properties.htmlt",
     "ru/pages/view_case.htmlt",
     "ru/pages/cases_list.htmlt",

@@ -91,7 +91,7 @@ auto			GetPasswordCharacteristicsList(CMysql *) -> string;
 auto			isAllowed_NoSession_Action(string action) -> bool;
 auto			CutTrailingZeroes(string number) -> string;
 
-auto			GetBaseUserInfoInJSONFormat(string dbQuery, CMysql *db, CUser *user) -> string;
+auto			GetHelpdeskBaseUserInfoInJSONFormat(string dbQuery, CMysql *db, CUser *user) -> string;
 auto      		GetGeoCountryListInJSONFormat(string dbQuery, CMysql *, CUser *) -> string;
 auto 			GetBookListInJSONFormat(string dbQuery, CMysql *, bool includeReaders = false) -> string;
 auto 			GetComplainListInJSONFormat(string dbQuery, CMysql *, bool includeReaders = false) -> string;

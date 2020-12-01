@@ -43,6 +43,7 @@ int GetSpecificData_GetNumberOfFolders(string itemType)
 	else if(itemType == "template_company")			result = TEMPLATE_COMPANY_NUMBER_OF_FOLDERS;
 	else if(itemType == "template_agreement_company") result = TEMPLATE_AGREEMENT_COMPANY_NUMBER_OF_FOLDERS;
 	else if(itemType == "template_agreement_sow")	result = TEMPLATE_AGREEMENT_SOW_NUMBER_OF_FOLDERS;
+	else if(itemType == "helpdesk_ticket_attach")	result = HELPDESK_TICKET_ATTACHES_NUMBER_OF_FOLDERS;
 	else
 	{
 		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
@@ -76,6 +77,7 @@ int GetSpecificData_GetMaxFileSize(string itemType)
 	else if(itemType == "template_company")			result = TEMPLATE_COMPANY_MAX_FILE_SIZE;
 	else if(itemType == "template_agreement_company") result = TEMPLATE_AGREEMENT_COMPANY_MAX_FILE_SIZE;
 	else if(itemType == "template_agreement_sow")	result = TEMPLATE_AGREEMENT_SOW_MAX_FILE_SIZE;
+	else if(itemType == "helpdesk_ticket_attach")	result = HELPDESK_TICKET_ATTACHES_MAX_FILE_SIZE;
 	else
 	{
 		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
@@ -163,6 +165,7 @@ string GetSpecificData_GetBaseDirectory(string itemType)
 	else if(itemType == "template_company")			result = TEMPLATE_COMPANY_DIRECTORY;
 	else if(itemType == "template_agreement_company") result = TEMPLATE_AGREEMENT_COMPANY_DIRECTORY;
 	else if(itemType == "template_agreement_sow")	result = TEMPLATE_AGREEMENT_SOW_DIRECTORY;
+	else if(itemType == "helpdesk_ticket_attach")	result = HELPDESK_TICKET_ATTACHES_DIRECTORY;
 	else
 	{
 		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");

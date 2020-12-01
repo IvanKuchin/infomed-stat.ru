@@ -812,7 +812,7 @@ int main(void)
 
 			auto	error_message = ""s;
 
-			AJAX_ResponseTemplate(&indexPage, "\"users\":[" + GetBaseUserInfoInJSONFormat("SELECT * FROM `users` WHERE `id`=" + quoted(user.GetID()) + ";", &db, &user) + "]", error_message);
+			AJAX_ResponseTemplate(&indexPage, "\"users\":[" + GetHelpdeskBaseUserInfoInJSONFormat("SELECT * FROM `users` WHERE `id`=" + quoted(user.GetID()) + ";", &db, &user) + "]", error_message);
 
 			MESSAGE_DEBUG("", action, "finish");
 		}

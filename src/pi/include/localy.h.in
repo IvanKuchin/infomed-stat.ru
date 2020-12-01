@@ -93,6 +93,9 @@
 #define	BREADCRUMBS_STR								" | "
 
 // --- Helpdesk part
+#define HELPDESK_TICKET_ATTACHES_DIRECTORY			string(IMAGEROOTDIR) + string("/html/helpdesk_ticket_attaches/")
+#define	HELPDESK_TICKET_ATTACHES_NUMBER_OF_FOLDERS	2048
+#define	HELPDESK_TICKET_ATTACHES_MAX_FILE_SIZE		10 * 1024 * 1024
 #define	HELPDESK_USER_ROLE							"helpdesk"s
 #define	HELPDESK_STATE_NEW							"new"s
 #define	HELPDESK_STATE_ASSIGNED						"assigned"s

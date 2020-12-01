@@ -1797,7 +1797,7 @@ auto	GetHelpDeskTicketsInJSONFormat(string sqlQuery, CMysql *db, CUser *user) ->
 
 			result += "\"id\":\"" + item.id + "\",";
 			result += "\"customer_user_id\":\"" + item.customer_user_id + "\",";
-			result += "\"users\":[" + GetBaseUserInfoInJSONFormat("SELECT * FROM `users` WHERE `id`=" + quoted(item.customer_user_id) + ";", db, user) + "],";
+			result += "\"users\":[" + GetHelpdeskBaseUserInfoInJSONFormat("SELECT * FROM `users` WHERE `id`=" + quoted(item.customer_user_id) + ";", db, user) + "],";
 			result += "\"title\":\"" + item.title + "\",";
 			result += "\"history\":[" + GetHelpDeskTicketHistoryInJSONFormat("SELECT * FROM `helpdesk_ticket_history` WHERE `helpdesk_ticket_id`=\"" + item.id + "\";", db, user) + "]";
 			result +=	"}";
@@ -1858,7 +1858,7 @@ auto	GetHelpDeskTicketHistoryInJSONFormat(string sqlQuery, CMysql *db, CUser *us
 
 
 			result += "\"id\":\"" + item.id + "\",";
-			result += "\"users\":[" + GetBaseUserInfoInJSONFormat("SELECT * FROM `users` WHERE `id`=" + quoted(item.user_id) + ";", db, user) + "],";
+			result += "\"users\":[" + GetHelpdeskBaseUserInfoInJSONFormat("SELECT * FROM `users` WHERE `id`=" + quoted(item.user_id) + ";", db, user) + "],";
 			result += "\"files\":[" + GetHelpDeskTicketAttachInJSONFormat("SELECT * FROM `helpdesk_ticket_attaches` WHERE `helpdesk_ticket_history_id`=" + quoted(item.id) + ";", db, user) + "],";
 			result += "\"state\":\"" + item.state + "\",";
 			result += "\"severity\":\"" + item.severity + "\",";
@@ -2410,12 +2410,11 @@ auto	GetGeoCountryListInJSONFormat(string dbQuery, CMysql *db, CUser *user) -> s
 	return result;
 }
 
-auto GetBaseUserInfoInJSONFormat(string dbQuery, CMysql *db, CUser *user) -> string
+auto GetHelpdeskBaseUserInfoInJSONFormat(string dbQuery, CMysql *db, CUser *user) -> string
 {
 	MESSAGE_DEBUG("", "", "start");
 
-	ostringstream					ost;
-	string							result = ""s;
+	auto							result = ""s;
 	unordered_set<unsigned long>	setOfUserID;
 
 	struct	ItemClass
@@ -2424,7 +2423,6 @@ auto GetBaseUserInfoInJSONFormat(string dbQuery, CMysql *db, CUser *user) -> str
 		string	userLogin;
 		string	userName;
 		string	userNameLast;
-		string	userNameMiddle;
 		string	first_name_en;
 		string	last_name_en;
 		string	middle_name_en;
@@ -2469,26 +2467,12 @@ auto GetBaseUserInfoInJSONFormat(string dbQuery, CMysql *db, CUser *user) -> str
 			item.userLogin							= db->Get(i, "login");
 			item.userName							= db->Get(i, "name");
 			item.userNameLast						= db->Get(i, "nameLast");
-			item.userNameMiddle						= db->Get(i, "nameMiddle");
 			item.country_code						= db->Get(i, "country_code");
 			item.phone								= db->Get(i, "phone");
 			item.email								= db->Get(i, "email");
 			item.userSex							= db->Get(i, "sex");
 			item.userType							= db->Get(i, "type");
-			item.userBirthday						= db->Get(i, "birthday");
-			item.userBirthdayAccess					= db->Get(i, "birthdayAccess");
-			item.userCurrentCityID					= db->Get(i, "geo_locality_id");
 			item.site_theme_id						= db->Get(i, "site_theme_id");
-			item.passport_series					= db->Get(i, "passport_series");
-			item.passport_number					= db->Get(i, "passport_number");
-			item.passport_issue_date				= db->Get(i, "passport_issue_date");
-			item.passport_issue_authority			= db->Get(i, "passport_issue_authority");
-			item.citizenship_code					= db->Get(i, "citizenship_code");
-			item.first_name_en						= db->Get(i, "first_name_en");
-			item.last_name_en						= db->Get(i, "last_name_en");
-			item.middle_name_en						= db->Get(i, "middle_name_en");
-			item.foreign_passport_number			= db->Get(i, "foreign_passport_number");
-			item.foreign_passport_expiration_date	= db->Get(i, "foreign_passport_expiration_date");
 			item.userLastOnline						= db->Get(i, "last_online");
 			item.userLastOnlineSecondSinceY2k		= db->Get(i, "last_onlineSecondsSinceY2k");
 			item.helpdesk_subscription_S1_email		= db->Get(i, "helpdesk_subscription_S1_email");
@@ -2544,11 +2528,8 @@ auto GetBaseUserInfoInJSONFormat(string dbQuery, CMysql *db, CUser *user) -> str
 						"\"id\": \""							+ itemsList[i].userID + "\", "
 						"\"name\": \""							+ itemsList[i].userName + "\", "
 						"\"nameLast\": \""						+ itemsList[i].userNameLast + "\","
-						"\"nameMiddle\": \""					+ itemsList[i].userNameMiddle + "\","
 						"\"userSex\": \""						+ itemsList[i].userSex + "\","
 						"\"userType\": \""						+ itemsList[i].userType + "\","
-						"\"birthday\": \""						+ userBirthday + "\","
-						"\"birthdayAccess\": \""				+ itemsList[i].userBirthdayAccess + "\","
 						"\"last_online\": \""					+ itemsList[i].userLastOnline + "\","
 						"\"last_online_diff\": \""				+ to_string(GetTimeDifferenceFromNow(userLastOnline)) + "\","
 						"\"last_onlineSecondsSinceY2k\": \""	+ userLastOnlineSecondSinceY2k + "\","
@@ -2558,16 +2539,6 @@ auto GetBaseUserInfoInJSONFormat(string dbQuery, CMysql *db, CUser *user) -> str
 						"\"country_code\": \""					+ ((user && (userID == user->GetID())) ? itemsList[i].country_code : "") + "\","
 						"\"phone\": \""							+ ((user && (userID == user->GetID())) ? itemsList[i].phone : "") + "\","
 						"\"email\": \""							+ ((user && (userID == user->GetID())) ? itemsList[i].email : "") + "\","
-						"\"passport_series\": \""				+ ((user && (userID == user->GetID())) ? itemsList[i].passport_series : "") + "\","
-						"\"passport_number\": \""				+ ((user && (userID == user->GetID())) ? itemsList[i].passport_number : "") + "\","
-						"\"passport_issue_date\": \""			+ ((user && (userID == user->GetID())) ? itemsList[i].passport_issue_date : "") + "\","
-						"\"passport_issue_authority\": \""		+ ((user && (userID == user->GetID())) ? itemsList[i].passport_issue_authority : "") + "\","
-						"\"first_name_en\": \""					+ ((user && (userID == user->GetID())) ? itemsList[i].first_name_en : "") + "\","
-						"\"last_name_en\": \""					+ ((user && (userID == user->GetID())) ? itemsList[i].last_name_en : "") + "\","
-						"\"middle_name_en\": \""				+ ((user && (userID == user->GetID())) ? itemsList[i].middle_name_en : "") + "\","
-						"\"foreign_passport_number\": \""		+ ((user && (userID == user->GetID())) ? itemsList[i].foreign_passport_number : "") + "\","
-						"\"foreign_passport_expiration_date\": \"" + ((user && (userID == user->GetID())) ? itemsList[i].foreign_passport_expiration_date : "") + "\","
-						"\"citizenship_code\": \""				+ ((user && (userID == user->GetID())) ? itemsList[i].citizenship_code : "") + "\","
 						"\"helpdesk_subscriptions_sms\": ["		+ ((user && (userID == user->GetID())) ? quoted(itemsList[i].helpdesk_subscription_S1_sms) + "," + quoted(itemsList[i].helpdesk_subscription_S2_sms) + "," + quoted(itemsList[i].helpdesk_subscription_S3_sms) + "," + quoted(itemsList[i].helpdesk_subscription_S4_sms)  : "") + "],"
 						"\"helpdesk_subscriptions_email\": ["	+ ((user && (userID == user->GetID())) ? quoted(itemsList[i].helpdesk_subscription_S1_email) + "," + quoted(itemsList[i].helpdesk_subscription_S2_email) + "," + quoted(itemsList[i].helpdesk_subscription_S3_email) + "," + quoted(itemsList[i].helpdesk_subscription_S4_email)  : "") + "],"
 						"\"isMe\": \""							+ ((user && (userID == user->GetID())) ? "yes" : "no") + "\""
@@ -2580,7 +2551,7 @@ auto GetBaseUserInfoInJSONFormat(string dbQuery, CMysql *db, CUser *user) -> str
 		MESSAGE_DEBUG("", "", "there are users returned by request [" + dbQuery + "]");
 	}
 
-	MESSAGE_DEBUG("", "", "finish [length" + to_string(ost.str().length()) + "]");
+	MESSAGE_DEBUG("", "", "finish [length" + to_string(result.length()) + "]");
 
 	return result;
 }
