@@ -87,9 +87,11 @@
 #define	MAIL_STDERR									string(LOGDIR) + DOMAIN_NAME + ".mail.stderr"
 #define	SENDMAIL_FILE_NAME							"/usr/sbin/sendmail"
 
-#define	LOGGEDIN_DOCTOR_DEFAULT_ACTION				string("doctor_dashboard")
-#define	LOGGEDIN_NOROLE_DEFAULT_ACTION				string("initial_wizard")
-#define	GUEST_USER_DEFAULT_ACTION					string("autologin")
+#define	LOGGEDIN_DOCTOR_DEFAULT_ACTION				"doctor_dashboard"s
+#define	LOGGEDIN_NOROLE_DEFAULT_ACTION				"initial_wizard"s
+#define	LOGGEDIN_HELPDESK_DEFAULT_ACTION			"helpdesk_dashboard"s
+#define	GUEST_USER_DEFAULT_ACTION					"autologin"s
+
 #define	BREADCRUMBS_STR								" | "
 
 // --- Helpdesk part

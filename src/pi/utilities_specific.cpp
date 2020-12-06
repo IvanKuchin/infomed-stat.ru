@@ -8,6 +8,7 @@ string	GetDefaultActionFromUserType(CUser *user, CMysql *db)
 
 	if(user->GetType() == "guest") result = GUEST_USER_DEFAULT_ACTION;
 	else if(user->GetType() == "user") result = LOGGEDIN_DOCTOR_DEFAULT_ACTION;
+	else if(user->GetType() == "helpdesk") result = LOGGEDIN_HELPDESK_DEFAULT_ACTION;
 	else
 	{
 		MESSAGE_ERROR("", "", "unknown user type (" + user->GetType() + ")");
