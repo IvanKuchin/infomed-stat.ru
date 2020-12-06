@@ -101,6 +101,7 @@ nodiff_files => [
     "ru/pages/view_case.htmlt",
     "ru/pages/cases_list.htmlt",
     "ru/pages/helpdesk_dashboard.htmlt",
+    "ru/pages/helpdesk_navigation_menu.htmlt",
 
     "ru/pages/activator_regNewUser.htmlt",
     "ru/mails/activator_regNewUser.htmlt",
