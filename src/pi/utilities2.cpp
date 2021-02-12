@@ -2582,7 +2582,7 @@ auto SendPhoneConfirmationCode(const string &country_code, const string &phone_n
 
 		if(phone_confirmation_id)
 		{
-			error_message = smsc.send_sms(country_code + phone_number, "Code " + confirmation_code, 0, "", 0, 1, SMSC_SENDER_NAME, "", "");
+			error_message = smsc.send_sms(country_code + phone_number, "Code " + confirmation_code, 0, "", 0, SMSC_DELIVERY_MODE, SMSC_SENDER_NAME, "", "");
 
 			if(error_message.length())
 			{
