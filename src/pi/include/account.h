@@ -14,4 +14,6 @@
 #include "utilities_common.h"
 #include "localy.h"
 
+#define MIN_LOGIN_LENGTH		8
+
 #endif

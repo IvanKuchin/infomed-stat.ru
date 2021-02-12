@@ -93,7 +93,7 @@ int main()
 
 			loginFromUser = CheckHTTPParam_Text(indexPage.GetVarsHandler()->Get("login"));
 
-			if(loginFromUser.length() >= 8)
+			if(loginFromUser.length() >= MIN_LOGIN_LENGTH)
 			{
 				if(loginFromUser.find_first_of(" \\/%?+-,*&^$#!абвгдеёжзийклмнопрстуфхцчшщьыъэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЫЪЭЮЯ") == string::npos)
 				{
@@ -133,7 +133,7 @@ int main()
 			}
 			else
 			{
-				error_message = gettext("Login must be at least 8 characters");
+				error_message = gettext(("Login must be at least " + to_string(MIN_LOGIN_LENGTH) + " characters").c_str());
 				MESSAGE_DEBUG("", action, error_message);
 			}
 
