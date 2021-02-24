@@ -16,6 +16,8 @@ class CMysqlSkel
 	private:
 		MYSQL_ROW       currentRow;
 
+		char*			__ResultValue( MYSQL_RES *result, unsigned int row, const char *name, bool throw_exception );
+
 	protected:
 		MYSQL			*db;
 		MYSQL_RES		*resultSet;
@@ -33,19 +35,22 @@ class CMysqlSkel
 		struct			MysqlError {};
 
 						CMysqlSkel( void ): db(NULL), fieldsInfo(NULL), numRows(0), numFields(0) {};
-		void			CloseDB( void );
-		MYSQL_RES*		QueryDB(const string &query );
-		unsigned long	InsertQueryDB(const string &query );
-		char*			ResultValue( MYSQL_RES *result, unsigned int row, const char *name );
-		char*			ResultValue( MYSQL_RES *result, unsigned int row, int fi );
-		int				ResultRows( MYSQL_RES *result );
-		void			FreeResultSet();
-		bool			isError();
-		const char *	GetErrorMessage();
-		auto			GetNumberOfCols()										{ return numFields; };
-		auto			GetColName(unsigned int idx) -> string;
+		void			CloseDB					( void );
+		MYSQL_RES*		QueryDB					(const string &query );
+		unsigned long	InsertQueryDB			(const string &query );
 
-		virtual			~CMysqlSkel() {};
+		char*			ResultValue				( MYSQL_RES *result, unsigned int row, int fi );
+		char*			ResultValue				( MYSQL_RES *result, unsigned int row, const char *name );
+		char*			ResultValue_with_NULL	( MYSQL_RES *result, unsigned int row, const char *name );
+
+		int				ResultRows				( MYSQL_RES *result );
+		void			FreeResultSet			();
+		bool			isError					();
+		const char *	GetErrorMessage			();
+		auto			GetNumberOfCols			()	{ return numFields; };
+		auto			GetColName				(unsigned int idx) -> string;
+
+		virtual			~CMysqlSkel				() {};
 };
 
 class CMysql : public CMysqlSkel
@@ -68,9 +73,11 @@ class CMysql : public CMysqlSkel
 		int				Connect(const string &dbname, const string &login, const string &pass, const string &host);
 		int				Query(const string &query);
 		unsigned long	InsertQuery(const string &query);
-		string			Get(int rows, const string &field);
-		string			Get(int rows, const char *field);
+		
 		string			Get(int rows, int col);
+		string			Get(int rows, const string &field);
+		string			Get_with_NULL(int rows, const string &field);
+
 		MYSQL_ROW		NextRow(void);
 		char*			GetFast(int col);
 		int				CountFields();
