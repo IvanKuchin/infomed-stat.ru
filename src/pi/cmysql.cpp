@@ -182,7 +182,8 @@ char *CMysqlSkel::ResultValue( MYSQL_RES *result, unsigned int row, int fi )
     }
 }
 
-// --- throw_exception: if true then Exception will be trown in case of "field" not found
+// --- throw_exception: if true then Exception will be thrown in case of "field" not found
+// --- if not sure what function to use, then avoid use _with_NULL. This will keep your code safe 
 char *CMysqlSkel::__ResultValue( MYSQL_RES *result, unsigned int row, const char *name, bool throw_exception )
 {
     auto            fi = FieldsIndex( name );
