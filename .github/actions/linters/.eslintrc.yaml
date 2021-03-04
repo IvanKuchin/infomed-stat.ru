@@ -1,0 +1,30 @@
+extends: "eslint:recommended"
+env:
+    browser: true
+    es2021: true
+    jquery: true
+
+# --- avoid no-undef warning for variables below
+globals:
+    helpdesk_ticket_list_obj: writable
+    document: writable
+    Image: writable
+    isMobile: writable
+    jQuery: writable
+    localStorage: writable
+    location: writable
+    navigator: writable
+    Notification: writable
+    session_pi: writable
+    setTimeout: writable
+    sms_confirmation: writable
+    system_calls: writable
+    system_notifications: writable
+    StackTrace: writable
+    troubleshooting: writable
+    Uint8Array: writable
+    window: writable
+
+# --- rules turn on/off
+#rules:
+#    "no-undef": off
