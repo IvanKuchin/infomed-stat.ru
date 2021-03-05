@@ -1266,13 +1266,13 @@ bool isPersistenceRateLimited(string REMOTE_ADDR, CMysql *db)
 
 		if(attempts > maxAttempts)
 		{
-			MESSAGE_ERROR("", "", "REMOTE_ADDR has tryed " + to_string(attempts) + " times during the last " + to_string(maxTime) + "sec. Needed to be rate-limited.")
+			MESSAGE_ERROR("", "", "REMOTE_ADDR has tried " + to_string(attempts) + " times during the last " + to_string(maxTime) + "sec. Needed to be rate-limited.")
 
 			result = true;
 		}
 		else
 		{
-			MESSAGE_DEBUG("", "", "REMOTE_ADDR has tryed " + to_string(attempts) + " times during the last " + to_string(maxTime) + "sec. No need to rate-limit.")
+			MESSAGE_DEBUG("", "", "REMOTE_ADDR has tried " + to_string(attempts) + " times during the last " + to_string(maxTime) + "sec. No need to rate-limit.")
 			
 			result = false;
 		}

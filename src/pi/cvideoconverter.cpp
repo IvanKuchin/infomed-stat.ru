@@ -374,7 +374,7 @@ bool CVideoConverter::FirstPhase()
 				argv[5] = const_cast<char *>(tmpDstFile.c_str());
 				argv[6] = NULL;
 
-				MESSAGE_DEBUG("", "", "video overlayed and blured (" + add_overlay_and_blur + ")");
+				MESSAGE_DEBUG("", "", "video overlayed and blurred (" + add_overlay_and_blur + ")");
 			}
 */
 		}
