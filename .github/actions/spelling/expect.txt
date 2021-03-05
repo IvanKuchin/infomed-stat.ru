@@ -665,4 +665,7 @@ rpath
 setprecision
 timeentry
 WKHTMLTOX
+ofs
+DIRS
+executables
 
