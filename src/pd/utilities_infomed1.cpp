@@ -1592,7 +1592,7 @@ string  GetUserNotificationSpecificDataByType(unsigned long typeID, unsigned lon
 				else
 				{
 					CLog log;
-					MESSAGE_DEBUG("", "", "typeID=" + to_string(typeID) + ": finding users_companys by (company_id[" + companyID + "] and user_id[" + (user ? user->GetID() : "NULL") + "]) or (user[" + (user ? "not null" : "null") + "] == NULL)");
+					MESSAGE_DEBUG("", "", "typeID=" + to_string(typeID) + ": finding users_companies by (company_id[" + companyID + "] and user_id[" + (user ? user->GetID() : "NULL") + "]) or (user[" + (user ? "not null" : "null") + "] == NULL)");
 				}
 
 
@@ -2318,7 +2318,7 @@ string  GetUserNotificationSpecificDataByType(unsigned long typeID, unsigned lon
 				else
 				{
 					CLog log;
-					log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR:typeID=" + to_string(typeID) + ": ERROR: finding users_companys.id[" + usersCompanysID + "]");
+					log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR:typeID=" + to_string(typeID) + ": ERROR: finding users_companies.id[" + usersCompanysID + "]");
 				}
 			} // --- if(likeType == "company")
 
