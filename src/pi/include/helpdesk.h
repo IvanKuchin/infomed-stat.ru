@@ -28,6 +28,6 @@
 #define	HELPDESK_STATE_CLOSED						"closed"s
 
 #define HELPDESK_TICKET_CLOSE_PENDING_TIMEOUT		2			// --- in days
-#define HELPDESK_TICKET_CUSTOMER_PENDING_TIMEOUT	7			// --- in days
+#define HELPDESK_TICKET_CUSTOMER_PENDING_TIMEOUT	5			// --- in days
 
 #endif
