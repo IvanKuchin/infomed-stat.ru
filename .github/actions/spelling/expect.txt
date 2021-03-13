@@ -665,6 +665,7 @@ rpath
 setprecision
 timeentry
 WKHTMLTOX
+Wkhtml
 ofs
 DIRS
 executables
