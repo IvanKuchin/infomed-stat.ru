@@ -178,7 +178,7 @@ int main(void)
 			MESSAGE_DEBUG("", action, "finish");
 		}
 
-		if(action == "AJAX_notifyAgencyAboutSubcRegitration")
+		if(action == "AJAX_notifyAgencyAboutSubcRegistration")
 		{
 			MESSAGE_DEBUG("", action, "start");
 
@@ -198,7 +198,7 @@ int main(void)
 				if(db.Query("SELECT `id` FROM `company` WHERE `admin_userID`=\"" + user.GetID() + "\";"))
 				{
 					auto	subc_company_id = db.Get(0, 0);
-					auto	temp_error_message = NotifyAgencyAboutChanges(agency_company_id, to_string(NOTIFICATION_AGENGY_ABOUT_SUBC_REGISTRATION), subc_company_id, &db, &user);
+					auto	temp_error_message = NotifyAgencyAboutChanges(agency_company_id, to_string(NOTIFICATION_AGENCY_ABOUT_SUBC_REGISTRATION), subc_company_id, &db, &user);
 
 					if(temp_error_message.length()) MESSAGE_ERROR("", action, "fail to notify agency company.id(" + agency_company_id + ")")
 				}
@@ -233,7 +233,7 @@ int main(void)
 			MESSAGE_DEBUG("", action, "finish");
 		}
 
-		if(action == "AJAX_notifyAgencyAboutApproverRegitration")
+		if(action == "AJAX_notifyAgencyAboutApproverRegistration")
 		{
 			MESSAGE_DEBUG("", action, "start");
 
@@ -249,7 +249,7 @@ int main(void)
 			if(affected == 1) // --- single agency found with this name
 			{
 				auto	agency_company_id = db.Get(0, 0);
-				auto	temp_error_message = NotifyAgencyAboutChanges(agency_company_id, to_string(NOTIFICATION_AGENGY_ABOUT_APPROVER_REGISTRATION), user.GetID(), &db, &user);
+				auto	temp_error_message = NotifyAgencyAboutChanges(agency_company_id, to_string(NOTIFICATION_AGENCY_ABOUT_APPROVER_REGISTRATION), user.GetID(), &db, &user);
 
 				if(temp_error_message.length()) MESSAGE_ERROR("", action, "fail to notify agency company.id(" + agency_company_id + ")")
 			}
@@ -278,7 +278,7 @@ int main(void)
 			MESSAGE_DEBUG("", action, "finish");
 		}
 
-		if(action == "AJAX_notifyAgencyAboutEmployeeRegitration")
+		if(action == "AJAX_notifyAgencyAboutEmployeeRegistration")
 		{
 			MESSAGE_DEBUG("", action, "start");
 
@@ -294,7 +294,7 @@ int main(void)
 			if(affected == 1) // --- single agency found with this name
 			{
 				auto	agency_company_id = db.Get(0, 0);
-				auto	temp_error_message = NotifyAgencyAboutChanges(agency_company_id, to_string(NOTIFICATION_AGENGY_ABOUT_EMPLOYEE_REGISTRATION), user.GetID(), &db, &user);
+				auto	temp_error_message = NotifyAgencyAboutChanges(agency_company_id, to_string(NOTIFICATION_AGENCY_ABOUT_EMPLOYEE_REGISTRATION), user.GetID(), &db, &user);
 
 				if(temp_error_message.length()) MESSAGE_ERROR("", action, "fail to notify agency company.id(" + agency_company_id + ")")
 			}

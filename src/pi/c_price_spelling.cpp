@@ -84,7 +84,7 @@ auto C_Price_Spelling::SpellDigit(long number, int gender) -> string
 }
 
 
-auto C_Price_Spelling::SpellUpToThouthand(long number, int gender) -> string
+auto C_Price_Spelling::SpellUpToThousand(long number, int gender) -> string
 {
     MESSAGE_DEBUG("", "", "start (" + to_string(number) + ", " + to_string(gender) + ")");
 
@@ -146,7 +146,7 @@ auto C_Price_Spelling::SpellNumber(long number, int gender) -> string
                 auto spelled_order_of_magnitude = SpellOrderOfMagnitude(order_of_magnitude, spelling_part);
         
                 if(spelled_order_of_magnitude.length()) spelling_stack.push(spelled_order_of_magnitude);
-                spelling_stack.push((SpellUpToThouthand(spelling_part, gender)));
+                spelling_stack.push((SpellUpToThousand(spelling_part, gender)));
             }
     
             ++order_of_magnitude;        

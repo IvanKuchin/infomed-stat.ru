@@ -531,7 +531,7 @@ string CMailLocal::GetUserLng()
 		throw CExceptionHTML("recipient before template");
 
 	if(!GetUserLogin().empty()) sql_query = "SELECT `lng` FROM `users` WHERE `login`=\"" + GetUserLogin() + "\";";
-	if(!GetUserID().empty()) 	sql_query = "SELECT `lng` FROM `usere` WHERE `id`=\"" + GetUserID() + "\";";
+	if(!GetUserID().empty()) 	sql_query = "SELECT `lng` FROM `users` WHERE `id`=\"" + GetUserID() + "\";";
 	if(db->Query(sql_query) == 0) throw CExceptionHTML("no user");
 
 	MESSAGE_DEBUG("", "", "finish");

@@ -20,7 +20,7 @@
 
 int main()
 {
-	CStatistics			appStat;  // --- CStatistics must be firts statement to measure end2end param's
+	CStatistics			appStat;  // --- CStatistics must be a first statement to measure end2end param's
 	CCgi				indexPage(EXTERNAL_TEMPLATE);
 	CUser				user;
 	auto				action = ""s;
@@ -99,7 +99,7 @@ int main()
 
 								if(user.GetLogin() != "Guest")
 								{
-									// --- actions specific to registeres user
+									// --- actions specific to registered user
 									mapResult["user"] = "true";
 								}
 
@@ -365,7 +365,7 @@ int main()
 									// --- 4 cases so far: 
 									// --- 1) text/html expiration 30 secs. (internally found)
 									// ----		1.a) If user open site from bookmark 
-									// ----		1.b) until 30 secs expire close browser(sesison cookies will be removed) and re-open from bookmark again 
+									// ----		1.b) until 30 secs expire close browser(session cookies will be removed) and re-open from bookmark again 
 									// ----		1.c) this should take page from cache
 									// ----   Not fixing this because it is unlike event sequence
 									// --- 2) bug on iPhone / Safari: cookie doesn't assigned in short time interval up to 5 sec

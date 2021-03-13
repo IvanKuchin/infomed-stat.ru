@@ -867,13 +867,13 @@ INSERT INTO `company_owner` VALUES (4,2,'',1028),(6,1,'John Chambers',0),(7,1,'C
 UNLOCK TABLES;
 
 --
--- Table structure for table `company_posession_request`
+-- Table structure for table `company_possession_request`
 --
 
-DROP TABLE IF EXISTS `company_posession_request`;
+DROP TABLE IF EXISTS `company_possession_request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `company_posession_request` (
+CREATE TABLE `company_possession_request` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `requested_company_id` int(11) NOT NULL,
   `requester_user_id` int(11) NOT NULL,
@@ -888,13 +888,13 @@ CREATE TABLE `company_posession_request` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `company_posession_request`
+-- Dumping data for table `company_possession_request`
 --
 
-LOCK TABLES `company_posession_request` WRITE;
-/*!40000 ALTER TABLE `company_posession_request` DISABLE KEYS */;
-INSERT INTO `company_posession_request` VALUES (13,2,1028,'approved','верните компанию',1504536657),(14,2,23,'rejected','передайте мне права !',1504546546),(15,94,1028,'approved','for testing purposes',1506041454);
-/*!40000 ALTER TABLE `company_posession_request` ENABLE KEYS */;
+LOCK TABLES `company_possession_request` WRITE;
+/*!40000 ALTER TABLE `company_possession_request` DISABLE KEYS */;
+INSERT INTO `company_possession_request` VALUES (13,2,1028,'approved','верните компанию',1504536657),(14,2,23,'rejected','передайте мне права !',1504546546),(15,94,1028,'approved','for testing purposes',1506041454);
+/*!40000 ALTER TABLE `company_possession_request` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

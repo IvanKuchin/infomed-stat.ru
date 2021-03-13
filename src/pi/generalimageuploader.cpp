@@ -5,7 +5,7 @@ static bool ImageSaveAsJpg(const string src, const string dst, string itemType)
 	MESSAGE_DEBUG("", "", "start (" + src + ", " + dst + ")");
 
 #ifndef IMAGEMAGICK_DISABLE
-	// Construct the image object. Seperating image construction from the
+	// Construct the image object. Separating image construction from the
 	// the read operation ensures that a failure to read the image file
 	// doesn't render the image object useless.
 	try {
@@ -83,7 +83,7 @@ static bool BlindCopy(const string src, const string dst, string itemType)
 
 int main()
 {
-	CStatistics		appStat;  // --- CStatistics must be firts statement to measure end2end param's
+	CStatistics		appStat;  // --- CStatistics must be a first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
 	CUser			user;
 	string			action;
@@ -174,12 +174,12 @@ int main()
 							auto			originalFilename = ""s;
 							auto			preFinalFilename = ""s;
 							auto			fileName = ""s;
-							auto			fileExtention = ""s;
+							auto			fileExtension = ""s;
 							auto			save_func = ImageSaveAsJpg;
 
 							if(indexPage.GetFilesHandler()->GetSize(filesCounter) > GetSpecificData_GetMaxFileSize(itemType))
 							{
-								MESSAGE_ERROR("", "", "file [" + indexPage.GetFilesHandler()->GetName(filesCounter) + "] size exceed permited maximum: " + to_string(indexPage.GetFilesHandler()->GetSize(filesCounter)) + " > " + to_string(GetSpecificData_GetMaxFileSize(itemType)));
+								MESSAGE_ERROR("", "", "file [" + indexPage.GetFilesHandler()->GetName(filesCounter) + "] size exceed permitted maximum: " + to_string(indexPage.GetFilesHandler()->GetSize(filesCounter)) + " > " + to_string(GetSpecificData_GetMaxFileSize(itemType)));
 
 								ostJSONResult.str("");
 								ostJSONResult << "{";
@@ -203,26 +203,26 @@ int main()
 
 								if(foundPos != string::npos) 
 								{
-									fileExtention = tmp.substr(foundPos, tmp.length() - foundPos);
+									fileExtension = tmp.substr(foundPos, tmp.length() - foundPos);
 
 						            // --- filter wrong fileExtension (for ex: .com?action=fake_action) 
-						            if(fileExtention.find("jpeg")) fileExtention = ".jpeg";
-						            else if(fileExtention.find("png")) fileExtention = ".png";
-						            else if(fileExtention.find("gif")) fileExtention = ".gif";
-						            else if(fileExtention.find("svg")) fileExtention = ".svg";
-						            else if(fileExtention.find("xml")) fileExtention = ".xml";
-						            else if(fileExtention.find("txt")) fileExtention = ".txt";
-						            else fileExtention = ".jpg";
+						            if(fileExtension.find("jpeg")) fileExtension = ".jpeg";
+						            else if(fileExtension.find("png")) fileExtension = ".png";
+						            else if(fileExtension.find("gif")) fileExtension = ".gif";
+						            else if(fileExtension.find("svg")) fileExtension = ".svg";
+						            else if(fileExtension.find("xml")) fileExtension = ".xml";
+						            else if(fileExtension.find("txt")) fileExtension = ".txt";
+						            else fileExtension = ".jpg";
 								}
 								else
 								{
-									fileExtention = ".jpg";
+									fileExtension = ".jpg";
 								}
 
 
-								originalFilename = "/tmp/tmp_" + filePrefix + fileExtention;
+								originalFilename = "/tmp/tmp_" + filePrefix + fileExtension;
 								preFinalFilename = "/tmp/" + filePrefix + ".jpg";
-								finalFilename = GetSpecificData_GetBaseDirectory(itemType) + "/" + to_string(folderID) + "/" + filePrefix + GetSpecificData_GetFinalFileExtenstion(itemType);
+								finalFilename = GetSpecificData_GetBaseDirectory(itemType) + "/" + to_string(folderID) + "/" + filePrefix + GetSpecificData_GetFinalFileExtension(itemType);
 
 							} while(isFileExists(finalFilename) || isFileExists(originalFilename) || isFileExists(preFinalFilename));
 
@@ -269,7 +269,7 @@ int main()
 
 								CopyFile(preFinalFilename, finalFilename);
 
-								db.Query(GetSpecificData_UpdateQueryItemByID(itemID, itemType, to_string(folderID), filePrefix  + GetSpecificData_GetFinalFileExtenstion(itemType)));
+								db.Query(GetSpecificData_UpdateQueryItemByID(itemID, itemType, to_string(folderID), filePrefix  + GetSpecificData_GetFinalFileExtension(itemType)));
 								{
 									if(filesCounter == 0) ostJSONResult << "[";
 									if(filesCounter  > 0) ostJSONResult << ",";
@@ -281,11 +281,11 @@ int main()
 									if(GetSpecificData_GetDBCoverPhotoFolderString(itemType).length())
 									{
 										ostJSONResult << "\"" + GetSpecificData_GetDBCoverPhotoFolderString(itemType) + "\": \"" << folderID << "\",";
-										ostJSONResult << "\"" + GetSpecificData_GetDBCoverPhotoFilenameString(itemType) + "\": \"" << filePrefix << GetSpecificData_GetFinalFileExtenstion(itemType) << "\"";
+										ostJSONResult << "\"" + GetSpecificData_GetDBCoverPhotoFilenameString(itemType) + "\": \"" << filePrefix << GetSpecificData_GetFinalFileExtension(itemType) << "\"";
 									}
 									else
 									{
-										ostJSONResult << "\"" + GetSpecificData_GetDBCoverPhotoFilenameString(itemType) + "\": \"" << folderID << "/" << filePrefix << GetSpecificData_GetFinalFileExtenstion(itemType) << "\"";
+										ostJSONResult << "\"" + GetSpecificData_GetDBCoverPhotoFilenameString(itemType) + "\": \"" << folderID << "/" << filePrefix << GetSpecificData_GetFinalFileExtension(itemType) << "\"";
 									}
 									ostJSONResult << "}";
 									if(filesCounter == (indexPage.GetFilesHandler()->Count() - 1)) ostJSONResult << "]";

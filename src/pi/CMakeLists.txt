@@ -13,7 +13,7 @@ set(EXECUTABLE_CRONs
     )
 
 # --- Libraries
-# ---- big joint librabry
+# ---- big joint library
 set(JOINT_LIBRARY_SRCs
     cuser.cpp
     cactivator.cpp
@@ -98,31 +98,31 @@ pkg_check_modules(LIBMYSQLCLIENT REQUIRED mysqlclient)
 find_package(OpenSSL REQUIRED)
 find_package(CURL REQUIRED)
 find_package(LibWebSockets REQUIRED)
-find_package(Libhpdf REQUIRED)
-find_package(Libwkhtmltox REQUIRED)
-find_package(Libarchive REQUIRED)
-find_package(Libxl REQUIRED)
-find_package(Rapidjson-dev REQUIRED)
+find_package(LibHPDF REQUIRED)
+find_package(LibWkhtmlToX REQUIRED)
+find_package(LibArchive REQUIRED)
+find_package(LibXL REQUIRED)
+find_package(LibRapidJSON REQUIRED)
 
 if(IMAGEMAGICK_DISABLE)
     message("Magick++ turned off")
 else(IMAGEMAGICK_DISABLE)
 #    find_package(ImageMagick COMPONENTS Magick++)
-    find_package(ImageMagick REQUIRED)
+    find_package(LibImageMagick REQUIRED)
 endif(IMAGEMAGICK_DISABLE)
 
 if(FFPMPEG_DISABLE)
     message("Videoconverter/ffmpeg turned off")
 else(FFPMPEG_DISABLE)
-    find_package(avutil REQUIRED)
-    find_package(avcodec REQUIRED)
-    find_package(avformat REQUIRED)
+    find_package(LibAVUtil REQUIRED)
+    find_package(LibAVCodec REQUIRED)
+    find_package(LibAVFormat REQUIRED)
 endif(FFPMPEG_DISABLE)
 
 if(MAXMIND_DISABLE)
     message("GeoIP turned off")
 else(MAXMIND_DISABLE)
-    find_package(maxminddb REQUIRED)
+    find_package(LibMaxMindDB REQUIRED)
 endif(MAXMIND_DISABLE)
 
 set(PROJECT_PI_INCLUDE_DIRECTORIES
@@ -171,7 +171,7 @@ foreach(INDEPENDENT_LIBRARY_SRC ${INDEPENDENT_LIBRARIES_SRC})
     set_pi_lib_properties(${file_without_ext} "${file_without_ext}.cpp" "${PROJECT_PI_INCLUDE_DIRECTORIES}" "")
 endforeach()
 
-# ---- big joint librabry
+# ---- big joint library
 # ---- ATTENTION !!!
 # ---- order is important: joint_lib must follow INDEPENDENT LIBS to help g++-linker resolve dependencies
 set_pi_lib_properties(__joint_pi "${JOINT_LIBRARY_SRCs}" "${PROJECT_PI_INCLUDE_DIRECTORIES}" "")

@@ -15,7 +15,7 @@ using namespace std;
 class c_cache_obj
 {
 	private:
-		// --- static variable definition makes chache allocation permanent to the process
+		// --- static variable definition makes cache allocation permanent to the process
 		// --- actual variable declaration in .cpp file
 		static map<string, string>			cache;
 		unsigned int						cache_misses = 0;

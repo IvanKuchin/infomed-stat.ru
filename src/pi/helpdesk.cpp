@@ -165,13 +165,13 @@ static auto SendSMSNotification(vector<string> recipients, string message, CCgi 
 
 	for(auto &recipient: recipients)
 	{
-		error_message = smsc.send_sms(recipient, message, 0, "", 0, 0, SMSC_SENDER_NAME, "", "");
+		error_message = smsc.send_sms(recipient, message, 0, "", 0, SMSC_DELIVERY_MODE, SMSC_SENDER_NAME, "", "");
 
 		if(error_message.length())
 		{
 			MESSAGE_ERROR("", "", "fail to send message to recipient(" + recipient + ")");
 
-			// --- do your best to notify everybody, don't stop in the middle of notfication process.
+			// --- do your best to notify everybody, don't stop in the middle of notification process.
 			error_message = "";
 		}
 	}
@@ -193,7 +193,7 @@ static auto SendSMSNotification_ExistingTicket(vector<string> recipients, CCgi *
 
 static auto SendEmailNotification(vector<string> recipients, string email_template, CCgi *indexPage, CMysql *db, CUser *user)
 {
-	MESSAGE_DEBUG("", "", "start (# of recepients:" + to_string(recipients.size()) + ")");
+	MESSAGE_DEBUG("", "", "start (# of recipients:" + to_string(recipients.size()) + ")");
 
 	auto		error_message = ""s;
 	CMailLocal	mail;
@@ -328,7 +328,7 @@ static auto SaveFilesAndUpdateDB(string ticket_history_id, CCgi *indexPage, CMys
 	{
 		if(indexPage->GetFilesHandler()->GetSize(filesCounter) > GetSpecificData_GetMaxFileSize(itemType))
 		{
-			error_message = "file [" + indexPage->GetFilesHandler()->GetName(filesCounter) + "] size exceed permited maximum: " + to_string(indexPage->GetFilesHandler()->GetSize(filesCounter)) + " > " + to_string(GetSpecificData_GetMaxFileSize(itemType));
+			error_message = "file [" + indexPage->GetFilesHandler()->GetName(filesCounter) + "] size exceed permitted maximum: " + to_string(indexPage->GetFilesHandler()->GetSize(filesCounter)) + " > " + to_string(GetSpecificData_GetMaxFileSize(itemType));
 			MESSAGE_ERROR("", "", error_message);
 
 			break;
@@ -400,7 +400,7 @@ static auto SaveFilesAndUpdateDB(string ticket_history_id, CCgi *indexPage, CMys
 
 int main(void)
 {
-	CStatistics		appStat;  // --- CStatistics must be firts statement to measure end2end param's
+	CStatistics		appStat;  // --- CStatistics must be a first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
 	CUser			user;
 	CMysql			db;
@@ -812,7 +812,7 @@ int main(void)
 
 			auto	error_message = ""s;
 
-			AJAX_ResponseTemplate(&indexPage, "\"users\":[" + GetBaseUserInfoInJSONFormat("SELECT * FROM `users` WHERE `id`=" + quoted(user.GetID()) + ";", &db, &user) + "]", error_message);
+			AJAX_ResponseTemplate(&indexPage, "\"users\":[" + GetHelpdeskBaseUserInfoInJSONFormat("SELECT * FROM `users` WHERE `id`=" + quoted(user.GetID()) + ";", &db, &user) + "]", error_message);
 
 			MESSAGE_DEBUG("", action, "finish");
 		}

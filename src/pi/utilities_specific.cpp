@@ -8,6 +8,7 @@ string	GetDefaultActionFromUserType(CUser *user, CMysql *db)
 
 	if(user->GetType() == "guest") result = GUEST_USER_DEFAULT_ACTION;
 	else if(user->GetType() == "user") result = LOGGEDIN_DOCTOR_DEFAULT_ACTION;
+	else if(user->GetType() == "helpdesk") result = LOGGEDIN_HELPDESK_DEFAULT_ACTION;
 	else
 	{
 		MESSAGE_ERROR("", "", "unknown user type (" + user->GetType() + ")");
@@ -43,6 +44,7 @@ int GetSpecificData_GetNumberOfFolders(string itemType)
 	else if(itemType == "template_company")			result = TEMPLATE_COMPANY_NUMBER_OF_FOLDERS;
 	else if(itemType == "template_agreement_company") result = TEMPLATE_AGREEMENT_COMPANY_NUMBER_OF_FOLDERS;
 	else if(itemType == "template_agreement_sow")	result = TEMPLATE_AGREEMENT_SOW_NUMBER_OF_FOLDERS;
+	else if(itemType == "helpdesk_ticket_attach")	result = HELPDESK_TICKET_ATTACHES_NUMBER_OF_FOLDERS;
 	else
 	{
 		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
@@ -76,6 +78,7 @@ int GetSpecificData_GetMaxFileSize(string itemType)
 	else if(itemType == "template_company")			result = TEMPLATE_COMPANY_MAX_FILE_SIZE;
 	else if(itemType == "template_agreement_company") result = TEMPLATE_AGREEMENT_COMPANY_MAX_FILE_SIZE;
 	else if(itemType == "template_agreement_sow")	result = TEMPLATE_AGREEMENT_SOW_MAX_FILE_SIZE;
+	else if(itemType == "helpdesk_ticket_attach")	result = HELPDESK_TICKET_ATTACHES_MAX_FILE_SIZE;
 	else
 	{
 		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
@@ -163,6 +166,7 @@ string GetSpecificData_GetBaseDirectory(string itemType)
 	else if(itemType == "template_company")			result = TEMPLATE_COMPANY_DIRECTORY;
 	else if(itemType == "template_agreement_company") result = TEMPLATE_AGREEMENT_COMPANY_DIRECTORY;
 	else if(itemType == "template_agreement_sow")	result = TEMPLATE_AGREEMENT_SOW_DIRECTORY;
+	else if(itemType == "helpdesk_ticket_attach")	result = HELPDESK_TICKET_ATTACHES_DIRECTORY;
 	else
 	{
 		MESSAGE_ERROR("", "", "itemType (" + itemType + ") is unknown");
@@ -173,7 +177,7 @@ string GetSpecificData_GetBaseDirectory(string itemType)
 	return result;
 }
 
-string GetSpecificData_GetFinalFileExtenstion(string itemType)
+string GetSpecificData_GetFinalFileExtension(string itemType)
 {
 	string	  result = ".jpg";
 
@@ -357,7 +361,7 @@ string GetSpecificData_GetDataTypeByItemType(const string &itemType)
 
 // --- Does the owner user allowed to change it ?
 // --- For example:
-// ---	*) university or school logo can be changed by administartor only.
+// ---	*) university or school logo can be changed by administrator only.
 // ---	*) gift image could be changed by owner
 auto GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db, CUser *user) -> string
 {
@@ -470,7 +474,7 @@ auto GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db,
 		}
 		else
 		{
-			error_message = "user.type(" + user->GetType() + ") not allowerd to change company custom field";
+			error_message = "user.type(" + user->GetType() + ") not allowed to change company custom field";
 			MESSAGE_DEBUG("", "", error_message);
 		}
 		
@@ -492,7 +496,7 @@ auto GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db,
 		}
 		else
 		{
-			error_message = "user.type(" + user->GetType() + ") not allowerd to change company agreement files";
+			error_message = "user.type(" + user->GetType() + ") not allowed to change company agreement files";
 			MESSAGE_DEBUG("", "", error_message);
 		}
 	}
@@ -513,7 +517,7 @@ auto GetSpecificData_AllowedToChange(string itemID, string itemType, CMysql *db,
 		}
 		else
 		{
-			error_message = "user.type(" + user->GetType() + ") not allowerd to change contract_sow agreement files";
+			error_message = "user.type(" + user->GetType() + ") not allowed to change contract_sow agreement files";
 			MESSAGE_DEBUG("", "", error_message);
 		}
 	}

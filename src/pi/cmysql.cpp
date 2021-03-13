@@ -152,20 +152,6 @@ void CMysqlSkel::FreeResultSet()
     }
 }
 
-char *CMysqlSkel::ResultValue( MYSQL_RES *result, unsigned int row, const char *name )
-{
-    auto            fi = FieldsIndex( name );
-
-    if(fi < 0)
-    {
-        MESSAGE_ERROR("", "", "DB-field [" + name + "] doesn't exists");
-
-        throw CException("error db");
-    }
-
-    return ResultValue(result, row, fi);
-}
-
 char *CMysqlSkel::ResultValue( MYSQL_RES *result, unsigned int row, int fi )
 {
     MYSQL_ROW       fr;
@@ -192,8 +178,43 @@ char *CMysqlSkel::ResultValue( MYSQL_RES *result, unsigned int row, int fi )
     {
         MESSAGE_ERROR("", "", "mysql_fetch_row( " + to_string(row) + " ) returned NULL")
 
-    	return(NULL);
+        return(NULL);
     }
+}
+
+// --- throw_exception: if true then Exception will be thrown in case of "field" not found
+// --- if not sure what function to use, then avoid use _with_NULL. This will keep your code safe 
+char *CMysqlSkel::__ResultValue( MYSQL_RES *result, unsigned int row, const char *name, bool throw_exception )
+{
+    auto            fi = FieldsIndex( name );
+
+    if(fi < 0)
+    {
+        if(throw_exception)
+        {
+            MESSAGE_ERROR("", "", "DB-field [" + name + "] doesn't exists");
+
+            throw CException("error db");
+        }
+        else
+        {
+            MESSAGE_DEBUG("", "", "DB-field [" + name + "] has NULL value");
+
+            return (char *)"";
+        }
+    }
+
+    return ResultValue(result, row, fi);
+}
+
+char *CMysqlSkel::ResultValue_with_NULL( MYSQL_RES *result, unsigned int row, const char *name )
+{
+    return __ResultValue(result, row, name, false);
+}
+
+char *CMysqlSkel::ResultValue( MYSQL_RES *result, unsigned int row, const char *name )
+{
+    return __ResultValue(result, row, name, true);
 }
 
 MYSQL_ROW CMysqlSkel::NextFetch(MYSQL_RES *result)
@@ -236,7 +257,7 @@ int CMysql::Connect(const string &dbName, const string &login, const string &pas
 
     if(result == 0)
     {
-        // --- sucessfull init
+        // --- successful init
         Query("set names " + DB_CHARSET);
     }
 
@@ -277,15 +298,17 @@ unsigned long CMysql::InsertQuery(const string &query)
     return InsertQueryDB(query);
 }
 
-string CMysql::Get(int row, const string &name)
-{
-    return Get(row, name.c_str());
-}
-
-string CMysql::Get(int row, const char *name)
+string CMysql::Get_with_NULL(int row, const string &name)
 {
     if(resultSet)
-        return ResultValue(resultSet, row, name);
+        return ResultValue_with_NULL(resultSet, row, name.c_str());
+    return(NULL);
+}
+
+string CMysql::Get(int row, const string &name)
+{
+    if(resultSet)
+        return ResultValue(resultSet, row, name.c_str());
     return(NULL);
 }
 

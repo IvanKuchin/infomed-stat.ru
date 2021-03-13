@@ -110,7 +110,7 @@ string c_float::PrintPriceTag() const
 {
 	auto	result = GetStringValue();
 
-	// --- having spaces between thouthands may trigger problems with invoice/act/vat price representation in Excel
+	// --- having spaces between thousands may trigger problems with invoice/act/vat price representation in Excel
 	// --- or DB update (UPDATE xxx=123 456.56) will fail sql-query
 	// --- for example: 12 000.55 will be presented as 12 in Excel
 	{
@@ -118,7 +118,7 @@ string c_float::PrintPriceTag() const
 
 		if(frac_separator == string::npos)
 		{
-			MESSAGE_ERROR("", "", "fail to find fraction seprator in price_tag(" + result + ")");
+			MESSAGE_ERROR("", "", "fail to find fraction separator in price_tag(" + result + ")");
 		}
 		else
 		{

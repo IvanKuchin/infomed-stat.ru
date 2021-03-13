@@ -31,7 +31,7 @@ void CSession::InitMaxMind()
 	    {
 	    	int gai_error, mmdb_error;
 
-			MESSAGE_DEBUG("", "", "MMDB_open(" + MMDB_fname + ") opened succesfully. ");
+			MESSAGE_DEBUG("", "", "MMDB_open(" + MMDB_fname + ") opened successfully. ");
 
 		    MMDB_result = MMDB_lookup_string(&mmdb, getenv("REMOTE_ADDR"), &gai_error, &mmdb_error);
 

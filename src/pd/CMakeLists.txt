@@ -84,7 +84,7 @@ endforeach()
 # --- it is downloaded from web-site and placed to src-tree. 
 # --- During "cmake .." it is copied to /usr/local/share/... and then RPATH customized.
 # ---"
-# --- this setting allows to dynalic linker find .so library in custom location
+# --- this setting allows to dynamic linker find .so library in custom location
 # --- otherwise it have to be added to ld.so.conf or environment variable
 # --- actual linker options are -Wl,-rpath,/path/to/dynamic/library
 # --- https://gitlab.kitware.com/cmake/community/wikis/doc/cmake/RPATH-handling

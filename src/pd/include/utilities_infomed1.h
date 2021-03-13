@@ -5,7 +5,7 @@
 #include "c_float.h"
 #include "c_cache_obj.h"
 // --- IMPORTANT !!!
-// --- do NOT add any header file with potentialy recursive indludes
+// --- do NOT add any header file with potentially recursive includes
 
 
 auto      		GetChatMessagesInJSONFormat(string dbQuery, CMysql *) -> string;

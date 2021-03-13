@@ -21,7 +21,7 @@ auto CheckMedicalRecordValidity(CCgi *indexPage, CMysql *db) -> string
 		}
 		else
 		{
-			error_message = gettext("birtday isn't defined");
+			error_message = gettext("birthday isn't defined");
 			MESSAGE_DEBUG("", "", error_message);
 		}
 	}
@@ -38,7 +38,7 @@ auto CheckMedicalRecordValidity(CCgi *indexPage, CMysql *db) -> string
 
 int main()
 {
-	CStatistics		appStat;  // --- CStatistics must be firts statement to measure end2end param's
+	CStatistics		appStat;  // --- CStatistics must be first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
 	CUser			user;
 	string			action, partnerID;
@@ -665,7 +665,7 @@ int main()
 			}
 			else
 			{
-				error_message = gettext("you are not employeed at any medical center");
+				error_message = gettext("you are not employed at any medical center");
 				MESSAGE_DEBUG("", action, error_message);
 			}
 

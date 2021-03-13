@@ -16,6 +16,10 @@ using namespace std;
 #define	SMSC_EXPIRATION								120
 #define	SMSC_CHARSET								"utf-8"s
 
+#define SMSC_DELIVERY_MODE							SMSC_NORMAL_DELIVERY
+#define SMSC_NORMAL_DELIVERY						0
+#define SMSC_FLASH_DELIVERY							1
+
 class c_smsc
 {
 private:

@@ -27,7 +27,7 @@
 #include "clog.h"
 #include "localy.h"
 // --- IMPORTANT !!!
-// --- do NOT add any header file with potentialy recursive indludes
+// --- do NOT add any header file with potentially recursive includes
 
 using namespace std;
 
@@ -91,7 +91,7 @@ auto			GetPasswordCharacteristicsList(CMysql *) -> string;
 auto			isAllowed_NoSession_Action(string action) -> bool;
 auto			CutTrailingZeroes(string number) -> string;
 
-auto			GetBaseUserInfoInJSONFormat(string dbQuery, CMysql *db, CUser *user) -> string;
+auto			GetHelpdeskBaseUserInfoInJSONFormat(string dbQuery, CMysql *db, CUser *user) -> string;
 auto      		GetGeoCountryListInJSONFormat(string dbQuery, CMysql *, CUser *) -> string;
 auto 			GetBookListInJSONFormat(string dbQuery, CMysql *, bool includeReaders = false) -> string;
 auto 			GetComplainListInJSONFormat(string dbQuery, CMysql *, bool includeReaders = false) -> string;
@@ -213,7 +213,7 @@ auto 			GetSpecificData_GetMaxFileSize(string itemType) -> int;
 auto		 	GetSpecificData_GetMaxWidth(string itemType) -> unsigned int;
 auto		 	GetSpecificData_GetMaxHeight(string itemType) -> unsigned int;
 auto 			GetSpecificData_GetBaseDirectory(string itemType) -> string;
-auto			GetSpecificData_GetFinalFileExtenstion(string itemType) -> string;
+auto			GetSpecificData_GetFinalFileExtension(string itemType) -> string;
 auto 			GetSpecificData_SelectQueryItemByID(string itemID, string itemType) -> string;
 auto 			GetSpecificData_UpdateQueryItemByID(string itemID, string itemType, string folderID, string fileName) -> string;
 auto 			GetSpecificData_GetDBCoverPhotoFolderString(string itemType) -> string;
