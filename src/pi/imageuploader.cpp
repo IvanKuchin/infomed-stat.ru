@@ -4,11 +4,9 @@
 // message could contain either VIDEO or IMAGES
 int GetMessageMedia(string imageTempSet, CMysql *db)
 {
-	int	 result = MESSAGE_HAVENO_MEDIA;
-	{
-		CLog	log;
-		log.Write(DEBUG, string(__func__) + "(imageTempSet = " + imageTempSet + ")[" + to_string(__LINE__) + "]: enter");
-	}
+	auto	 result = MESSAGE_HAVENO_MEDIA;
+
+	MESSAGE_DEBUG("", "", "start (imageTempSet = " + imageTempSet + ")");
 
 	if(imageTempSet.length() && db->Query("select `mediaType` from `feed_images` where `tempSet`=\"" + imageTempSet + "\";"))
 	{
@@ -23,24 +21,19 @@ int GetMessageMedia(string imageTempSet, CMysql *db)
 	}
 	else
 	{
-		CLog	log;
-		log.Write(DEBUG, string(__func__) + "(imageTempSet = " + imageTempSet + ")[" + to_string(__LINE__) + "]: imageTempSet not found or empty");
+		MESSAGE_DEBUG("", "", "imageTempSet not found or empty");
 	}
 
-	{
-		CLog	log;
-		log.Write(DEBUG, string(__func__) + "(imageTempSet = " + imageTempSet + ")[" + to_string(__LINE__) + "]: end (result = " + to_string(result) + ")");
-	}
+	MESSAGE_DEBUG("", "", "finish (result = " + to_string(result) + ")");
+
 	return result;
 }
 
 bool VideoConverter(const string src, const string dst, struct ExifInfo &exifInfo)
 {
 	bool	result = true;
-	{
-		CLog	log;
-		log.Write(DEBUG, string(__func__) + "(" + src + ", " + dst + ")[" + to_string(__LINE__) + "]: enter");
-	}
+
+	MESSAGE_DEBUG("", "", "start");
 
 	{
 		int	 ret;
@@ -48,31 +41,25 @@ bool VideoConverter(const string src, const string dst, struct ExifInfo &exifInf
 		ret = getpriority(PRIO_PROCESS, getpid());
 		if((ret > -20) and (ret < 19))
 		{
-			CLog	log;
-			log.Write(DEBUG, string(__func__) + "(" + src + ", " + dst + ")[" + to_string(__LINE__) + "]: process priority " + to_string(ret));
+			MESSAGE_DEBUG("", "", "process priority " + to_string(ret));
 		}
 		else
 		{
-			CLog	log;
-			log.Write(DEBUG, string(__func__) + "(" + src + ", " + dst + ")[" + to_string(__LINE__) + "]:ERROR: getting process priority (errno = " + to_string(errno) + ")");
+			MESSAGE_ERROR("", "", "getting process priority (errno = " + to_string(errno) + ")");
 		}
 	}
 
 	CopyFile(src, dst);
 
-	{
-		CLog	log;
-		log.Write(DEBUG, string(__func__) + "(" + src + ", " + dst + ")[" + to_string(__LINE__) + "]: finish");
-	}
+	MESSAGE_DEBUG("", "", "finish (result = " + to_string(result) + ")");
+
 	return result;
 }
 
 bool ImageConvertToJpg (const string src, const string dst, struct ExifInfo &exifInfo)
 {
-	{
-		CLog	log;
-		log.Write(DEBUG, string(__func__) + "(" + src + ", " + dst + ")[" + to_string(__LINE__) + "]: enter");
-	}
+
+	MESSAGE_DEBUG("", "", "start");
 
 #ifndef IMAGEMAGICK_DISABLE
 	// Construct the image object. Separating image construction from the
@@ -89,14 +76,7 @@ bool ImageConvertToJpg (const string src, const string dst, struct ExifInfo &exi
 		imageGeometry = image.size();
 		imageOrientation = image.orientation();
 
-		{
-			CLog	log;
-			ostringstream   ost;
-
-			ost.str("");
-			ost << "[" << __LINE__ << "]:" << __func__ << " (" << src << ", " << dst << "): imageOrientation = " << imageOrientation << ", xRes = " << imageGeometry.width() << ", yRes = " << imageGeometry.height();
-			log.Write(DEBUG, ost.str());
-		}
+		MESSAGE_DEBUG("", "", " (" + src + ", " + dst + "): imageOrientation = " + to_string(imageOrientation) + ", xRes = " + to_string(imageGeometry.width()) + ", yRes = " + to_string(imageGeometry.height()));
 
 		if(imageOrientation == Magick::TopRightOrientation) image.flop();
 		if(imageOrientation == Magick::BottomRightOrientation) image.rotate(180);
@@ -109,6 +89,7 @@ bool ImageConvertToJpg (const string src, const string dst, struct ExifInfo &exi
 		if((imageGeometry.width() > FEED_IMAGE_MAX_WIDTH) || (imageGeometry.height() > FEED_IMAGE_MAX_HEIGHT))
 		{
 			int   newHeight, newWidth;
+
 			if(imageGeometry.width() >= imageGeometry.height())
 			{
 				newWidth = FEED_IMAGE_MAX_WIDTH;
@@ -246,36 +227,21 @@ bool ImageConvertToJpg (const string src, const string dst, struct ExifInfo &exi
 	}
 	catch( Magick::Exception &error_ )
 	{
-		{
-			CLog	log;
-			ostringstream   ost;
-
-			ost.str("");
-			ost  << __func__ << "(" << src << ", " << dst << ")[" << __LINE__ << "]: exception in read/write operation [" << error_.what() << "]";
-			log.Write(DEBUG, ost.str());
-		}
+		MESSAGE_ERROR("", "", "exception in read/write operation [" + error_.what() + "]")
 		return false;
 	}
-	{
-		CLog	log;
-		ostringstream   ost;
 
-		ost.str("");
-		ost  << __func__ << "(" << src << ", " << dst << ")[" << __LINE__ << "]: image has been successfully converted to .jpg format";
-		log.Write(DEBUG, ost.str());
-	}
+	MESSAGE_DEBUG("", "", "finish (image has been successfully converted to .jpg format)")
+
 	return true;
 #else
-	{
-		CLog	log;
-		ostringstream   ost;
 
-		ost.str("");
-		ost  << __func__ << "(" << src << ", " << dst << ")[" << __LINE__ << "]: simple file coping cause ImageMagick++ is not activated";
-		log.Write(DEBUG, ost.str());
-	}
+	MESSAGE_DEBUG("", "", "simple file coping cause ImageMagick++ is not activated")
+
 	CopyFile(src, dst);
+
 	return  true;
+
 #endif
 }
 
@@ -297,10 +263,7 @@ int main()
 										// --- template renders in 99% cases
 										// --- the only exception is second stage video converting
 
-	{
-		CLog	log;
-		log.Write(DEBUG, __func__ + string("[") + to_string(__LINE__) + "]: " + __FILE__);
-	}
+	MESSAGE_DEBUG("", "", __FILE__)
 
 	signal(SIGSEGV, crash_handler); 
 
@@ -314,17 +277,13 @@ int main()
 
 		if(!indexPage.SetTemplate("index.htmlt"))
 		{
-			CLog	log;
-
-			log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: template file was missing");
+			MESSAGE_ERROR("", "", "template file was missing");
 			throw CException("Template file was missing");
 		}
 
 		if(db.Connect() < 0)
 		{
-			CLog	log;
-
-			log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: Can not connect to mysql database");
+			MESSAGE_ERROR("", "", "Can not connect to mysql database");
 			throw CExceptionHTML("MySql connection");
 		}
 
@@ -348,8 +307,7 @@ int main()
 		}
 
 		{
-			CLog	log;
-			log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: imageTempSet = " + imageTempSet + ",messageID = " + messageID);
+			MESSAGE_DEBUG("", "", "imageTempSet = " + imageTempSet + ",messageID = " + messageID);
 		}
 
 		action = CheckHTTPParam_Text(indexPage.GetVarsHandler()->Get("action"));
@@ -392,17 +350,14 @@ int main()
 			{
 				messageMedia = GetMessageMedia(imageTempSet, &db);
 			
-				{
-					CLog	log;
-					log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: number of files POST'ed = " + to_string(indexPage.GetFilesHandler()->Count()));
-				}
+				MESSAGE_DEBUG("", "", "number of files POST'ed = " + to_string(indexPage.GetFilesHandler()->Count()));
 
-				for(int filesCounter = 0; filesCounter < indexPage.GetFilesHandler()->Count(); filesCounter++)
+				for(auto filesCounter = 0; filesCounter < indexPage.GetFilesHandler()->Count(); filesCounter++)
 				{
 					FILE			*f;
-					int			 folderID = (int)(rand()/(RAND_MAX + 1.0) * FEEDIMAGE_NUMBER_OF_FOLDERS) + 1;
-					string		  filePrefix = GetRandom(20);
-					string		  finalFile, tmpFile2Check, tmpImageJPG, fileName, fileExtension;
+					auto			folderID = (int)(rand()/(RAND_MAX + 1.0) * FEEDIMAGE_NUMBER_OF_FOLDERS) + 1;
+					auto			filePrefix = GetRandom(20);
+					string			finalFile, tmpFile2Check, tmpImageJPG, fileName, fileExtension;
 					ostringstream   ost;
 					struct ExifInfo exifInfo;
 					int			 currFileType = FILETYPE_UNDEFINED;
@@ -416,14 +371,10 @@ int main()
 						((currFileType == FILETYPE_VIDEO) && (indexPage.GetFilesHandler()->GetSize(filesCounter) > FEEDVIDEO_MAX_FILE_SIZE))
 					  )
 					{
-						CLog			log;
 						ostringstream   ost;
 
-						{
-							ost.str("");
-							ost << __func__ << "[" << __LINE__ << "]: ERROR: feed image file [" << indexPage.GetFilesHandler()->GetName(filesCounter) << "] size exceed permitted maximum: " << indexPage.GetFilesHandler()->GetSize(filesCounter);
-							log.Write(ERROR, ost.str());
-						}
+						MESSAGE_ERROR("", "", "feed image file [" + indexPage.GetFilesHandler()->GetName(filesCounter) + "] size exceed permitted maximum: " + to_string(indexPage.GetFilesHandler()->GetSize(filesCounter)));
+
 
 						if(filesCounter == 0) ostJSONResult << "[" << std::endl;
 						if(filesCounter  > 0) ostJSONResult << ",";
@@ -445,8 +396,7 @@ int main()
 						{
 							// --- image upload
 							{
-								CLog	log;
-								log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: image uploading");
+								MESSAGE_DEBUG("", "", "image uploading");
 							}
 							messageMedia = MESSAGE_HAVING_IMAGE;
 
@@ -483,41 +433,24 @@ int main()
 								tmpImageJPG = ost.str();
 							} while(isFileExists(finalFile) || isFileExists(tmpFile2Check) || isFileExists(tmpImageJPG));
 
-
-
-							{
-								CLog	log;
-								ostringstream   ost;
-
-								ost << __func__ << "[" << __LINE__ << "]: Save file to /tmp for checking of image validity [" << tmpFile2Check << "]";
-								log.Write(DEBUG, ost.str());
-							}
+							MESSAGE_DEBUG("", "", "Save file to /tmp for checking of image validity [" + tmpFile2Check + "]");
 
 							// --- Save file to "/tmp/" for checking of image validity
 							f = fopen(tmpFile2Check.c_str(), "w");
 							if(f == NULL)
 							{
-								{
-									CLog			log;
+								MESSAGE_ERROR("", "", "writing file:" + tmpFile2Check.c_str());
 
-									log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + ":ERROR: writing file:", tmpFile2Check.c_str());
-									throw CExceptionHTML("image file write error", indexPage.GetFilesHandler()->GetName(filesCounter));
-								}
+								throw CExceptionHTML("image file write error", indexPage.GetFilesHandler()->GetName(filesCounter));
 							}
 							fwrite(indexPage.GetFilesHandler()->Get(filesCounter), indexPage.GetFilesHandler()->GetSize(filesCounter), 1, f);
 							fclose(f);
 
 							if(ImageConvertToJpg(tmpFile2Check, tmpImageJPG, exifInfo))
 							{
-								unsigned long	  feed_imagesID = 0;
+								auto	  feed_imagesID = 0;
 
-								{
-									CLog	log;
-									ostringstream   ost;
-
-									ost << __func__ << "[" << __LINE__ << "]: chosen filename for feed image [" << finalFile << "]";
-									log.Write(DEBUG, ost.str());
-								}
+								MESSAGE_DEBUG("", "", "chosen filename for feed image [" + finalFile + "]");
 
 								CopyFile(tmpImageJPG, finalFile);
 
@@ -599,10 +532,8 @@ int main()
 								}
 								else
 								{
-									{
-										CLog	log;
-										log.Write(ERROR, string(__func__) + ": ERROR: inserting image info into feed_images table");
-									}
+									MESSAGE_ERROR("", "", "inserting image info into feed_images table");
+
 									ostJSONResult << "{" << std::endl;
 									ostJSONResult << "\"result\": \"error\"," << std::endl;
 									ostJSONResult << "\"textStatus\": \"error inserting into table\"," << std::endl;
@@ -620,14 +551,7 @@ int main()
 							}
 							else
 							{
-								{
-									ostringstream   ost;
-									CLog			log;
-
-									ost.clear();
-									ost << __func__ << "[" << __LINE__ << "]:ERROR: image [" << indexPage.GetFilesHandler()->GetName(filesCounter) << "] is not valid format (looks like attack)";
-									log.Write(ERROR, ost.str());
-								}
+								MESSAGE_ERROR("", "", "image [" + indexPage.GetFilesHandler()->GetName(filesCounter) + "] is not valid format (looks like attack)");
 
 								if(filesCounter == 0) ostJSONResult << "[" << std::endl;
 								if(filesCounter  > 0) ostJSONResult << ",";
@@ -642,10 +566,8 @@ int main()
 						} // --- if uploaded file image 
 						else if( (messageMedia == MESSAGE_HAVENO_MEDIA) && (currFileType == FILETYPE_VIDEO) )
 						{
-							{
-								CLog	log;
-								log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: video uploading");
-							}
+							MESSAGE_DEBUG("", "", "video uploading");
+
 							CVideoConverter	 videoConverter(indexPage.GetFilesHandler()->GetName(filesCounter));
 							
 							messageMedia = MESSAGE_HAVING_VIDEO;
@@ -655,28 +577,21 @@ int main()
 							finalFile = videoConverter.GetFinalFullFilename(0);
 
 							// --- video upload
-							{
-								CLog	log;
-								log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: Save file to /tmp for checking of video validity [" + tmpFile2Check + "]");
-							}
+							MESSAGE_DEBUG("", "", "Save file to /tmp for checking of video validity [" + tmpFile2Check + "]");
 
 							// --- Save file to "/tmp/" for checking of video validity
 							f = fopen(tmpFile2Check.c_str(), "w");
 							if(f == NULL)
 							{
-								{
-									CLog			log;
-
-									log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: writing file:" + tmpFile2Check);
-									throw CExceptionHTML("image file write error", indexPage.GetFilesHandler()->GetName(filesCounter));
-								}
+								MESSAGE_ERROR("", "", "writing file:" + tmpFile2Check);
+								throw CExceptionHTML("image file write error", indexPage.GetFilesHandler()->GetName(filesCounter));
 							}
 							fwrite(indexPage.GetFilesHandler()->Get(filesCounter), indexPage.GetFilesHandler()->GetSize(filesCounter), 1, f);
 							fclose(f);
 
 							if(videoConverter.FirstPhase())
 							{
-								unsigned long	  feed_mediaID = 0;
+								auto	  feed_mediaID = 0;
 
 								ost.str("");
 								ost << "insert into `feed_images` set "
@@ -723,58 +638,45 @@ int main()
 
 										// --- child process
 										{
-											CLog	log;
-											log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: child process after fork");
+											MESSAGE_DEBUG("", "", "child process after fork");
 										}
 										
 										try
 										{
 											{
-												CLog	log;
-												log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: daemonize process");
+												MESSAGE_DEBUG("", "", "daemonize process");
 											}
 											// --- daemonize process
 											// --- this allows apache not to wait until child process finished
 											sid = setsid();
 											if(sid < 0) 
 											{
-												{
-													CLog	log;
-													log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: can't daemonize SecondStageVideoConversion-process setsid returns error [" + to_string(EXIT_FAILURE) + "]");
-												}
+												MESSAGE_ERROR("", "", "can't daemonize SecondStageVideoConversion-process setsid returns error [" + to_string(EXIT_FAILURE) + "]");
 
 												// --- it must be caught by "catch" in child process
 												throw;
 											}
 
-											{
-												CLog	log;
-												log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: redirect stdin/stdout/stderr -> /dev/null");
-											}
+											MESSAGE_DEBUG("", "", "redirect stdin/stdout/stderr -> /dev/null");
+
 											// --- Redirect standard files to /dev/null 
 											// --- otherwise apache waits until stdout and stderr will be closed
 											if(!freopen( "/dev/null", "r", stdin))
 											{
-												{
-													CLog	log;
-													log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: redirect error stdin -> /dev/null");
-												}
+												MESSAGE_ERROR("", "", "redirect error stdin -> /dev/null");
+
 												throw;  
 											} 
 											if(!freopen( "/dev/null", "w", stdout))
 											{
-												{
-													CLog	log;
-													log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: redirect error stdout -> /dev/null");
-												}
+												MESSAGE_ERROR("", "", "redirect error stdout -> /dev/null");
+
 												throw;  
 											} 
 											if(!freopen( "/dev/null", "w", stderr))
 											{
-												{
-													CLog	log;
-													log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: redirect error stderr -> /dev/null");
-												}
+												MESSAGE_ERROR("", "", "redirect error stderr -> /dev/null");
+
 												throw;  
 											} 
 											
@@ -788,9 +690,7 @@ int main()
 
 												if(db1.Connect() < 0)
 												{
-													CLog	log;
-
-													log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: Can not connect to mysql database");
+													MESSAGE_ERROR("", "", "Can not connect to mysql database");
 													throw CExceptionHTML("MySql connection");
 												}
 
@@ -816,10 +716,8 @@ int main()
 												}
 												else
 												{
-													{
-														CLog	log;
-														log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: remove newly converted video [" + videoConverter.GetFinalFullFilename(1) + "] because user canceled message submission");
-													}
+													MESSAGE_DEBUG("", "", "remove newly converted video [" + videoConverter.GetFinalFullFilename(1) + "] because user canceled message submission");
+													
 													unlink(videoConverter.GetFinalFullFilename(1).c_str());
 												}
 
@@ -827,46 +725,31 @@ int main()
 											}
 											else
 											{
-												{
-													ostringstream   ost;
-													CLog			log;
-
-													ost.clear();
-													ost << __func__ << "[" << __LINE__ << "]:ERROR: 2-st phase failed, video [" << indexPage.GetFilesHandler()->GetName(filesCounter) << "] hasn't been converted";
-													log.Write(ERROR, ost.str());
-												}
+												MESSAGE_ERROR("", "", "2-st phase failed, video [" + indexPage.GetFilesHandler()->GetName(filesCounter) + "] hasn't been converted");
 											}
 
 										}
 										catch(...)
 										{
-											{
-												CLog	log;
-												log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: exception caught in SecondStageVideoConverting-process, can't handle it, just exit");
-											}
+											MESSAGE_DEBUG("", "", "exception caught in SecondStageVideoConverting-process, can't handle it, just exit");
+
 											exit(1);
 										}
 
 										// --- exit from video converting here.
 										// --- if continue many things can be broken, 
 										// --- parent process already close and clear all structures
-										{
-											CLog	log;
-											log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: exit from child process");
-										}
+										MESSAGE_DEBUG("", "", "exit from child process");
+
 										exit(0);
 									}
-									{
-										CLog	log;
-										log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: parent process after fork");
-									}
+
+									MESSAGE_DEBUG("", "", "parent process after fork");
 								}
 								else
 								{
-									{
-										CLog	log;
-										log.Write(ERROR, string(__func__) + ": ERROR: inserting image info into feed_images table");
-									}
+									MESSAGE_ERROR("", "", "inserting image info into feed_images table");
+
 									ostJSONResult << "{" << std::endl;
 									ostJSONResult << "\"result\": \"error\"," << std::endl;
 									ostJSONResult << "\"textStatus\": \"error inserting into table\"," << std::endl;
@@ -880,14 +763,7 @@ int main()
 							}
 							else
 							{
-								{
-									ostringstream   ost;
-									CLog			log;
-
-									ost.clear();
-									ost << __func__ << "[" << __LINE__ << "]:ERROR: 1-st phase failed, video [" << indexPage.GetFilesHandler()->GetName(filesCounter) << "] is not valid format";
-									log.Write(ERROR, ost.str());
-								}
+								MESSAGE_ERROR("", "", "1-st phase failed, video [" + indexPage.GetFilesHandler()->GetName(filesCounter) + "] is not valid format")
 
 								if(filesCounter == 0) ostJSONResult << "[" << std::endl;
 								if(filesCounter  > 0) ostJSONResult << ",";
@@ -903,9 +779,14 @@ int main()
 						else
 						{
 							{
-								CLog	log;
-								if(currFileType == FILETYPE_UNDEFINED) log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: file type (" + indexPage.GetFilesHandler()->GetName(filesCounter) + "): undefined");
-								else log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) + "]: video and images can't be mixed in a single message  or  more than one video file uploaded");
+								if(currFileType == FILETYPE_UNDEFINED) 
+								{
+									MESSAGE_ERROR("", "", "file type (" + indexPage.GetFilesHandler()->GetName(filesCounter) + "): undefined");
+								}
+								else 
+								{
+									MESSAGE_DEBUG("", "", "video and images can't be mixed in a single message  or  more than one video file uploaded");
+								}
 							}
 
 							if(filesCounter == 0) ostJSONResult << "[" << std::endl;
@@ -923,10 +804,7 @@ int main()
 			}
 			else
 			{
-				{
-					CLog	log;
-					log.Write(ERROR, string(__func__) + string("[") + to_string(__LINE__) + "]:ERROR: message owner error (type:" + messageOwnerType + ", id:" + messageOwnerID + ")");
-				}
+				MESSAGE_ERROR("", "", "message owner error (type:" + messageOwnerType + ", id:" + messageOwnerID + ")")
 
 				ostJSONResult.str("");
 				ostJSONResult << "{";
@@ -944,9 +822,7 @@ int main()
 
 			if(!indexPage.SetTemplate("json_response.htmlt"))
 			{
-				CLog	log;
-
-				log.Write(ERROR, string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: template file was missing: ", "json_response_with_braces.htmlt");
+				MESSAGE_ERROR("", "", "template file was missing: json_response.htmlt");
 				throw CException("Template file was missing");
 			}
 
@@ -955,13 +831,12 @@ int main()
 	}
 	catch(CExceptionHTML &c)
 	{
-		CLog	log;
 		ostringstream   ost;
 
 		c.SetLanguage(indexPage.GetLanguage());
 		c.SetDB(&db);
 
-		log.Write(ERROR, "catch CExceptionHTML: exception reason: [", c.GetReason(), "]");
+		MESSAGE_ERROR("", "", "catch CExceptionHTML: exception reason: [" + c.GetReason() + "]");
 
 		ost.str("");
 		ost << "[{" << std::endl;
@@ -983,14 +858,12 @@ int main()
 	}
 	catch(CException &c)
 	{
-		CLog 	log;
-
 		if(!indexPage.SetTemplateFile("templates/error.htmlt"))
 		{
 			return(-1);
 		}
 
-		log.Write(ERROR, "catch CException: exception: ", c.GetReason());
+		MESSAGE_ERROR("", "", "catch CException: exception: " + c.GetReason());
 
 		indexPage.RegisterVariable("content", c.GetReason());
 		indexPage.OutTemplate();
