@@ -5,8 +5,7 @@ void CFile::SetContent(char *c)
 	content = (char *)malloc(GetSize() + 1);
 	if(content == NULL)
 	{
-		CLog	log;
-		log.Write(ERROR, "void CFile::SetContent:ERROR: memory allocation. Aborting...");
+		MESSAGE_ERROR("", "", "memory allocation. Aborting...");
 		
 		throw CException("error memory allocation");
 	}
@@ -29,12 +28,7 @@ void CFile::Delete()
 		name = "";
 		length = 0;
 	
-		{
-			CLog	log;
-			
-			log.Write(DEBUG, "CFile::" + string(__func__) + "[" + to_string(__LINE__) + "]" + ": delete files from memory");
-		}
-	
+		MESSAGE_DEBUG("", "", "delete files from memory");
 	}
 }
 
@@ -50,9 +44,8 @@ bool CFiles::Add(string name, char *content, int size)
 	f = new(CFile);
 	if(!f)
 	{
-		CLog	log;
+		MESSAGE_ERROR("", "", "error allocating memory (file module)");
 
-		log.Write(ERROR, "CFiles::" + string(__func__) + "[" + to_string(__LINE__) + "]" + ":ERROR: error allocating memory (file module)");
 		throw CException("error allocating memory (file module)");
 		
 		return false;

@@ -55,96 +55,96 @@ string CTemplate::Render()
 
     if(vars == NULL)
     {
-	CLog	log;
-	log.Write(ERROR, "cvars for mail is missed");
+		MESSAGE_ERROR("", "", "cvars for mail is missed");
 
-	CExceptionHTML("vars array");
+		CExceptionHTML("vars array");
     }
 
     templateFile = fopen(fileName.c_str(), "r");
     if(templateFile == NULL)
     {
-	CLog	log;
-	log.Write(ERROR, "template for mail is missed");
+		MESSAGE_ERROR("", "", "template for mail is missed");
 
-	throw CExceptionHTML("mail template");
+		throw CExceptionHTML("mail template");
     }
 
     fLine = RecvLine(templateFile);
 
     while(fLine.length() > 0)
     {
-	string::size_type	bPos;
-	string			resultTmp;
-	bool			flag = true;
+		string::size_type	bPos;
+		string			resultTmp;
+		bool			flag = true;
 
-	while(flag)
-	{
-		resultTmp = "";
-		
-		if(fLine.find("<<vars:") != string::npos)
+		while(flag)
 		{
-			string::size_type	ePos;
-
-			bPos = fLine.find("<<vars:");
-			ePos = fLine.find(">>", bPos);
-			if((ePos != string::npos) && (ePos > bPos))
+			resultTmp = "";
+			
+			if(fLine.find("<<vars:") != string::npos)
 			{
-				string		varName = fLine.substr(bPos + 7, ePos - bPos - 7);
-				string		varValue = vars->Get(varName);
+				string::size_type	ePos;
 
-				string		before = fLine.substr(0, bPos);
-				string		after = fLine.substr(ePos + 2, fLine.length() - ePos - 2);
+				bPos = fLine.find("<<vars:");
+				ePos = fLine.find(">>", bPos);
+				
+				if((ePos != string::npos) && (ePos > bPos))
+				{
+					string		varName = fLine.substr(bPos + 7, ePos - bPos - 7);
+					string		varValue = vars->Get(varName);
 
-				resultTmp += before;
-				if(varValue.length() > 0)
-				resultTmp += varValue;
+					string		before = fLine.substr(0, bPos);
+					string		after = fLine.substr(ePos + 2, fLine.length() - ePos - 2);
+
+					resultTmp += before;
+					if(varValue.length() > 0)
+					{
+						resultTmp += varValue;
+					}
+					else
+					{
+						MESSAGE_DEBUG("", "", "value of the variable " + varName + " is empty.");
+					}
+					resultTmp += after;
+				}
 				else
 				{
-					CLog log;
-					log.Write(WARNING, "value of the variable ", varName, " is empty.");
+					resultTmp += fLine;
+					flag = false;
 				}
-				resultTmp += after;
 			}
-			else
+			else if(fLine.find("<<template:") != string::npos)
+			{
+				string::size_type	ePos;
+
+				bPos = fLine.find("<<template:");
+				ePos = fLine.find(">>", bPos);
+				if(ePos != string::npos)
+				{
+					string	templateName = fLine.substr(bPos + 11, ePos - bPos - 11);
+					CTemplate	nextTempl(templateName, vars);
+
+					string	before = fLine.substr(0, bPos);
+					string	after = fLine.substr(ePos + 2, fLine.length() - ePos - 2);
+
+					resultTmp += before;
+					resultTmp += nextTempl.Render();
+					resultTmp += after;
+				}
+				else
+				{
+					resultTmp += fLine;
+					flag = false;
+				}
+			}
+			else 
 			{
 				resultTmp += fLine;
 				flag = false;
 			}
+			fLine = resultTmp;
 		}
-		else if(fLine.find("<<template:") != string::npos)
-		{
-			string::size_type	ePos;
-
-			bPos = fLine.find("<<template:");
-			ePos = fLine.find(">>", bPos);
-			if(ePos != string::npos)
-			{
-				string	templateName = fLine.substr(bPos + 11, ePos - bPos - 11);
-				CTemplate	nextTempl(templateName, vars);
-
-				string	before = fLine.substr(0, bPos);
-				string	after = fLine.substr(ePos + 2, fLine.length() - ePos - 2);
-
-				resultTmp += before;
-				resultTmp += nextTempl.Render();
-				resultTmp += after;
-			}
-			else
-			{
-				resultTmp += fLine;
-				flag = false;
-			}
-		}
-		else 
-		{
-			resultTmp += fLine;
-			flag = false;
-		}
-		fLine = resultTmp;
-	}
-	result += resultTmp;
-	fLine = RecvLine(templateFile);
+		result += resultTmp;
+		fLine = RecvLine(templateFile);
     }
 
     return result;
