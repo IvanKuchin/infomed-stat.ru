@@ -1,9 +1,5 @@
 name-template: 'v$RESOLVED_VERSION'
 tag-template: 'v$RESOLVED_VERSION'
-template: |
-  # Changelog ...
-  $CHANGES
-  See details of [all code changes](https://github.com/ivankuchin/infomed-stat.ru/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION) since previous release
 categories:
   - title: '🚀 Features'
     labels:
@@ -19,19 +15,44 @@ categories:
       - 'infrastructure'
       - 'automation'
       - 'documentation'
+      - 'code refinement'
   - title: '🏎 Performance'
     label: 'performance'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 version-resolver:
   major:
     labels:
-      - 'type: breaking'
+      - 'breaking'
   minor:
     labels:
-      - 'type: enhancement'
+      - 'enhancement'
+      - 'feature'
   patch:
     labels:
-      - 'type: bug'
-      - 'type: maintenance'
-      - 'type: documentation'
+      - 'bug'
+      - 'bugfix'
+      - 'fix'
+      - 'maintenance'
+      - 'documentation'
+      - 'code refinement'
   default: patch
+autolabeler:
+  - label: 'breaking'
+    title:
+      - '/breaking/i'
+  - label: 'enhancement'
+    title:
+      - '/enhancement/i'
+      - '/feature/i'
+  - label: 'bugfix'
+    title:
+      - '/fix/i'
+      - '/bug/i'
+  - label: 'infrastructure'
+    title:
+      - '/infrastructure/i'
+      - '/documentation/i'
+      - '/code refinement/i'
+template: |
+  # Changelog ...
+  $CHANGES
