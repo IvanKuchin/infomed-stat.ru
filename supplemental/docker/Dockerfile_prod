@@ -4,7 +4,15 @@ LABEL maintainer="ivan.kuchin@gmail.com"
 LABEL org.opencontainers.image.source="https://github.com/IvanKuchin/__BUILD_REPO__"
 				     
 # following two commands suppose to be reused from cache
-RUN apt update &&  apt install --no-install-recommends --no-install-suggests -y git ca-certificates
+RUN apt update &&  apt install --no-install-recommends --no-install-suggests -y git ca-certificates locales
+
+##############################
+# install additional locales #
+##############################
+locale-gen en_US.UTF8
+locale-gen ru_RU.UTF8
+update-locale LC_ALL=en_US.UTF8
+source /etc/default/locale
 
 RUN git clone --depth 1 https://github.com/IvanKuchin/__BUILD_REPO__.git /backend
 WORKDIR /backend
