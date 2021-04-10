@@ -1,0 +1,12 @@
+__default__		= 1024
+
+book			= 640
+# certification		= 600
+# company		= 600
+# company_profile_logo	= 600
+# course		= 600
+event			= 640
+gift			= 640
+language		= 480
+# school		= 600
+# university		= 600

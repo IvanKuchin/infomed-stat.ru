@@ -5,6 +5,7 @@ int main()
 	CStatistics		appStat;  // --- CStatistics must be a first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
 	CUser			user;
+	c_config		config(CONFIG_DIR);
 	string			action, partnerID;
 	CMysql			db;
 	struct timeval	tv;
@@ -29,7 +30,7 @@ int main()
 			throw CException("Template file was missing");
 		}
 
-		if(db.Connect() < 0)
+		if(db.Connect(&config) < 0)
 		{
 			CLog	log;
 
@@ -57,7 +58,7 @@ int main()
 			}
 
 			//------- Generate session
-			action = GenerateSession(action, &indexPage, &db, &user);
+			action = GenerateSession(action, &config, &indexPage, &db, &user);
 		}
 	// ------------ end generate common parts
 
@@ -105,7 +106,7 @@ int main()
 			{
 				if(GetValueFromDB("SELECT `id` FROM `users` WHERE `country_code`=" + quoted(country_code) + " AND `phone`=" + quoted(phone_number) + ";", &db).length())
 				{
-					error_message = SendPhoneConfirmationCode(country_code, phone_number, indexPage.SessID_Get_FromHTTP(), &db, &user);
+					error_message = SendPhoneConfirmationCode(country_code, phone_number, indexPage.SessID_Get_FromHTTP(), &config, &db, &user);
 				}
 				else
 				{

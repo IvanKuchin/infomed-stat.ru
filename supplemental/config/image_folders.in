@@ -1,0 +1,17 @@
+avatar			= ${IMAGEROOTDIR}/html/images/avatars
+certification		= ${IMAGEROOTDIR}/html/images/certifications
+course			= ${IMAGEROOTDIR}/html/images/certifications
+group			= ${IMAGEROOTDIR}/html/images/groups
+university		= ${IMAGEROOTDIR}/html/images/universities
+school			= ${IMAGEROOTDIR}/html/images/schools
+language		= ${IMAGEROOTDIR}/html/images/flags
+book			= ${IMAGEROOTDIR}/html/images/books
+company			= ${IMAGEROOTDIR}/html/images/companies
+company_profile_logo	= ${IMAGEROOTDIR}/html/images/companies
+group			= ${IMAGEROOTDIR}/html/images/groups
+ribbon			= ${IMAGEROOTDIR}/html/images/ribbons
+
+gift			= ${IMAGEROOTDIR}/html/images/gifts
+event			= ${IMAGEROOTDIR}/html/images/events
+
+helpdesk_ticket_attach	= ${IMAGEROOTDIR}/html/helpdesk_ticket_attaches/

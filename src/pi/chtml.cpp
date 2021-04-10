@@ -524,7 +524,7 @@ bool CHTML::PerformRequest(string param)
 			curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
 
 			// --- low security
-			curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
 
 			if(isPostJSON())
 			{

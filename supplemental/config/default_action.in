@@ -1,0 +1,3 @@
+guest		= autologin
+user		= news_feed
+helpdesk	= helpdesk_dashboard

@@ -119,7 +119,8 @@ bool RemoveTempMedia(CMysql *db)
 int main()
 {
 	CStatistics		appStat;  // --- CStatistics must be first statement to measure end2end param's
-	CMysql			user;
+	c_config		config(CONFIG_DIR);
+	CUser			user;
 	CMysql			db;
 	struct timeval	tv;
 
@@ -136,7 +137,7 @@ int main()
 	try
 	{
 
-		if(db.Connect() < 0)
+		if(db.Connect(&config) < 0)
 		{
 			CLog	log;
 

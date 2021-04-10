@@ -62,6 +62,7 @@ int main()
 {
 	CStatistics		appStat;  // --- CStatistics must be a first statement to measure end2end param's
 	CMysql			db;
+	c_config		config(CONFIG_DIR);
 	struct timeval	tv;
 
 	{
@@ -78,7 +79,7 @@ int main()
 	{
 		auto	error_message = ""s;
 
-		if(db.Connect() < 0)
+		if(db.Connect(&config) < 0)
 		{
 			MESSAGE_ERROR("", "", "can't connect to DB");
 			throw CExceptionHTML("MySql connection");

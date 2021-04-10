@@ -1,6 +1,6 @@
 #include "generalimageuploader.h"	 
 
-static bool ImageSaveAsJpg(const string src, const string dst, string itemType)
+static bool ImageSaveAsJpg(const string src, const string dst, string itemType, c_config *config)
 {
 	MESSAGE_DEBUG("", "", "start (" + src + ", " + dst + ")");
 
@@ -29,17 +29,17 @@ static bool ImageSaveAsJpg(const string src, const string dst, string itemType)
 		if(imageOrientation == Magick::RightBottomOrientation) { image.flop(); image.rotate(90); }
 		if(imageOrientation == Magick::LeftBottomOrientation) image.rotate(-90);
 
-		if((imageGeometry.width() > GetSpecificData_GetMaxWidth(itemType)) || (imageGeometry.height() > GetSpecificData_GetMaxHeight(itemType)))
+		if((imageGeometry.width() > stod_noexcept(config->GetFromFile("image_max_width", itemType))) || (imageGeometry.height() > stod_noexcept(config->GetFromFile("image_max_height", itemType))))
 		{
 			int   newHeight, newWidth;
 			if(imageGeometry.width() >= imageGeometry.height())
 			{
-				newWidth = GetSpecificData_GetMaxWidth(itemType);
+				newWidth = stod_noexcept(config->GetFromFile("image_max_width", itemType));
 				newHeight = newWidth * imageGeometry.height() / imageGeometry.width();
 			}
 			else
 			{
-				newHeight = GetSpecificData_GetMaxHeight(itemType);
+				newHeight = stod_noexcept(config->GetFromFile("image_max_height", itemType));
 				newWidth = newHeight * imageGeometry.width() / imageGeometry.height();
 			}
 
@@ -70,7 +70,7 @@ static bool ImageSaveAsJpg(const string src, const string dst, string itemType)
 #endif
 }
 
-static bool BlindCopy(const string src, const string dst, string itemType)
+static bool BlindCopy(const string src, const string dst, string itemType, c_config *config)
 {
 	MESSAGE_DEBUG("", "", "start (" + src + " -> " + dst + ")");
 
@@ -85,6 +85,7 @@ int main()
 {
 	CStatistics		appStat;  // --- CStatistics must be a first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
+	c_config		config(CONFIG_DIR);
 	CUser			user;
 	string			action;
 	CMysql			db;
@@ -109,7 +110,7 @@ int main()
 			throw CException("Template file was missing");
 		}
 
-		if(db.Connect() < 0)
+		if(db.Connect(&config) < 0)
 		{
 			MESSAGE_ERROR("", "", "Can not connect to mysql database");
 			throw CExceptionHTML("MySql connection");
@@ -147,19 +148,19 @@ int main()
 				throw CExceptionHTML("environment variable error");
 			}
 
-			action = GenerateSession(action, &indexPage, &db, &user);
+			action = GenerateSession(action, &config, &indexPage, &db, &user);
 		}
 	// ------------ end generate common parts
 
 
 		if((user.GetID().length()) && (user.GetName() != "Guest"))
 		{
-			string	  itemID = CheckHTTPParam_Number(indexPage.GetVarsHandler()->Get("id"));
-			string	  itemType = CheckHTTPParam_Text(indexPage.GetVarsHandler()->Get("type"));
+			auto	  itemID = CheckHTTPParam_Number(indexPage.GetVarsHandler()->Get("id"));
+			auto	  itemType = CheckHTTPParam_Text(indexPage.GetVarsHandler()->Get("type"));
 
 			if(itemID.length() && itemType.length())
 			{
-				auto	scoped_error_message = GetSpecificData_AllowedToChange(itemID, itemType, &db, &user);
+				auto	scoped_error_message = isItemAllowedToChange(itemID, itemType, &config, &db, &user);
 				if(scoped_error_message.empty())
 				{
 					if(indexPage.GetFilesHandler()->Count() == 1)
@@ -177,14 +178,14 @@ int main()
 							auto			fileExtension = ""s;
 							auto			save_func = ImageSaveAsJpg;
 
-							if(indexPage.GetFilesHandler()->GetSize(filesCounter) > GetSpecificData_GetMaxFileSize(itemType))
+							if(indexPage.GetFilesHandler()->GetSize(filesCounter) > stod_noexcept(config.GetFromFile("max_file_size", itemType)))
 							{
-								MESSAGE_ERROR("", "", "file [" + indexPage.GetFilesHandler()->GetName(filesCounter) + "] size exceed permitted maximum: " + to_string(indexPage.GetFilesHandler()->GetSize(filesCounter)) + " > " + to_string(GetSpecificData_GetMaxFileSize(itemType)));
+								MESSAGE_ERROR("", "", "file [" + indexPage.GetFilesHandler()->GetName(filesCounter) + "] size exceed permitted maximum: " + to_string(indexPage.GetFilesHandler()->GetSize(filesCounter)) + " > " + config.GetFromFile("max_file_size", itemType));
 
 								ostJSONResult.str("");
 								ostJSONResult << "{";
 								ostJSONResult << "\"result\": \"error\",";
-								ostJSONResult << "\"textStatus\": \"" << gettext("file size") << " " << indexPage.GetFilesHandler()->GetSize(filesCounter) / 1024 << "K " << gettext("exceeds allowed size") << " " << GetSpecificData_GetMaxFileSize(itemType) / 1024 << "K\",";
+								ostJSONResult << "\"textStatus\": \"" << gettext("file size") << " " << indexPage.GetFilesHandler()->GetSize(filesCounter) / 1024 << "K " << gettext("exceeds allowed size") << " " << config.GetFromFile("max_file_size", itemType) << "bytes\",";
 								ostJSONResult << "\"fileName\": \"\" ,";
 								ostJSONResult << "\"jqXHR\": \"\"";
 								ostJSONResult << "}";
@@ -197,8 +198,9 @@ int main()
 							{
 								auto		  	tmp = indexPage.GetFilesHandler()->GetName(filesCounter);
 								auto		  	foundPos = tmp.rfind(".");
+								auto			number_of_folders = stod_noexcept(config.GetFromFile("number_of_folders", itemType));
 
-								folderID	= (int)(rand()/(RAND_MAX + 1.0) * GetSpecificData_GetNumberOfFolders(itemType)) + 1;
+								folderID	= (int)(rand()/(RAND_MAX + 1.0) * number_of_folders) + 1;
 								filePrefix	= GetRandom(20);
 
 								if(foundPos != string::npos) 
@@ -222,7 +224,7 @@ int main()
 
 								originalFilename = "/tmp/tmp_" + filePrefix + fileExtension;
 								preFinalFilename = "/tmp/" + filePrefix + ".jpg";
-								finalFilename = GetSpecificData_GetBaseDirectory(itemType) + "/" + to_string(folderID) + "/" + filePrefix + GetSpecificData_GetFinalFileExtension(itemType);
+								finalFilename = config.GetFromFile("image_folders", itemType) + "/" + to_string(folderID) + "/" + filePrefix + config.GetFromFile("file_extension", itemType);
 
 							} while(isFileExists(finalFilename) || isFileExists(originalFilename) || isFileExists(preFinalFilename));
 
@@ -240,21 +242,30 @@ int main()
 
 							// --- scoping
 							{
-								auto	file_type = GetSpecificData_GetDataTypeByItemType(itemType);
+								auto	file_type = config.GetFromFile("data_type", itemType);
 
 								if(file_type == "image")			save_func = ImageSaveAsJpg;
 								else if(file_type == "template")	save_func = BlindCopy;
 							}
 
-							if(save_func(originalFilename, preFinalFilename, itemType))
+							if(save_func(originalFilename, preFinalFilename, itemType, &config))
 							{
 
 								MESSAGE_DEBUG("", "", "final filename is " + finalFilename + "");
 
-								// --- Don't forget to remove previous logo
-								if(db.Query(GetSpecificData_SelectQueryItemByID(itemID, itemType)))
+								auto	affected = 0;
+
 								{
-									auto  currLogo = GetSpecificData_GetBaseDirectory(itemType) + (GetSpecificData_GetDBCoverPhotoFolderString(itemType).length() ? "/"s + db.Get(0, GetSpecificData_GetDBCoverPhotoFolderString(itemType)) : "") + "/" + db.Get(0, GetSpecificData_GetDBCoverPhotoFilenameString(itemType));
+									map<string, string> vars		= {{"itemType", itemType}, {"itemID", itemID}};
+									auto				db_query	= config.GetFromFile("db_select_all_by_id", {itemType}, vars)[itemType];
+
+									affected = db.Query(db_query);
+								}
+
+								// --- Don't forget to remove previous logo
+								if(affected)
+								{
+									auto  currLogo = config.GetFromFile("image_folders", itemType) + (config.GetFromFile("db_field_name_photo_folder", itemType).length() ? "/"s + db.Get(0, config.GetFromFile("db_field_name_photo_folder", itemType)) : "") + "/" + db.Get(0, config.GetFromFile("db_field_name_photo_filename", itemType));
 
 									if(isFileExists(currLogo)) 
 									{
@@ -269,27 +280,34 @@ int main()
 
 								CopyFile(preFinalFilename, finalFilename);
 
-								db.Query(GetSpecificData_UpdateQueryItemByID(itemID, itemType, to_string(folderID), filePrefix  + GetSpecificData_GetFinalFileExtension(itemType)));
+
 								{
-									if(filesCounter == 0) ostJSONResult << "[";
-									if(filesCounter  > 0) ostJSONResult << ",";
-									ostJSONResult << "{";
-									ostJSONResult << "\"result\": \"success\",";
-									ostJSONResult << "\"textStatus\": \"\",";
-									ostJSONResult << "\"fileName\": \"" << indexPage.GetFilesHandler()->GetName(filesCounter) << "\" ,";
-									ostJSONResult << "\"jqXHR\": \"\",";
-									if(GetSpecificData_GetDBCoverPhotoFolderString(itemType).length())
-									{
-										ostJSONResult << "\"" + GetSpecificData_GetDBCoverPhotoFolderString(itemType) + "\": \"" << folderID << "\",";
-										ostJSONResult << "\"" + GetSpecificData_GetDBCoverPhotoFilenameString(itemType) + "\": \"" << filePrefix << GetSpecificData_GetFinalFileExtension(itemType) << "\"";
-									}
-									else
-									{
-										ostJSONResult << "\"" + GetSpecificData_GetDBCoverPhotoFilenameString(itemType) + "\": \"" << folderID << "/" << filePrefix << GetSpecificData_GetFinalFileExtension(itemType) << "\"";
-									}
-									ostJSONResult << "}";
-									if(filesCounter == (indexPage.GetFilesHandler()->Count() - 1)) ostJSONResult << "]";
+									map<string, string> vars		= {{"itemType", itemType}, {"itemID", itemID}, {"folderName", to_string(folderID)}, {"fileName", filePrefix  + config.GetFromFile("file_extension", itemType)}};
+									auto				db_query	= config.GetFromFile("db_update_logo_by_id", {itemType}, vars)[itemType];
+
+									db.Query(db_query);
+
+									// db.Query(GetSpecificData_UpdateQueryItemByID(itemID, itemType, to_string(folderID), filePrefix  + config.GetFromFile("file_extension", itemType)));
 								}
+
+								if(filesCounter == 0) ostJSONResult << "[";
+								if(filesCounter  > 0) ostJSONResult << ",";
+								ostJSONResult << "{";
+								ostJSONResult << "\"result\": \"success\",";
+								ostJSONResult << "\"textStatus\": \"\",";
+								ostJSONResult << "\"fileName\": \"" << indexPage.GetFilesHandler()->GetName(filesCounter) << "\" ,";
+								ostJSONResult << "\"jqXHR\": \"\",";
+								if(config.GetFromFile("db_field_name_photo_folder", itemType).length())
+								{
+									ostJSONResult << "\"" + config.GetFromFile("db_field_name_photo_folder", itemType) + "\": \"" << folderID << "\",";
+									ostJSONResult << "\"" + config.GetFromFile("db_field_name_photo_filename", itemType) + "\": \"" << filePrefix << config.GetFromFile("file_extension", itemType) << "\"";
+								}
+								else
+								{
+									ostJSONResult << "\"" + config.GetFromFile("db_field_name_photo_filename", itemType) + "\": \"" << folderID << "/" << filePrefix << config.GetFromFile("file_extension", itemType) << "\"";
+								}
+								ostJSONResult << "}";
+								if(filesCounter == (indexPage.GetFilesHandler()->Count() - 1)) ostJSONResult << "]";
 
 							}
 							else

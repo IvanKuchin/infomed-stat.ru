@@ -2047,7 +2047,7 @@ auto	GetValuesFromDB(string sql, CMysql *db) -> vector<string>
 	return result;
 }
 
-static bool CheckImageFileInTempFolder(string src, string dst, string f_type)
+static bool CheckImageFileInTempFolder(string src, string dst, string f_type, c_config *config)
 {
 	bool		result = false;
 
@@ -2078,17 +2078,17 @@ static bool CheckImageFileInTempFolder(string src, string dst, string f_type)
 		if(imageOrientation == Magick::RightBottomOrientation) { image.flop(); image.rotate(90); }
 		if(imageOrientation == Magick::LeftBottomOrientation) image.rotate(-90);
 
-		if((imageGeometry.width() > GetSpecificData_GetMaxWidth(f_type)) || (imageGeometry.height() > GetSpecificData_GetMaxHeight(f_type)))
+		if((imageGeometry.width() > stod_noexcept(config->GetFromFile("image_max_width", f_type))) || (imageGeometry.height() > stod_noexcept(config->GetFromFile("image_max_height", f_type))))
 		{
 			int   newHeight, newWidth;
 			if(imageGeometry.width() >= imageGeometry.height())
 			{
-				newWidth = GetSpecificData_GetMaxWidth(f_type);
+				newWidth = stod_noexcept(config->GetFromFile("image_max_width", f_type));
 				newHeight = newWidth * imageGeometry.height() / imageGeometry.width();
 			}
 			else
 			{
-				newHeight = GetSpecificData_GetMaxHeight(f_type);
+				newHeight = stod_noexcept(config->GetFromFile("image_max_height", f_type));
 				newWidth = newHeight * imageGeometry.width() / imageGeometry.height();
 			}
 
@@ -2120,7 +2120,7 @@ static bool CheckImageFileInTempFolder(string src, string dst, string f_type)
 	return result;
 }
 
-static string SaveOrCheckFileFromHandler(string f_name, string f_type, CFiles *files, string file_extension, bool is_check_only)
+static string SaveOrCheckFileFromHandler(string f_name, string f_type, CFiles *files, string file_extension, c_config *config, bool is_check_only)
 {
 	MESSAGE_DEBUG("", "", "start (f_name = " + f_name + ", f_type = " + f_type + ", check_only = " + to_string(is_check_only) + ")");
 
@@ -2138,16 +2138,17 @@ static string SaveOrCheckFileFromHandler(string f_name, string f_type, CFiles *f
 	{
 		if(f_type.length())
 		{
-			if(files->GetSize(f_name) && (files->GetSize(f_name) <= GetSpecificData_GetMaxFileSize(f_type)))
+			if(files->GetSize(f_name) && (files->GetSize(f_name) <= stod_noexcept(config->GetFromFile("max_file_size", f_type))))
 			{
 				FILE	*f;
+				auto	number_of_folders = stod_noexcept(config->GetFromFile("number_of_folders", f_type));
 
 				//--- check logo file existing
 				do
 				{
 					std::size_t  	foundPos;
 
-					folderID = (int)(rand()/(RAND_MAX + 1.0) * GetSpecificData_GetNumberOfFolders(f_type)) + 1;
+					folderID = (int)(rand()/(RAND_MAX + 1.0) * number_of_folders) + 1;
 					filePrefix = GetRandom(20);
 
 					if((foundPos = f_name.rfind(".")) != string::npos) 
@@ -2160,7 +2161,7 @@ static string SaveOrCheckFileFromHandler(string f_name, string f_type, CFiles *f
 
 					originalFilename = "/tmp/tmp_" + filePrefix + fileExtension;
 					preFinalFilename = "/tmp/" + filePrefix + fileExtension;
-					finalFilename = GetSpecificData_GetBaseDirectory(f_type) + "/" + to_string(folderID) + "/" + filePrefix + fileExtension;
+					finalFilename = config->GetFromFile("image_folders", f_type) + "/" + to_string(folderID) + "/" + filePrefix + fileExtension;
 				} while(isFileExists(finalFilename) || isFileExists(originalFilename) || isFileExists(preFinalFilename));
 
 				MESSAGE_DEBUG("", "", "Save file to /tmp for checking of image validity [" + originalFilename + "]");
@@ -2174,7 +2175,7 @@ static string SaveOrCheckFileFromHandler(string f_name, string f_type, CFiles *f
 
 					if(file_extension == ".jpg")
 					{
-						if(CheckImageFileInTempFolder(originalFilename, preFinalFilename, f_type)) {}
+						if(CheckImageFileInTempFolder(originalFilename, preFinalFilename, f_type, config)) {}
 						else
 						{
 							error_message = gettext("incorrect image file") + ", "s + gettext("try to upload as pdf");
@@ -2199,7 +2200,7 @@ static string SaveOrCheckFileFromHandler(string f_name, string f_type, CFiles *f
 			}
 			else
 			{
-				error_message = f_name + " size(" + to_string(GetSpecificData_GetMaxFileSize(f_type)) + ") is beyond the limit (1, " + to_string(GetSpecificData_GetMaxFileSize(f_type)) + ")";
+				error_message = f_name + " size(" + to_string(files->GetSize(f_name)) + ") above the limit " + config->GetFromFile("max_file_size", f_type);
 				MESSAGE_ERROR("", "", error_message);
 			}
 		}
@@ -2253,14 +2254,14 @@ static string SaveOrCheckFileFromHandler(string f_name, string f_type, CFiles *f
 	return result;
 }
 
-string	CheckFileFromHandler(string f_name, string f_type, CFiles *files, string file_extension) // --- f_type required to check file size specific to file type
+string	CheckFileFromHandler(string f_name, string f_type, CFiles *files, string file_extension, c_config *config) // --- f_type required to check file size specific to file type
 {
-	return(SaveOrCheckFileFromHandler(f_name, f_type, files, file_extension, true));
+	return(SaveOrCheckFileFromHandler(f_name, f_type, files, file_extension, config, true));
 }
 
-string	SaveFileFromHandler(string f_name, string f_type, CFiles *files, string file_extension)
+string	SaveFileFromHandler(string f_name, string f_type, CFiles *files, string file_extension, c_config *config)
 {
-	return(SaveOrCheckFileFromHandler(f_name, f_type, files, file_extension, false));
+	return(SaveOrCheckFileFromHandler(f_name, f_type, files, file_extension, config, false));
 }
 
 bool isFileExists(const std::string& name)
@@ -2556,13 +2557,46 @@ auto GetHelpdeskBaseUserInfoInJSONFormat(string dbQuery, CMysql *db, CUser *user
 	return result;
 }
 
-auto SendPhoneConfirmationCode(const string &country_code, const string &phone_number, const string &session, CMysql *db, CUser *user) -> string
+auto isItemAllowedToChange(string itemID, string itemType, c_config *config, CMysql *db, CUser *user) -> string
+{
+	MESSAGE_DEBUG("", "", "start");
+
+	auto				error_message	= ""s;
+
+	if(config && db && user)
+	{
+		map<string, string>	vars			= {{"itemID", itemID}, {"itemType", itemType}, {"user_id", user->GetID()}};
+		auto				db_query		= config->GetFromFile("db_is_item_allowed_to_change", {itemType}, vars)[itemType];
+		auto				affected		= db->Query(db_query);
+
+		if(affected)
+		{
+			// --- good to go
+		}
+		else
+		{
+			error_message = gettext("already exists");
+			// --- GUI should not provide possibility to change item. If error appears then fix the GUI.
+			MESSAGE_ERROR("", "", error_message);
+		}
+	}
+	else
+	{
+		error_message = gettext("mandatory parameter missed");
+	}
+
+	MESSAGE_DEBUG("", "", "finish (error_message: " + error_message + ")");
+	
+	return error_message;
+}
+
+auto SendPhoneConfirmationCode(const string &country_code, const string &phone_number, const string &session, c_config * const config, CMysql * const db, CUser * const user) -> string
 {
 	MESSAGE_DEBUG("", "", "start");
 
 	auto	error_message = ""s;
 	auto	confirmation_code = GetRandom(4);
-	c_smsc	smsc(db);
+	c_smsc	smsc(config, db);
 
 	if(country_code.length() && phone_number.length() && session.length())
 	{

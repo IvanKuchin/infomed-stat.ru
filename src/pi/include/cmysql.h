@@ -65,12 +65,12 @@ class CMysql : public CMysqlSkel
 		const	string			__DB_FALLBACK_HOST		= DB_FALLBACK_HOST;
 
 		map<string, string>		GetCredentialsFromConfigFile(vector<string> param_list);
-
+		int				Connect(const string &dbname, const string &login, const string &pass, const string &host);
+		
 	public:
 						CMysql();
 
-		int				Connect();
-		int				Connect(const string &dbname, const string &login, const string &pass, const string &host);
+		int				Connect(c_config * const config);
 		int				Query(const string &query);
 		unsigned long	InsertQuery(const string &query);
 		

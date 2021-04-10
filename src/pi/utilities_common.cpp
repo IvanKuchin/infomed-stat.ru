@@ -167,7 +167,7 @@ static auto __LoadUserAndSetVariables(string login, CCgi *indexPage, CMysql *db,
 	return error_message;
 }
 
-auto GenerateSession(string action, CCgi *indexPage, CMysql *db, CUser *user) -> string
+auto GenerateSession(string action, c_config *config, CCgi *indexPage, CMysql *db, CUser *user) -> string
 {
 	auto			locale = LOCALE_DEFAULT;
 	auto			sessidHTTP = ""s;
@@ -210,33 +210,33 @@ auto GenerateSession(string action, CCgi *indexPage, CMysql *db, CUser *user) ->
 		}
 
 /*
-		if(isAllowed_NoSession_Action(action))
+		if(isAllowed_Guest_Action(action))
 		{
 			// --- guest user access,
 			// --- 1) user wall, if exact link known
 		}
 		else
 		{
-			action = GUEST_USER_DEFAULT_ACTION;
+			action = config->GetFromFile("default_action", "guest");
 		}
 */
 		if(__LoadUserAndSetVariables("Guest", indexPage, db, user).empty())
 		{
-			if(isAllowed_NoSession_Action(action))
+			if(isAllowed_Guest_Action(action, config))
 			{
 				// --- guest user access,
 				// --- 1) user wall, if exact link known
 			}
 			else
 			{
-				action = GUEST_USER_DEFAULT_ACTION;
+				action = config->GetFromFile("default_action", "guest");
 			}
 		}
 		else
 		{
 			MESSAGE_ERROR("", action, "can't load Guest user profile");
 
-			action = GUEST_USER_DEFAULT_ACTION;
+			action = config->GetFromFile("default_action", "guest");
 		}
 	}
 	else
@@ -296,7 +296,7 @@ auto GenerateSession(string action, CCgi *indexPage, CMysql *db, CUser *user) ->
 
 			if(!indexPage->Cookie_Expire()) MESSAGE_ERROR("", action, "fail to expire session");
 
-			indexPage->Redirect("/" + GUEST_USER_DEFAULT_ACTION + "?rand=" + GetRandom(10));
+			indexPage->Redirect("/" + config->GetFromFile("default_action", "guest") + "?rand=" + GetRandom(10));
 		} // --- if(indexPage->SessID_Load_FromDB(sessidHTTP))
 	} // --- if(sessidHTTP.length() < 5)
 
@@ -305,7 +305,7 @@ auto GenerateSession(string action, CCgi *indexPage, CMysql *db, CUser *user) ->
 	{
 		if(user)
 		{
-			action = GetDefaultActionFromUserType(user, db);
+			action = config->GetFromFile("default_action", user->GetType());
 
 			MESSAGE_DEBUG("", "", "META-registration: action has been overridden user.type(" + user->GetType() + ") default action [action = " + action + "]");
 
@@ -322,7 +322,7 @@ auto GenerateSession(string action, CCgi *indexPage, CMysql *db, CUser *user) ->
 	return action;
 }
 
-auto 		LogoutIfGuest(string action, CCgi *indexPage, CMysql *db, CUser *user) -> string
+auto 		LogoutIfGuest(string action, c_config *config, CCgi *indexPage, CMysql *db, CUser *user) -> string
 {
 	MESSAGE_DEBUG("", "", "start");
 
@@ -342,10 +342,10 @@ auto 		LogoutIfGuest(string action, CCgi *indexPage, CMysql *db, CUser *user) ->
 		else
 		{
 			// --- eventually it will throw exception (may need to be reworked)
-			indexPage->Redirect("/" + GUEST_USER_DEFAULT_ACTION + "?rand=" + GetRandom(10));
+			indexPage->Redirect("/" + config->GetFromFile("default_action", "guest") + "?rand=" + GetRandom(10));
 		}
 
-		action = GUEST_USER_DEFAULT_ACTION;
+		action = config->GetFromFile("default_action", "guest");
 		MESSAGE_DEBUG("", "", "re-login required, reset action");
 	}
 

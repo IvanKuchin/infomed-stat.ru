@@ -14,6 +14,13 @@
 
 using namespace std;
 
+#define	FEEDIMAGE_NUMBER_OF_FOLDERS					512
+
+#define	TEMPIMAGE_NUMBER_OF_FOLDERS					512
+#define	TEMPIMAGE_MAX_FILE_SIZE						10 * 1024 * 1024 // --- 1 MegaByte
+#define	TEMPIMAGE_MAX_WIDTH 						480
+#define	TEMPIMAGE_MAX_HEIGHT						640
+
 class CHTML
 {
 private: 

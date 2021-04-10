@@ -40,6 +40,7 @@ int main()
 {
 	CStatistics		appStat;  // --- CStatistics must be first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
+	c_config		config(CONFIG_DIR);
 	CUser			user;
 	string			action, partnerID;
 	CMysql			db;
@@ -64,7 +65,7 @@ int main()
 			throw CException("Template file was missing");
 		}
 
-		if(db.Connect() < 0)
+		if(db.Connect(&config) < 0)
 		{
 			MESSAGE_ERROR("", action, "can't connect to DB");
 			throw CExceptionHTML("MySql connection");
@@ -91,8 +92,8 @@ int main()
 			}
 
 			//------- Generate session
-			action = GenerateSession(action, &indexPage, &db, &user);
-			action = LogoutIfGuest(action, &indexPage, &db, &user);
+			action = GenerateSession(action, &config, &indexPage, &db, &user);
+			action = LogoutIfGuest(action, &config, &indexPage, &db, &user);
 		}
 	// ------------ end generate common parts
 

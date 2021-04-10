@@ -1,0 +1,16 @@
+__default__			= 512
+
+# book				= BOOKCOVER_NUMBER_OF_FOLDERS
+# certification			= CERTIFICATIONSLOGO_NUMBER_OF_FOLDERS
+# company			= COMPANYLOGO_NUMBER_OF_FOLDERS
+# company_profile_logo		= COMPANYLOGO_NUMBER_OF_FOLDERS
+# course			= CERTIFICATIONSLOGO_NUMBER_OF_FOLDERS
+# event				= EVENTIMAGE_NUMBER_OF_FOLDERS
+# feed				= 512
+# gift				= GIFTIMAGE_NUMBER_OF_FOLDERS
+helpdesk_ticket_attach		= 2048
+language			= 1
+# ribbon			= 512
+# group				= 512
+# school			= SCHOOLLOGO_NUMBER_OF_FOLDERS
+# university			= UNIVERSITYLOGO_NUMBER_OF_FOLDERS

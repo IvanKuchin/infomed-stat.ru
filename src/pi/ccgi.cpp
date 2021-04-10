@@ -72,11 +72,9 @@ string	CCgi::FindLanguageByIP(string ip)
 bool CCgi::isAcceptedLanguage(string lang)
 {
 	struct	stat	buf;
-	ostringstream	ost;
+	auto			lang_folder	= TEMPLATE_PATH + lang + "/";
 
-	ost << TEMPLATE_PATH << lang << "/";
-
-	if(stat(ost.str().c_str(), &buf) == 0)
+	if(stat(lang_folder.c_str(), &buf) == 0)
 		return true;
 	else
 		return false;
@@ -298,21 +296,21 @@ string CCgi::GetRequestURI()
 /*
 void CCgi::AddCookie(string cn, string cv, string ce, int cma, string cd, string cp, string cs)
 {
-    cookie.Add(cn, cv, ce, cma, cd, cp, cs, TRUE);
+    cookie.Add(cn, cv, ce, cma, cd, cp, cs, true);
 }
 
 void CCgi::AddCookie(string cn, string cv, string ce, string cd, string cp, string cs)
 {
-    cookie.Add(cn, cv, ce, cd, cp, cs, TRUE);
+    cookie.Add(cn, cv, ce, cd, cp, cs, true);
 }
 */
 void CCgi::AddCookie(string cn, string cv, struct tm *ce, string cd, string cp, string cs)
 {
-    cookie.Add(cn, cv, ce, cd, cp, cs, TRUE);
+    cookie.Add(cn, cv, ce, cd, cp, cs, true);
 }
 void CCgi::AddCookie(string cn, string cv, int shift_in_seconds_from_now, string cd, string cp, string cs)
 {
-    cookie.Add(cn, cv, shift_in_seconds_from_now, cd, cp, cs, TRUE);
+    cookie.Add(cn, cv, shift_in_seconds_from_now, cd, cp, cs, true);
 }
 
 string CCgi::RecvLine(FILE *s)

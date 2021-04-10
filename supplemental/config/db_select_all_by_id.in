@@ -1,0 +1,12 @@
+certification	= SELECT * FROM `certification_tracks`	WHERE `id`="<<var:itemID>>";
+course		= SELECT * FROM `certification_tracks`	WHERE `id`="<<var:itemID>>";
+university	= SELECT * FROM `university`		WHERE `id`="<<var:itemID>>";
+school		= SELECT * FROM `school`		WHERE `id`="<<var:itemID>>";
+language	= SELECT * FROM `language`		WHERE `id`="<<var:itemID>>";
+book		= SELECT * FROM `book`			WHERE `id`="<<var:itemID>>";
+company		= SELECT * FROM `company`		WHERE `id`="<<var:itemID>>";
+group		= SELECT * FROM `groups`		WHERE `id`="<<var:itemID>>";
+ribbon		= SELECT * FROM `ribbons`		WHERE `id`="<<var:itemID>>";
+
+gift		= SELECT * FROM `gifts`			WHERE `id`="<<var:itemID>>";
+event		= SELECT * FROM `events`		WHERE `id`="<<var:itemID>>";
