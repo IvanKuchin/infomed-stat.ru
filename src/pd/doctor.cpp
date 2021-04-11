@@ -120,12 +120,9 @@ int main()
 			}
 		}
 
-		if(
-			(action == LOGGEDIN_DOCTOR_DEFAULT_ACTION) ||
-			(action == LOGGEDIN_NOROLE_DEFAULT_ACTION)
-		   )
+		if(action == config.GetFromFile("default_action", "user"))
 		{
-			string		template_name = action + ".htmlt";
+			auto		template_name = action + ".htmlt";
 
 			MESSAGE_DEBUG("", action, "start");
 

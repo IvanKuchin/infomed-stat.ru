@@ -30,6 +30,7 @@ int main(void)
 {
 	CStatistics		appStat;  // --- CStatistics must be first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
+	c_config		config(CONFIG_DIR);
 	CUser			user;
 	CMysql			db;
 	auto			testing_success = true;
@@ -37,7 +38,7 @@ int main(void)
 	{ MESSAGE_DEBUG("", "", __FILE__); }
 	signal(SIGSEGV, crash_handler);
 
-	if(db.Connect() < 0)
+	if(db.Connect(&config) < 0)
 	{
 		MESSAGE_ERROR("", "", "Can not connect to mysql database");
 		throw CExceptionHTML("MySql connection");
