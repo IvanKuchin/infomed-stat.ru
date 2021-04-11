@@ -149,9 +149,7 @@ int main()
 			ostringstream	ost;
 			string			strPageToGet, strFriendsOnSinglePage;
 
-			{
-				MESSAGE_DEBUG("", action, "start");
-			}
+			MESSAGE_DEBUG("", action, "start");
 
 			string		template_name = action.substr(0, action.length() - 9) + ".htmlt";
 
@@ -1549,9 +1547,7 @@ int main()
 			string			sessid, messageId, messageLikeType, userList = "";
 			string		  failReason = "";
 
-			{
-				MESSAGE_DEBUG("", action, "start");
-			}
+			MESSAGE_DEBUG("", action, "start");
 
 			if(user.GetLogin() == "Guest")
 			{
@@ -4024,9 +4020,7 @@ int main()
 			string		randomValue = GetRandom(4);
 			string 		userToCheck;
 
-			{
-				MESSAGE_DEBUG("", action, "start");
-			}
+			MESSAGE_DEBUG("", action, "start");
 
 			userToCheck = CheckHTTPParam_Text(indexPage.GetVarsHandler()->Get("regEmail"));
 
@@ -4456,9 +4450,7 @@ int main()
 			ostringstream	ost;
 			string		sessid;
 
-			{
-				MESSAGE_DEBUG("", action, "start");
-			}
+			MESSAGE_DEBUG("", action, "start");
 
 			sessid = indexPage.GetCookie("sessid");
 			if(sessid.length() > 0)
@@ -6014,9 +6006,7 @@ int main()
 			ostringstream	ost;
 			string			strPageToGet, strNewsOnSinglePage;
 
-			{
-				MESSAGE_DEBUG("", action, "start");
-			}
+			MESSAGE_DEBUG("", action, "start");
 
 			if((user.GetLogin() == "Guest") && (action == "news_feed"))
 			{
@@ -6065,9 +6055,7 @@ int main()
 			ostringstream	ost;
 			string			strPageToGet, strFriendsOnSinglePage;
 
-			{
-				MESSAGE_DEBUG("", action, "start");
-			}
+			MESSAGE_DEBUG("", action, "start");
 
 			if(user.GetLogin() == "Guest")
 			{
@@ -6109,8 +6097,8 @@ int main()
 
 		if(action == "find_friends")
 		{
-			string			strPageToGet, strFriendsOnSinglePage, searchText;
-
+			auto	strFriendsOnSinglePage	= indexPage.GetVarsHandler()->Get("FriendsOnSinglePage");
+			auto	strPageToGet 			= indexPage.GetVarsHandler()->Get("page");
 /*
 			if(user.GetLogin() == "Guest")
 			{
@@ -6124,24 +6112,19 @@ int main()
 				indexPage.Redirect("/" + config.GetFromFile("default_action", "guest") + "?rand=" + GetRandom(10));
 			}
 */
-
-			indexPage.RegisterVariableForce("title_head", "Поиск друзей");
-			strFriendsOnSinglePage	= indexPage.GetVarsHandler()->Get("FriendsOnSinglePage");
-			strPageToGet 			= indexPage.GetVarsHandler()->Get("page");
 			if(strPageToGet.empty()) strPageToGet = "0";
 			{
-				
 				MESSAGE_DEBUG("", action, "page " + strPageToGet + " requested");
 			}
 
+			indexPage.RegisterVariableForce("title_head", "Поиск друзей");
 			indexPage.RegisterVariableForce("myFirstName", user.GetName());
 			indexPage.RegisterVariableForce("myLastName", user.GetNameLast());
-
 
 			if(!indexPage.SetTemplate("find_friends.htmlt"))
 			{
 				MESSAGE_ERROR("", action, "can't find template find_friends.htmlt");
-				throw CExceptionHTML("user not activated");
+				throw CExceptionHTML("Template file was missing");
 			}
 		}
 /*
@@ -6166,14 +6149,11 @@ int main()
 */
 		if(action == "forget")
 		{
-			string		login;
+			MESSAGE_DEBUG("", action, "start");
+
 			CMailLocal	mail;
+			auto		login = RemoveQuotas(indexPage.GetVarsHandler()->Get("login"));
 
-			{
-				MESSAGE_DEBUG("", action, "start");
-			}
-
-			login = RemoveQuotas(indexPage.GetVarsHandler()->Get("login"));
 			if(login.length() > 0)
 			{
 				ostringstream	ost;
@@ -6199,9 +6179,7 @@ int main()
 			}
 			else
 			{
-				{
-					MESSAGE_ERROR("", action, "login is not defined");
-				}
+				MESSAGE_ERROR("", action, "login is not defined");
 			}
 
 			indexPage.RegisterVariableForce("content", "На ваш почтовый ящик выслан пароль !");
