@@ -85,8 +85,10 @@ auto			isAllowed_Guest_Action(string action, c_config *)							-> bool;
 
 
 auto			GetZipInJSONFormat(string zip_id, CMysql *, CUser *)						-> string;
+auto 			GetBankInJSONFormat(string sqlQuery, CMysql *, CUser *)						-> string;
 auto      		GetGeoCountryListInJSONFormat(string dbQuery, CMysql *, CUser *)			-> string;
 auto			GetGeoLocalityIDByCityAndRegion(string regionName, string cityName, CMysql *) -> string;
+auto			GetCompanyPositionsInJSONFormat(string dbQuery, CMysql *, CUser *)			-> string;
 auto			AllowMessageInNewsFeed(CUser *me, const string messageOwnerID, const string messageAccessRights, vector<string> *messageFriendList) -> bool;
 auto			isPersistenceRateLimited(string REMOTE_ADDR, CMysql *)						-> bool;
 auto			isFilenameImage(const string &filename)										-> bool;
@@ -120,6 +122,9 @@ auto			UnsubscribeFromCompany(string companyID, CUser *, CMysql *) 				-> string
 auto			SubscribeToGroup(string groupID, CUser *, CMysql *) 						-> string;
 auto			UnsubscribeFromGroup(string groupID, CUser *, CMysql *) 					-> string;
 
+// --- check file/image from cfile-handler
+auto			CheckFileFromHandler(string f_name, string f_type, CFiles *files, string file_extension, c_config *)	-> string;
+auto			SaveFileFromHandler(string f_name, string f_type, CFiles *files, string file_extension, c_config *)	-> string;
 
 // --- file system functions
 auto			CleanupFilename(string filename) -> string;
@@ -160,28 +165,34 @@ auto        	CopyFile(const string src, const string dst) -> void;
 
 // --- helpdesk
 auto      		GetHelpdeskBaseUserInfoInJSONFormat(string dbQuery, CMysql *, CUser *) -> string;
-auto			GetHelpDeskTicketsInJSONFormat(string sqlQuery, CMysql *db, CUser *user) -> string;
-auto			GetHelpDeskTicketHistoryInJSONFormat(string sqlQuery, CMysql *db, CUser *user) -> string;
-auto			GetHelpDeskTicketAttachInJSONFormat(string sqlQuery, CMysql *db, CUser *user) -> string;
-auto			isHelpdeskTicketOwner(string ticket_id, string user_id, CMysql *db, CUser *user) -> bool;
+auto			GetHelpDeskTicketsInJSONFormat(string sqlQuery, CMysql *, CUser *) -> string;
+auto			GetHelpDeskTicketHistoryInJSONFormat(string sqlQuery, CMysql *, CUser *) -> string;
+auto			GetHelpDeskTicketAttachInJSONFormat(string sqlQuery, CMysql *, CUser *) -> string;
+auto			isHelpdeskTicketOwner(string ticket_id, string user_id, CMysql *, CUser *) -> bool;
 
 // --- FAQ
-auto			GetFAQInJSONFormat(string sqlQuery, CMysql *db, CUser *user) -> string;
+auto			GetFAQInJSONFormat(string sqlQuery, CMysql *, CUser *) -> string;
 
 // --- date functions
-struct tm		GetTMObject(string date);
-auto			GetSpellingDate(long int seconds_since_epoch) -> string;
-auto			GetSpellingFormattedDate(string date, string format) -> string;
-auto			GetSpellingFormattedDate(struct tm, string format) -> string;
-auto			operator <(const struct tm &tm_1, const struct tm &tm_2) -> bool;
-auto			operator <=(const struct tm &tm_1, const struct tm &tm_2) -> bool;
-auto			operator >(const struct tm &tm_1, const struct tm &tm_2) -> bool;
-auto			operator >=(const struct tm &tm_1, const struct tm &tm_2) -> bool;
-auto			operator ==(const struct tm &tm_1, const struct tm &tm_2) -> bool;
-auto			PrintDate(const struct tm &_tm) -> string;
-auto			PrintSQLDate(const struct tm &_tm) -> string;
-auto			PrintDateTime(const struct tm &_tm) -> string;
-auto			PrintTime(const struct tm &_tm, string format) -> string;
+auto			GetTMObject(string date)										-> struct tm;
+auto 			GetFirstAndLastDateOfThisMonth()								-> pair<struct tm, struct tm>;
+auto 			GetFirstAndLastDateOfLastMonth()								-> pair<struct tm, struct tm>;
+auto 			GetFirstAndLastDateOfThisWeek()									-> pair<struct tm, struct tm>;
+auto 			GetFirstAndLastDateOfLastWeek()									-> pair<struct tm, struct tm>;
+auto			GetFirstAndLastMonthDaysByDate(const struct tm &_date)			-> pair<struct tm, struct tm>;
+auto			GetSpellingDate(long int seconds_since_epoch)					-> string;
+auto			GetSpellingFormattedDate(string date, string format)			-> string;
+auto			GetSpellingFormattedDate(struct tm, string format)				-> string;
+auto			operator <(const struct tm &tm_1, const struct tm &tm_2)		-> bool;
+auto			operator <=(const struct tm &tm_1, const struct tm &tm_2)		-> bool;
+auto			operator >(const struct tm &tm_1, const struct tm &tm_2)		-> bool;
+auto			operator >=(const struct tm &tm_1, const struct tm &tm_2)		-> bool;
+auto			operator ==(const struct tm &tm_1, const struct tm &tm_2)		-> bool;
+auto			PrintDate(const struct tm &_tm)									-> string;
+auto			PrintSQLDate(const struct tm &_tm)								-> string;
+auto			PrintDateTime(const struct tm &_tm)								-> string;
+auto			PrintTime(const struct tm &_tm, string format)					-> string;
+auto			DateInPast(string date_to_check)								-> bool;
 
 // --- function set for image upload/removal
 auto			isItemAllowedToChange(string itemID, string itemType, c_config *, CMysql *, CUser *) -> string;

@@ -196,24 +196,24 @@ int main()
 							//--- check logo file existing
 							do
 							{
-								auto		  	tmp = indexPage.GetFilesHandler()->GetName(filesCounter);
-								auto		  	foundPos = tmp.rfind(".");
-								auto			number_of_folders = stod_noexcept(config.GetFromFile("number_of_folders", itemType));
+								auto		  	tmp					= indexPage.GetFilesHandler()->GetName(filesCounter);
+								auto		  	foundPos			= tmp.rfind(".");
+								auto			number_of_folders	= stod_noexcept(config.GetFromFile("number_of_folders", itemType));
 
 								folderID	= (int)(rand()/(RAND_MAX + 1.0) * number_of_folders) + 1;
 								filePrefix	= GetRandom(20);
 
-								if(foundPos != string::npos) 
+								if(foundPos != string::npos)
 								{
-									fileExtension = tmp.substr(foundPos, tmp.length() - foundPos);
+									fileExtension = tmp.substr(foundPos);
 
 						            // --- filter wrong fileExtension (for ex: .com?action=fake_action) 
-						            if(fileExtension.find("jpeg")) fileExtension = ".jpeg";
-						            else if(fileExtension.find("png")) fileExtension = ".png";
-						            else if(fileExtension.find("gif")) fileExtension = ".gif";
-						            else if(fileExtension.find("svg")) fileExtension = ".svg";
-						            else if(fileExtension.find("xml")) fileExtension = ".xml";
-						            else if(fileExtension.find("txt")) fileExtension = ".txt";
+						            if(fileExtension.find("jpeg")     != string::npos) fileExtension = ".jpeg";
+						            else if(fileExtension.find("png") != string::npos) fileExtension = ".png";
+						            else if(fileExtension.find("gif") != string::npos) fileExtension = ".gif";
+						            else if(fileExtension.find("svg") != string::npos) fileExtension = ".svg";
+						            else if(fileExtension.find("xml") != string::npos) fileExtension = ".xml";
+						            else if(fileExtension.find("txt") != string::npos) fileExtension = ".txt";
 						            else fileExtension = ".jpg";
 								}
 								else
@@ -221,9 +221,8 @@ int main()
 									fileExtension = ".jpg";
 								}
 
-
 								originalFilename = "/tmp/tmp_" + filePrefix + fileExtension;
-								preFinalFilename = "/tmp/" + filePrefix + ".jpg";
+								preFinalFilename = "/tmp/" + filePrefix + "." + fileExtension;
 								finalFilename = config.GetFromFile("image_folders", itemType) + "/" + to_string(folderID) + "/" + filePrefix + config.GetFromFile("file_extension", itemType);
 
 							} while(isFileExists(finalFilename) || isFileExists(originalFilename) || isFileExists(preFinalFilename));

@@ -29,9 +29,7 @@ int main()
 	struct timeval		tv;
 	map<string,string>	mapResult;
 
-	{
-		MESSAGE_DEBUG("", action, __FILE__);
-	}
+	MESSAGE_DEBUG("", action, __FILE__);
 
 	signal(SIGSEGV, crash_handler);
 
