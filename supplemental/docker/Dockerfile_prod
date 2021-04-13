@@ -59,7 +59,7 @@ RUN git rev-parse HEAD > ./supplemental/git/git_commit_id
 # build from source #
 ##################### 
 RUN mkdir build
-RUN cd build && cmake .. && make -j4 && make install
+RUN cd build && cmake .. && make -j2 && make install
 
 ################
 # run QA tests #
