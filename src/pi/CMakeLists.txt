@@ -109,10 +109,6 @@ find_package(OpenSSL REQUIRED)
 find_package(CURL REQUIRED)
 find_package(LibArchive REQUIRED)
 
-#find_package(LibHPDF REQUIRED)
-#find_package(LibXL REQUIRED)
-
-
 if(IMAGEMAGICK_DISABLE)
     message("Magick++ turned off")
 else(IMAGEMAGICK_DISABLE)
