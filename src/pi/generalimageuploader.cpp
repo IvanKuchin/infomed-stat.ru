@@ -14,7 +14,7 @@ static bool ImageSaveAsJpg(const string src, const string dst, string itemType, 
 		Magick::Geometry		imageGeometry;
 
 		// Read a file into image object
-		image.read( src );
+		image.read( src );   /* Flawfinder: ignore */
 
 		imageGeometry = image.size();
 		imageOrientation = image.orientation();
@@ -97,7 +97,7 @@ int main()
     signal(SIGSEGV, crash_handler); 
 
 	gettimeofday(&tv, NULL);
-	srand(tv.tv_sec * tv.tv_usec * 100000);
+	srand(tv.tv_sec * tv.tv_usec * 100000);  /* Flawfinder: ignore */
 	ostJSONResult.clear();
 		
 	try
@@ -230,7 +230,7 @@ int main()
 							MESSAGE_DEBUG("", "", "Save file to /tmp for checking of image validity [" + originalFilename + "]");
 
 							// --- Save file to "/tmp/" for checking of image validity
-							f = fopen(originalFilename.c_str(), "w");
+							f = fopen(originalFilename.c_str(), "w");   /* Flawfinder: ignore */
 							if(f == NULL)
 							{
 								MESSAGE_ERROR("", "", "fail to write file " + originalFilename);

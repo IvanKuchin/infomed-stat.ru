@@ -118,7 +118,7 @@ MYSQL_RES *CMysqlSkel::QueryDB(const string &query)
 
 bool CMysqlSkel::isError(void)
 {
-    return strlen(mysql_error(db));
+    return strlen(mysql_error(db));   /* Flawfinder: ignore */
 }
 
 const char *CMysqlSkel::GetErrorMessage(void)

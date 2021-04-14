@@ -70,19 +70,19 @@ auto c_archive::AddFileToArchive(string absolute_path, string archive_path) -> s
 			archive_entry_set_filetype(entry, AE_IFREG);
 			archive_entry_set_perm(entry, 0644);
 			archive_write_header(__archive, entry);
-			if((fd = open(absolute_path.c_str(), O_RDONLY)) == -1)
+			if((fd = open(absolute_path.c_str(), O_RDONLY)) == -1)    /* Flawfinder: ignore */
 			{
 				error_message = "can't read archived file";
 				MESSAGE_ERROR("", "", "can't read file(" + absolute_path + ") to add to archive");
 			}
 			else
 			{
-				char *	buff[16384];
-				auto	len = read(fd, buff, sizeof(buff));
+				char *	buff[16384];   /* Flawfinder: ignore */
+				auto	len = read(fd, buff, sizeof(buff));    /* Flawfinder: ignore */
 
 				while ( len > 0 ) {
 					archive_write_data(__archive, buff, len);
-					len = read(fd, buff, sizeof(buff));
+					len = read(fd, buff, sizeof(buff));    /* Flawfinder: ignore */
 				}
 				close(fd);
 			}
@@ -109,8 +109,8 @@ auto c_archive::AddFolderToArchive(string dirname, string folder_in_archive) -> 
 {
 	DIR		*dir;
 	struct	dirent *entry;
-	char	path[4096];
-	char	path_in_archive[4096];
+	char	path[4096];   /* Flawfinder: ignore */
+	char	path_in_archive[4096];   /* Flawfinder: ignore */
 	auto	error_message = ""s;
 
 	MESSAGE_DEBUG("", "", "start (" + dirname + ", " + folder_in_archive + ")");
@@ -128,8 +128,8 @@ auto c_archive::AddFolderToArchive(string dirname, string folder_in_archive) -> 
 		{
 			if (strcmp(entry->d_name, ".") && strcmp(entry->d_name, "..")) 
 			{
-				snprintf(path, 				(size_t) 4095, "%s%s", dirname.c_str(), entry->d_name);
-				snprintf(path_in_archive,	(size_t) 4095, "%s%s", folder_in_archive.c_str(), entry->d_name);
+				snprintf(path, 				sizeof(path) - 1, "%s%s", dirname.c_str(), entry->d_name);
+				snprintf(path_in_archive,	sizeof(path_in_archive) - 1, "%s%s", folder_in_archive.c_str(), entry->d_name);
 
 				if(entry->d_type == DT_DIR)
 				{

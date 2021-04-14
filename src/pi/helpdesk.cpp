@@ -361,7 +361,7 @@ static auto SaveFilesAndUpdateDB(string ticket_history_id, c_config *config, CCg
 
 			{
 				// --- Save file to "/tmp/" for checking of image validity
-				auto	f = fopen(finalFilename.c_str(), "w");
+				auto	f = fopen(finalFilename.c_str(), "w");   /* Flawfinder: ignore */
 				if(f)
 				{
 					fwrite(indexPage->GetFilesHandler()->Get(filesCounter), indexPage->GetFilesHandler()->GetSize(filesCounter), 1, f);
@@ -416,7 +416,7 @@ int main(void)
 	{
 		struct timeval	tv;
 		gettimeofday(&tv, NULL);
-		srand(tv.tv_sec * tv.tv_usec * 100000);
+		srand(tv.tv_sec * tv.tv_usec * 100000);  /* Flawfinder: ignore */
 	}
 
 	try

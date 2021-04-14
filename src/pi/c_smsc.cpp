@@ -21,7 +21,7 @@ static size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, voi
 		return 0;
     }
 
-    memcpy(&(mem->memory[mem->size]), contents, realsize);
+    memcpy(&(mem->memory[mem->size]), contents, realsize);    /* Flawfinder: ignore */
     mem->size += realsize;
     mem->memory[mem->size] = 0;
 

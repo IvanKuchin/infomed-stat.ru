@@ -377,7 +377,7 @@ void CUser::Email(string messageID)
 	activator.SetUser(GetLogin());
 	activator.SetType("reg_user");
 	GetVars()->Set("actid", activator.GetID());
-	GetVars()->Set("host", getenv("HTTP_HOST"));
+	GetVars()->Set("host", getenv("HTTP_HOST"));    /* Flawfinder: ignore */
 	activator.Save();
 	mail.Send(GetLogin(), messageID, GetVars(), GetDB());
 }

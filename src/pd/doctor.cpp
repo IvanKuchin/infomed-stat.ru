@@ -51,7 +51,7 @@ int main()
 	signal(SIGSEGV, crash_handler);
 
 	gettimeofday(&tv, NULL);
-	srand(tv.tv_sec * tv.tv_usec * 100000);
+	srand(tv.tv_sec * tv.tv_usec * 100000);    /* Flawfinder: ignore */
 
 	try
 	{
@@ -442,8 +442,8 @@ int main()
 																auto	affected = db.Query("SELECT `id` FROM `medical_records` WHERE `submitter_user_id`=" + quoted(id) + ";");
 																if(affected)
 																{
-																	char	buffer[50];
-																	sprintf(buffer, ngettext("%d records", "%d records", affected), affected);
+																	char	buffer[50];    /* Flawfinder: ignore */
+																	sprintf(buffer, ngettext("%d records", "%d records", affected), affected);    /* Flawfinder: ignore */
 
 																	error_message = gettext("doctor submitted") + " "s + buffer;
 																	MESSAGE_DEBUG("", action, error_message);

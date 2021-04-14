@@ -30,7 +30,7 @@ string	CCookie::GetExpiration()
 
 		if(utc_tm)
 		{
-			char			utc_str[100];
+			char			utc_str[100];   /* Flawfinder: ignore */
 			auto			curr_locale	= string(setlocale(LC_ALL, NULL));	// --- DO NOT remove string() !
 																			// --- otherwise following setlocale call will change memory content where curr_locale pointing out
 																			// --- string() copies memory content to local stack therefore it could be reused later.

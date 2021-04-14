@@ -58,7 +58,7 @@ string	CCgi::FindLanguageByIP(string ip)
 	string::iterator	iter;
 
 //	gi = GeoIP_new(GEOIP_STANDARD);
-//	lngTemp = GeoIP_country_code_by_addr(gi, getenv("REMOTE_ADDR"));
+//	lngTemp = GeoIP_country_code_by_addr(gi, getenv("REMOTE_ADDR"));   /* Flawfinder: ignore */
 //	GeoIP_delete(gi);
 
 	if(lngTemp == NULL) lng = ""; else lng = lngTemp;
@@ -87,8 +87,8 @@ string CCgi::GetLanguage()
 	tryLng = GetVarsHandler()->Get("lng");
 	if(tryLng.empty())
 		tryLng = GetCookie("lng");
-	if(tryLng.empty() && getenv("REMOTE_ADDR"))
-		tryLng = FindLanguageByIP(getenv("REMOTE_ADDR"));
+	if(tryLng.empty() && getenv("REMOTE_ADDR"))   /* Flawfinder: ignore */
+		tryLng = FindLanguageByIP(getenv("REMOTE_ADDR"));   /* Flawfinder: ignore */
 	if(tryLng.empty())
 		tryLng = DEFAULT_LANGUAGE;
 
@@ -153,7 +153,7 @@ bool CCgi::SetTemplateFile(string fileName)
 
 	MESSAGE_DEBUG("", "", "start (" + fileName + ")")
 
-    templateFile = fopen(fileName.c_str(), "r");
+    templateFile = fopen(fileName.c_str(), "r");    /* Flawfinder: ignore */
     if(!templateFile)
     {
 		MESSAGE_ERROR("", "", "can't open " + fileName);
@@ -246,7 +246,7 @@ void CCgi::InitHeaders()
 {
     if(!initHeadersFlag)
     {
-		char		date[100];
+		char		date[100];    /* Flawfinder: ignore */
 		time_t		t = time(0);
 		string		cook;
 		ostringstream	ost;
@@ -285,12 +285,12 @@ void CCgi::DeleteCookie(string name, string cd, string cp, string cs)
 
 string CCgi::GetHttpHost()
 {
-    return getenv("HTTP_HOST");
+    return getenv("HTTP_HOST");   /* Flawfinder: ignore */
 }
 
 string CCgi::GetRequestURI()
 {
-    return getenv("REQUEST_URI");
+    return getenv("REQUEST_URI");   /* Flawfinder: ignore */
 }
 
 /*
@@ -321,7 +321,7 @@ string CCgi::RecvLine(FILE *s)
 
     result = "";
 
-    for (; (ch = fgetc(s)) != EOF; i++)
+    for (; (ch = fgetc(s)) != EOF; i++)     /* Flawfinder: ignore */
     {
         result += ch;
 
@@ -469,7 +469,7 @@ void CCgi::RegisterVariableForce(string name, string value)
 void CCgi::ParseURL()
 {
     CRequest	req;
-    char		*c = getenv("HTTP_COOKIE");
+    char		*c = getenv("HTTP_COOKIE");   /* Flawfinder: ignore */
 
     req.RegisterURLVariables(&vars, &files);
     if(c)
@@ -538,7 +538,7 @@ string CCgi::SessID_Get_FromHTTP (void)
 
 string CCgi::SessID_Create_HTTP_DB (int max_age)
 {
-	char	*remoteAddr = getenv("REMOTE_ADDR");
+	char	*remoteAddr = getenv("REMOTE_ADDR");   /* Flawfinder: ignore */
 
 	if(remoteAddr)
 	{

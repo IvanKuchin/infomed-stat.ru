@@ -187,7 +187,7 @@ class CLog
 	    {
 			fstream	fs;
 
-			fs.open(fileName, std::fstream::out | std::fstream::app);
+			fs.open(fileName, std::fstream::out | std::fstream::app);    /* Flawfinder: ignore */
 			if(fs.is_open())
 			{
 
@@ -199,7 +199,7 @@ class CLog
 			    if(timeInfo)
 			    {
 			    	string			msCount = to_string(ms.count());
-			    	char			localtimeBuffer[80];
+			    	char			localtimeBuffer[80];   /* Flawfinder: ignore */
 				    auto			curr_locale	= string(setlocale(LC_ALL, NULL));	// --- DO NOT remove string() !
 				    																// --- otherwise following setlocale call will change memory content where curr_locale pointing out
 				    																// --- string() copies memory content to local stack therefore it could be reused later.

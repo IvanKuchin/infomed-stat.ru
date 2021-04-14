@@ -10,7 +10,7 @@ void CFile::SetContent(char *c)
 		throw CException("error memory allocation");
 	}
 	memset(content, 0, GetSize() + 1);
-	memcpy(content, c, GetSize());
+	memcpy(content, c, GetSize());  /* Flawfinder: ignore */
 }
 
 void CFile::Set(string n, char* c, int s)

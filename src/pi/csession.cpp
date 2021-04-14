@@ -7,7 +7,7 @@ CSession::CSession() : db(NULL), cookies(NULL)
 	MESSAGE_DEBUG("", "", "start");
 
 	gettimeofday(&tv, NULL);
-	srand(tv.tv_sec * tv.tv_usec * 100000);
+	srand(tv.tv_sec * tv.tv_usec * 100000);  /* Flawfinder: ignore */
 
 	sessID = GetRandom(SESSION_LEN);
 
@@ -23,7 +23,7 @@ void CSession::InitMaxMind()
 	MMDB_usage = false;
 
 #ifndef MAXMIND_DISABLE
-	if(getenv("REMOTE_ADDR"))
+	if(getenv("REMOTE_ADDR"))   /* Flawfinder: ignore */
 	{
 		int		status = MMDB_open(MMDB_fname, MMDB_MODE_MMAP, &mmdb);
 
@@ -33,7 +33,7 @@ void CSession::InitMaxMind()
 
 			MESSAGE_DEBUG("", "", "MMDB_open(" + MMDB_fname + ") opened successfully. ");
 
-		    MMDB_result = MMDB_lookup_string(&mmdb, getenv("REMOTE_ADDR"), &gai_error, &mmdb_error);
+		    MMDB_result = MMDB_lookup_string(&mmdb, getenv("REMOTE_ADDR"), &gai_error, &mmdb_error);   /* Flawfinder: ignore */
 
 		    if (0 == gai_error) 
 		    {
@@ -70,7 +70,7 @@ void CSession::InitMaxMind()
 		    }
 		    else
 		    {
-				MESSAGE_ERROR("", "", "ERROR: MMDB_open(" + MMDB_fname + ") Error from getaddrinfo for " + getenv("REMOTE_ADDR") + ", " + gai_strerror(gai_error) + ". ");
+				MESSAGE_ERROR("", "", "ERROR: MMDB_open(" + MMDB_fname + ") Error from getaddrinfo for " + getenv("REMOTE_ADDR") + ", " + gai_strerror(gai_error) + ". ");   /* Flawfinder: ignore */
 
 				MMDB_close(&mmdb);
 		    }
@@ -111,11 +111,11 @@ string CSession::DetectItem(string MMDB_itemName)
 		{
 			if(MMDB_entryDataS.has_data && (MMDB_entryDataS.type == MMDB_DATA_TYPE_UTF8_STRING))
 			{
-				char	buffer[1024];
+				char	buffer[1024];   /* Flawfinder: ignore */
 
 				if(MMDB_entryDataS.data_size < sizeof(buffer))
 				{
-				    memcpy(buffer, MMDB_entryDataS.utf8_string, MMDB_entryDataS.data_size);
+				    memcpy(buffer, MMDB_entryDataS.utf8_string, MMDB_entryDataS.data_size);   /* Flawfinder: ignore */
 				    buffer[MMDB_entryDataS.data_size] = 0;
 				    item = buffer;
 				}
@@ -133,13 +133,13 @@ string CSession::DetectItem(string MMDB_itemName)
 		{
 			if((error_code == 9) && (MMDB_itemName == "city"))
 			{
-				auto remote_addr = getenv("REMOTE_ADDR") ? getenv("REMOTE_ADDR") : ""s;
+				auto remote_addr = getenv("REMOTE_ADDR") ? getenv("REMOTE_ADDR") : ""s;   /* Flawfinder: ignore */
 
 				MESSAGE_DEBUG("", "", "MMDB_get_value(" + MMDB_itemName + ") returned error code: " + to_string(error_code) + " city name not found in MMDB (use mmdblookup --ip " + remote_addr + " --file " + MMDB_fname + " to confirm that city name missed). Here is the MMDB library error message (" + MMDB_strerror(error_code) + ")");
 			}
 			else if((error_code == 9) && (MMDB_itemName == "country"))
 			{
-				auto remote_addr = getenv("REMOTE_ADDR") ? getenv("REMOTE_ADDR") : ""s;
+				auto remote_addr = getenv("REMOTE_ADDR") ? getenv("REMOTE_ADDR") : ""s;   /* Flawfinder: ignore */
 
 				MESSAGE_DEBUG("", "", "MMDB_get_value(" + MMDB_itemName + ") returned error code: " + to_string(error_code) + " country name not found in MMDB (use mmdblookup --ip " + remote_addr + " --file " + MMDB_fname + " to confirm that country name missed). Here is the MMDB library error message (" + MMDB_strerror(error_code) + ")");
 			}
@@ -254,7 +254,7 @@ bool CSession::Load(string id)
 
 	if(id.find(",") != string::npos)
 	{
-		string		ip = (getenv("REMOTE_ADDR") ? getenv("REMOTE_ADDR") : "");
+		string		ip = (getenv("REMOTE_ADDR") ? getenv("REMOTE_ADDR") : "");   /* Flawfinder: ignore */
 
 		if(isBotIP(ip))
 		{
@@ -262,7 +262,7 @@ bool CSession::Load(string id)
 		}
 		else
 		{
-			MESSAGE_ERROR("", "", "ERROR: \"sessid\" got the wrong value WITH COMMA (" + id + "). 1-st reason - bot, check IP in whois DB, 2-nd reason - bad browser, such a behavior has seen on SAMSUNG J3 [" + (getenv("HTTP_USER_AGENT") ? getenv("HTTP_USER_AGENT") : "") + "]");
+			MESSAGE_ERROR("", "", "ERROR: \"sessid\" got the wrong value WITH COMMA (" + id + "). 1-st reason - bot, check IP in whois DB, 2-nd reason - bad browser, such a behavior has seen on SAMSUNG J3 [" + (getenv("HTTP_USER_AGENT") ? getenv("HTTP_USER_AGENT") : "") + "]");   /* Flawfinder: ignore */
 		}
 	}
 
@@ -305,9 +305,9 @@ bool CSession::CheckConsistency() {
 		MESSAGE_DEBUG("", "", "start");
 	}
 	// --- Check IP address changing
-	if(getenv("REMOTE_ADDR"))
+	if(getenv("REMOTE_ADDR"))   /* Flawfinder: ignore */
 	{
-		string	currIP = getenv("REMOTE_ADDR");
+		string	currIP = getenv("REMOTE_ADDR");   /* Flawfinder: ignore */
 		string	oldIP = GetIP();
 
 		if(currIP != oldIP)
@@ -349,7 +349,7 @@ bool CSession::Update() {
 		return false;
 	}
 
-	if(db->Query("UPDATE `sessions` SET `time`=NOW(),`http_user_agent`=\""s + (getenv("HTTP_USER_AGENT") ? RemoveQuotas(getenv("HTTP_USER_AGENT")) : "") + "\" WHERE `id`=\"" + GetID() + "\";")) 
+	if(db->Query("UPDATE `sessions` SET `time`=NOW(),`http_user_agent`=\""s + (getenv("HTTP_USER_AGENT") ? RemoveQuotas(getenv("HTTP_USER_AGENT")) : "") + "\" WHERE `id`=\"" + GetID() + "\";"))    /* Flawfinder: ignore */
 	{
 		MESSAGE_ERROR("", "", "ERROR: session [" + GetID() + "] there are more than one session with the same session ID.");
 

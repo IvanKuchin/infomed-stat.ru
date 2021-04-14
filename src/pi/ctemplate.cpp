@@ -36,7 +36,7 @@ string CTemplate::RecvLine(FILE *f)
 
     result = "";
 
-    for (; (ch = fgetc(f)) != EOF; i++)
+    for (; (ch = fgetc(f)) != EOF; i++)   /* Flawfinder: ignore */
     {
         result += ch;
 
@@ -60,7 +60,7 @@ string CTemplate::Render()
 		CExceptionHTML("vars array");
     }
 
-    templateFile = fopen(fileName.c_str(), "r");
+    templateFile = fopen(fileName.c_str(), "r");    /* Flawfinder: ignore */
     if(templateFile == NULL)
     {
 		MESSAGE_ERROR("", "", "template for mail is missed");

@@ -17,7 +17,7 @@ static bool ImageSaveAsJpg(const string src, const string dst, c_config *config)
 		auto	avatar_max_height	= stod_noexcept(config->GetFromFile("image_max_height", "avatar"));
 
 		// Read a file into image object
-		image.read( src );
+		image.read( src );   /* Flawfinder: ignore */
 
 		imageGeometry = image.size();
 		imageOrientation = image.orientation();
@@ -114,7 +114,7 @@ int main()
 	signal(SIGSEGV, crash_handler); 
 
 	gettimeofday(&tv, NULL);
-	srand(tv.tv_sec * tv.tv_usec * 100000);
+	srand(tv.tv_sec * tv.tv_usec * 100000);  /* Flawfinder: ignore */
 	ostJSONResult.clear();
 		
 	try
@@ -239,7 +239,7 @@ int main()
 					}
 
 					// --- Save file to "/tmp/" for checking of image validity
-					f = fopen(tmpFile2Check.c_str(), "w");
+					f = fopen(tmpFile2Check.c_str(), "w");   /* Flawfinder: ignore */
 					if(f == NULL)
 					{
 						{

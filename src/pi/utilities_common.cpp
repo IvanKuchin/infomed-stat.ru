@@ -4,9 +4,9 @@ auto LogEnvVariables() -> void
 {
 	MESSAGE_DEBUG("", "", "start");
 
-	if(getenv("HTTP_REFERER")) MESSAGE_DEBUG("", "", "HTTP_REFERER: "s + getenv("HTTP_REFERER"));
-	if(getenv("REMOTE_ADDR")) MESSAGE_DEBUG("", "", "REMOTE_ADDR: "s + getenv("REMOTE_ADDR"));
-	if(getenv("SERVER_NAME")) MESSAGE_DEBUG("", "", "SERVER_NAME: "s + getenv("SERVER_NAME"));
+	if(getenv("HTTP_REFERER")) MESSAGE_DEBUG("", "", "HTTP_REFERER: "s + getenv("HTTP_REFERER"));     /* Flawfinder: ignore */
+	if(getenv("REMOTE_ADDR")) MESSAGE_DEBUG("", "", "REMOTE_ADDR: "s + getenv("REMOTE_ADDR"));     /* Flawfinder: ignore */
+	if(getenv("SERVER_NAME")) MESSAGE_DEBUG("", "", "SERVER_NAME: "s + getenv("SERVER_NAME"));     /* Flawfinder: ignore */
 
 	MESSAGE_DEBUG("", "", "finish");
 
@@ -59,13 +59,13 @@ auto RegisterInitialVariables(CCgi *indexPage, CMysql *db, CUser *user) -> bool
 	indexPage->RegisterVariableForce("EMAIL_FROM_DOMAIN", GetDomain());
 	indexPage->RegisterVariableForce("site_theme", DEFAULT_SITE_THEME);
 
-	if(getenv("REMOTE_ADDR")) indexPage->RegisterVariableForce("REMOTE_ADDR", getenv("REMOTE_ADDR"));
+	if(getenv("REMOTE_ADDR")) indexPage->RegisterVariableForce("REMOTE_ADDR", getenv("REMOTE_ADDR"));     /* Flawfinder: ignore */
 	else
 	{
 		MESSAGE_ERROR("", "", "env variable REMOTE_ADDR doesn't defined");
 		result = false;
 	}
-	if(getenv("SERVER_NAME")) indexPage->RegisterVariableForce("SERVER_NAME", getenv("SERVER_NAME"));
+	if(getenv("SERVER_NAME")) indexPage->RegisterVariableForce("SERVER_NAME", getenv("SERVER_NAME"));     /* Flawfinder: ignore */
 	else
 	{
 		MESSAGE_ERROR("", "", "env variable SERVER_NAME doesn't defined");
