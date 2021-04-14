@@ -670,3 +670,4 @@ ofs
 DIRS
 executables
 multiline
+Flawfinder
