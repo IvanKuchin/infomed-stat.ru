@@ -843,7 +843,7 @@ char *CGet::GetParamToken(unsigned int number, unsigned int token_idx)
             return NULL;
         }
 
-    	strncpy(result, name.c_str(), sizeof(result) - 1);   /* Flawfinder: ignore */
+    	strcpy(result, name.c_str());   /* Flawfinder: ignore */
     }
     else
     {
