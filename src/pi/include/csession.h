@@ -32,6 +32,7 @@ class CSession
 
 		// --- Possible to convert to "static" to reduce memory usage (MMDB is using about 9K per instance)
 		bool					MMDB_usage;
+
 #ifndef MAXMIND_DISABLE
 		MMDB_s					mmdb;
 		MMDB_entry_data_list_s *MMDB_entry_data_list;

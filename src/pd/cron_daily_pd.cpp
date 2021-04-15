@@ -119,24 +119,22 @@ bool RemoveTempMedia(CMysql *db)
 int main()
 {
 	CStatistics		appStat;  // --- CStatistics must be first statement to measure end2end param's
-	CMysql			user;
+	c_config		config(CONFIG_DIR);
+	CUser			user;
 	CMysql			db;
 	struct timeval	tv;
 
-	{
-		CLog	log;
-		log.Write(DEBUG, __func__ + string("[") + to_string(__LINE__) + "]: " + __FILE__);
-	}
+	MESSAGE_DEBUG("", "", __FILE__);
 
 	signal(SIGSEGV, crash_handler);
 
 	gettimeofday(&tv, NULL);
-	srand(tv.tv_sec * tv.tv_usec * 100000);
+	srand(tv.tv_sec * tv.tv_usec * 100000);    /* Flawfinder: ignore */
 
 	try
 	{
 
-		if(db.Connect() < 0)
+		if(db.Connect(&config) < 0)
 		{
 			CLog	log;
 

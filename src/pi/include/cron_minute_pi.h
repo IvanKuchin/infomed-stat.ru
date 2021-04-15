@@ -15,4 +15,6 @@
 #include "localy.h"
 #include "clog.h"
 
+#define	ACTIVATOR_EMAIL_CHANGE						60	// --- minutes
+
 #endif

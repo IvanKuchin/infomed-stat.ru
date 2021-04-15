@@ -53,8 +53,8 @@ class CCookies
 	public:
 				CCookies()								{ cookies.reserve(8); };
 
-		void	Add(string name, string value, struct tm *expiration = nullptr, string domain = "", string path = "", string secure = "", bool newCookie = TRUE);
-		void	Add(string name, string value, int shift_in_seconds_from_now, string domain = "", string path = "", string secure = "", bool newCookie = TRUE);
+		void	Add(string name, string value, struct tm *expiration = nullptr, string domain = "", string path = "", string secure = "", bool newCookie = true);
+		void	Add(string name, string value, int shift_in_seconds_from_now, string domain = "", string path = "", string secure = "", bool newCookie = true);
 		bool	UpdateTS(string name, int deltaTimeStamp);
 		void	Delete(string name, string domain = "", string path = "", string secure = "");
 		string	Get(string name)			const;

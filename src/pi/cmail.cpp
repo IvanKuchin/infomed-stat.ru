@@ -9,7 +9,7 @@ CMail::CMail() : smtpServer(SMTP_HOST), smtpPort(SMTP_PORT), smtpFlag(false)
 unsigned long CMail::Addr2Num (const char *addr)
 {
 	int i;
-	char tok[4];
+	char tok[4];    /* Flawfinder: ignore */
 	int octet;
 	int j = 0, k = 0;
 	unsigned long ipnum = 0;
@@ -20,7 +20,7 @@ unsigned long CMail::Addr2Num (const char *addr)
 			c = addr[k++];
 			if (c == '.' || c == '\0') {
 				tok[j] = '\0';
-				octet = atoi(tok);
+				octet = atoi(tok);  /* Flawfinder: ignore */
 				if (octet > 255)
 					return 0;
 				ipnum += (octet << ((3-i)*8));
@@ -367,7 +367,7 @@ int CMail::SendMailExec(const char *progr, char **av, int inp)
 			RedirStderrToFile(GetStderrFname());
 			RedirStdoutToFile(GetStdoutFname());
 
-			execvp(progr, av);
+			execvp(progr, av);	 /* Flawfinder: ignore */
 			// --- child process will stop here
 			// --- execvp completely replace run-time environment to new process
 		}
@@ -430,7 +430,7 @@ int CMail::MakeMailFile(string text)
 	MESSAGE_DEBUG("", "", "start");
 
 	auto	fname = GetStdinFname();
-	auto	fd = open(fname.c_str(), O_WRONLY | O_CREAT, 0666);
+	auto	fd = open(fname.c_str(), O_WRONLY | O_CREAT, 0666);    /* Flawfinder: ignore */
 	auto	result = 0;
 
 	if(fd < 0)
@@ -438,7 +438,7 @@ int CMail::MakeMailFile(string text)
 		MESSAGE_ERROR("", "", "can't create mail file");
 		throw CException("mail error");
 	}
-	result = write(fd, text.c_str(), strlen(text.c_str()));
+	result = write(fd, text.c_str(), strlen(text.c_str()));    /* Flawfinder: ignore */
 	if(result < 0)
 	{
 		MESSAGE_ERROR("", "", "can't write to mail file: " + strerror(errno));
@@ -452,7 +452,7 @@ int CMail::MakeMailFile(string text)
 	}
 	close(fd);
 
-	fd = open(fname.c_str(), O_RDONLY);
+	fd = open(fname.c_str(), O_RDONLY);    /* Flawfinder: ignore */
 	if(fd < 0)
 	{
 		MESSAGE_ERROR("", "", "can't open mail file for read");
@@ -468,13 +468,13 @@ bool CMail::SendLocal()
 {
 	MESSAGE_DEBUG("", "", "start");
 
-	char	*argv[6];
-	char	rcpt[64];
-	char	from[64];
+	char	*argv[6];  /* Flawfinder: ignore */
+	char	rcpt[128];  /* Flawfinder: ignore */
+	char	from[128];  /* Flawfinder: ignore */
 	long long	stderrSize, stdoutSize;
 
-	strcpy(rcpt, rcptto.c_str());
-	strcpy(from, mailfrom.c_str());
+	strncpy(rcpt, rcptto.c_str(), sizeof(rcpt) - 1);   /* Flawfinder: ignore */
+	strncpy(from, mailfrom.c_str(), sizeof(from) - 1);   /* Flawfinder: ignore */
 	argv[0] = const_cast<char *>("sendmail");
 	argv[1] = from;
 	argv[2] = rcpt;
@@ -547,7 +547,7 @@ string CMailLocal::SetTemplate(string templID)
 string CMailLocal::SetTemplateFile(string fileName)
 {
     FILE	*templateFile;
-    templateFile = fopen(fileName.c_str(), "r");
+    templateFile = fopen(fileName.c_str(), "r");   /* Flawfinder: ignore */
     if(!templateFile)
     {
 		CLog log;

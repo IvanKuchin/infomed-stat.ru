@@ -21,7 +21,7 @@ static size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, voi
 		return 0;
     }
 
-    memcpy(&(mem->memory[mem->size]), contents, realsize);
+    memcpy(&(mem->memory[mem->size]), contents, realsize);    /* Flawfinder: ignore */
     mem->size += realsize;
     mem->memory[mem->size] = 0;
 
@@ -186,13 +186,14 @@ string c_smsc::_smsc_send_cmd(string cmd, string arg, string files)
 {
     MESSAGE_DEBUG("", "", "start");
 
-    c_config            config;
-    auto                auth_map        = config.Read({"SMSC_LOGIN", "SMSC_PASSWORD"});
+    auto                result = ""s;
+
+    vector<string>      vector_param    = {"SMSC_LOGIN", "SMSC_PASSWORD"};
+    auto                auth_map        = config->GetFromFile(CONFIG_SECRET, vector_param);
     auto                is_auth_valid   = (auth_map["SMSC_LOGIN"].length() > 0);
     auto                __SMSC_LOGIN    = (is_auth_valid ? auth_map["SMSC_LOGIN"] : "");
     auto                __SMSC_PASSWORD = (is_auth_valid ? auth_map["SMSC_PASSWORD"] : "");
 
-    auto                result = ""s;
 
     if(is_auth_valid)
     {

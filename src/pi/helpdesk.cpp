@@ -156,12 +156,12 @@ static auto Get_NewTicket_NotificationRecipients_SMS(string ticket_id, string se
 										, db);
 }
 
-static auto SendSMSNotification(vector<string> recipients, string message, CCgi *indexPage, CMysql *db, CUser *user)
+static auto SendSMSNotification(vector<string> recipients, string message, c_config *config, CCgi *indexPage, CMysql *db, CUser *user)
 {
 	MESSAGE_DEBUG("", "", "start");
 
 	auto	error_message = ""s;
-	c_smsc	smsc(db);
+	c_smsc	smsc(config, db);
 
 	for(auto &recipient: recipients)
 	{
@@ -181,14 +181,14 @@ static auto SendSMSNotification(vector<string> recipients, string message, CCgi 
 	return error_message;	
 }
 
-static auto SendSMSNotification_NewTicket(vector<string> recipients, CCgi *indexPage, CMysql *db, CUser *user)
+static auto SendSMSNotification_NewTicket(vector<string> recipients, c_config *config, CCgi *indexPage, CMysql *db, CUser *user)
 {
-	return SendSMSNotification(recipients, gettext("case") + " "s + indexPage->GetVarsHandler()->Get("case_title") + " (" + indexPage->GetVarsHandler()->Get("case_id") + ") (S" + indexPage->GetVarsHandler()->Get("severity") + ") " + gettext("opened") + ".", indexPage, db, user);
+	return SendSMSNotification(recipients, gettext("case") + " "s + indexPage->GetVarsHandler()->Get("case_title") + " (" + indexPage->GetVarsHandler()->Get("case_id") + ") (S" + indexPage->GetVarsHandler()->Get("severity") + ") " + gettext("opened") + ".", config, indexPage, db, user);
 }
 
-static auto SendSMSNotification_ExistingTicket(vector<string> recipients, CCgi *indexPage, CMysql *db, CUser *user)
+static auto SendSMSNotification_ExistingTicket(vector<string> recipients, c_config *config, CCgi *indexPage, CMysql *db, CUser *user)
 {
-	return SendSMSNotification(recipients, gettext("case") + " "s + indexPage->GetVarsHandler()->Get("case_title") + " (" + indexPage->GetVarsHandler()->Get("case_id") + ") (S" + indexPage->GetVarsHandler()->Get("severity") + ") " + gettext("updated") + ".", indexPage, db, user);
+	return SendSMSNotification(recipients, gettext("case") + " "s + indexPage->GetVarsHandler()->Get("case_title") + " (" + indexPage->GetVarsHandler()->Get("case_id") + ") (S" + indexPage->GetVarsHandler()->Get("severity") + ") " + gettext("updated") + ".", config, indexPage, db, user);
 }
 
 static auto SendEmailNotification(vector<string> recipients, string email_template, CCgi *indexPage, CMysql *db, CUser *user)
@@ -219,7 +219,7 @@ static auto SendEmailNotification_ExistingTicket(vector<string> recipients, CCgi
 	return SendEmailNotification(recipients, "helpdesk_notification_existing_case", indexPage, db, user);
 }
 
-static auto Notify_ExistingTicket_Subscribers(string ticket_id, CMysql *db, CUser *user, CCgi *indexPage)
+static auto Notify_ExistingTicket_Subscribers(string ticket_id, c_config *config, CMysql *db, CUser *user, CCgi *indexPage)
 {
 	MESSAGE_DEBUG("", "", "start");
 
@@ -241,7 +241,7 @@ static auto Notify_ExistingTicket_Subscribers(string ticket_id, CMysql *db, CUse
 			{
 				auto	sms_recipients = Get_ExistingTicket_NotificationRecipients_SMS(ticket_id, severity, db, user);
 
-				if((error_message = SendSMSNotification_ExistingTicket(sms_recipients, indexPage, db, user)).empty())
+				if((error_message = SendSMSNotification_ExistingTicket(sms_recipients, config, indexPage, db, user)).empty())
 				{
 
 				}
@@ -268,7 +268,7 @@ static auto Notify_ExistingTicket_Subscribers(string ticket_id, CMysql *db, CUse
 	return error_message;
 }
 
-static auto Notify_NewTicket_Subscribers(string ticket_id, CMysql *db, CUser *user, CCgi *indexPage)
+static auto Notify_NewTicket_Subscribers(string ticket_id, c_config *config, CMysql *db, CUser *user, CCgi *indexPage)
 {
 	MESSAGE_DEBUG("", "", "start");
 
@@ -290,7 +290,7 @@ static auto Notify_NewTicket_Subscribers(string ticket_id, CMysql *db, CUser *us
 			{
 				auto	sms_recipients = Get_NewTicket_NotificationRecipients_SMS(ticket_id, severity, db, user);
 
-				if((error_message = SendSMSNotification_NewTicket(sms_recipients, indexPage, db, user)).empty())
+				if((error_message = SendSMSNotification_NewTicket(sms_recipients, config, indexPage, db, user)).empty())
 				{
 
 				}
@@ -317,7 +317,7 @@ static auto Notify_NewTicket_Subscribers(string ticket_id, CMysql *db, CUser *us
 	return error_message;
 }
 
-static auto SaveFilesAndUpdateDB(string ticket_history_id, CCgi *indexPage, CMysql *db)
+static auto SaveFilesAndUpdateDB(string ticket_history_id, c_config *config, CCgi *indexPage, CMysql *db)
 {
 	MESSAGE_DEBUG("", "", "start");
 
@@ -326,9 +326,9 @@ static auto SaveFilesAndUpdateDB(string ticket_history_id, CCgi *indexPage, CMys
 
 	for(auto filesCounter = 0; filesCounter < indexPage->GetFilesHandler()->Count(); ++filesCounter)
 	{
-		if(indexPage->GetFilesHandler()->GetSize(filesCounter) > GetSpecificData_GetMaxFileSize(itemType))
+		if(indexPage->GetFilesHandler()->GetSize(filesCounter) > stod_noexcept(config->GetFromFile("max_file_size", itemType)))
 		{
-			error_message = "file [" + indexPage->GetFilesHandler()->GetName(filesCounter) + "] size exceed permitted maximum: " + to_string(indexPage->GetFilesHandler()->GetSize(filesCounter)) + " > " + to_string(GetSpecificData_GetMaxFileSize(itemType));
+			error_message = "file [" + indexPage->GetFilesHandler()->GetName(filesCounter) + "] size exceed permitted maximum: " + to_string(indexPage->GetFilesHandler()->GetSize(filesCounter)) + " > " + config->GetFromFile("max_file_size", itemType);
 			MESSAGE_ERROR("", "", error_message);
 
 			break;
@@ -347,20 +347,21 @@ static auto SaveFilesAndUpdateDB(string ticket_history_id, CCgi *indexPage, CMys
 			auto	file_ext		= (ext_pos != string::npos ? file_name_ext.substr(ext_pos, file_name_ext.length() - ext_pos) : ""s);
 			auto	folderID		= 0;
 			auto	filePrefix		= ""s;
+			auto	number_of_folders = stod_noexcept(config->GetFromFile("number_of_folders", itemType));
 
 			do
 			{
-				folderID	= (int)(rand()/(RAND_MAX + 1.0) * GetSpecificData_GetNumberOfFolders(itemType)) + 1;
+				folderID	= (int)(rand()/(RAND_MAX + 1.0) * number_of_folders) + 1;
 				filePrefix	= GetRandom(20);
 
 				short_filename = to_string(folderID) + "/" + file_name + "_" + filePrefix + file_ext;
-				finalFilename = GetSpecificData_GetBaseDirectory(itemType) + "/" + short_filename;
+				finalFilename = config->GetFromFile("image_folders", itemType) + "/" + short_filename;
 
 			} while(isFileExists(finalFilename));
 
 			{
 				// --- Save file to "/tmp/" for checking of image validity
-				auto	f = fopen(finalFilename.c_str(), "w");
+				auto	f = fopen(finalFilename.c_str(), "w");   /* Flawfinder: ignore */
 				if(f)
 				{
 					fwrite(indexPage->GetFilesHandler()->Get(filesCounter), indexPage->GetFilesHandler()->GetSize(filesCounter), 1, f);
@@ -402,6 +403,7 @@ int main(void)
 {
 	CStatistics		appStat;  // --- CStatistics must be a first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
+	c_config		config(CONFIG_DIR);
 	CUser			user;
 	CMysql			db;
 	string			action = "";
@@ -414,7 +416,7 @@ int main(void)
 	{
 		struct timeval	tv;
 		gettimeofday(&tv, NULL);
-		srand(tv.tv_sec * tv.tv_usec * 100000);
+		srand(tv.tv_sec * tv.tv_usec * 100000);  /* Flawfinder: ignore */
 	}
 
 	try
@@ -428,7 +430,7 @@ int main(void)
 			throw CException("Template file was missing");
 		}
 
-		if(db.Connect() < 0)
+		if(db.Connect(&config) < 0)
 		{
 			MESSAGE_ERROR("", action, "Can not connect to mysql database");
 			throw CExceptionHTML("MySql connection");
@@ -454,8 +456,8 @@ int main(void)
 			}
 
 			//------- Generate session
-			action = GenerateSession(action, &indexPage, &db, &user);
-			action = LogoutIfGuest(action, &indexPage, &db, &user);
+			action = GenerateSession(action, &config, &indexPage, &db, &user);
+			action = LogoutIfGuest(action, &config, &indexPage, &db, &user);
 		}
 	// ------------ end generate common parts
 
@@ -507,9 +509,9 @@ int main(void)
 																		"(" + quoted(to_string(ticket_id)) + ", " + quoted(user.GetID()) + ", " + quoted(severity) + ", " + quoted(HELPDESK_STATE_NEW) + ", " + quoted(description) + ", UNIX_TIMESTAMP())");
 							if(ticket_history_id)
 							{
-								if((error_message = SaveFilesAndUpdateDB(to_string(ticket_history_id), &indexPage, &db)).empty())
+								if((error_message = SaveFilesAndUpdateDB(to_string(ticket_history_id), &config, &indexPage, &db)).empty())
 								{
-									auto	local_error_message = Notify_NewTicket_Subscribers(to_string(ticket_id), &db, &user, &indexPage);
+									auto	local_error_message = Notify_NewTicket_Subscribers(to_string(ticket_id), &config, &db, &user, &indexPage);
 									if(local_error_message.length())
 									{
 										MESSAGE_ERROR("", action, local_error_message);
@@ -625,9 +627,9 @@ int main(void)
 
 								if(ticket_history_id)
 								{
-									if((error_message = SaveFilesAndUpdateDB(to_string(ticket_history_id), &indexPage, &db)).empty())
+									if((error_message = SaveFilesAndUpdateDB(to_string(ticket_history_id), &config, &indexPage, &db)).empty())
 									{
-										auto	local_error_message = Notify_ExistingTicket_Subscribers(ticket_id, &db, &user, &indexPage);
+										auto	local_error_message = Notify_ExistingTicket_Subscribers(ticket_id, &config, &db, &user, &indexPage);
 
 										if(local_error_message.length())
 										{

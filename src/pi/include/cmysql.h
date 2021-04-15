@@ -11,6 +11,11 @@ using namespace std;
 #include "c_config.h"
 #include "clog.h"
 
+#define	DB_FALLBACK_NAME				getenv("DB_NAME")			/* Flawfinder: ignore */
+#define	DB_FALLBACK_LOGIN				getenv("DB_LOGIN")			/* Flawfinder: ignore */
+#define	DB_FALLBACK_PASSWORD			getenv("DB_PASSWORD")		/* Flawfinder: ignore */
+#define	DB_FALLBACK_HOST				getenv("DB_HOST")			/* Flawfinder: ignore */
+
 class CMysqlSkel
 {
 	private:
@@ -58,19 +63,13 @@ class CMysql : public CMysqlSkel
 	private:
 		const	string			DB_CHARSET				= "utf8mb4"s;
 
-		// --- this should only be used for CI/CD testing
-		const	string			__DB_FALLBACK_NAME		= DB_FALLBACK_NAME;
-		const	string			__DB_FALLBACK_LOGIN		= DB_FALLBACK_LOGIN;
-		const	string			__DB_FALLBACK_PASSWORD	= DB_FALLBACK_PASSWORD;
-		const	string			__DB_FALLBACK_HOST		= DB_FALLBACK_HOST;
-
 		map<string, string>		GetCredentialsFromConfigFile(vector<string> param_list);
-
+		int				Connect(const string &dbname, const string &login, const string &pass, const string &host);
+		
 	public:
 						CMysql();
 
-		int				Connect();
-		int				Connect(const string &dbname, const string &login, const string &pass, const string &host);
+		int				Connect(c_config * const config);
 		int				Query(const string &query);
 		unsigned long	InsertQuery(const string &query);
 		

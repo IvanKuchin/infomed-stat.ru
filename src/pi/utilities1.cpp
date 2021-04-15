@@ -683,19 +683,14 @@ string GetLocalFormattedTimestamp()
 {
 	time_t	  now_t;
 	struct tm   *local_tm;
-	char		buffer[80];
+	char		buffer[80];   /* Flawfinder: ignore */
 	auto		result = ""s;
 
 	now_t = time(NULL);
 	local_tm = localtime(&now_t);
 	if(local_tm == NULL)
 	{
-		CLog	log;
-		ostringstream	ost;
-
-		ost.str("");
-		ost << "GetLocalFormatedTimestamp(): ERROR in running localtime(&t)";
-		log.Write(ERROR, ost.str());
+		MESSAGE_ERROR("", "", "fail from localtime");
 	}
 
 	memset(buffer, 0, 80);
@@ -785,7 +780,7 @@ double GetTimeDifferenceFromNow(const string timeAgo)
 	{
 		CLog	log;
 		ostringstream	ost;
-		char	buffer[80];
+		char	buffer[80];   /* Flawfinder: ignore */
 
 		ost.str("");
 		strftime(buffer,80,"check_tm: date regenerated: %02d-%b-%Y %T %Z  %I:%M%p.", &check_tm);
@@ -1016,11 +1011,11 @@ string UniqueUserIDInUserIDLine(string userIDLine) //-> decltype(static_cast<str
 		nextPointer = userIDLine.find(",", prevPointer);
 		if(nextPointer == string::npos)
 		{
-			listUserID.push_back(atol(userIDLine.substr(prevPointer).c_str()));
+			listUserID.push_back(stol(userIDLine.substr(prevPointer)));
 		}
 		else
 		{
-			listUserID.push_back(atol(userIDLine.substr(prevPointer, nextPointer - prevPointer).c_str()));
+			listUserID.push_back(stol(userIDLine.substr(prevPointer, nextPointer - prevPointer)));
 		}
 		prevPointer = nextPointer + 1;
 	} while( (nextPointer != string::npos) );
@@ -1683,7 +1678,7 @@ void	RemoveMessageImages(string sqlWhereStatement, CMysql *db)
 // --- input params:
 // --- 1) SQL WHERE statement
 // --- 2) db reference
-void	RemoveBookCover(string sqlWhereStatement, CMysql *db)
+void	RemoveBookCover(string sqlWhereStatement, c_config *config, CMysql *db)
 {
 	int			 affected;
 	ostringstream   ost;
@@ -1705,8 +1700,7 @@ void	RemoveBookCover(string sqlWhereStatement, CMysql *db)
 
 			if(mediaType == "image" || mediaType == "video")
 			{
-
-				if(mediaType == "image") filename = IMAGE_BOOKS_DIRECTORY;
+				if(mediaType == "image") filename = config->GetFromFile("image_folders", "book");
 
 				filename +=  "/";
 				filename +=  db->Get(i, "coverPhotoFolder");
@@ -1755,7 +1749,7 @@ void	RemoveBookCover(string sqlWhereStatement, CMysql *db)
 // --- 1) id
 // --- 2) type
 // --- 3) db reference
-bool	RemoveSpecifiedCover(string itemID, string itemType, CMysql *db)
+bool	RemoveSpecifiedCover(string itemID, string itemType, c_config *config, CMysql *db)
 {
 	int			 affected;
 	bool			result = true;
@@ -1765,7 +1759,15 @@ bool	RemoveSpecifiedCover(string itemID, string itemType, CMysql *db)
 		log.Write(DEBUG, string(__func__) + "[" + to_string(__LINE__) +  "]: start (itemID = " + itemID + ", itemType = " + itemType + ")");
 	}
 
-	affected = db->Query(GetSpecificData_SelectQueryItemByID(itemID, itemType));
+	// --- scoping
+	{
+		map<string, string> vars		= {{"itemType", itemType}, {"itemID", itemID}};
+		auto				db_query	= config->GetFromFile("db_select_all_by_id", {itemType}, vars)[itemType];
+
+		affected = db->Query(db_query);
+		// affected = db->Query(GetSpecificData_SelectQueryItemByID(itemID, itemType));
+	}
+
 	if(affected)
 	{
 		for(auto i = 0; i < affected; i++)
@@ -1776,12 +1778,12 @@ bool	RemoveSpecifiedCover(string itemID, string itemType, CMysql *db)
 			if(mediaType == "image" || mediaType == "video")
 			{
 
-				if(mediaType == "image") filename = GetSpecificData_GetBaseDirectory(itemType);
+				if(mediaType == "image") filename = config->GetFromFile("image_folders", itemType);
 
 				filename +=  "/";
-				filename +=  db->Get(i, GetSpecificData_GetDBCoverPhotoFolderString(itemType).c_str());
+				filename +=  db->Get(i, config->GetFromFile("db_field_name_photo_folder", itemType));
 				filename +=  "/";
-				filename +=  db->Get(i, GetSpecificData_GetDBCoverPhotoFilenameString(itemType).c_str());
+				filename +=  db->Get(i, config->GetFromFile("db_field_name_photo_filename", itemType));
 
 				{
 					CLog	log;
@@ -1812,7 +1814,15 @@ bool	RemoveSpecifiedCover(string itemID, string itemType, CMysql *db)
 
 		}
 		// --- cleanup DB with images pre-populated for posted message
-		db->Query(GetSpecificData_UpdateQueryItemByID(itemID, itemType, "", ""));
+
+		// --- scoping
+		{
+			map<string, string> vars		= {{"itemType", itemType}, {"itemID", itemID}, {"folderName", ""}, {"fileName", ""}};
+			auto				db_query	= config->GetFromFile("db_update_logo_by_id", {itemType}, vars)[itemType];
+
+			db->Query(db_query);
+			// db->Query(GetSpecificData_UpdateQueryItemByID(itemID, itemType, "", ""));
+		}
 	}
 
 	{
@@ -1876,7 +1886,7 @@ string base64_decode(std::string const& encoded_string)
   size_t i = 0;
   size_t j = 0;
   int in_ = 0;
-  unsigned char char_array_4[4], char_array_3[3];
+  unsigned char char_array_4[4], char_array_3[3];   /* Flawfinder: ignore */
   std::string ret;
 
   while (in_len-- && ( encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
@@ -1948,12 +1958,12 @@ bool RedirStderrToFile(string fname)
 	return  result;
 }
 
-auto isAllowed_NoSession_Action(string action) -> bool
+auto isAllowed_Guest_Action(string action, c_config *config) -> bool
 {
-	auto			result = false;
-	vector<string>	allowed_nosession_actions = ALLOWED_NO_SESSION_ACTION;
-
 	MESSAGE_DEBUG("", "", "start (action " + action + ")");
+
+	auto			result = false;
+	vector<string>	allowed_nosession_actions = split(config->GetFromFile("guest_allowed_actions", "__default__"), ',');
 
 	for(auto &allowed_nosession_action : allowed_nosession_actions)
 	{
@@ -2209,7 +2219,7 @@ auto GetSpellingFormattedDate(struct tm date_obj, string format) -> string
 	MESSAGE_DEBUG("", "", "start (" + format + ")");
 
 	auto	result = ""s;
-	char	buffer[100];
+	char	buffer[100];   /* Flawfinder: ignore */
 
 	mktime(&date_obj);
 
@@ -2376,7 +2386,7 @@ string PrintDateTime(const struct tm &_tm)
 
 string PrintTime(const struct tm &_tm, string format)
 {
-	char		buffer[256];
+	char		buffer[256];   /* Flawfinder: ignore */
 	string		result = "";
 	struct tm	temp_tm = _tm;
 

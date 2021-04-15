@@ -1,0 +1,16 @@
+__default__			= 10000000
+
+# book				= 10000000
+# certification			= 10000000
+# company			= 10000000
+# company_profile_logo		= 10000000
+# course			= 10000000
+# event				= 10000000
+# feed_image			= 10000000
+feed_video			=300000000
+# gift				= 10000000
+# helpdesk_ticket_attach	= 10000000
+# language			= 10000000
+# school			= 10000000
+# university			= 10000000
+

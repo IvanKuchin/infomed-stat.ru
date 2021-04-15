@@ -56,7 +56,7 @@ bool VideoConverter(const string src, const string dst, struct ExifInfo &exifInf
 	return result;
 }
 
-bool ImageConvertToJpg (const string src, const string dst, struct ExifInfo &exifInfo)
+bool ImageConvertToJpg (const string src, const string dst, struct ExifInfo &exifInfo, c_config *config)
 {
 
 	MESSAGE_DEBUG("", "", "start");
@@ -71,7 +71,7 @@ bool ImageConvertToJpg (const string src, const string dst, struct ExifInfo &exi
 		Magick::Geometry		imageGeometry;
 
 		// Read a file into image object
-		image.read( src );
+		image.read( src );   /* Flawfinder: ignore */
 
 		imageGeometry = image.size();
 		imageOrientation = image.orientation();
@@ -86,18 +86,18 @@ bool ImageConvertToJpg (const string src, const string dst, struct ExifInfo &exi
 		if(imageOrientation == Magick::RightBottomOrientation) { image.flop(); image.rotate(90); }
 		if(imageOrientation == Magick::LeftBottomOrientation) image.rotate(-90);
 
-		if((imageGeometry.width() > FEED_IMAGE_MAX_WIDTH) || (imageGeometry.height() > FEED_IMAGE_MAX_HEIGHT))
+		if((imageGeometry.width() > stod_noexcept(config->GetFromFile("image_max_width", "feed"))) || (imageGeometry.height() > stod_noexcept(config->GetFromFile("image_max_height", "feed"))))
 		{
 			int   newHeight, newWidth;
 
 			if(imageGeometry.width() >= imageGeometry.height())
 			{
-				newWidth = FEED_IMAGE_MAX_WIDTH;
+				newWidth = stod_noexcept(config->GetFromFile("image_max_width", "feed"));
 				newHeight = newWidth * imageGeometry.height() / imageGeometry.width();
 			}
 			else
 			{
-				newHeight = FEED_IMAGE_MAX_HEIGHT;
+				newHeight = stod_noexcept(config->GetFromFile("image_max_height", "feed"));
 				newWidth = newHeight * imageGeometry.width() / imageGeometry.height();
 			}
 
@@ -250,6 +250,7 @@ int main()
 	CStatistics		appStat;  // --- CStatistics must be first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
 	CUser			user;
+	c_config		config(CONFIG_DIR);
 	string			action, partnerID, imageTempSet, messageID;
 	string			messageOwnerType = "";
 	string			messageOwnerID = "";
@@ -268,7 +269,7 @@ int main()
 	signal(SIGSEGV, crash_handler); 
 
 	gettimeofday(&tv, NULL);
-	srand(tv.tv_sec * tv.tv_usec * 100000);
+	srand(tv.tv_sec * tv.tv_usec * 100000);  /* Flawfinder: ignore */
 	ostJSONResult.clear();
 		
 	try
@@ -281,7 +282,7 @@ int main()
 			throw CException("Template file was missing");
 		}
 
-		if(db.Connect() < 0)
+		if(db.Connect(&config) < 0)
 		{
 			MESSAGE_ERROR("", "", "Can not connect to mysql database");
 			throw CExceptionHTML("MySql connection");
@@ -301,7 +302,7 @@ int main()
 		}
 		messageID = indexPage.GetVarsHandler()->Get("messageID");
 		try { // --- validity check
-			messageID = to_string(atol(messageID.c_str())); 
+			messageID = to_string(stol(messageID)); 
 		} catch (...) {
 			messageID = "";
 		}
@@ -324,7 +325,7 @@ int main()
 			}
 
 			//------- Generate session
-			action = GenerateSession(action, &indexPage, &db, &user);
+			action = GenerateSession(action, &config, &indexPage, &db, &user);
 		}
 		// ------------ end generate common parts
 
@@ -355,7 +356,7 @@ int main()
 				for(auto filesCounter = 0; filesCounter < indexPage.GetFilesHandler()->Count(); filesCounter++)
 				{
 					FILE			*f;
-					auto			folderID = (int)(rand()/(RAND_MAX + 1.0) * FEEDIMAGE_NUMBER_OF_FOLDERS) + 1;
+					auto			folderID = (int)(rand()/(RAND_MAX + 1.0) * stod_noexcept(config.GetFromFile("number_of_folders", "feed"))) + 1;
 					auto			filePrefix = GetRandom(20);
 					string			finalFile, tmpFile2Check, tmpImageJPG, fileName, fileExtension;
 					ostringstream   ost;
@@ -366,9 +367,9 @@ int main()
 					else if(isFilenameVideo(indexPage.GetFilesHandler()->GetName(filesCounter))) currFileType = FILETYPE_VIDEO;
 
 					if(
-						((currFileType == FILETYPE_IMAGE) && (indexPage.GetFilesHandler()->GetSize(filesCounter) > FEEDIMAGE_MAX_FILE_SIZE)) 
+						((currFileType == FILETYPE_IMAGE) && (indexPage.GetFilesHandler()->GetSize(filesCounter) > stod_noexcept(config.GetFromFile("max_file_size", "feed_image")))) 
 						||
-						((currFileType == FILETYPE_VIDEO) && (indexPage.GetFilesHandler()->GetSize(filesCounter) > FEEDVIDEO_MAX_FILE_SIZE))
+						((currFileType == FILETYPE_VIDEO) && (indexPage.GetFilesHandler()->GetSize(filesCounter) > stod_noexcept(config.GetFromFile("max_file_size", "feed_video"))))
 					  )
 					{
 						ostringstream   ost;
@@ -407,7 +408,7 @@ int main()
 								string		  tmp;
 								std::size_t	 foundPos;
 
-								folderID = (int)(rand()/(RAND_MAX + 1.0) * FEEDIMAGE_NUMBER_OF_FOLDERS) + 1;
+								folderID = (int)(rand()/(RAND_MAX + 1.0) * stod_noexcept(config.GetFromFile("number_of_folders", "feed"))) + 1;
 								filePrefix = GetRandom(20);
 								tmp = indexPage.GetFilesHandler()->GetName(filesCounter);
 
@@ -436,7 +437,7 @@ int main()
 							MESSAGE_DEBUG("", "", "Save file to /tmp for checking of image validity [" + tmpFile2Check + "]");
 
 							// --- Save file to "/tmp/" for checking of image validity
-							f = fopen(tmpFile2Check.c_str(), "w");
+							f = fopen(tmpFile2Check.c_str(), "w");   /* Flawfinder: ignore */
 							if(f == NULL)
 							{
 								MESSAGE_ERROR("", "", "writing file:" + tmpFile2Check.c_str());
@@ -446,7 +447,7 @@ int main()
 							fwrite(indexPage.GetFilesHandler()->Get(filesCounter), indexPage.GetFilesHandler()->GetSize(filesCounter), 1, f);
 							fclose(f);
 
-							if(ImageConvertToJpg(tmpFile2Check, tmpImageJPG, exifInfo))
+							if(ImageConvertToJpg(tmpFile2Check, tmpImageJPG, exifInfo, &config))
 							{
 								auto	  feed_imagesID = 0;
 
@@ -580,7 +581,7 @@ int main()
 							MESSAGE_DEBUG("", "", "Save file to /tmp for checking of video validity [" + tmpFile2Check + "]");
 
 							// --- Save file to "/tmp/" for checking of video validity
-							f = fopen(tmpFile2Check.c_str(), "w");
+							f = fopen(tmpFile2Check.c_str(), "w");   /* Flawfinder: ignore */
 							if(f == NULL)
 							{
 								MESSAGE_ERROR("", "", "writing file:" + tmpFile2Check);
@@ -688,7 +689,7 @@ int main()
 												// --- create new DB-connection, due to parent will close the old one
 												CMysql  db1;		
 
-												if(db1.Connect() < 0)
+												if(db1.Connect(&config) < 0)
 												{
 													MESSAGE_ERROR("", "", "Can not connect to mysql database");
 													throw CExceptionHTML("MySql connection");

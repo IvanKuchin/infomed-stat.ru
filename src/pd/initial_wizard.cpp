@@ -16,7 +16,7 @@ int main(void)
 	{
 		struct timeval	tv;
 		gettimeofday(&tv, NULL);
-		srand(tv.tv_sec * tv.tv_usec * 100000);
+		srand(tv.tv_sec * tv.tv_usec * 100000);    /* Flawfinder: ignore */
 	}
 
 	try

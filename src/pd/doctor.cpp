@@ -40,6 +40,7 @@ int main()
 {
 	CStatistics		appStat;  // --- CStatistics must be first statement to measure end2end param's
 	CCgi			indexPage(EXTERNAL_TEMPLATE);
+	c_config		config(CONFIG_DIR);
 	CUser			user;
 	string			action, partnerID;
 	CMysql			db;
@@ -50,7 +51,7 @@ int main()
 	signal(SIGSEGV, crash_handler);
 
 	gettimeofday(&tv, NULL);
-	srand(tv.tv_sec * tv.tv_usec * 100000);
+	srand(tv.tv_sec * tv.tv_usec * 100000);    /* Flawfinder: ignore */
 
 	try
 	{
@@ -64,7 +65,7 @@ int main()
 			throw CException("Template file was missing");
 		}
 
-		if(db.Connect() < 0)
+		if(db.Connect(&config) < 0)
 		{
 			MESSAGE_ERROR("", action, "can't connect to DB");
 			throw CExceptionHTML("MySql connection");
@@ -91,8 +92,8 @@ int main()
 			}
 
 			//------- Generate session
-			action = GenerateSession(action, &indexPage, &db, &user);
-			action = LogoutIfGuest(action, &indexPage, &db, &user);
+			action = GenerateSession(action, &config, &indexPage, &db, &user);
+			action = LogoutIfGuest(action, &config, &indexPage, &db, &user);
 		}
 	// ------------ end generate common parts
 
@@ -119,12 +120,9 @@ int main()
 			}
 		}
 
-		if(
-			(action == LOGGEDIN_DOCTOR_DEFAULT_ACTION) ||
-			(action == LOGGEDIN_NOROLE_DEFAULT_ACTION)
-		   )
+		if(action == config.GetFromFile("default_action", "user"))
 		{
-			string		template_name = action + ".htmlt";
+			auto		template_name = action + ".htmlt";
 
 			MESSAGE_DEBUG("", action, "start");
 
@@ -444,8 +442,8 @@ int main()
 																auto	affected = db.Query("SELECT `id` FROM `medical_records` WHERE `submitter_user_id`=" + quoted(id) + ";");
 																if(affected)
 																{
-																	char	buffer[50];
-																	sprintf(buffer, ngettext("%d records", "%d records", affected), affected);
+																	char	buffer[50];    /* Flawfinder: ignore */
+																	sprintf(buffer, ngettext("%d records", "%d records", affected), affected);    /* Flawfinder: ignore */
 
 																	error_message = gettext("doctor submitted") + " "s + buffer;
 																	MESSAGE_DEBUG("", action, error_message);

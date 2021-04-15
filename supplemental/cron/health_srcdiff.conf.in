@@ -61,6 +61,8 @@ nodiff_files => [
     "imageuploader.h",
     "noauth.h",
     "utilities_common.h",
+    "utilities.h",
+    "localy.h.in",
 
     "cron_minute_pi.cpp",
     "cron_daily_pi.cpp",

@@ -275,11 +275,10 @@ bool CVideoConverter::ReadMetadataAndResolution()
 	}
 	else
 	{
-		CLog		log;
-		static char error_buffer[255];
+		static char error_buffer[255];   /* Flawfinder: ignore */
 
 		av_strerror(ret, error_buffer, sizeof(error_buffer) - 1);
-		log.Write(ERROR, "CVideoConverter::" + string(__func__) + "[" + to_string(__LINE__) + "]:ERROR: can't open " + GetTempFilename() + " (error: " + string(error_buffer) + ")");
+		MESSAGE_ERROR("", "", "can't open " + GetTempFilename() + " (error: " + string(error_buffer) + ")");
 	}
 
 #else
@@ -295,9 +294,9 @@ bool CVideoConverter::ReadMetadataAndResolution()
 bool CVideoConverter::FirstPhase()
 {
 	bool	result = false;
-	char	scaleArg[30];
+	char	scaleArg[30];    /* Flawfinder: ignore */
 	// char	add_overlay_and_blur[512];
-	char	*argv[10];
+	char	*argv[10];   /* Flawfinder: ignore */
 
 	string	tmpSrcFile, tmpDstFile;
 
@@ -318,7 +317,7 @@ bool CVideoConverter::FirstPhase()
 			double	videoScaleFinalHeight	= videoScaleMax > 1 ? _height / videoScaleMax : _height;
 
 			memset(scaleArg, 0, sizeof(scaleArg));
-			sprintf(scaleArg, "scale=%d:%d", (int)videoScaleFinalWidth, (int)videoScaleFinalHeight);
+			sprintf(scaleArg, "scale=%d:%d", (int)videoScaleFinalWidth, (int)videoScaleFinalHeight);   /* Flawfinder: ignore */
 
 			argv[0] = const_cast<char *>("ffmpeg");
 			argv[1] = const_cast<char *>("-i");
@@ -421,7 +420,7 @@ bool CVideoConverter::FirstPhase()
 bool CVideoConverter::SecondPhase()
 {
 	bool	result = false;
-	char	*argv[10];
+	char	*argv[10];   /* Flawfinder: ignore */
 
 	string	tmpSrcFile, tmpDstFile;
 
@@ -498,7 +497,7 @@ bool	CVideoConverter::VideoConvert(int dstIndex, char **argv)
 		{
 			string  tmpDestFile = GetPreFinalFullFilename(dstIndex);
 
-			execvp(argv[0], argv);
+			execvp(argv[0], argv);  /* Flawfinder: ignore */
 		}
 		else
 		{

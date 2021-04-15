@@ -1,0 +1,3 @@
+user		= doctor_dashboard
+guest		= autologin
+helpdesk	= helpdesk_dashboard

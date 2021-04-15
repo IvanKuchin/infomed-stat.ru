@@ -8,6 +8,25 @@
 // --- do NOT add any header file with potentially recursive includes
 
 
+// --- notification types
+#define NOTIFICATION_GENERAL_FROM_USER                          98
+#define NOTIFICATION_GENERAL_FROM_COMPANY                       99
+#define NOTIFICATION_ADD_TASK_TO_SOW                            100
+#define NOTIFICATION_CHANGE_CUSTOMER_NAME                       101
+#define NOTIFICATION_CHANGE_PROJECT_NAME                        102
+#define NOTIFICATION_CHANGE_TASK_NAME                           103
+#define NOTIFICATION_CHANGE_TASK_DURATION                       104
+#define NOTIFICATION_DELETE_TASK                                105
+#define NOTIFICATION_AGENCY_INITIATED_SOW                       106
+#define NOTIFICATION_SUBCONTRACTOR_SIGNED_SOW                   107
+#define NOTIFICATION_AGENCY_ABOUT_SUBC_REGISTRATION             108
+#define NOTIFICATION_AGENCY_GENERATED_AGREEMENTS                109
+#define NOTIFICATION_AGENCY_ABOUT_APPROVER_REGISTRATION 		110
+#define NOTIFICATION_AGENCY_ABOUT_EMPLOYEE_REGISTRATION 		111
+#define NOTIFICATION_SUBC_BUILT_ABSENCE_REQUEST                 112
+#define NOTIFICATION_SUBC_CHANGED_ABSENCE_REQUEST               113
+
+
 auto      		GetChatMessagesInJSONFormat(string dbQuery, CMysql *) -> string;
 auto      		GetUnreadChatMessagesInJSONFormat(CUser *, CMysql *) -> string;
 auto      		GetMessageImageList(string imageSetID, CMysql *) -> string;

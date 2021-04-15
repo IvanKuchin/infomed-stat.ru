@@ -30,7 +30,7 @@ string	CCookie::GetExpiration()
 
 		if(utc_tm)
 		{
-			char			utc_str[100];
+			char			utc_str[100];   /* Flawfinder: ignore */
 			auto			curr_locale	= string(setlocale(LC_ALL, NULL));	// --- DO NOT remove string() !
 																			// --- otherwise following setlocale call will change memory content where curr_locale pointing out
 																			// --- string() copies memory content to local stack therefore it could be reused later.
@@ -223,7 +223,7 @@ void CCookies::Delete(string name, string domain, string path, string secure)
 			cookie.SetExpirationShiftedFromNow(-3600 * 24);
 			cookie.SetPath(path);
 			// cookie.SetMaxAge(0);
-			cookie.SetNew(TRUE);
+			cookie.SetNew(true);
 //			break;
 		}
 	}
@@ -345,7 +345,7 @@ void CCookies::ParseString(string str)
 		MESSAGE_DEBUG("", "", "adding cookie: " + cookName + " = " + cookValue);
 
 		if(cookName.length())
-			Add(cookName, cookValue, nullptr, "", "", "", FALSE);
+			Add(cookName, cookValue, nullptr, "", "", "", false);
 		else
 		{
 			MESSAGE_ERROR("", "", "cookie parsing end-up with empty name() and value(" + cookValue + ")");

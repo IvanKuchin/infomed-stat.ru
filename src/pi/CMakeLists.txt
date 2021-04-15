@@ -36,11 +36,9 @@ set(JOINT_LIBRARY_SRCs
     utilities1.cpp
     utilities2.cpp
     utilities_common.cpp
-    utilities_specific.cpp
     c_cache_obj.cpp
     c_date_spelling.cpp
     )
-
 # ---- list of independent libraries
 set(INDEPENDENT_LIBRARIES_SRC
     c_archive.cpp
@@ -88,6 +86,14 @@ macro(__add_executable_4libs target_executable include_directories lib_list1 lib
     target_link_libraries       (${target_executable}    ${lib_list1} ${lib_list2} ${lib_list3} ${lib_list4})
 endmacro()
 
+macro(__add_executable_5libs target_executable include_directories lib_list1 lib_list2 lib_list3 lib_list4 lib_list5)
+    string(REGEX REPLACE "(^.*/|\\.[^.]*$)" "" file_without_ext ${target_executable})
+
+    add_executable              (${target_executable}    ${file_without_ext}.cpp)
+    target_include_directories  (${target_executable}    PRIVATE ${include_directories})
+    target_link_libraries       (${target_executable}    ${lib_list1} ${lib_list2} ${lib_list3} ${lib_list4} ${lib_list5})
+endmacro()
+
 # --- MACROSes finish ---
 
 
@@ -95,14 +101,13 @@ endmacro()
 include(FindPkgConfig)
 
 pkg_check_modules(LIBMYSQLCLIENT REQUIRED mysqlclient)
+find_library(LIBMYSQLCLIENT NAMES mysqlclient)
+
 find_package(OpenSSL REQUIRED)
+#find_package(LibSSL REQUIRED)
+
 find_package(CURL REQUIRED)
-find_package(LibWebSockets REQUIRED)
-find_package(LibHPDF REQUIRED)
-find_package(LibWkhtmlToX REQUIRED)
 find_package(LibArchive REQUIRED)
-find_package(LibXL REQUIRED)
-find_package(LibRapidJSON REQUIRED)
 
 if(IMAGEMAGICK_DISABLE)
     message("Magick++ turned off")
@@ -137,7 +142,6 @@ set(PROJECT_PI_INCLUDE_DIRECTORIES
     ${HPDF_INCLUDE_DIR}
     ${ARCHIVE_INCLUDE_DIR}
     ${XL_INCLUDE_DIR}
-    ${WKHTMLTOX_INCLUDE_DIR}
     )
 
 set(PROJECT_EXTERNAL_LIBS
@@ -151,7 +155,6 @@ set(PROJECT_EXTERNAL_LIBS
     ${HPDF_LIBRARY}
     ${ARCHIVE_LIBRARY}
     ${XL_LIBRARY}
-    ${WKHTMLTOX_LIBRARY}
     )
 
 # --- does this system provide the exp function ?

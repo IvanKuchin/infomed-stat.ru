@@ -32,6 +32,7 @@ private:
 	string			 		__SMTP_LOGIN = "";            // логин для smtp сервера 
 	string			 		__SMTP_PASSWORD = "";            // пароль для smtp сервера 
 
+	c_config				*config = nullptr;
 	CMysql					*db = nullptr;
 
 	void _print_debug(string str);
@@ -39,8 +40,10 @@ private:
 	string	TrackSMS(string phones, string sms_id, string sms_cost, string sms_quantity, string sms_text, string current_balance);
 
 public:
-			c_smsc(CMysql *param) : db(param)	{};
+			c_smsc(c_config *param1, CMysql *param2) : config{param1}, db(param2)	{};
+
 	void	SetDB(CMysql *param)				{ db = param; };
+
 	string	urlencode(string str);
 	string	urldecode(string str);
 

@@ -2850,7 +2850,7 @@ string  GetUserNotificationInJSONFormat(string sqlRequest, CMysql *db, CUser *us
 			ostUserNotifications << "\"notificationTitle\":\"" << it.notification_title << "\",";
 			ostUserNotifications << "\"notificationStatus\":\"" << it.notificationStatus << "\"";
 
-			userNotificationEnrichment = GetUserNotificationSpecificDataByType(atol(it.feed_actionTypeId.c_str()), atol(it.feed_actionId.c_str()), db, user);
+			userNotificationEnrichment = GetUserNotificationSpecificDataByType(stol(it.feed_actionTypeId), stol(it.feed_actionId), db, user);
 			if(userNotificationEnrichment.length()) ostUserNotifications << "," << userNotificationEnrichment;
 
 			ostUserNotifications << "}";
@@ -2937,8 +2937,8 @@ auto CouldCompanyBeDeleted(string company_id, CMysql *db, CUser *user) -> string
 
 		if(affected)
 		{
-			char	buffer[50];
-			sprintf(buffer, ngettext("%d employees", "%d employees", affected), affected);
+			char	buffer[50];    /* Flawfinder: ignore */
+			sprintf(buffer, ngettext("%d employees", "%d employees", affected), affected);    /* Flawfinder: ignore */
 
 			error_message = gettext("company hosts") + " "s + buffer;
 			MESSAGE_DEBUG("", "", error_message);

@@ -4,9 +4,9 @@ auto LogEnvVariables() -> void
 {
 	MESSAGE_DEBUG("", "", "start");
 
-	if(getenv("HTTP_REFERER")) MESSAGE_DEBUG("", "", "HTTP_REFERER: "s + getenv("HTTP_REFERER"));
-	if(getenv("REMOTE_ADDR")) MESSAGE_DEBUG("", "", "REMOTE_ADDR: "s + getenv("REMOTE_ADDR"));
-	if(getenv("SERVER_NAME")) MESSAGE_DEBUG("", "", "SERVER_NAME: "s + getenv("SERVER_NAME"));
+	if(getenv("HTTP_REFERER")) MESSAGE_DEBUG("", "", "HTTP_REFERER: "s + getenv("HTTP_REFERER"));     /* Flawfinder: ignore */
+	if(getenv("REMOTE_ADDR")) MESSAGE_DEBUG("", "", "REMOTE_ADDR: "s + getenv("REMOTE_ADDR"));     /* Flawfinder: ignore */
+	if(getenv("SERVER_NAME")) MESSAGE_DEBUG("", "", "SERVER_NAME: "s + getenv("SERVER_NAME"));     /* Flawfinder: ignore */
 
 	MESSAGE_DEBUG("", "", "finish");
 
@@ -59,13 +59,13 @@ auto RegisterInitialVariables(CCgi *indexPage, CMysql *db, CUser *user) -> bool
 	indexPage->RegisterVariableForce("EMAIL_FROM_DOMAIN", GetDomain());
 	indexPage->RegisterVariableForce("site_theme", DEFAULT_SITE_THEME);
 
-	if(getenv("REMOTE_ADDR")) indexPage->RegisterVariableForce("REMOTE_ADDR", getenv("REMOTE_ADDR"));
+	if(getenv("REMOTE_ADDR")) indexPage->RegisterVariableForce("REMOTE_ADDR", getenv("REMOTE_ADDR"));     /* Flawfinder: ignore */
 	else
 	{
 		MESSAGE_ERROR("", "", "env variable REMOTE_ADDR doesn't defined");
 		result = false;
 	}
-	if(getenv("SERVER_NAME")) indexPage->RegisterVariableForce("SERVER_NAME", getenv("SERVER_NAME"));
+	if(getenv("SERVER_NAME")) indexPage->RegisterVariableForce("SERVER_NAME", getenv("SERVER_NAME"));     /* Flawfinder: ignore */
 	else
 	{
 		MESSAGE_ERROR("", "", "env variable SERVER_NAME doesn't defined");
@@ -167,7 +167,7 @@ static auto __LoadUserAndSetVariables(string login, CCgi *indexPage, CMysql *db,
 	return error_message;
 }
 
-auto GenerateSession(string action, CCgi *indexPage, CMysql *db, CUser *user) -> string
+auto GenerateSession(string action, c_config *config, CCgi *indexPage, CMysql *db, CUser *user) -> string
 {
 	auto			locale = LOCALE_DEFAULT;
 	auto			sessidHTTP = ""s;
@@ -210,33 +210,33 @@ auto GenerateSession(string action, CCgi *indexPage, CMysql *db, CUser *user) ->
 		}
 
 /*
-		if(isAllowed_NoSession_Action(action))
+		if(isAllowed_Guest_Action(action))
 		{
 			// --- guest user access,
 			// --- 1) user wall, if exact link known
 		}
 		else
 		{
-			action = GUEST_USER_DEFAULT_ACTION;
+			action = config->GetFromFile("default_action", "guest");
 		}
 */
 		if(__LoadUserAndSetVariables("Guest", indexPage, db, user).empty())
 		{
-			if(isAllowed_NoSession_Action(action))
+			if(isAllowed_Guest_Action(action, config))
 			{
 				// --- guest user access,
 				// --- 1) user wall, if exact link known
 			}
 			else
 			{
-				action = GUEST_USER_DEFAULT_ACTION;
+				action = config->GetFromFile("default_action", "guest");
 			}
 		}
 		else
 		{
 			MESSAGE_ERROR("", action, "can't load Guest user profile");
 
-			action = GUEST_USER_DEFAULT_ACTION;
+			action = config->GetFromFile("default_action", "guest");
 		}
 	}
 	else
@@ -296,7 +296,7 @@ auto GenerateSession(string action, CCgi *indexPage, CMysql *db, CUser *user) ->
 
 			if(!indexPage->Cookie_Expire()) MESSAGE_ERROR("", action, "fail to expire session");
 
-			indexPage->Redirect("/" + GUEST_USER_DEFAULT_ACTION + "?rand=" + GetRandom(10));
+			indexPage->Redirect("/" + config->GetFromFile("default_action", "guest") + "?rand=" + GetRandom(10));
 		} // --- if(indexPage->SessID_Load_FromDB(sessidHTTP))
 	} // --- if(sessidHTTP.length() < 5)
 
@@ -305,7 +305,7 @@ auto GenerateSession(string action, CCgi *indexPage, CMysql *db, CUser *user) ->
 	{
 		if(user)
 		{
-			action = GetDefaultActionFromUserType(user, db);
+			action = config->GetFromFile("default_action", user->GetType());
 
 			MESSAGE_DEBUG("", "", "META-registration: action has been overridden user.type(" + user->GetType() + ") default action [action = " + action + "]");
 
@@ -322,7 +322,7 @@ auto GenerateSession(string action, CCgi *indexPage, CMysql *db, CUser *user) ->
 	return action;
 }
 
-auto 		LogoutIfGuest(string action, CCgi *indexPage, CMysql *db, CUser *user) -> string
+auto 		LogoutIfGuest(string action, c_config *config, CCgi *indexPage, CMysql *db, CUser *user) -> string
 {
 	MESSAGE_DEBUG("", "", "start");
 
@@ -342,10 +342,10 @@ auto 		LogoutIfGuest(string action, CCgi *indexPage, CMysql *db, CUser *user) ->
 		else
 		{
 			// --- eventually it will throw exception (may need to be reworked)
-			indexPage->Redirect("/" + GUEST_USER_DEFAULT_ACTION + "?rand=" + GetRandom(10));
+			indexPage->Redirect("/" + config->GetFromFile("default_action", "guest") + "?rand=" + GetRandom(10));
 		}
 
-		action = GUEST_USER_DEFAULT_ACTION;
+		action = config->GetFromFile("default_action", "guest");
 		MESSAGE_DEBUG("", "", "re-login required, reset action");
 	}
 

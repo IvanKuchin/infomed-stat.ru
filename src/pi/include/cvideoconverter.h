@@ -19,6 +19,12 @@ extern "C"
 
 using namespace std;
 
+#define	FEEDVIDEO_STDOUT							string(LOGDIR) + DOMAIN_NAME + ".ffmpeg.stdout"
+#define	FEEDVIDEO_STDERR							string(LOGDIR) + DOMAIN_NAME + ".ffmpeg.stderr"
+#define	FEEDVIDEO_NUMBER_OF_FOLDERS					512
+#define	FEEDVIDEO_MAX_WIDTH							800
+#define	FEEDVIDEO_MAX_HEIGHT						800
+
 class CVideoConverter
 {
 	bool				_isSuccessConvert = false;

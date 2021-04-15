@@ -63,7 +63,7 @@ auto C_Date_Spelling::SpellMonth(int month_num) -> string
 
 auto C_Date_Spelling::GetFormatted(string format) -> string
 {
-	char	buffer[256];
+	char	buffer[256];    /* Flawfinder: ignore */
 
 	MESSAGE_DEBUG("", "", "start");
 

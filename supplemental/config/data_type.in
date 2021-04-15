@@ -1,0 +1,8 @@
+__default__	= image
+
+template_sow			= template
+template_psow			= template
+template_costcenter		= template
+template_company		= template
+template_agreement_company	= template
+template_agreement_sow		= template

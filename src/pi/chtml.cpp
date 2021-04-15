@@ -15,7 +15,7 @@ static size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, voi
 	unique_ptr<char[]>	tempSmartPointer = make_unique<char[]>(bufferLength + 1); // "+1" must host last '\0'	
 	char				*bufferToWrite = tempSmartPointer.get();
 
-	memcpy(bufferToWrite, contents, bufferLength);
+	memcpy(bufferToWrite, contents, bufferLength);   /* Flawfinder: ignore */
 	bufferToWrite[bufferLength] = 0;
 
 	obj->AppendToHTMLPage(bufferToWrite);
@@ -446,7 +446,7 @@ bool CHTML::ParseHTMLPage()
 	    		}
 
 	            // --- Save file to "/tmp/" for checking of image validity
-	            f = fopen(string("/tmp/tmp_" + filePrefix + fileExtension).c_str(), "w");
+	            f = fopen(string("/tmp/tmp_" + filePrefix + fileExtension).c_str(), "w");    /* Flawfinder: ignore */
 	            if(f != NULL)
 	            {
 	            	if(DownloadFile(metaPreviewImageURL, f))
@@ -524,7 +524,7 @@ bool CHTML::PerformRequest(string param)
 			curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
 
 			// --- low security
-			curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
 
 			if(isPostJSON())
 			{
