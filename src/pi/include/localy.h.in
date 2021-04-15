@@ -26,11 +26,6 @@
 
 #define	DOMAIN_NAME									"${MAIN_DOMAIN_NAME}"s
 
-#define	DB_FALLBACK_NAME							"${MAIN_DOMAIN_NAME}"s
-#define	DB_FALLBACK_LOGIN							"${PROJECT_NAME}"s
-#define	DB_FALLBACK_PASSWORD						"${PROJECT_NAME}"s
-#define	DB_FALLBACK_HOST							"localhost"s
-
 #define	LOCALE_RUSSIAN								"ru_RU.UTF-8"s
 #define	LOCALE_ENGLISH								"en_US.UTF-8"s
 #define	LOCALE_DEFAULT								LOCALE_RUSSIAN

@@ -51,12 +51,12 @@ map<string, string>		c_config_cache::Get(const string &file, const vector<string
 			if(file_content.find(entry) != file_content.end())
 			{
 				result[entry] = file_content.find(entry)->second;
-				MESSAGE_DEBUG("", "", "actual entry taken from the file(" + file + "): " + entry + " = " + (entry.find("PASSWORD") != string::npos ? "xxxxxxxx" : result[entry]));
+				// MESSAGE_DEBUG("", "", "actual entry taken from the file(" + file + "): " + entry + " = " + (entry.find("PASSWORD") != string::npos ? "xxxxxxxx" : result[entry]));
 			}
 			else if(file_content.find(DEFAULT_KEY) != file_content.end())
 			{
 				result[entry] = file_content.find(DEFAULT_KEY)->second;
-				MESSAGE_DEBUG("", "", "default entry taken from the file(" + file + "): " + entry + " = " + (entry.find("PASSWORD") != string::npos ? "xxxxxxxx" : result[entry]));
+				// MESSAGE_DEBUG("", "", "default entry taken from the file(" + file + "): " + entry + " = " + (entry.find("PASSWORD") != string::npos ? "xxxxxxxx" : result[entry]));
 			}
 			else
 			{
@@ -95,7 +95,7 @@ bool c_config_tag::isFound()
 				tag_type	= VAR;
 				result		= true;
 
-				MESSAGE_DEBUG("", "", "tag var: " + GetVar());
+				// MESSAGE_DEBUG("", "", "tag var: " + GetVar());
 			}
 			else if(tag_content.find(CONFIG_EXPR) == 0)
 			{
@@ -114,7 +114,7 @@ bool c_config_tag::isFound()
 					result		= true;
 				}
 
-				MESSAGE_DEBUG("", "", "tag config: " + GetFile() + ":" + GetVar());
+				// MESSAGE_DEBUG("", "", "tag config: " + GetFile() + ":" + GetVar());
 			}
 			else
 			{
@@ -123,12 +123,12 @@ bool c_config_tag::isFound()
 		}
 		else
 		{
-			MESSAGE_DEBUG("", "", "opening tag marker not found");
+			MESSAGE_ERROR("", "", "opening tag marker not found");
 		}
 	}
 	else
 	{
-		MESSAGE_DEBUG("", "", "closing tag marker not found");
+		// MESSAGE_DEBUG("", "", "closing tag marker not found");
 	}
 
 	MESSAGE_DEBUG("", "", "finish (" + to_string(result) + ")");
@@ -236,7 +236,7 @@ map<string, string>	c_config::ReadFileContent(const string &file)
 			{
 				if(state == KEY_VALUE_PAIR)
 				{
-					MESSAGE_DEBUG("", "", "key value pair (" + line + ")");
+					// MESSAGE_DEBUG("", "", "key value pair (" + line + ")");
 
 					auto	key_value = ExtractKeyValue(line);
 
@@ -264,12 +264,12 @@ map<string, string>	c_config::ReadFileContent(const string &file)
 					}
 					else
 					{
-						MESSAGE_DEBUG("", "", "key is empty in line (" + line + ") -> skip the line");
+						// MESSAGE_DEBUG("", "", "key is empty in line (" + line + ") -> skip the line");
 					}
 				}
 				else if(state == MULTILINE_VALUE)
 				{
-					MESSAGE_DEBUG("", "", "multiline progressing (" + line + ")");
+					// MESSAGE_DEBUG("", "", "multiline progressing (" + line + ")");
 
 					// look for multiline value
 					if(IsMultilineMarkerPresent(line))
@@ -280,7 +280,7 @@ map<string, string>	c_config::ReadFileContent(const string &file)
 							multiline_value += StripMultilineMarker(line);
 							result[multiline_key] = multiline_value;
 
-							MESSAGE_DEBUG("", "", "multiline value: " + multiline_key + " -> (" + multiline_value + ")");
+							// MESSAGE_DEBUG("", "", "multiline value: " + multiline_key + " -> (" + multiline_value + ")");
 							multiline_key = "";
 							multiline_value = "";
 							state = KEY_VALUE_PAIR;

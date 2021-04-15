@@ -268,10 +268,10 @@ int CMysql::Connect(c_config * const config)
 {
     auto        credentials = config->GetFromFile(CONFIG_SECRET, {"DB_NAME"s, "DB_LOGIN"s, "DB_PASSWORD"s, "DB_HOST"s});
     auto        valid_cred  = (credentials.size() ? true : false);
-    auto        db_name     = (valid_cred ? credentials["DB_NAME"]      : __DB_FALLBACK_NAME);
-    auto        db_login    = (valid_cred ? credentials["DB_LOGIN"]     : __DB_FALLBACK_LOGIN);
-    auto        db_pass     = (valid_cred ? credentials["DB_PASSWORD"]  : __DB_FALLBACK_PASSWORD);
-    auto        db_host     = (valid_cred ? credentials["DB_HOST"]      : __DB_FALLBACK_HOST);
+    auto        db_name     = (valid_cred ? credentials["DB_NAME"]      : DB_FALLBACK_NAME);
+    auto        db_login    = (valid_cred ? credentials["DB_LOGIN"]     : DB_FALLBACK_LOGIN);
+    auto        db_pass     = (valid_cred ? credentials["DB_PASSWORD"]  : DB_FALLBACK_PASSWORD);
+    auto        db_host     = (valid_cred ? credentials["DB_HOST"]      : DB_FALLBACK_HOST);
 
     if(!valid_cred)
     {
