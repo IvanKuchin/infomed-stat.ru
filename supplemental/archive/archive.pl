@@ -238,7 +238,7 @@ if($action =~ /^--backup/)
 	}
 
 	print "archiving ....\n";
-	$system_err = system("tar -czf ".$archive_filename." *");
+	$system_err = system("tar -czhf ".$archive_filename." *");
 	if($system_err) { print "\n\narchiving\t[ERROR]\n"; }
 	else			{ print "archiving\t[OK]\n"; }
 
