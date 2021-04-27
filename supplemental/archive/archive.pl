@@ -7,6 +7,8 @@ use File::Path;
 use Cwd;
 use strict;
 my	($str, $key, $DEBUG, $outi, $command, $archive_filename);
+my	$main_subdomain;
+my	$image_subdomain;
 # my	($mysqlhost, $mysqllogin, $mysqlpass, $mysqldb);
 my	($action);
 my	$timestamp = strftime "%Y%m%d%H%M%S", localtime;
@@ -123,6 +125,8 @@ if($action =~ /^--restore/)
 		{
 			print "Changing DEV -> WWW in src files\n";
 
+			$main_subdomain		= "www";
+			$image_subdomain	= "images";
 			ChangeDevToWWW($config{replace_dev_to_www_files});
 			ChangeDevImagesToImages($config{replace_devimages_to_images_files});
 		}
@@ -134,6 +138,8 @@ if($action =~ /^--restore/)
 		{
 			print "Changing WWW -> DEV in src files\n";
 
+			$main_subdomain		= "dev";
+			$image_subdomain	= "devimages";
 			ChangeWWWToDev($config{replace_dev_to_www_files});
 			ChangeImagesToDevImages($config{replace_devimages_to_images_files});
 		}
@@ -153,6 +159,8 @@ if($action =~ /^--restore/)
 		{
 			print "Changing DEV -> DEMO in src files\n";
 
+			$main_subdomain		= "demo";
+			$image_subdomain	= "demoimages";
 			ChangeDevToDemo($config{replace_dev_to_www_files});
 			ChangeDevImagesToDemoImages($config{replace_devimages_to_images_files});
 		}
@@ -305,7 +313,8 @@ if($action =~ /^--backup/)
 	}
 
 	print "cmake project on local server...\n";
-	$system_err = system("cd ".$config{project_binary_dir}." && cmake -DCMAKE_BUILD_TYPE=debug .."); # --- save around 20MB per backup
+	# --- cmake will re-use cached settings, no need to point it out explicitely
+	$system_err = system("cd ".$config{project_binary_dir}." && cmake .."); # --- save around 20MB per backup
 	if($system_err) { print "\n\nproject cmake\t[ERROR]\n"; }
 	else			{ print "project cmake\t[OK]\n"; }
 }
@@ -459,7 +468,7 @@ if($action =~ /^--restore/)
 	print "restoring production folders\n";
 	Dirmove_Local_To_Production();
 
-	if(CompileAndInstall())
+	if(CompileAndInstall($main_subdomain, $image_subdomain))
 	{
 		#
 		# change ownership of html and cgi-bin folders
@@ -480,6 +489,9 @@ if($action =~ /^--restore/)
 #
 sub CompileAndInstall
 {
+	my $__main_subdomain = shift;
+	my $__image_subdomain = shift;
+
 	#
 	# ATTENTION !!!
 	# if you want to move compilation phase up , then RemoveProdFolders and DirmoveLocalToProduction 
@@ -489,7 +501,7 @@ sub CompileAndInstall
 	# new workflow: 
 	#	RemoveProdSrcDir -> MoveSrcDirsToProd -> compile -> RemoveProdHTMLDir -> MoveHTMLDirsToProd -> build
 	#
-	system("cd ".$folders_to_backup{SRCDIR}."/build && cmake -DCMAKE_BUILD_TYPE=debug ..");
+	system("cd ".$folders_to_backup{SRCDIR}."/build && cmake -DCMAKE_BUILD_TYPE=debug -DMAIN_SUBDOMAIN=".$__main_subdomain." -DIMAGE_SUBDOMAIN=".$__image_subdomain." ..");
 	#
 	# renice process to provide enough resources to mysql and apache.
 	# don't change it to lowest value (19),

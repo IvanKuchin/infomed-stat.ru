@@ -9,6 +9,25 @@ endif()
 cmake_minimum_required(VERSION 3.5)
 
 project("infomed-stat.ru" CXX)
+
+option(MAIN_SUBDOMAIN "MAIN_SUBDOMAIN" OFF)
+option(IMAGE_SUBDOMAIN "IMAGE_SUBDOMAIN" OFF)
+
+message( "Project: " ${PROJECT_NAME} )
+
+if (${MAIN_SUBDOMAIN} STREQUAL OFF)
+    message( FATAL_ERROR "data sub-domain required (for ex: -DMAIN_SUBDOMAIN=www)" )
+endif()
+if (${IMAGE_SUBDOMAIN} STREQUAL OFF)
+    message( FATAL_ERROR "image sub-domain required (for ex: -DIMAGE_SUBDOMAIN=images)" )
+endif()
+
+set(MAIN_DOMAIN_NAME "${MAIN_SUBDOMAIN}.${PROJECT_NAME}")
+set(IMAGE_DOMAIN_NAME "${IMAGE_SUBDOMAIN}.${PROJECT_NAME}")
+
+message( "Web-server domain: "        ${MAIN_DOMAIN_NAME} )
+message( "Image web domain: "         ${IMAGE_DOMAIN_NAME} )
+
 set(My_VERSION_MAJOR 0)
 set(My_VERSION_MINOR 1)
 
@@ -42,6 +61,24 @@ set(PDF_FONT_PROJECT_DIR	${PROJECT_SOURCE_DIR}/supplemental/libpdf-font)
 set(LIBXL_PROJECT_DIR		${PROJECT_SOURCE_DIR}/libxl-3.8.4.0/)
 
 # ---- install variables
+option(ROOTDIR                  "ROOTDIR"       OFF)
+option(IMAGEROOTDIR             "IMAGEROOTDIR"  OFF)
+option(LOCAL_INSTALL_DIR        "LOCAL_INSTALL_DIR"     OFF)
+
+if (${ROOTDIR} STREQUAL OFF)
+    set(ROOTDIR                 /home/httpd/${MAIN_DOMAIN_NAME})
+endif()
+if (${IMAGEROOTDIR} STREQUAL OFF)
+    set(IMAGEROOTDIR            /home/httpd/${IMAGE_DOMAIN_NAME})
+endif()
+if (${LOCAL_INSTALL_DIR} STREQUAL OFF)
+    set(LOCAL_INSTALL_DIR       ${CMAKE_INSTALL_PREFIX}/share/${MAIN_DOMAIN_NAME})
+endif()
+
+message( "Web-server path: "        ${ROOTDIR} )
+message( "Image web-server path: "  ${IMAGEROOTDIR} )
+message( "Data folder path: "       ${LOCAL_INSTALL_DIR} )
+
 set(ROOTDIR			"/home/httpd/${MAIN_DOMAIN_NAME}")
 set(IMAGEROOTDIR		"/home/httpd/${IMAGE_DOMAIN_NAME}")
 set(CGIDIR			${ROOTDIR}/cgi-bin)
@@ -80,7 +117,7 @@ add_subdirectory(supplemental/config/)
 add_subdirectory(po/)
 
 # --- Install time
-install(DIRECTORY DESTINATION ${LOG_DIR}  DIRECTORY_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_WRITE GROUP_READ)
+install(DIRECTORY DESTINATION ${LOG_DIR}  DIRECTORY_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_WRITE GROUP_READ WORLD_EXECUTE WORLD_WRITE WORLD_READ)
 install(DIRECTORY DESTINATION ${CONFIG_INSTALL_DIR} DIRECTORY_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ)
 
 # --- CTest
