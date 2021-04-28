@@ -1077,7 +1077,7 @@ sub Copy_Production_To_Local
 		if(isDirExists($folders_to_backup{$folder_id}))
 		{
 			print "\tcopying ".$folders_to_backup{$folder_id}." -> $folder_id";
-			system("cp -R ".$folders_to_backup{$folder_id}." $folder_id");
+			system("cp -R -L ".$folders_to_backup{$folder_id}." $folder_id");
 			print "\t[ok]\n";
 		}
 		else
