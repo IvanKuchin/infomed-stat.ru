@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:xenial as app
 
 ARG BUILD_REPO
 ARG MAIN_SUBDOMAIN=www
@@ -20,6 +20,14 @@ RUN echo repository is $BUILD_REPO
 # install basic utilities #
 ###########################
 RUN apt update &&  apt install --no-install-recommends --no-install-suggests -y git ca-certificates
+
+####################
+# install timezone #
+####################
+RUN apt-get install --no-install-recommends --no-install-suggests -y tzdata
+RUN cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+RUN echo "Europe/Moscow" > /etc/timezone
+RUN date
 
 ##############################
 # install additional locales #
@@ -136,3 +144,34 @@ RUN chown -R www-data:www-data ${LOCAL_INSTALL_DIR}
 STOPSIGNAL SIGTERM
 
 CMD ["apachectl", "-D", "FOREGROUND"]
+
+############################################################################################
+
+
+FROM app as cron
+
+ARG BUILD_REPO
+ARG MAIN_SUBDOMAIN
+ARG IMAGE_SUBDOMAIN
+ARG ROOTDIR
+ARG IMAGEROOTDIR
+ARG LOCAL_INSTALL_DIR
+
+LABEL maintainer="ivan.kuchin@gmail.com"
+LABEL org.opencontainers.image.source="https://github.com/IvanKuchin/${BUILD_REPO}"
+
+##############################
+# install and configure cron #
+##############################
+RUN apt-get install --no-install-recommends --no-install-suggests -y wget
+COPY --from=app ${LOCAL_INSTALL_DIR}/cron/cron_config /etc/cron.d/www
+RUN chmod 644 /etc/cron.d/www
+
+########################
+# create log directory #
+########################
+RUN mkdir ${LOCAL_INSTALL_DIR}/log/
+RUN chown www-data:www-data ${LOCAL_INSTALL_DIR}/log/
+
+CMD ["cron", "-f"]
+
