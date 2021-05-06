@@ -38,20 +38,14 @@ RUN locale-gen en_US.utf8
 RUN update-locale
 RUN export LC_ALL=en_US.utf8
 
-#########################################
-# libwebsocket copy from prev container #
-#########################################
-
 ##########################
 # copy from libwebsocket #
 ##########################
 # COPY --from=libwebsocket /usr/local/share/libwebsockets/ /usr/local/share/libwebsockets/
 
-COPY . /backend
-WORKDIR /backend
-RUN git clone --depth 1 https://github.com/IvanKuchin/backend_pi.git ./src/pi
-RUN git clone --depth 1 https://github.com/IvanKuchin/__BUILD_REPO__-ui.git /home/httpd/www
-
+########################
+# install dependencies #
+########################
 RUN apt-get install --no-install-recommends --no-install-suggests -y software-properties-common
 RUN add-apt-repository -y ppa:jonathonf/ffmpeg-4
 RUN apt update
@@ -81,6 +75,13 @@ RUN apt-get install --no-install-recommends --no-install-suggests -y wget
 RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb
 RUN dpkg -i  wkhtmltox_0.12.5-1.trusty_amd64.deb || true     # trick to force dpkg return successfull return code
 RUN apt install -f --no-install-recommends --no-install-suggests -y
+
+############
+# pull src #
+############
+COPY . /backend
+WORKDIR /backend
+RUN git clone --depth 1 https://github.com/IvanKuchin/backend_pi.git ./src/pi
 
 ##################
 # save commit id #
@@ -166,6 +167,7 @@ LABEL org.opencontainers.image.source="https://github.com/IvanKuchin/${BUILD_REP
 RUN apt-get install --no-install-recommends --no-install-suggests -y wget
 COPY --from=app ${LOCAL_INSTALL_DIR}/cron/cron_config /etc/cron.d/www
 RUN chmod 644 /etc/cron.d/www
+RUN chown root:root /etc/cron.d/www
 
 ########################
 # create log directory #
