@@ -1,4 +1,4 @@
-configure_file(cron_config.in		"${CRON_PROJECT_DIR}/${MAIN_DOMAIN_NAME}")
+configure_file(cron_config.in		"${CRON_PROJECT_DIR}/cron_config")
 configure_file(health.in		"${CRON_PROJECT_DIR}/health")
 configure_file(health_srcdiff.conf.in	"${CRON_PROJECT_DIR}/health_srcdiff.conf")
 
@@ -7,7 +7,7 @@ install(FILES		"${CRON_PROJECT_DIR}/health"
 	PERMISSIONS	OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
 )
 
-install(FILES		"${CRON_PROJECT_DIR}/${MAIN_DOMAIN_NAME}"
+install(FILES		"${CRON_PROJECT_DIR}/cron_config"
 	DESTINATION	${CRON_INSTALL_DIR}
 )
 

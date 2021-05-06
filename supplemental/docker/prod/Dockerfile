@@ -87,6 +87,7 @@ RUN mkdir /home/httpd/www/logs/
 RUN cp -R /home/httpd/www/supplemental/apache2 /etc
 
 RUN a2enmod cgi
+RUN a2enmod rewrite
 RUN a2dissite `ls /etc/apache2/sites-enabled/`
 RUN a2ensite *www
 RUN a2enmod expires
