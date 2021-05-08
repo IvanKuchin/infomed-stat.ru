@@ -31,9 +31,6 @@ message( "Image web domain: "         ${IMAGE_DOMAIN_NAME} )
 set(My_VERSION_MAJOR 0)
 set(My_VERSION_MINOR 1)
 
-set(MAIN_DOMAIN_NAME "dev.${PROJECT_NAME}")
-set(IMAGE_DOMAIN_NAME "devimages.${PROJECT_NAME}")
-
 set(CMAKE_CXX_STANDARD 14)
 # --- changing CXX_FLAGS is _not_ the best practise
 # --- cmake 3.12 have -D switch, capable remove definition per-target
@@ -56,6 +53,7 @@ set(MAXMIND_PROJECT_DIR		${PROJECT_BINARY_DIR}/share/${MAIN_DOMAIN_NAME}/maxmind
 set(CI_SCRIPT_PROJECT_DIR	${PROJECT_BINARY_DIR}/share/${MAIN_DOMAIN_NAME}/ci-scripts)
 set(LOCALE_PROJECT_DIR		${PROJECT_BINARY_DIR}/share/${MAIN_DOMAIN_NAME}/locale)
 set(CONFIG_PROJECT_DIR		${PROJECT_BINARY_DIR}/share/${MAIN_DOMAIN_NAME}/config)
+set(SSMTP_PROJECT_DIR		${PROJECT_BINARY_DIR}/share/${MAIN_DOMAIN_NAME}/ssmtp)
 set(GIT_PROJECT_DIR             ${PROJECT_SOURCE_DIR}/supplemental/git)
 set(PDF_FONT_PROJECT_DIR	${PROJECT_SOURCE_DIR}/supplemental/libpdf-font)
 set(LIBXL_PROJECT_DIR		${PROJECT_SOURCE_DIR}/libxl-3.8.4.0/)
@@ -90,9 +88,10 @@ set(GIT_INSTALL_DIR             ${LOCAL_INSTALL_DIR}/git)
 set(PDF_FONT_INSTALL_DIR	${LOCAL_INSTALL_DIR}/libpdf-font)
 set(LIBXL_INSTALL_DIR		${LOCAL_INSTALL_DIR}/libxl)
 set(CONFIG_INSTALL_DIR		${LOCAL_INSTALL_DIR}/config)
+set(SSMTP_INSTALL_DIR		${LOCAL_INSTALL_DIR}/ssmtp)
 
 # ---- libxl library is not in apt-reporsitory, therefore is not installed on the OS
-# ---- to treat it as regulat lib I have to copy it to /usr/local/share..... folder
+# ---- to treat it as a regular lib I have to copy it to /usr/local/share..... folder
 # ---- 1) copy libxl to application location
 # ---- 2) work with it as w/ regular library
 if(EXISTS ${LIBXL_INSTALL_DIR})
@@ -111,6 +110,8 @@ add_subdirectory(supplemental/ci-scripts/)
 add_subdirectory(supplemental/libpdf-font/)
 add_subdirectory(supplemental/git/)
 add_subdirectory(supplemental/config/)
+add_subdirectory(supplemental/ssmtp/)
+add_subdirectory(supplemental/init_d/)
 add_subdirectory(po/)
 
 # --- Install time
