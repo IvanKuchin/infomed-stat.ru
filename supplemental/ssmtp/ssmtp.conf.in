@@ -10,7 +10,7 @@ root=postmaster
 mailhub=mx.${PROJECT_NAME}
 
 # Where will the mail seem to come from?
-rewriteDomain=${PROJECT_NAME}
+#rewriteDomain=
 
 # The full hostname
 hostname=localhost
@@ -18,4 +18,4 @@ hostname=localhost
 # Are users allowed to set their own From: address?
 # YES - Allow the user to specify their own From: address
 # NO - Use the system generated From: address
-#FromLineOverride=YES
+FromLineOverride=YES
