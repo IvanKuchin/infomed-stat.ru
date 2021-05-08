@@ -26,7 +26,7 @@ echo --------------- general punctuation detector
 cat -v ${LOG_DIR}backend.log | grep "general punctuation detected" | grep `date '+%b\s%d'`
 
 echo --------------- log: lost pictures in DB [setID = 0]
-echo "select \`id\` from \`feed_images\` where \`setID\`='0';" | mysql -u ${PROJECT_NAME}RO -p${PROJECT_NAME}RO ${MAIN_DOMAIN_NAME} 2>/dev/null | grep -v id
+echo "select \`id\` from \`feed_images\` where \`setID\`='0';" | mysql --login-path=local ${MAIN_DOMAIN_NAME} 2>/dev/null | grep -v id
 
 echo --------------- src repository check
 cd ${CRON_INSTALL_DIR} && ./health_srcdiff.pl
