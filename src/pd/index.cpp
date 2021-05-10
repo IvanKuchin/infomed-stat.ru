@@ -110,7 +110,7 @@ int main()
 		if(db.Connect(&config) < 0)
 		{
 			MESSAGE_ERROR("", action, "can't connect to DB");
-			throw CExceptionHTML("MySql connection");
+			throw CException("MySql connection");
 		}
 
 		indexPage.SetDB(&db);
