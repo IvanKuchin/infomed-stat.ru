@@ -38,11 +38,6 @@ RUN locale-gen en_US.utf8
 RUN update-locale
 RUN export LC_ALL=en_US.utf8
 
-##########################
-# copy from libwebsocket #
-##########################
-# COPY --from=libwebsocket /usr/local/share/libwebsockets/ /usr/local/share/libwebsockets/
-
 ########################
 # install dependencies #
 ########################
@@ -75,6 +70,16 @@ RUN apt-get install --no-install-recommends --no-install-suggests -y wget
 RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb
 RUN dpkg -i  wkhtmltox_0.12.5-1.trusty_amd64.deb || true     # trick to force dpkg return successfull return code
 RUN apt install -f --no-install-recommends --no-install-suggests -y
+
+#############################
+# libwebsocket installation #
+#############################
+RUN git clone -b v2.2.0 --depth 1 https://github.com/warmcat/libwebsockets.git /libwebsockets
+WORKDIR /libwebsockets
+RUN mkdir build
+RUN cd build \
+    && cmake -DLWS_WITHOUT_DAEMONIZE:BOOL=FALSE -DLWS_WITH_STATIC=1 -DLWS_WITH_SHARED=1 -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/share/libwebsockets/ .. \
+    && make install
 
 ############
 # pull src #
@@ -167,7 +172,7 @@ RUN chown -R www-data:www-data ${LOCAL_INSTALL_DIR}
 
 STOPSIGNAL SIGTERM
 
-CMD ["apachectl", "-D", "FOREGROUND"]
+CMD ["apachectl", "-D", "FOREGROUND", ""]
 
 
 ############################################################################################
@@ -191,3 +196,18 @@ RUN chmod 644 /etc/cron.d/www
 RUN chown root:root /etc/cron.d/www
 
 CMD ["cron", "-f"]
+
+############################################################################################
+
+
+FROM app as chat
+
+ARG BUILD_REPO
+ARG MAIN_SUBDOMAIN
+ARG IMAGE_SUBDOMAIN
+ARG ROOTDIR
+ARG IMAGEROOTDIR
+ARG LOCAL_INSTALL_DIR
+
+WORKDIR ${LOCAL_INSTALL_DIR}/chat
+CMD ["./chat-server"]
