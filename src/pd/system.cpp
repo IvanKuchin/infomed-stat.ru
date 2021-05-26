@@ -536,37 +536,49 @@ int main()
 		c.SetLanguage(indexPage.GetLanguage());
 		c.SetDB(&db);
 
-		MESSAGE_ERROR("", action, "catch CExceptionHTML: exception reason: [" + c.GetReason() + "]");
+		MESSAGE_DEBUG("", action, "catch CExceptionHTML: DEBUG exception reason: [" + c.GetReason() + "]");
 
-		if(!indexPage.SetTemplate(c.GetTemplate())) return(-1);
+		if(!indexPage.SetTemplate(c.GetTemplate()))
+		{
+			MESSAGE_ERROR("", "", "template (" + c.GetTemplate() + ") not found");
+			return(-1);
+		}
 
 		indexPage.RegisterVariable("content", c.GetReason());
 		indexPage.OutTemplate();
-		return(0);
+
+		return(-1);
 	}
 	catch(CException &c)
 	{
-		MESSAGE_ERROR("", action, "catch CException: exception reason: [" + c.GetReason() + "]");
+		MESSAGE_ERROR("", action, "catch CException: exception: ERROR  " + c.GetReason());
 
-		if(!indexPage.SetTemplateFile("templates/error.htmlt")) return(-1);
+		if(!indexPage.SetTemplateFile("templates/error.htmlt"))
+		{
+			MESSAGE_ERROR("", "", "template not found");
+			return(-1);
+		}
 
 		indexPage.RegisterVariable("content", c.GetReason());
 		indexPage.OutTemplate();
+
 		return(-1);
 	}
 	catch(exception& e)
 	{
-		MESSAGE_ERROR("", action, "catch standard exception: [" + e.what() + "]");
+		MESSAGE_ERROR("", action, "catch(exception& e): catch standard exception: ERROR  " + e.what());
 
 		if(!indexPage.SetTemplateFile("templates/error.htmlt"))
 		{
+			MESSAGE_ERROR("", "", "template not found");
 			return(-1);
 		}
+		
 		indexPage.RegisterVariable("content", e.what());
 		indexPage.OutTemplate();
+
 		return(-1);
 	}
 
 	return(0);
 }
-
