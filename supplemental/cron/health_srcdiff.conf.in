@@ -1,4 +1,4 @@
-nodiff_files => [
+nodiff_files_src => [
     "account.cpp",
     "avataruploader.cpp",
     "c_archive.cpp",
@@ -70,8 +70,41 @@ nodiff_files => [
     "cron_daily_pi.h",
     "system.cpp",
 
-    # "src/pi/CMakeLists.txt",
+    "git_commit.pl",
 
+    "archive.pl",
+    "health_srcdiff.pl",
+    "health_srcdiff.conf.in",
+    "cron_config.in",
+
+    "CMakeModules/FindLibArchive.cmake",
+    "CMakeModules/FindLibAVCodec.cmake",
+    "CMakeModules/FindLibAVFormat.cmake",
+    "CMakeModules/FindLibAVUtil.cmake",
+    "CMakeModules/FindLibHPDF.cmake",
+    "CMakeModules/FindLibImageMagick.cmake",
+    "CMakeModules/FindLibMaxMindDB.cmake",
+    "CMakeModules/FindLibRapidJSON.cmake",
+    "CMakeModules/FindLibSSL.cmake",
+    "CMakeModules/FindLibSwScale.cmake",
+    "CMakeModules/FindLibWebSockets.cmake",
+    "CMakeModules/FindLibWkhtmlToX.cmake",
+    "CMakeModules/FindLibXL.cmake",
+    "CMakeModules/FindLibZ.cmake",
+
+    "supplemental/config/CMakeLists.txt",
+
+    ".github/workflows/release-drafter.yml",
+    ".github/workflows/spell_check.yml",
+    ".github/workflows/super_linter.yml",
+    ".github/actions/release-drafter/release-drafter.yaml",
+    ".github/actions/spell_check/only.txt",
+    ".github/actions/spell_check/excludes.txt",
+    ".github/actions/linters/.eslintrc.yaml",
+],
+
+
+nodiff_files_html => [
     "helpdesk.css",
     "login.css",
     "admin/common.css",
@@ -126,30 +159,6 @@ nodiff_files => [
     "ru/mails/helpdesk_notification_existing_case.htmlt",
 
     "admin_header.htmlt",
-
-    "git_commit.pl",
-
-    "archive.pl",
-    "health_srcdiff.pl",
-    "health_srcdiff.conf.in",
-    "cron_config.in",
-
-    "CMakeModules/FindLibArchive.cmake",
-    "CMakeModules/FindLibAVCodec.cmake",
-    "CMakeModules/FindLibAVFormat.cmake",
-    "CMakeModules/FindLibAVUtil.cmake",
-    "CMakeModules/FindLibHPDF.cmake",
-    "CMakeModules/FindLibImageMagick.cmake",
-    "CMakeModules/FindLibMaxMindDB.cmake",
-    "CMakeModules/FindLibRapidJSON.cmake",
-    "CMakeModules/FindLibSSL.cmake",
-    "CMakeModules/FindLibSwScale.cmake",
-    "CMakeModules/FindLibWebSockets.cmake",
-    "CMakeModules/FindLibWkhtmlToX.cmake",
-    "CMakeModules/FindLibXL.cmake",
-    "CMakeModules/FindLibZ.cmake",
-
-    "supplemental/config/CMakeLists.txt",
 
     ".github/workflows/release-drafter.yml",
     ".github/workflows/spell_check.yml",
