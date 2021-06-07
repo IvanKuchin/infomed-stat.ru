@@ -149,6 +149,8 @@ nodiff_files => [
     "CMakeModules/FindLibXL.cmake",
     "CMakeModules/FindLibZ.cmake",
 
+    "supplemental/config/CMakeLists.txt",
+
     ".github/workflows/release-drafter.yml",
     ".github/workflows/spell_check.yml",
     ".github/workflows/super_linter.yml",
