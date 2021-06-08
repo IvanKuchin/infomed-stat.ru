@@ -88,7 +88,6 @@ set(GIT_INSTALL_DIR             ${LOCAL_INSTALL_DIR}/git)
 set(PDF_FONT_INSTALL_DIR	${LOCAL_INSTALL_DIR}/libpdf-font)
 set(LIBXL_INSTALL_DIR		${LOCAL_INSTALL_DIR}/libxl)
 set(CONFIG_INSTALL_DIR		${LOCAL_INSTALL_DIR}/config)
-set(SECRET_INSTALL_DIR		${LOCAL_INSTALL_DIR}/secret)
 set(SSMTP_INSTALL_DIR		${LOCAL_INSTALL_DIR}/ssmtp)
 
 # ---- libxl library is not in apt-reporsitory, therefore is not installed on the OS
