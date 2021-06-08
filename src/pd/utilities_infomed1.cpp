@@ -2938,7 +2938,7 @@ auto CouldCompanyBeDeleted(string company_id, CMysql *db, CUser *user) -> string
 		if(affected)
 		{
 			char	buffer[50];    /* Flawfinder: ignore */
-			sprintf(buffer, ngettext("%d employees", "%d employees", affected), affected);    /* Flawfinder: ignore */
+			snprintf(buffer, sizeof(buffer) - 1, ngettext("%d employees", "%d employees", affected), affected);    /* Flawfinder: ignore */
 
 			error_message = gettext("company hosts") + " "s + buffer;
 			MESSAGE_DEBUG("", "", error_message);

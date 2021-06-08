@@ -26,34 +26,34 @@ sub LookforDiff()
     $root_src_dir = DefineRootSrcDir();
     if($root_src_dir eq "")
     {
-	PrintError("fail to define root SRC dir");
+		PrintError("fail to define root SRC dir");
     }
     else
     {
-	print "root_src_dir: ".$root_src_dir."\n" if($DEBUG);
+		print "root_src_dir: ".$root_src_dir."\n" if($DEBUG);
 
-	$root_html_dir = DefineRootHTMLDir();
-	if($root_src_dir eq "")
-	{
-	    PrintError("fail to define root HTML dir");
-	}
-	else
-	{
-	    print "root_html_dir: ".$root_html_dir."\n" if($DEBUG);
+		$root_html_dir = DefineRootHTMLDir();
+		if($root_src_dir eq "")
+		{
+		    PrintError("fail to define root HTML dir");
+		}
+		else
+		{
+		    print "root_html_dir: ".$root_html_dir."\n" if($DEBUG);
 
-	    @domains = &GetDomains($root_src_dir);
-	    $domains_size = scalar @domains;
+		    @domains = &GetDomains($root_src_dir);
+		    $domains_size = scalar @domains;
 
-	    if($domains_size eq 0)
-	    {
-		PrintError("domain dirs not found in src folder");
-	    }
-	    else
-	    {
-		print "number of domains: ".$domains_size."\n" if($DEBUG);
-		$error_message = DiffFiles($root_src_dir, $root_html_dir, @domains);
-	    }
-	}
+		    if($domains_size eq 0)
+		    {
+				PrintError("domain dirs not found in src folder");
+		    }
+		    else
+		    {
+				print "number of domains: ".$domains_size."\n" if($DEBUG);
+				$error_message = DiffFiles($root_src_dir, $root_html_dir, @domains);
+		    }
+		}
     }
 
     return $error_message;
@@ -66,11 +66,11 @@ sub DefineParentDir
 
     if (index($root_src_dir, $curr_domain) == -1) 
     {
-	PrintError("can't find ".$curr_domain." in ".$root_src_dir);
+		PrintError("can't find ".$curr_domain." in ".$root_src_dir);
     }
     else
     {
-	$result = substr $root_src_dir, 0, index($root_src_dir, $curr_domain);
+		$result = substr $root_src_dir, 0, index($root_src_dir, $curr_domain);
     }
 
     return $result;
@@ -143,9 +143,9 @@ sub DiffFile
 	    }
 	    else
 	    {
-			if($#files + 1)
+			if($#files + 1)  # --- fake condition, always true
 			{
-			    PrintError("$curr_file not found in $domain");
+			    PrintError(($#files)." x $curr_file found in $domain");
 			}
 			else
 			{
@@ -182,15 +182,22 @@ sub DiffFiles
 {
     my	$result = "";
     my	($root_src_dir, $root_html_dir, @domains) = @_;
-    my	@ndf = @{$config{nodiff_files}};
+    my	@ndf_src = @{$config{nodiff_files_src}};
+    my	@ndf_html = @{$config{nodiff_files_html}};
 
-    foreach(@ndf)
+    foreach(@ndf_src)
     {
-	my $curr_file = $_;
+		my $curr_file = $_;
 
-	$result .= DiffFile($root_html_dir, $curr_file, @domains);
-	$result .= DiffFile($root_src_dir, $curr_file, @domains);
+		$result .= DiffFile($root_src_dir, $curr_file, @domains);
     }
+
+    foreach(@ndf_html)
+    {
+		my $curr_file = $_;
+
+		$result .= DiffFile($root_html_dir, $curr_file, @domains);
+	}
 
     return $result;
 };
@@ -205,6 +212,10 @@ sub __find_sub
     if($F =~ m/\/build\//)
     {
     	# --- skip build folder
+    }
+    elsif($F =~ m/\/pi\//)
+    {
+    	# --- skip pi folder
     }
     elsif ($F =~ m/\/$__file_pattern$/ ) 
     {

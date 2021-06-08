@@ -68,7 +68,7 @@ int main()
 		if(db.Connect(&config) < 0)
 		{
 			MESSAGE_ERROR("", action, "can't connect to DB");
-			throw CExceptionHTML("MySql connection");
+			throw CException("MySql connection");
 		}
 
 		indexPage.SetDB(&db);
@@ -809,53 +809,52 @@ int main()
 	}
 	catch(CExceptionHTML &c)
 	{
-
 		c.SetLanguage(indexPage.GetLanguage());
 		c.SetDB(&db);
 
-		MESSAGE_DEBUG("", action, "catch CExceptionHTML: exception reason: [" + c.GetReason() + "]");
+		MESSAGE_DEBUG("", action, "catch CExceptionHTML: DEBUG exception reason: [" + c.GetReason() + "]");
 
-		if(c.GetTemplate().length())
+		if(!indexPage.SetTemplate(c.GetTemplate()))
 		{
-			if(!indexPage.SetTemplate(c.GetTemplate()))
-			{
-				MESSAGE_ERROR("", action, "catch CExceptionHTML: template file " + c.GetTemplate() + " missing");
-				return(-1);
-			}
-			indexPage.RegisterVariable("content", c.GetReason());
-			indexPage.OutTemplate();
-		}
-
-		return(0);
-	}
-	catch(CException &c)
-	{
-		CLog 	log;
-
-		if(!indexPage.SetTemplateFile("templates/error.htmlt"))
-		{
+			MESSAGE_ERROR("", "", "template (" + c.GetTemplate() + ") not found");
 			return(-1);
 		}
 
-		MESSAGE_ERROR("", "", "catch CException: exception:  " + c.GetReason());
+		indexPage.RegisterVariable("content", c.GetReason());
+		indexPage.OutTemplate();
+
+		return(-1);
+	}
+	catch(CException &c)
+	{
+		MESSAGE_ERROR("", action, "catch CException: exception: ERROR  " + c.GetReason());
+
+		if(!indexPage.SetTemplateFile("templates/error.htmlt"))
+		{
+			MESSAGE_ERROR("", "", "template not found");
+			return(-1);
+		}
 
 		indexPage.RegisterVariable("content", c.GetReason());
 		indexPage.OutTemplate();
+
 		return(-1);
 	}
 	catch(exception& e)
 	{
-		MESSAGE_ERROR("", "", "catch(exception& e): catch standard exception:  " + e.what());
+		MESSAGE_ERROR("", action, "catch(exception& e): catch standard exception: ERROR  " + e.what());
 
 		if(!indexPage.SetTemplateFile("templates/error.htmlt"))
 		{
+			MESSAGE_ERROR("", "", "template not found");
 			return(-1);
 		}
+		
 		indexPage.RegisterVariable("content", e.what());
 		indexPage.OutTemplate();
+
 		return(-1);
 	}
 
 	return(0);
 }
-

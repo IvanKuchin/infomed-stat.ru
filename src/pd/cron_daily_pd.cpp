@@ -139,7 +139,7 @@ int main()
 			CLog	log;
 
 			log.Write(ERROR, string(__func__) + string("[") + to_string(__LINE__) + "]:ERROR: Can not connect to mysql database");
-			throw CExceptionHTML("MySql connection");
+			throw CException("MySql connection");
 		}
 
 		//--- start of daily cron main functionality
@@ -162,7 +162,7 @@ int main()
 
 		log.Write(DEBUG, string(__func__) + ": catch CExceptionHTML: DEBUG exception reason: [", c.GetReason(), "]");
 
-		return(0);
+		return(-1);
 	}
 	catch(CException &c)
 	{

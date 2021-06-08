@@ -41,7 +41,7 @@ int main(void)
 	if(db.Connect(&config) < 0)
 	{
 		MESSAGE_ERROR("", "", "Can not connect to mysql database");
-		throw CExceptionHTML("MySql connection");
+		throw CException("MySql connection");
 	}
 
 	if(!Test1(&db))

@@ -1,0 +1,11 @@
+FROM ubuntu:xenial
+
+# following two commands suppose to be reused from cache
+RUN apt update &&  apt install --no-install-recommends --no-install-suggests -y mysql-client
+
+COPY ./supplemental/docker/qa/dump.sql /root/
+COPY ./supplemental/docker/qa/run.sh /root/
+RUN chmod +x /root/run.sh
+WORKDIR /root
+
+CMD ["/bin/bash", "-c", "./run.sh"]

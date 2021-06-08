@@ -34,7 +34,7 @@ int main()
 			CLog	log;
 
 			log.Write(ERROR, string(__func__) + string("[") + to_string(__LINE__) + "]:ERROR: Can not connect to mysql database");
-			throw CExceptionHTML("MySql connection");
+			throw CException("MySql connection");
 		}
 
 		indexPage.SetDB(&db);
@@ -2595,50 +2595,52 @@ int main()
 */
 	catch(CExceptionHTML &c)
 	{
-		CLog	log;
-
 		c.SetLanguage(indexPage.GetLanguage());
 		c.SetDB(&db);
 
-		log.Write(DEBUG, string(__func__) + ": catch CExceptionHTML: DEBUG exception reason: [", c.GetReason(), "]");
+		MESSAGE_DEBUG("", action, "catch CExceptionHTML: DEBUG exception reason: [" + c.GetReason() + "]");
 
 		if(!indexPage.SetTemplate(c.GetTemplate()))
 		{
+			MESSAGE_ERROR("", "", "template (" + c.GetTemplate() + ") not found");
 			return(-1);
 		}
+
 		indexPage.RegisterVariable("content", c.GetReason());
 		indexPage.OutTemplate();
-		return(0);
+
+		return(-1);
 	}
 	catch(CException &c)
 	{
-		CLog 	log;
+		MESSAGE_ERROR("", action, "catch CException: exception: ERROR  " + c.GetReason());
 
 		if(!indexPage.SetTemplateFile("templates/error.htmlt"))
 		{
+			MESSAGE_ERROR("", "", "template not found");
 			return(-1);
 		}
 
-		log.Write(ERROR, string(__func__) + ": catch CException: exception: ERROR  ", c.GetReason());
-
 		indexPage.RegisterVariable("content", c.GetReason());
 		indexPage.OutTemplate();
+
 		return(-1);
 	}
 	catch(exception& e)
 	{
-		CLog 	log;
-		log.Write(ERROR, string(__func__) + ": catch(exception& e): catch standard exception: ERROR  ", e.what());
+		MESSAGE_ERROR("", action, "catch(exception& e): catch standard exception: ERROR  " + e.what());
 
 		if(!indexPage.SetTemplateFile("templates/error.htmlt"))
 		{
+			MESSAGE_ERROR("", "", "template not found");
 			return(-1);
 		}
+		
 		indexPage.RegisterVariable("content", e.what());
 		indexPage.OutTemplate();
+
 		return(-1);
 	}
 
 	return(0);
 }
-

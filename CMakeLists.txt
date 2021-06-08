@@ -9,11 +9,27 @@ endif()
 cmake_minimum_required(VERSION 3.5)
 
 project("infomed-stat.ru" CXX)
+
+option(MAIN_SUBDOMAIN "MAIN_SUBDOMAIN" OFF)
+option(IMAGE_SUBDOMAIN "IMAGE_SUBDOMAIN" OFF)
+
+message( "Project: " ${PROJECT_NAME} )
+
+if (${MAIN_SUBDOMAIN} STREQUAL OFF)
+    message( FATAL_ERROR "data sub-domain required (for ex: -DMAIN_SUBDOMAIN=www)" )
+endif()
+if (${IMAGE_SUBDOMAIN} STREQUAL OFF)
+    message( FATAL_ERROR "image sub-domain required (for ex: -DIMAGE_SUBDOMAIN=images)" )
+endif()
+
+set(MAIN_DOMAIN_NAME "${MAIN_SUBDOMAIN}.${PROJECT_NAME}")
+set(IMAGE_DOMAIN_NAME "${IMAGE_SUBDOMAIN}.${PROJECT_NAME}")
+
+message( "Web-server domain: "        ${MAIN_DOMAIN_NAME} )
+message( "Image web domain: "         ${IMAGE_DOMAIN_NAME} )
+
 set(My_VERSION_MAJOR 0)
 set(My_VERSION_MINOR 1)
-
-set(MAIN_DOMAIN_NAME "dev.${PROJECT_NAME}")
-set(IMAGE_DOMAIN_NAME "devimages.${PROJECT_NAME}")
 
 set(CMAKE_CXX_STANDARD 14)
 # --- changing CXX_FLAGS is _not_ the best practise
@@ -37,17 +53,33 @@ set(MAXMIND_PROJECT_DIR		${PROJECT_BINARY_DIR}/share/${MAIN_DOMAIN_NAME}/maxmind
 set(CI_SCRIPT_PROJECT_DIR	${PROJECT_BINARY_DIR}/share/${MAIN_DOMAIN_NAME}/ci-scripts)
 set(LOCALE_PROJECT_DIR		${PROJECT_BINARY_DIR}/share/${MAIN_DOMAIN_NAME}/locale)
 set(CONFIG_PROJECT_DIR		${PROJECT_BINARY_DIR}/share/${MAIN_DOMAIN_NAME}/config)
+set(SSMTP_PROJECT_DIR		${PROJECT_BINARY_DIR}/share/${MAIN_DOMAIN_NAME}/ssmtp)
 set(GIT_PROJECT_DIR             ${PROJECT_SOURCE_DIR}/supplemental/git)
 set(PDF_FONT_PROJECT_DIR	${PROJECT_SOURCE_DIR}/supplemental/libpdf-font)
 set(LIBXL_PROJECT_DIR		${PROJECT_SOURCE_DIR}/libxl-3.8.4.0/)
 
 # ---- install variables
-set(ROOTDIR			"/home/httpd/${MAIN_DOMAIN_NAME}")
-set(IMAGEROOTDIR		"/home/httpd/${IMAGE_DOMAIN_NAME}")
+option(ROOTDIR                  "ROOTDIR"       OFF)
+option(IMAGEROOTDIR             "IMAGEROOTDIR"  OFF)
+option(LOCAL_INSTALL_DIR        "LOCAL_INSTALL_DIR"     OFF)
+
+if (${ROOTDIR} STREQUAL OFF)
+    set(ROOTDIR                 /home/httpd/${MAIN_DOMAIN_NAME})
+endif()
+if (${IMAGEROOTDIR} STREQUAL OFF)
+    set(IMAGEROOTDIR            /home/httpd/${IMAGE_DOMAIN_NAME})
+endif()
+if (${LOCAL_INSTALL_DIR} STREQUAL OFF)
+    set(LOCAL_INSTALL_DIR       ${CMAKE_INSTALL_PREFIX}/share/${MAIN_DOMAIN_NAME})
+endif()
+
+message( "Web-server path: "        ${ROOTDIR} )
+message( "Image web-server path: "  ${IMAGEROOTDIR} )
+message( "Data folder path: "       ${LOCAL_INSTALL_DIR} )
+
 set(CGIDIR			${ROOTDIR}/cgi-bin)
 set(CGIADMINDIR			${ROOTDIR}/cgi-bin/admin)
-set(LOCAL_INSTALL_DIR           ${CMAKE_INSTALL_PREFIX}/share/${MAIN_DOMAIN_NAME})
-set(LOG_DIR                      ${LOCAL_INSTALL_DIR}/log/)
+set(LOG_DIR                     ${LOCAL_INSTALL_DIR}/log/)
 set(CRON_INSTALL_DIR		${LOCAL_INSTALL_DIR}/cron)
 set(ARCHIVE_INSTALL_DIR		${LOCAL_INSTALL_DIR}/archive)
 set(MAXMIND_INSTALL_DIR		${LOCAL_INSTALL_DIR}/maxmind)
@@ -56,9 +88,11 @@ set(GIT_INSTALL_DIR             ${LOCAL_INSTALL_DIR}/git)
 set(PDF_FONT_INSTALL_DIR	${LOCAL_INSTALL_DIR}/libpdf-font)
 set(LIBXL_INSTALL_DIR		${LOCAL_INSTALL_DIR}/libxl)
 set(CONFIG_INSTALL_DIR		${LOCAL_INSTALL_DIR}/config)
+set(SECRET_INSTALL_DIR		${LOCAL_INSTALL_DIR}/secret)
+set(SSMTP_INSTALL_DIR		${LOCAL_INSTALL_DIR}/ssmtp)
 
 # ---- libxl library is not in apt-reporsitory, therefore is not installed on the OS
-# ---- to treat it as regulat lib I have to copy it to /usr/local/share..... folder
+# ---- to treat it as a regular lib I have to copy it to /usr/local/share..... folder
 # ---- 1) copy libxl to application location
 # ---- 2) work with it as w/ regular library
 if(EXISTS ${LIBXL_INSTALL_DIR})
@@ -77,10 +111,12 @@ add_subdirectory(supplemental/ci-scripts/)
 add_subdirectory(supplemental/libpdf-font/)
 add_subdirectory(supplemental/git/)
 add_subdirectory(supplemental/config/)
+add_subdirectory(supplemental/ssmtp/)
+add_subdirectory(supplemental/init_d/)
 add_subdirectory(po/)
 
 # --- Install time
-install(DIRECTORY DESTINATION ${LOG_DIR}  DIRECTORY_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_WRITE GROUP_READ)
+install(DIRECTORY DESTINATION ${LOG_DIR}  DIRECTORY_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_WRITE GROUP_READ WORLD_EXECUTE WORLD_WRITE WORLD_READ)
 install(DIRECTORY DESTINATION ${CONFIG_INSTALL_DIR} DIRECTORY_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ)
 
 # --- CTest

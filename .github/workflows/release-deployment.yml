@@ -101,9 +101,10 @@ jobs:
       ####################################
       # Replace variables in Dockerfiles #
       ####################################
-      - name: Replace variables in Dockerfiles
-        run: |
-          find ./supplemental/docker/ -name Dockerfile* | xargs -I % sed -i -e 's/__BUILD_REPO__/${{ steps.set_variables.outputs.BUILD_REPO }}/' %
+      # - name: Replace variables in Dockerfiles
+      #    run: |
+      #      find ./supplemental/docker/ -name Dockerfile* | xargs -I % sed -i -e 's/__BUILD_REPO__/${{ steps.set_variables.outputs.BUILD_REPO }}/' %
+
       ###########################################
       # Build and Push containers to registries #
       ###########################################
@@ -112,17 +113,37 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./supplemental/docker/Dockerfile_prod
+          file: ./supplemental/docker/prod/Dockerfile
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
             BUILD_REVISION=${{ github.sha }}
             BUILD_VERSION=${{ github.sha }}
+            BUILD_REPO=${{ steps.set_variables.outputs.BUILD_REPO }}
+          target: app
           push: true
           tags: |
-            ghcr.io/ivankuchin/${{ steps.set_variables.outputs.BUILD_REPO }}:${{ steps.set_variables.outputs.BUILD_RELEASE }}
-            ghcr.io/ivankuchin/${{ steps.set_variables.outputs.BUILD_REPO }}:${{ steps.set_variables.outputs.BUILD_RELEASE_MAJOR }}
-            ghcr.io/ivankuchin/${{ steps.set_variables.outputs.BUILD_REPO }}:latest
-            
+            ghcr.io/ivankuchin/${{ steps.set_variables.outputs.BUILD_REPO }}-app:${{ steps.set_variables.outputs.BUILD_RELEASE }}
+            ghcr.io/ivankuchin/${{ steps.set_variables.outputs.BUILD_REPO }}-app:${{ steps.set_variables.outputs.BUILD_RELEASE_MAJOR }}
+            ghcr.io/ivankuchin/${{ steps.set_variables.outputs.BUILD_REPO }}-app:latest
+
+      - name: Build and push
+        if: success()
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./supplemental/docker/prod/Dockerfile
+          build-args: |
+            BUILD_DATE=${{ env.BUILD_DATE }}
+            BUILD_REVISION=${{ github.sha }}
+            BUILD_VERSION=${{ github.sha }}
+            BUILD_REPO=${{ steps.set_variables.outputs.BUILD_REPO }}
+          target: cron
+          push: true
+          tags: |
+            ghcr.io/ivankuchin/${{ steps.set_variables.outputs.BUILD_REPO }}-cron:${{ steps.set_variables.outputs.BUILD_RELEASE }}
+            ghcr.io/ivankuchin/${{ steps.set_variables.outputs.BUILD_REPO }}-cron:${{ steps.set_variables.outputs.BUILD_RELEASE_MAJOR }}
+            ghcr.io/ivankuchin/${{ steps.set_variables.outputs.BUILD_REPO }}-cron:latest
+
       ##########################
       # Stop deployment        #
       ##########################
