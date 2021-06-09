@@ -94,6 +94,9 @@ nodiff_files_src => [
 
     "supplemental/config/CMakeLists.txt",
 
+    ".github/workflows/qa.yml",
+    ".github/workflows/sast.yml",
+    ".github/workflows/release-deploymnet.yml",
     ".github/workflows/release-drafter.yml",
     ".github/workflows/spell_check.yml",
     ".github/workflows/super_linter.yml",
