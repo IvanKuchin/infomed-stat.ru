@@ -7,6 +7,8 @@ ARG ROOTDIR=/home/httpd/www
 ARG IMAGEROOTDIR=/home/httpd/images
 ARG LOCAL_INSTALL_DIR=/usr/local/share/www
 
+ARG GIT_FOLDER=/backend
+
 LABEL maintainer="ivan.kuchin@gmail.com"
 LABEL org.opencontainers.image.source="https://github.com/IvanKuchin/${BUILD_REPO}"
 
@@ -84,8 +86,8 @@ RUN cd build \
 ############
 # pull src #
 ############
-COPY . /backend
-WORKDIR /backend
+COPY . ${GIT_FOLDER}
+WORKDIR ${GIT_FOLDER}
 RUN git clone --depth 1 https://github.com/IvanKuchin/backend_pi.git ./src/pi
 
 ##################
@@ -139,8 +141,9 @@ RUN apt-get install --no-install-recommends --no-install-suggests -y apache2
 # configure apache2 #
 #####################
 RUN git clone --depth 1 https://github.com/IvanKuchin/${BUILD_REPO}-ui.git ${ROOTDIR}
-RUN mkdir ${ROOTDIR}/logs/
 RUN cp -R ${ROOTDIR}/supplemental/apache2 /etc
+RUN mkdir ${ROOTDIR}/logs/
+RUN mkdir -p ${IMAGEROOTDIR}
 
 RUN a2enmod cgi
 RUN a2enmod rewrite
@@ -160,7 +163,6 @@ RUN cd build && make install
 # change folders to proper owner                                   #
 ####################################################################
 RUN chown -R www-data:www-data ${ROOTDIR}
-RUN mkdir -p /home/httpd/images
 RUN chown -R www-data:www-data ${IMAGEROOTDIR}
 RUN chown -R www-data:www-data ${LOCAL_INSTALL_DIR}
 
@@ -173,6 +175,66 @@ RUN chown -R www-data:www-data ${LOCAL_INSTALL_DIR}
 STOPSIGNAL SIGTERM
 
 CMD ["apachectl", "-D", "FOREGROUND", ""]
+
+
+############################################################################################
+
+
+FROM base as images
+
+ARG BUILD_REPO
+ARG MAIN_SUBDOMAIN
+ARG IMAGE_SUBDOMAIN
+ARG ROOTDIR
+ARG IMAGEROOTDIR
+ARG LOCAL_INSTALL_DIR
+
+###################
+# install apache2 #
+###################
+RUN apt-get install --no-install-recommends --no-install-suggests -y apache2
+
+RUN echo 1
+
+#####################
+# configure apache2 #
+#####################
+RUN git clone --depth 1 https://github.com/IvanKuchin/${BUILD_REPO}-ui.git ${ROOTDIR}
+RUN cp -R ${ROOTDIR}/supplemental/apache2 /etc
+RUN mkdir -p ${IMAGEROOTDIR}/cgi-bin/
+RUN mkdir -p ${IMAGEROOTDIR}/html/
+RUN mkdir -p ${IMAGEROOTDIR}/logs/
+
+RUN a2dismod cgi
+RUN a2dismod rewrite
+RUN a2dissite `ls /etc/apache2/sites-enabled/`
+RUN a2ensite *images
+RUN a2enmod expires
+
+EXPOSE 80
+
+####################################################################
+# change folders to proper owner                                   #
+####################################################################
+RUN chown -R www-data:www-data ${IMAGEROOTDIR}
+
+####################################################################
+# remove unnecessary folders                                       #
+####################################################################
+RUN rm -rf ${LOCAL_INSTALL_DIR}
+RUN rm -rf ${ROOTDIR}
+RUN rm -rf ${GIT_FOLDER}
+
+############################################################
+## forward request and error logs to docker log collector ##
+############################################################
+#RUN ln -sf /dev/stdout /var/log/nginx/access.log \
+# && ln -sf /dev/stderr /var/log/nginx/error.log
+
+STOPSIGNAL SIGTERM
+
+CMD ["apachectl", "-D", "FOREGROUND", ""]
+
 
 
 ############################################################################################
