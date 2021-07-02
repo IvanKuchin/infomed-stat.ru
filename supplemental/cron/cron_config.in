@@ -3,10 +3,13 @@
 # --- ikuchin required to save backup (ikuchin authenticated w/ key-pair on backup-server)
 # 0 3 * * *  ikuchin cd ${ARCHIVE_INSTALL_DIR}/ && ./archive.pl --backup
 
-# --- root user required only for container to be able to use environment variable
-# --- www-data user won't inherit another user env vars, other than that www-data will work just fine
-* * * * *	root ${CRON_INSTALL_DIR}/cron_minute_pi
-5 1 * * *	root ${CRON_INSTALL_DIR}/cron_daily_pi
-15 1 * * *	root ${CRON_INSTALL_DIR}/cron_daily_pd
+# --- opt 1) root user: 
+#             *) needed only for container to be able to use environment variable set in docker CLI
+#             *) log folder must be writable by the root user, which is security vulnerability
+# --- opt 2) www-data: (recommended)
+#             *) www-data user won't inherit root user env vars set in docker CLI
+* * * * *	www-data ${CRON_INSTALL_DIR}/cron_minute_pi
+5 1 * * *	www-data ${CRON_INSTALL_DIR}/cron_daily_pi
+15 1 * * *	www-data ${CRON_INSTALL_DIR}/cron_daily_pd
 
 
