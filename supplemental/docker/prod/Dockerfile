@@ -205,11 +205,13 @@ RUN mkdir -p ${IMAGEROOTDIR}/cgi-bin/
 RUN mkdir -p ${IMAGEROOTDIR}/html/
 RUN mkdir -p ${IMAGEROOTDIR}/logs/
 
+RUN a2enmod rewrite
+RUN a2enmod expires
+RUN a2enmod headers
 RUN a2dismod cgi
-RUN a2dismod rewrite
+
 RUN a2dissite `ls /etc/apache2/sites-enabled/`
 RUN a2ensite *images
-RUN a2enmod expires
 
 EXPOSE 80
 
