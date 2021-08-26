@@ -108,6 +108,8 @@ nodiff_files_src => [
 
 
 nodiff_files_html => [
+    "admin/.htaccess",
+
     "helpdesk.css",
     "login.css",
     "admin/common.css",

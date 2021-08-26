@@ -11,10 +11,10 @@ echo ---------------- fail2ban
 zgrep -h "Ban " /var/log/fail2ban.log* | grep `date +%Y-%m-%d` | awk '{print $6,$1}' | sort | uniq -c 
 
 echo --------------- running time [sec]
-cat -v ${LOG_DIR}backend.log | grep "microseconds" | grep `date '+%b\s%d'` | awk '{ print $8/1000000; }' | sort -n | tail
+cat -v ${LOG_DIR}backend.log | grep "microseconds" | grep `date '+%b\s%d'` | awk '{ print $9/1000000; }' | sort -n | tail
 
 echo --------------- longest running time + action [sec]. number of lines could be less than prev if no action grepped
-cat -v ${LOG_DIR}backend.log* | grep "microseconds" | grep `date '+%b\s%d'` | awk '{ print $8; }' | sort -n | tail | xargs -I % sh -c "cat -v ${LOG_DIR}backend.log* | grep % | grep chrono " | awk '{ print $3; }' | awk -F \[ '{ print $2; }' | awk -F \] '{ print $1; }' | xargs -I % sh -c "cat -v ${LOG_DIR}backend.log* | grep \"\[%\]\" " | grep `date '+%b\s%d'` | grep "HTTP parameter" | grep "action=" | awk '{ print $1, $2, $3, $8 }'
+cat -v ${LOG_DIR}backend.log* | grep "microseconds" | grep `date '+%b\s%d'` | awk '{ print $9; }' | sort -n | tail | xargs -I % sh -c "cat -v ${LOG_DIR}backend.log* | grep % | grep chrono " | awk '{ print $3; }' | awk -F \[ '{ print $2; }' | awk -F \] '{ print $1; }' | xargs -I % sh -c "cat -v ${LOG_DIR}backend.log* | grep \"\[%\]\" " | grep `date '+%b\s%d'` | grep "HTTP parameter" | grep "action=" | awk '{ print $1, $2, $3, $9 }'
 
 echo --------------- log: ERRORS
 cat -v ${LOG_DIR}backend.* | grep "ERROR" | grep `date '+%b\s%d'`
@@ -25,8 +25,14 @@ cat -v ${LOG_DIR}backend.log | grep "emojy detected" | grep `date '+%b\s%d'`
 echo --------------- general punctuation detector
 cat -v ${LOG_DIR}backend.log | grep "general punctuation detected" | grep `date '+%b\s%d'`
 
-echo --------------- log: lost pictures in DB [setID = 0]
+echo --------------- lost pictures in DB [setID = 0]
 echo "select \`id\` from \`feed_images\` where \`setID\`='0';" | mysql --login-path=local ${MAIN_DOMAIN_NAME} 2>/dev/null | grep -v id
+
+echo --------------- N of open tickets
+echo "SELECT COUNT(*) FROM \`helpdesk_ticket_history_last_case_state_view\` WHERE \`state\`!=\"closed\";" | mysql --login-path=local ${MAIN_DOMAIN_NAME}  | tail -1
+
+echo --------------- N of unassigned tickets
+echo "SELECT COUNT(*) FROM \`helpdesk_ticket_history_last_case_state_view\` WHERE \`state\`=\"new\";" | mysql --login-path=local ${MAIN_DOMAIN_NAME}  | tail -1
 
 echo --------------- src repository check
 cd ${CRON_INSTALL_DIR} && ./health_srcdiff.pl
