@@ -15,7 +15,6 @@ tables_to_upgrade => "action_category action_types site_themes faq",
 
 replace_dev_to_www_files => [
 	"SRCDIR/CMakeLists.txt",
-	"ROOTDIR_CGI/admin/templates/domain.htmlt",
 
 	"ROOTDIR_CGI/admin/.htaccess",
 	"ROOTDIR_HTML/quality_assurance/.htaccess",
