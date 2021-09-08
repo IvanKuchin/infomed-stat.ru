@@ -164,6 +164,8 @@ nodiff_files_html => [
     "ru/mails/helpdesk_notification_existing_case.htmlt",
 
     "admin_header.htmlt",
+    "admin_chat_get_cnx_list.htmlt",
+    "admin_chat_get_presence_cache.htmlt",
 
     ".github/workflows/release-drafter.yml",
     ".github/workflows/spell_check.yml",
