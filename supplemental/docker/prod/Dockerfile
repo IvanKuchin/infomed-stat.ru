@@ -274,4 +274,4 @@ ARG IMAGEROOTDIR
 ARG LOCAL_INSTALL_DIR
 
 WORKDIR ${LOCAL_INSTALL_DIR}/chat
-CMD ["./chat-server"]
+CMD ["./chat-server", "-s"]
