@@ -77,6 +77,8 @@ nodiff_files_src => [
     "health_srcdiff.conf.in",
     "cron_config.in",
 
+    "prod/Dockerfile",
+
     "CMakeModules/FindLibArchive.cmake",
     "CMakeModules/FindLibAVCodec.cmake",
     "CMakeModules/FindLibAVFormat.cmake",
@@ -177,7 +179,7 @@ nodiff_files_html => [
 ],
 
 exclude_domains => [
-    "checkuuid",
+    "checkuuid", "einsteiners"
 ],
 
 project_source_dir => "${PROJECT_SOURCE_DIR}",
