@@ -61,6 +61,7 @@ RUN apt-get install --no-install-recommends --no-install-suggests -y software-pr
         build-essential \
         cmake \
         ffmpeg \
+        gsfonts \
         graphicsmagick-libmagick-dev-compat \
         libavcodec-dev \
         libavformat-dev \
@@ -120,6 +121,7 @@ RUN apt-get install --no-install-recommends --no-install-suggests -y ssmtp apach
 # configure apache2 #
 #####################
 RUN git clone --depth 1 https://github.com/IvanKuchin/${BUILD_REPO}-ui.git ${ROOTDIR}
+RUN git -C ${ROOTDIR} rev-parse HEAD > ${ROOTDIR}/cgi-bin/templates/git_commit_id     # it is used in user account to show current commit_id
 RUN cp -R ${ROOTDIR}/supplemental/apache2 /etc
 RUN mkdir ${ROOTDIR}/logs/
 RUN mkdir -p ${IMAGEROOTDIR}
