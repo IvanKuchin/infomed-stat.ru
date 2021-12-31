@@ -31,6 +31,8 @@ nodiff_files_src => [
     "utilities2.cpp",
     "utilities_common.cpp",
 
+    "tests/auto/autotest_c_price_spelling.cpp",
+
     "account.h",
     "avataruploader.h",
     "c_archive.h",
