@@ -11,8 +11,10 @@ name: SAST
 #######################################
 on:
   push:
+    branches-ignore: [master]
   pull_request:
-    branches: ['master']
+    branches: [master]
+    types: [opened, reopened, synchronize]
 
 ###############
 # Set the Job #
