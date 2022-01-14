@@ -14,10 +14,10 @@ name: Spell checking
 #############################
 on:
   push:
-#    branches-ignore:
-#      - 'master'
+    branches-ignore: [master]
   pull_request:
     branches: [master]
+    types: [opened, reopened, synchronize]
 
 ###############
 # Set the Job #
