@@ -128,9 +128,10 @@ RUN mkdir -p ${IMAGEROOTDIR}
 
 RUN a2enmod cgi \
  && a2enmod rewrite \
+ && a2enmod expires \
+ && a2enconf mod_expires \
  && a2dissite `ls /etc/apache2/sites-enabled/` \
- && a2ensite *www \
- && a2enmod expires
+ && a2ensite *www
 
 ##################### 
 # build from source #
@@ -197,6 +198,7 @@ RUN mkdir -p ${IMAGEROOTDIR}/cgi-bin/ \
 RUN a2enmod rewrite \
  && a2enmod expires \
  && a2enmod headers \
+ && a2enconf mod_expires \
  && a2dismod cgi \
  && a2dissite `ls /etc/apache2/sites-enabled/` \
  && a2ensite *images
