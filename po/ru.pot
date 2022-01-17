@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-23 08:57-0400\n"
+"POT-Creation-Date: 2022-01-17 16:08-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -102,6 +102,9 @@ msgstr "Август"
 
 msgid "August declension"
 msgstr "Августа"
+
+msgid "Automatic message"
+msgstr ""
 
 msgid "BT doesn't belongs to agency"
 msgstr "Командировка не относится к агенству"
@@ -223,6 +226,12 @@ msgstr "Локальные услуги"
 msgid "Location"
 msgstr "Место"
 
+msgid "Login contains illegal characters"
+msgstr "Нельзя использовать спец символы"
+
+msgid "Login must contain alphabet characters"
+msgstr "Логин должен содержать буквы"
+
 msgid "March"
 msgstr "Март"
 
@@ -306,6 +315,9 @@ msgstr "Ошибка БД"
 
 msgid "Seller"
 msgstr "Продавец"
+
+msgid "Sent by"
+msgstr "Опртавлено"
 
 msgid "September"
 msgstr "Сентябрь"
@@ -415,6 +427,9 @@ msgstr "Вы не сотрудник агенства"
 msgid "You are not authorized"
 msgstr "У Вас нет доступа"
 
+msgid "You need to enter phone number in user profile"
+msgstr "Требуется номер телефона"
+
 msgid "absence not found"
 msgstr "Заявка на отсутствие не найдена"
 
@@ -472,11 +487,11 @@ msgstr "Внутренняя ошибка с БИК"
 msgid "bik not found"
 msgstr "не указан БИК"
 
-msgid "birthday isn't defined"
-msgstr "укажите дату рождения"
-
 msgid "birthday is empty"
 msgstr "Не указана дата рождения"
+
+msgid "birthday isn't defined"
+msgstr "укажите дату рождения"
 
 msgid "bt date finish is empty"
 msgstr "не указана дата окончания командировки"
@@ -511,6 +526,9 @@ msgstr "но отличается корр счет"
 msgid "can't change dates in past"
 msgstr "нельзя менять даты в прошлом"
 
+msgid "can't change your own permissions"
+msgstr "нельзя менять собственные права"
+
 msgid "can't close archive"
 msgstr "не удалось закрыть фаил архива"
 
@@ -522,6 +540,12 @@ msgstr "не удалось создать фаил архива"
 
 msgid "can't remove absence in the past"
 msgstr "нельзя удаляить отпуск в прошлом"
+
+msgid "case"
+msgstr ""
+
+msgid "case closed"
+msgstr ""
 
 msgid "changed"
 msgstr "изменилось"
@@ -631,6 +655,9 @@ msgstr "описание изменено"
 msgid "doctor submitted"
 msgstr "доктор зарегистрирован"
 
+msgid "email already exists"
+msgstr ""
+
 msgid "email is empty"
 msgstr "не указан email"
 
@@ -694,6 +721,9 @@ msgstr "фаил не найден"
 msgid "file size"
 msgstr "размер фаила"
 
+msgid "fill up patient data"
+msgstr ""
+
 msgid "first name and last name are mandatory"
 msgstr "имя и фамилия обязательны"
 
@@ -717,6 +747,9 @@ msgstr "не указан тип загран паспорта"
 
 msgid "from"
 msgstr "с"
+
+msgid "helpdesk ticket not found"
+msgstr ""
 
 msgid "hospital is required"
 msgstr "требуется мед. центр"
@@ -766,6 +799,9 @@ msgstr "в рамках"
 msgid "incorrect confirmation code"
 msgstr "некорректный код"
 
+msgid "incorrect image file"
+msgstr ""
+
 msgid "is empty"
 msgstr "не указан"
 
@@ -805,6 +841,9 @@ msgstr "не указан юр. адрес"
 msgid "legal_geo_zip_id is empty"
 msgstr "не указан юр. адрес"
 
+msgid "login"
+msgstr ""
+
 msgid "login or email or phone is required"
 msgstr "необходим логин, email или телефон"
 
@@ -829,6 +868,9 @@ msgstr "не указана должность"
 msgid "missed service description"
 msgstr "не указано описание должности"
 
+msgid "move case to the Close_Pending state due to long waiting period"
+msgstr ""
+
 msgid "must be in 20-th century"
 msgstr "должна быть после 2000 г."
 
@@ -843,6 +885,9 @@ msgstr "НДС не облагается"
 
 msgid "no VAT short"
 msgstr "без НДС"
+
+msgid "no active avatar found"
+msgstr ""
 
 msgid "no bt found"
 msgstr "не найдена командировка"
@@ -871,6 +916,9 @@ msgstr "выберите один фаил"
 msgid "ogrn is empty"
 msgstr "не указан ОГРН"
 
+msgid "opened"
+msgstr ""
+
 msgid "parameters incorrect"
 msgstr "некорректные параметры"
 
@@ -880,14 +928,23 @@ msgstr "укажите пароль"
 msgid "patient already exists"
 msgstr "пациент уже существует"
 
+msgid "patient not found"
+msgstr ""
+
 msgid "period start have to precede period end"
 msgstr "начало должно быть раньше окончания"
 
 msgid "phone is not confirmed"
 msgstr "телефон не подтвержден"
 
+msgid "phone not registered"
+msgstr ""
+
 msgid "phone number is incorrect"
 msgstr "некорректный номер телефона"
+
+msgid "please try again"
+msgstr ""
 
 msgid "position changed"
 msgstr "изменили должность"
@@ -897,6 +954,9 @@ msgstr "невозможно сгенерировать XLS"
 
 msgid "promouted from"
 msgstr "перешел(шла) с должности"
+
+msgid "re-login required"
+msgstr ""
 
 msgid "removal prohibited"
 msgstr "Нельзя удалить"
@@ -934,8 +994,14 @@ msgstr "не указана тип паспорта"
 msgid "rur."
 msgstr "руб."
 
+msgid "service credentials not found"
+msgstr ""
+
 msgid "service is not reachable"
 msgstr "сервисе недоступен"
+
+msgid "session not found"
+msgstr ""
 
 msgid "sex is empty"
 msgstr "не указан пол"
@@ -954,6 +1020,9 @@ msgstr "не указан подписант 1"
 
 msgid "signature title 2 is empty"
 msgstr "не указан подписант 2"
+
+msgid "sms sending error"
+msgstr ""
 
 msgid "sow declension"
 msgstr "договора"
@@ -981,6 +1050,9 @@ msgstr "шаблон не найден"
 
 msgid "temporary file doesn't exists"
 msgstr "временный фаил не найден"
+
+msgid "there was created more token than allowed"
+msgstr ""
 
 msgid "this booking already exists"
 msgstr "этот букинг уже существует"
@@ -1012,6 +1084,9 @@ msgstr "не указан ИНН"
 msgid "to"
 msgstr "на"
 
+msgid "token expired"
+msgstr ""
+
 msgid "token has missed"
 msgstr "токен не найден"
 
@@ -1024,11 +1099,17 @@ msgstr "на сумму"
 msgid "trip_id failure"
 msgstr "идентификатор поездки не найден"
 
+msgid "try to upload as pdf"
+msgstr ""
+
 msgid "type is empty"
 msgstr "не указан тип"
 
 msgid "unable to create psow"
 msgstr "не удалось создать PSoW"
+
+msgid "unknown file type"
+msgstr ""
 
 msgid "unknown invoice"
 msgstr "Неизвестный счет"
@@ -1075,11 +1156,17 @@ msgstr "с"
 msgid "wrong format"
 msgstr "некорректный формат"
 
+msgid "you are already subscribed"
+msgstr ""
+
 msgid "you are no authorized"
 msgstr "у Вас недостаточно прав"
 
 msgid "you are not assigned to customer"
 msgstr "вы не назначены на этого заказчика"
+
+msgid "you are not authorized"
+msgstr ""
 
 msgid "you are not employed at any medical center"
 msgstr "вы не назначены никакому мед. центру"
