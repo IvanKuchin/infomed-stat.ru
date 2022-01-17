@@ -385,6 +385,35 @@ int main()
 			MESSAGE_DEBUG("", action, "finish");
 		}
 
+		if(action == "AJAX_updateUserBlock")
+		{
+			MESSAGE_DEBUG("", action, "start");
+
+			auto			user_id = CheckHTTPParam_Number(indexPage.GetVarsHandler()->Get("id"));
+			auto			is_active = CheckHTTPParam_Text(indexPage.GetVarsHandler()->Get("value")) == "Y";
+			auto			error_message = ""s;
+			auto			success_message = ""s;
+
+			if(user.GetID() == user_id)
+			{
+				error_message = gettext("can't change your own permissions");
+				MESSAGE_DEBUG("", action, error_message);
+			}
+			else if(GetUserAAARole(&user, &db) == "admin")
+			{
+				db.Query("UPDATE `users` SET `isblocked`=" + quoted(is_active ? "N" : "Y") + " WHERE `id`=" + quoted(user_id) + ";");
+			}
+			else
+			{
+				error_message = gettext("You are not authorized");
+				MESSAGE_DEBUG("", action, error_message);
+			}
+
+			AJAX_ResponseTemplate(&indexPage, success_message, error_message);
+
+			MESSAGE_DEBUG("", action, "finish");
+		}
+
 		if(
 			(action == "AJAX_updateDoctorLastName")		||
 			(action == "AJAX_updateDoctorFirstName")	||
