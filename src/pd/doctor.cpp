@@ -356,7 +356,12 @@ int main()
 			auto			success_message = ""s;
 
 
-			if(GetUserAAARole(&user, &db) == "admin")
+			if(user.GetID() == user_id)
+			{
+				error_message = gettext("can't change your own permissions");
+				MESSAGE_DEBUG("", action, error_message);
+			}
+			else if(GetUserAAARole(&user, &db) == "admin")
 			{
 
 				if(value == "admin")
