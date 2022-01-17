@@ -351,7 +351,7 @@ int main()
 			MESSAGE_DEBUG("", action, "start");
 
 			auto			error_message = ""s;
-			auto			id = CheckHTTPParam_Number(indexPage.GetVarsHandler()->Get("id"));
+			auto			user_id = CheckHTTPParam_Number(indexPage.GetVarsHandler()->Get("id"));
 			auto			value = CheckHTTPParam_Text(indexPage.GetVarsHandler()->Get("value"));
 			auto			success_message = ""s;
 
@@ -361,12 +361,12 @@ int main()
 
 				if(value == "admin")
 				{
-					db.Query("DELETE FROM `users_aaa` WHERE `user_id`=" + quoted(id) + ";");
-					db.Query("INSERT INTO `users_aaa` SET `user_id`=" + quoted(id) + ", `role`=\"admin\";");
+					db.Query("DELETE FROM `users_aaa` WHERE `user_id`=" + quoted(user_id) + ";");
+					db.Query("INSERT INTO `users_aaa` SET `user_id`=" + quoted(user_id) + ", `role`=\"admin\";");
 				}
 				else
 				{
-					db.Query("DELETE FROM `users_aaa` WHERE `user_id`=" + quoted(id) + ";");
+					db.Query("DELETE FROM `users_aaa` WHERE `user_id`=" + quoted(user_id) + ";");
 				}
 			}
 			else
