@@ -310,9 +310,6 @@ msgstr "Отчет об оказанных услугах на удаленно�
 msgid "SQL syntax error"
 msgstr "Ошибка БД"
 
-msgid "SQL syntax issue"
-msgstr "Ошибка БД"
-
 msgid "Seller"
 msgstr "Продавец"
 

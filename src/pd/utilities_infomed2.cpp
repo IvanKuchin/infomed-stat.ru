@@ -25,6 +25,71 @@ auto GetUserAAARole(string user_id, CMysql *db) -> string
 	return result;
 }
 
+auto GetUserVisibilityScope(CUser *user, CMysql *db) -> string
+{
+	return GetUserVisibilityScope(user->GetID(), db);
+}
+
+auto GetUserVisibilityScope(string user_id, CMysql *db) -> string
+{
+	MESSAGE_DEBUG("", "", "start");
+
+	auto	result = GetValueFromDB("SELECT `scope` FROM `users_visibility_scope` WHERE `user_id`=" + quoted(user_id) + ";", db);
+
+	if(result.empty())
+	{
+		MESSAGE_ERROR("", "", "this field can't be empty, it must be prepopulated with values on table creation");
+		result = "local";
+	}
+
+	MESSAGE_DEBUG("", "", "result (" + result + ")");
+
+	return result;
+}
+
+auto UpdateUserVisibilityScope(const string &user_id, const string &scope, CMysql *db) -> string
+{
+	MESSAGE_DEBUG("", "", "start");
+
+	auto	error_message = ""s;
+
+	db->Query("UPDATE `users_visibility_scope` SET `scope`=" + quoted(scope) + " WHERE `user_id`=" + quoted(user_id) + ";");
+	if(db->isError())
+	{
+		error_message = gettext("SQL syntax error");
+		MESSAGE_ERROR("", "", error_message);
+	}
+
+	MESSAGE_DEBUG("", "", "result (" + error_message + ")");
+
+	return error_message;
+}
+
+auto GetMedicalRecordsSQLFilter_BasedOnVisibility(const string &user_id, CMysql *db) -> string
+{
+	MESSAGE_DEBUG("", "", "start");
+
+	auto	filter = ""s;
+	auto	visibility_scope = GetUserVisibilityScope(user_id, db);
+
+	if(visibility_scope == "global")
+	{
+		filter = "1";
+	}
+	else if(visibility_scope == "local")
+	{
+		filter = " `company_id` IN (" + Get_CompanyIDByUserID_sqlquery(user_id) + ") ";
+	}
+	else
+	{
+		MESSAGE_ERROR("", "", "unknown visibility scope (" + visibility_scope + ")");
+	}
+
+	MESSAGE_DEBUG("", "", "finish (" + filter + ")");
+
+	return filter;
+}
+
 // --- Returns user list in JSON format grabbed from DB
 // --- Input: dbQuery - SQL format returns users
 //			db	  - DB connection
@@ -201,6 +266,7 @@ string GetUserListInJSONFormat(string dbQuery, CMysql *db, CUser *user)
 						"\"helpdesk_subscriptions_sms\": ["			<< (isMe ? quoted(itemsList[i].helpdesk_subscription_S1_sms) + "," + quoted(itemsList[i].helpdesk_subscription_S2_sms) + "," + quoted(itemsList[i].helpdesk_subscription_S3_sms) + "," + quoted(itemsList[i].helpdesk_subscription_S4_sms)  : "") << "],"
 						"\"helpdesk_subscriptions_email\": ["		<< (isMe ? quoted(itemsList[i].helpdesk_subscription_S1_email) + "," + quoted(itemsList[i].helpdesk_subscription_S2_email) + "," + quoted(itemsList[i].helpdesk_subscription_S3_email) + "," + quoted(itemsList[i].helpdesk_subscription_S4_email)  : "") << "],"
 						"\"aaa\":\""								<< ((isMe || (user_role == "admin")) ? GetUserAAARole(itemsList[i].userID, db) : "") << "\","
+						"\"visibility_scope\":\""					<< ((isMe || (user_role == "admin")) ? GetUserVisibilityScope(itemsList[i].userID, db) : "") << "\","
 						"\"isMe\": \""								<< ((isMe) ? "yes" : "no") << "\""
 						"}";
 			} // --- if user is not dupicated
