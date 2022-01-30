@@ -140,11 +140,11 @@ int main()
 			MESSAGE_DEBUG("", action, "start");
 
 			auto		error_message = ""s;
-			auto		affected = db.Query("SELECT COUNT(*) FROM `medical_records` WHERE `company_id` IN ("
-												"SELECT `company_id_data_available` FROM `company_data_access` WHERE `company_id` IN ("
-													"SELECT `company_id` FROM `company_employment` WHERE `user_id`=" + quoted(user.GetID()) +
-												")"
-											");");
+			auto		affected = db.Query(
+											"SELECT COUNT(*) FROM `medical_records` WHERE "
+												+ GetMedicalRecordsSQLFilter_BasedOnVisibility(user.GetID(), &db) 
+												+ ";"
+											);
 			auto		number_of_medical_records = affected ? db.Get(0, 0) : "0";
 			auto		success_message =	"\"number_of_medical_records\":" + quoted(number_of_medical_records) + ","
 											"\"users\":[" + GetUserListInJSONFormat("SELECT * FROM `users` WHERE `id`=" + user.GetID() + ";", &db, &user) + "]";
@@ -160,11 +160,9 @@ int main()
 
 			auto		error_message	= ""s;
 			auto		patient_id		= CheckHTTPParam_Number(indexPage.GetVarsHandler()->Get("patient_id"));
-			auto		sql_query		= "SELECT * FROM `medical_records` WHERE `company_id` IN ("
-												"SELECT `company_id_data_available` FROM `company_data_access` WHERE `company_id` IN ("
-													"SELECT `company_id` FROM `company_employment` WHERE `user_id`=" + quoted(user.GetID()) +
-												")"
-											")" + (patient_id.length() ? " AND `id`=" + quoted(patient_id) + " AND `submitter_user_id`=" + quoted(user.GetID()) : "");
+			auto		sql_query		= "SELECT * FROM `medical_records` WHERE "s
+											+ GetMedicalRecordsSQLFilter_BasedOnVisibility(user.GetID(), &db)
+											+ (patient_id.length() ? " AND `id`=" + quoted(patient_id) : "");
 			auto		success_message	= "\"medical_records\":[" + GetMedicalRecordsInJSONFormat(sql_query, &db, &user) + "]";
 
 			AJAX_ResponseTemplate(&indexPage, success_message, error_message);
@@ -308,6 +306,36 @@ int main()
 					MESSAGE_DEBUG("", action, error_message);
 				}
 
+			}
+			else
+			{
+				error_message = gettext("You are not authorized");
+				MESSAGE_DEBUG("", action, error_message);
+			}
+
+			AJAX_ResponseTemplate(&indexPage, success_message, error_message);
+
+			MESSAGE_DEBUG("", action, "finish");
+		}
+
+		if(action == "AJAX_updateDoctorVisibilityScope")
+		{
+			auto			error_message = ""s;
+			auto			user_id = CheckHTTPParam_Number(indexPage.GetVarsHandler()->Get("id"));
+			auto			scope = CheckHTTPParam_Text(indexPage.GetVarsHandler()->Get("value"));
+			auto			success_message = ""s;
+
+			MESSAGE_DEBUG("", action, "start");
+
+
+			if(GetUserAAARole(&user, &db) == "admin")
+			{
+				error_message = UpdateUserVisibilityScope(user_id, scope, &db);
+
+				if(error_message.length())
+				{
+					MESSAGE_ERROR("", action, error_message);
+				}
 			}
 			else
 			{
@@ -584,7 +612,16 @@ int main()
 							}
 							else
 							{
-								if(db.InsertQuery("INSERT INTO `company_employment` (`user_id`, `company_id`) VALUES (" + quoted(user.GetID()) + "," + quoted(hospital) + ");"))
+								if(error_message.empty() && db.InsertQuery("INSERT INTO `company_employment` (`user_id`, `company_id`) VALUES (" + quoted(user.GetID()) + "," + quoted(hospital) + ");"))
+								{
+
+								}
+								else
+								{
+									error_message = gettext("SQL syntax error");
+									MESSAGE_ERROR("", action, error_message);
+								}
+								if(error_message.empty() && db.InsertQuery("INSERT INTO `company_employment` (`user_id`, `company_id`) VALUES (" + quoted(user.GetID()) + "," + quoted(hospital) + ");"))
 								{
 
 								}

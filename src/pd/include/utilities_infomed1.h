@@ -4,6 +4,7 @@
 #include "utilities.h"
 #include "c_float.h"
 #include "c_cache_obj.h"
+#include "utilities_sql_queries.h"
 // --- IMPORTANT !!!
 // --- do NOT add any header file with potentially recursive includes
 
@@ -31,8 +32,14 @@ auto      		GetChatMessagesInJSONFormat(string dbQuery, CMysql *) -> string;
 auto      		GetUnreadChatMessagesInJSONFormat(CUser *, CMysql *) -> string;
 auto      		GetMessageImageList(string imageSetID, CMysql *) -> string;
 auto      		GetMessageLikesUsersList(string messageID, CUser *, CMysql *) -> string;
-auto			GetUserAAARole(string user_id, CMysql *db) -> string;
-auto			GetUserAAARole(CUser *user, CMysql *db) -> string;
+auto			GetUserAAARole(string user_id, CMysql *) -> string;
+auto			GetUserAAARole(CUser *, CMysql *) -> string;
+
+auto			GetUserVisibilityScope(string user_id, CMysql *) -> string;
+auto			GetUserVisibilityScope(CUser *, CMysql *) -> string;
+auto 			UpdateUserVisibilityScope(const string &user_id, const string &scope, CMysql *) -> string;
+auto 			GetMedicalRecordsSQLFilter_BasedOnVisibility(const string &user_id, CMysql *) -> string;
+
 auto      		GetUserListInJSONFormat(string dbQuery, CMysql *, CUser *) -> string;
 auto 			GetBookLikesUsersList(string usersBookID, CUser *, CMysql *) -> string;
 auto 			GetLanguageLikesUsersList(string usersLanguageID, CUser *, CMysql *) -> string;
@@ -67,8 +74,8 @@ auto      		GetUserNotificationSpecificDataByType(unsigned long typeID, unsigned
 auto      		GetUserNotificationInJSONFormat(string sqlRequest, CMysql *, CUser *) -> string;
 
 
-auto			CouldCompanyBeDeleted(string id, CMysql *, CUser *user) -> string;
-auto			CouldCompanyTitleBeChanged(string company_id, string new_title, CMysql *, CUser *user) -> string;
+auto			CouldCompanyBeDeleted(string id, CMysql *, CUser *) -> string;
+auto			CouldCompanyTitleBeChanged(string company_id, string new_title, CMysql *, CUser *) -> string;
 
 auto			AddAccessDataRight(string company_id, string company_id_data_available, CMysql *) -> string;
 auto			RemoveAccessDataRight(string company_id, CMysql *) -> string;
@@ -78,6 +85,6 @@ auto			IsPatientExists(string first_name, string middle_name, string last_name, 
 
 auto			GetMedicalRecordsInJSONFormat(string sql_query, CMysql *, CUser *) -> string;
 
-auto			IsUserAllowedToChangePatientRecord(string patient_id, CUser *user, CMysql *db) -> bool;
+auto			IsUserAllowedToChangePatientRecord(string patient_id, CUser *, CMysql *) -> bool;
 
 #endif
