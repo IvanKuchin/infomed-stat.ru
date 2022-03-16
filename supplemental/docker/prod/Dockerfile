@@ -116,6 +116,7 @@ RUN apt-get install --no-install-recommends --no-install-suggests -y ssmtp apach
 #########################
 # configure mail sender #
 #########################
+RUN chown -R www-data:www-data ${IMAGEROOTDIR}
 
 #####################
 # configure apache2 #
