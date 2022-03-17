@@ -116,7 +116,7 @@ RUN apt-get install --no-install-recommends --no-install-suggests -y ssmtp apach
 #########################
 # configure mail sender #
 #########################
-RUN chown -R www-data:www-data ${IMAGEROOTDIR}
+RUN sed -i "s/#rewriteDomain=/rewriteDomain=${BUILD_REPO}/g" /etc/ssmtp/ssmtp.conf
 
 #####################
 # configure apache2 #
