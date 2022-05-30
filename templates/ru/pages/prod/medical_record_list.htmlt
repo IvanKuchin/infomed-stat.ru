@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+
+    <title><<vars:title_head>></title>
+
+    <script src="/js/pages/medical_record_list.js"></script>
+
+    <script src="/js/chartjs/2.7.2/Chart.bundle.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        medical_record_list.Init();
+      });
+    </script>
+
+  </head>
+
+  <body>
+  <<template:prod/<<vars:user_type>>_navigation_menu.htmlt>>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h3>
+            <center>
+              Список мед. записей
+            </center>
+          </h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-md-9">
+          <p></p>
+        </div>
+        <div class="col-xs-6 col-md-3">
+          <select id="status_filter" class="form-group form-control">
+            <option value="all">Все пациенты</option>
+            <option value="alive">Живые</option>
+            <option value="censored">Выбывшие</option>
+            <option value="event">Умершие</option>
+          </select>
+        </div>
+      </div>
+      <div id="medical_record_list"></div>
+    </div>
+
+    <div id="scrollerToShow"></div>
+
+    <!-- "Are you sure remove cost center?" modal  -->
+    <div class="modal fade" id="AreYouSureRemovePatient" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Вы уверены, что хотите удалить запись?</h4>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-danger submit">Уверен</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        </div>
+      </div>
+      </div>
+    </div>
+
+
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>

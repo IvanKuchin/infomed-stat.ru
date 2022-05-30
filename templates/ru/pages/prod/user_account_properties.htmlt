@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+    <script src="/js/sha512/sha512.js"></script>
+    <script src="/js/pages/user_account_properties.js"></script>
+    
+
+    <title><<vars:title_head>></title>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/pages/user_account_properties.css" rel="stylesheet">
+    <link href="/css/pages/switcher.css" rel="stylesheet">
+
+    <script>
+      $(document).ready(function() {
+      user_account_properties.Init();
+      });
+    </script>
+
+  </head>
+
+  <body>
+  <<template:prod/<<vars:user_type>>_navigation_menu.htmlt>>
+
+    <div class="container single_block box-shadow--6dp">
+      <div class="row">
+        <div class="col-xs-12 col-md-8">
+          <p>
+            <span id="firstName" data-action="AJAX_updateFirstName" class="h2 editableSpan"><<vars:name>></span>&nbsp;&nbsp;&nbsp;<span id="lastName" data-action="AJAX_updateLastName" class="h2 editableSpan"><<vars:nameLast>></span>
+          </p>
+        </div>
+        <div class="col-xs-12 col-md-3">
+          <<vars:isblocked>>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="container single_block box-shadow--6dp">
+      <div class="row">
+        <div class="col-xs-12">
+          <p>
+            <span>E-mail: </span>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 form-group has-feedback">
+          <input type="input" id="changeEmail" class="form-control" value="<<vars:email>>">
+        </div>
+        <div class="hidden-xs hidden-sm col-md-2">
+        </div>
+        <div class="col-xs-12 col-md-3 form-group">
+          <button class="btn btn-md btn-primary form-control" type="button" id="submitChangeEmail" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span> Отправление ...">Сменить email</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <p>
+            <span>Пароль: </span>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-3 form-group  has-feedback">
+          <input type="password" id="changePassword1" name="changePassword1" class="form-control" placeholder="Новый пароль" required="" data-toggle="tooltip" data-placement="top">
+          <span class="glyphicon form-control-feedback user-account-wid60px" aria-hidden="true"></span>
+        </div>
+        <div class="col-xs-12 col-md-3 form-group  has-feedback">
+          <input type="password" id="changePassword2" name="changePassword2" class="form-control" placeholder="Повтор пароля" required="" data-toggle="tooltip" data-placement="top">
+          <span class="glyphicon form-control-feedback user-account-wid60px" aria-hidden="true"></span>
+        </div>
+        <div class="hidden-xs hidden-sm col-md-2">
+        </div>
+        <div class="col-xs-12 col-md-3 form-group">
+          <button class="btn btn-md btn-primary form-control" id="changePassword" type="button" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span> Смена пароля..">Сменить пароль</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <p>
+            <span>Логин: </span>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 form-group  has-feedback">
+          <input type="input" id="changeLogin" name="changeLogin" class="form-control" placeholder="логин" required="" data-toggle="tooltip" data-placement="top">
+          <span class="glyphicon form-control-feedback user-account-wid60px" aria-hidden="true"></span>
+        </div>
+        <div class="hidden-xs hidden-sm col-md-2">
+        </div>
+        <div class="col-xs-12 col-md-3 form-group">
+          <button class="btn btn-md btn-primary form-control" id="submitChangeLogin" type="button" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span> Смена ...">Сменить логин</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <p>
+            <span>Телефон: </span>
+          </p>
+        </div>
+        <div class="col-xs-4 col-md-1 form-group">
+          <select id="country_code" class="form-control">
+            <option value="7">+7 (Россия)</option>
+            <option value="1">+1 (USA)</option>
+            <option value="380">+380 (Украина)</option>
+            <option value="375">+375 (Беларусь)</option>
+            <option value="49">+49 (Германия)</option>
+          </select>
+        </div>
+        <div class="col-xs-8 col-md-5 form-group">
+          <input type="input" class="form-control" id="phone_number" placeholder="(xxx) xxx-xx-xx">
+        </div>
+        <div class="hidden-xs hidden-sm col-md-2">
+        </div>
+        <div class="col-xs-12 col-md-3 form-group">
+          <button class="btn btn-md btn-primary form-control" id="submitConfirmPhoneNumber" type="button" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span> Отправление ...">Подтвердить</button>
+        </div>
+      </div>
+    </div>
+
+    <<template:prod/user_account_properties_1.htmlt>>
+
+    <div class="container single_block box-shadow--6dp">
+      <div class="row">
+        <div class="col-xs-12 form-group">
+          <span class="h3">Уведомления по кейсам</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3 col-sm-1 form-switcher">
+          <input type="checkbox" id="case_subscripiton_email" name="case_subscripiton_email" data-script="account.cgi" data-action="AJAX_updateHelpdeskEmailSubscription">
+          <label class="switcher" for="case_subscripiton_email"></label>
+        </div>
+        <div class="col-xs-6 form-group">
+          <label for="case_subscripiton_email" class="font_weight_normal"> Получать по почте </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3 col-sm-1 form-switcher">
+          <input type="checkbox" id="case_subscripiton_sms" name="case_subscripiton_sms" data-script="account.cgi" data-action="AJAX_updateHelpdeskSMSSubscription">
+          <label class="switcher" for="case_subscripiton_sms"></label>
+        </div>
+        <div class="col-xs-6 form-group">
+          <label for="case_subscripiton_sms" class="font_weight_normal"> Получать смс </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="container single_block box-shadow--6dp">
+      <div class="row">
+        <div class="col-xs-12 form-group">
+          <span class="h3">Оформление</span>
+        </div>
+      </div>
+      <div id="ThemesList">
+      </div>
+    </div>
+
+    <div class="container single_block box-shadow--6dp">
+      <div class="row">
+        <div class="col-xs-12 form-group">
+          <span class="h3">GIT commit</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-sm-1">
+          Backend:
+        </div>
+        <div class="col-xs-12 col-sm-11">
+          <<vars:git_commit_id>>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-sm-1">
+          GUI:
+        </div>
+        <div class="col-xs-12 col-sm-11">
+          <<template:templates/git_commit_id>>
+        </div>
+      </div>
+    </div>
+
+
+
+
+<div class="modal fade" id="DialogAccountBlockYesNo" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Заблокировать аккаунт ?</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="ButtonAccountCancel2">Close</button>
+        <button type="button" class="btn btn-danger" id="ButtonAccountBlock2">Заблокировать</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="DialogAccountEnableYesNo" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Разблокировать аккаунт ?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="ButtonAccountCancel3">Close</button>
+        <button type="button" class="btn btn-success" id="ButtonAccountEnable3">Разблокировать</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="PasswordChanged" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Пароль изменен !</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          Теперь вы должны использовать новый пароль для входа на сайт.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Я запомнил новый пароль</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="EmailChangeDialog" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Изменение email</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          Для подтверждения нового e-mail, Вам неодходимо проверить почту и подтвердить её нажатием на ссылку в письме <span class="color_red">в течение часа</span>.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Проверить почту</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <<template:prod/sms_confirmation.htmlt>>
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>

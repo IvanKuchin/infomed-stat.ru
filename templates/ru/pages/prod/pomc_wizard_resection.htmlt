@@ -1,0 +1,24 @@
+          <div class="row form-group">
+            <div class="col-xs-6 col-md-2">Вид резекции:</div>
+            <div class="col-xs-6 col-md-4">
+              <select class="transparent ___resect_type">
+                <option>Не определено</option>
+                <option>Краевая</option>
+                <option>Циркулярная</option>
+                <option>С использованием синтетического протеза</option>
+              </select>
+            </div>
+
+            <div class="col-xs-6 col-md-2">Протяженность резекции:</div>
+            <div class="col-xs-6 col-md-4">
+              <select class="transparent ___resect_extent">
+                <option>Не определено</option>
+                <option>менее 1 см</option>
+                <option>1-2 см</option>
+                <option>2-3 см</option>
+                <option>3-5 см</option>
+                <option>более 5 см</option>
+              </select>
+            </div>
+          </div>
+

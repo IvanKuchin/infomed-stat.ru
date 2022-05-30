@@ -1,0 +1,8 @@
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="/user_account_properties?rand=<<vars:rand>>">Свойства аккаунта</a></li>
+						<li class="divider"></li>
+						<li><a href="/cgi-bin/account.cgi?action=faq_template&rand=<<vars:rand>>">F.A.Q.</a></li>
+						<li><a href="/cgi-bin/helpdesk.cgi?action=cases_list_template&rand=<<vars:rand>>">Мои кейсы</a></li>
+						<li class="divider"></li>
+						<li><a href="/logout?rand=<<vars:rand>>">Выйти</a></li>
+					</ul>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+
+    <title><<vars:title_head>></title>
+
+    <script src="/js/pages/medical_record_add.js"></script>
+    <link href="/css/pages/medical_record_add.css" rel="stylesheet">
+
+    <script src="/js/chartjs/2.7.2/Chart.bundle.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        medical_record_add.Init();
+      });
+    </script>
+
+  </head>
+
+  <body>
+  <<template:prod/<<vars:user_type>>_navigation_menu.htmlt>>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h3>
+            <center>
+              Добавление записи
+            </center>
+          </h3>
+        </div>
+      </div>
+    </div>
+
+<<template:prod/pomc_wizard.htmlt>>    
+
+    <div id="scrollerToShow"></div>
+
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>

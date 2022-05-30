@@ -1,0 +1,3 @@
+ERROR: 
+<<vars:content>>
+<br><br>Please return to the <a href="/?rand=<<vars:rand>>">main page</a>

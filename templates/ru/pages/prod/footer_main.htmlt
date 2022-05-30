@@ -1,0 +1,309 @@
+</td>
+                  </tr>
+                </table></td>
+              </tr>
+            </table></td>
+            <td width="56" valign="bottom"><img src="/images/right_1.jpg" width="56" height="40"></td>
+          </tr>
+          <tr>
+            <td><img src="/images/corner_1.jpg" width="31" height="36"></td>
+            <td height="36" valign="top" background="/images/bottom_b.jpg"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="left"><img src="/images/bottom_1.jpg" width="188" height="36"></td>
+                <td align="right"><img src="/images/bottom_2.jpg" width="178" height="36"></td>
+              </tr>
+            </table></td>
+            <td><img src="/images/corner_2.jpg" width="56" height="36"></td>
+          </tr>
+        </table></td>
+        <td bgcolor="#1E1E1E">&nbsp;</td>
+      </tr>
+      <tr>
+        <td valign="top" bgcolor="#1E1E1E"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td height="24" background="/images/bottom_mel.jpg"><img src="/images/1.gif" width="1" height="24"></td>
+          </tr>
+        </table></td>
+        <td height="251" valign="top" bgcolor="#1E1E1E"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="62" valign="top"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td height="24" background="/images/bottom_mel.jpg"><img src="/images/1.gif" width="1" height="24"></td>
+              </tr>
+            </table></td>
+            <td width="208" valign="top"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td valign="bottom"><img src="/images/news_title.jpg" width="122" height="33"></td>
+                  </tr>
+<<vars:news_short>>
+                  <tr>
+                    <td valign="top"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td width="22" valign="middle"><img src="/images/news_all_bullet.gif" width="10" height="8"></td>
+                          <td><a href="/sn&rand=<<vars:random>>" class="news_all">Все новости</a></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                </table></td>
+              </tr>
+              <tr>
+                <td height="24" background="/images/bottom_mel.jpg"><img src="/images/1.gif" width="1" height="24"></td>
+              </tr>
+            </table></td>
+            <td valign="top"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td valign="bottom"><img src="/images/title_raboti.jpg" width="206" height="32"></td>
+                  </tr>
+                  <tr>
+                    <td valign="top"><table border="0" cellspacing="0" cellpadding="0">
+<<vars:last_works>>
+<!--
+                      <tr>
+                        <td width="30"><a href="#"><img src="/images/rab_s.jpg" width="47" height="47" border="0" class="picture_2"></a></td>
+                        <td width="12"><img src="/images/1.gif" width="10" height="15"></td>
+                        <td width="30"><a href="#"><img src="/images/rab_s.jpg" width="47" height="47" border="0" class="picture_2"></a></td>
+                        <td width="12"><img src="/images/1.gif" width="10" height="15"></td>
+                        <td><a href="#"><img src="/images/rab_s.jpg" width="47" height="47" border="0" class="picture_2"></a></td>
+                        </tr>
+                      <tr>
+                        <td><img src="/images/1.gif" width="10" height="12"></td>
+                        <td><img src="/images/1.gif" width="10" height="12"></td>
+                        <td><img src="/images/1.gif" width="10" height="12"></td>
+                        <td><img src="/images/1.gif" width="10" height="12"></td>
+                        <td><img src="/images/1.gif" width="10" height="12"></td>
+                        </tr>
+                      <tr>
+                        <td><a href="#"><img src="/images/rab_s.jpg" width="47" height="47" border="0" class="picture_2"></a></td>
+                        <td>&nbsp;</td>
+                        <td><a href="#"><img src="/images/rab_s.jpg" width="47" height="47" border="0" class="picture_2"></a></td>
+                        <td>&nbsp;</td>
+                        <td><a href="#"><img src="/images/rab_s.jpg" width="47" height="47" border="0" class="picture_2"></a></td>
+                        </tr>
+-->
+                    </table></td>
+                  </tr>
+                </table></td>
+              </tr>
+            </table></td>
+              </tr>
+              <tr>
+                <td height="24"><img src="/images/1.gif" width="1" height="24"><img src="/images/line_rab.gif" width="199" height="6" vspace="3"></td>
+              </tr>
+              <tr>
+                <td height="24" valign=top><table width="100%"border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td width="22" valign="middle"><img src="/images/news_all_bullet.gif" width="10" height="8"></td>
+                      <td><a href="/list_work" class="news_all">Все работы</a>
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+</td>
+                    </tr>
+
+                  </table></td>
+              </tr>
+              <tr>
+                <td height="24" background="/images/bottom_mel.jpg">&nbsp;</td>
+              </tr>
+            </table></td>
+            <td width="265" valign="bottom"> <p><img src="/images/flash_2.jpg" width="265"></p> </td>
+            <td width="165" valign="top"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td><img src="/images/koord_title.jpg" width="140" height="33"></td>
+              </tr>
+              <tr>
+                <td valign="top"><<vars:big_banner1>></td>
+              </tr>
+              <tr>
+                <td height="119" valign="bottom"><a href="#"><img src="/images/mail.jpg" width="165" height="119" border="0"></a></td>
+              </tr>
+            </table></td>
+            <td width="31" valign="top"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td height="24" background="/images/bottom_mel.jpg"><img src="/images/1.gif" width="1" height="24"></td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+        <td valign="top" bgcolor="#1E1E1E"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td height="24" background="/images/bottom_mel.jpg"><img src="/images/1.gif" width="1" height="24"></td>
+          </tr>
+        </table></td>
+      </tr>
+
+    </table></td>
+  </tr>
+
+<tr><td>
+<TABLE height="20" cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+    <TR bgcolor="#1e1e1e">
+      <TD background="/images/bottom_3.jpg" 
+          bgColor=#1e1e1e align=right>
+
+
+
+
+<div align="center">
+
+<!--<a class=blue2 href="http://www.ops.ru/franchise/">Франчайзинг в Москве, франшиза</a>  
+
+&middot; <a class=blue2 href="http://www.biletfutbol.ru/football/">билеты на футбольные матчи</a>
+
+&middot; <a class=blue2 href="http://www.holdingservice.ru/">ремонт ванной</a>  
+
+&middot; <a class=blue2 href="http://www.balagan.ru">Balagan.RU - заказ театральных билетов</a>  
+
+&middot; <a class=blue2  href="http://www.biletexpress.ru/teatr/132/af.html">московский цирк на цветном</a> 
+
+&middot; <a class=blue2  href="http://www.vipteatr.ru/circus/vernadskogo/index.khtml">билеты в цирк на вернадском</a>  
+
+&middot; <a class=blue2  href="http://www.moscow-excursion.ru/tretyakovskaya/">заказ экскурсии в третьяковскую галерею</a>
+
+&middot; <a class=blue2 href="http://www.excursio.ru/">экскурсии по Москве</a>  
+
+&middot; <a class=blue2 href="http://www.vipservis.ru/">няня москва</a> -->
+
+
+<!--
+
+<script src="http://w3.followsite.com/pop/followsite.js" type="text/javascript"></script><a href="http://www.followsite.com/" onmouseover="javascript:followsiteshow('', this);" onclick="javascript:return false;"><img border="0" src="http://w3.followsite.com/img/button1.gif" alt="Update me when site is updated" width="125" height="16"></a>
+
+-->
+<!-- Yandex.Metrika -->
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript"></script>
+<script type="text/javascript">
+try { var yaCounter343365 = new Ya.Metrika(343365); } catch(e){}
+</script>
+<noscript><div style="position: absolute;"><img src="//mc.yandex.ru/watch/343365" alt="" /></div></noscript>
+<!-- /Yandex.Metrika -->
+
+
+<!--LiveInternet counter--><script type="text/javascript"><!--
+document.write("<a href='http://www.liveinternet.ru/click' "+
+"target=_blank><img src='http://counter.yadro.ru/hit?t25.5;r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";"+Math.random()+
+"' alt='' title='LiveInternet: показано число посетителей за"+
+" сегодня' "+
+"border=0 width=88 height=15><\/a>")//--></script><!--/LiveInternet--></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</TD>
+    </TR>
+  </TBODY>
+</TABLE>
+
+
+</td></tr>
+</table>
+<script>
+function toggle1(e, e1) {
+  if (e.style.display == "none") {
+     e.style.display = "block";
+     e1.src = "/images/bullet_menu_1_open.gif";
+  } else {
+     e.style.display = "none";
+     e1.src = "/images/bullet_menu_1_close.gif";
+  }
+}
+function toggle2(e, e1) {
+  if (e.style.display == "none") {
+     e.style.display = "block";
+     e1.src = "/images/bullet_menu_2_open.gif";
+  } else {
+     e.style.display = "none";
+     e1.src = "/images/bullet_menu_2_close.gif";
+  }
+}
+function toggle3(e, e1) {
+  if (e.style.display == "none") {
+     e.style.display = "block";
+     e1.src = "/images/bullet_menu_3_open.gif";
+  } else {
+     e.style.display = "none";
+     e1.src = "/images/bullet_menu_3_close.gif";
+  }
+}
+function toggle4(e, e1) {
+  if (e.style.display == "none") {
+     e.style.display = "block";
+     e1.src = "/images/bullet_menu_4_open.gif";
+  } else {
+     e.style.display = "none";
+     e1.src = "/images/bullet_menu_4_close.gif";
+  }
+}
+function toggle5(e, e1) {
+  if (e.style.display == "none") {
+     e.style.display = "block";
+     e1.src = "/images/bullet_menu_5_open.gif";
+  } else {
+     e.style.display = "none";
+     e1.src = "/images/bullet_menu_5_close.gif";
+  }
+}
+function toggle6(e, e1) {
+  if (e.style.display == "none") {
+     e.style.display = "block";
+     e1.src = "/images/bullet_menu_6_open.gif";
+  } else {
+     e.style.display = "none";
+     e1.src = "/images/bullet_menu_6_close.gif";
+  }
+}
+function toggle7(e, e1) {
+  if (e.style.display == "none") {
+     e.style.display = "block";
+     e1.src = "/images/bullet_menu_7_open.gif";
+  } else {
+     e.style.display = "none";
+     e1.src = "/images/bullet_menu_7_close.gif";
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+    <script src="/js/pages/logout.js"></script>
+    
+
+    <title>Общая зона</title>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/pages/logout.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="container">
+    <div class="row">
+      
+      <div class="col-md-12">
+        <h1>Вы вышли в общедоступную зону.</h1>
+        <p>Для <a href="/?rand=<<vars:rand>>">возврата</a> на сайт вам необходимо ввести свой логин и пароль.</p>
+      </div>
+
+    </div> <!-- /row       -->
+    </div> <!-- /container -->
+
+
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>

@@ -89,14 +89,14 @@ endforeach()
 # --- actual linker options are -Wl,-rpath,/path/to/dynamic/library
 # --- https://gitlab.kitware.com/cmake/community/wikis/doc/cmake/RPATH-handling
 # set         (CMAKE_INSTALL_RPATH    ${XL_LIBRARY_DIR})
-foreach(EXECUTABLE_CGI ${EXECUTABLE_CGIs_with_INVOICE_PD_PI_LIBS})
-    set_target_properties(${EXECUTABLE_CGI}     PROPERTIES
-                                                BUILD_WITH_INSTALL_RPATH TRUE
-                                                INSTALL_RPATH_USE_LINK_PATH TRUE
-                                                INSTALL_RPATH "${XL_LIBRARY_DIR}"
-                                                )
-endforeach()
-message(STATUS  "configure libxl RPATH to ${XL_LIBRARY_DIR}}")
+#foreach(EXECUTABLE_CGI ${EXECUTABLE_CGIs_with_INVOICE_PD_PI_LIBS})
+#    set_target_properties(${EXECUTABLE_CGI}     PROPERTIES
+#                                                BUILD_WITH_INSTALL_RPATH TRUE
+#                                                INSTALL_RPATH_USE_LINK_PATH TRUE
+#                                                INSTALL_RPATH "${XL_LIBRARY_DIR}"
+#                                                )
+#endforeach()
+#message(STATUS  "configure libxl RPATH to ${XL_LIBRARY_DIR}}")
 
 # --- Install part
 

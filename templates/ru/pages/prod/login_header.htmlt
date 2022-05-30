@@ -1,0 +1,32 @@
+    <div class="container-fluid login_block">
+      <div class="row margin_top_10">
+        <div class="hidden-xs col-md-offset-1 col-md-4">
+          <h2 class="margin_0 __domain_email"></h2>
+        </div>
+        <div class="col-xs-3 col-md-1">
+          <select id="signinInputCountry" class="form-control" style="display: none;">
+          </select>
+        </div>
+        <div class="col-xs-12 col-md-2">
+              <input type="email" id="signinInputLogin" name="signinInputEmail" value="" class="form-control" placeholder="email или телефон" autocomplete="username" autofocus>
+        </div>
+        <div class="col-xs-12 col-md-2 col-lg-2">
+              <input type="password" id="signinInputPassword" name="signinInputPassword" class="form-control" placeholder="Пароль" autocomplete="current-password">
+        </div>
+        <div class="col-xs-12 col-md-1 col-lg-1">
+              <button class="btn btn-md btn-primary btn-block dynamic_shadow" id="signinSubmit" type="submit" data-loading-text="Вход...">Вход</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-md-2 col-md-offset-6">
+              <input type="checkbox" value="remember-me" id="signinRemember" checked>
+              <span id="signinRememberLabel" class="cursor_pointer">Запомнить</span>
+              <button id="phoneSigninSubmit" hidden>Вход</button>
+        </div>
+        <div class="col-xs-6 col-md-2">
+            <span class="forgot-pass">
+              <a href="/cgi-bin/index.cgi?action=forget_password_page" style="color: blue;">Забыли пароль</a>
+            </span>
+        </div>
+      </div>
+    </div>

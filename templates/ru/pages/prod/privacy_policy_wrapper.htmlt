@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+
+    <title><<vars:title_head>></title>
+
+    <script src="/js/pages/pi/domain_replacer.js"></script>
+    <script>
+      $(document).ready(function() {
+        domain_replacer.Init();
+      });
+    </script>
+
+  </head>
+
+  <body>
+  <<template:prod/<<vars:user_type>>_navigation_menu.htmlt>>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <<template:prod/privacy_policy.htmlt>>
+    </div>
+  </div>
+</div>
+    <<template:prod/footer.htmlt>>
+  </body>
+</html>

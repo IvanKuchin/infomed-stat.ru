@@ -41,7 +41,7 @@ int main()
 
 		indexPage.ParseURL();
 
-		if(!indexPage.SetTemplate("json_response.htmlt"))
+		if(!indexPage.SetProdTemplate("json_response.htmlt"))
 		{
 			MESSAGE_ERROR("", action, "template file was missing");
 			throw CException("Template file was missing");
@@ -522,7 +522,7 @@ int main()
 		}
 
 
-		if(!indexPage.SetTemplate("json_response.htmlt"))
+		if(!indexPage.SetProdTemplate("json_response.htmlt"))
 		{
 			MESSAGE_ERROR("", action, "can't find template json_response.htmlt");
 			throw CExceptionHTML("user not activated");
@@ -538,7 +538,7 @@ int main()
 
 		MESSAGE_DEBUG("", action, "catch CExceptionHTML: DEBUG exception reason: [" + c.GetReason() + "]");
 
-		if(!indexPage.SetTemplate(c.GetTemplate()))
+		if(!indexPage.SetProdTemplate(c.GetTemplate()))
 		{
 			MESSAGE_ERROR("", "", "template (" + c.GetTemplate() + ") not found");
 			return(-1);

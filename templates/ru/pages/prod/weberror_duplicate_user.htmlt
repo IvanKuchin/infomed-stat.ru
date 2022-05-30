@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <<template:prod/header.htmlt>>
+
+    <title>Необходимо вмешательство</title>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/pages/common_weberror.css" rel="stylesheet">
+
+  </head>
+
+
+
+
+
+  <body>
+
+    <div class="container">
+
+    <p class="text-center">  <strong> Ошибка </strong> </p>
+
+	<p class="text-left"> Выбранное имя пользователя уже имеется в системе. <a href="/cgi-bin/index.cgi?randomization=<<vars:rand>>&
+  param1=1&regEmail=<<vars:regEmail>>&
+  param2=2&regPassword=<<vars:regPassword>>&action=login">Выберите другое имя пользователя.</a> </p>
+
+
+    </div> <!-- /container -->
+
+
+
+
+<<template:prod/footer.htmlt>>
+
+  </body>
+</html>

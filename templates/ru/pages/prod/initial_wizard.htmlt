@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+
+    <title><<vars:title_head>></title>
+
+    <!-- next three come together  -->
+    <script src="/js/pages/geo_zip_edit.js"></script>
+    <script src="/js/pages/bank_edit.js"></script>
+    <script src="/js/pages/company_info_edit.js"></script>
+
+    <script src="/js/pages/initial_wizard.js"></script>
+    <link href="/css/pages/initial_wizard.css" rel="stylesheet">
+
+    <link href="/css/pages/switcher.css" rel="stylesheet">
+
+    <script>
+      $(document).ready(function() {
+        initial_wizard.Init();
+      });
+    </script>
+
+  </head>
+
+  <body>
+
+    <div class="__tab tab_hidden" data-tab_id="0">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Роль</center></h3></div>
+          <div class="col-xs-12 form-group"><button id="role_subc" class="btn btn-primary form-control" data-next_tab_id="10">Субподрядчик</button></div>
+          <div class="col-xs-12 form-group"><button id="role_approver" class="btn btn-primary form-control" data-next_tab_id="20">Утверждающий</button></h3></div>
+          <div class="col-xs-12 form-group"><button id="role_agency_owner" class="btn btn-primary form-control" data-next_tab_id="30">Владелец агенства</button></div>
+          <div class="col-xs-12 form-group"><button id="role_agency_employee" class="btn btn-primary form-control" data-next_tab_id="40">Сотрудник агенства</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- subcontractor -->
+    <div class="__tab tab_hidden" data-prev_tab_id="0" data-tab_id="10" data-next_tab_id="11" data-algorithm="eula">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><<template:prod/eula.htmlt>></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden" data-prev_tab_id="10" data-tab_id="11" data-next_tab_id="12" data-algorithm="personal_data">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Персональные данные (subc)</center></h3></div>
+          <div class="col-xs-4"><input class="transparent __last_name" placeholder="Фамилия"><label></label></label></div>
+          <div class="col-xs-4"><input class="transparent __first_name" placeholder="Имя"><label></label></label></div>
+          <div class="col-xs-4"><input class="transparent __middle_name" placeholder="Отчество"><label></label></label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden" data-prev_tab_id="11" data-tab_id="12" data-next_tab_id="13" data-algorithm="passport_data">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Паспортные данные (subc)</center></h3></div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">Паспортные данные не будут использоваться или демонстрироваться нигде кроме подписания контрактов с агенством.</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4"><input class="transparent __passport_series" placeholder="серия"><label></label></label></div>
+          <div class="col-xs-4"><input class="transparent __passport_number" placeholder="номер"><label></label></label></div>
+          <div class="col-xs-4"><input class="transparent __passport_issue_date __date_picker" placeholder="когда выдан"><label></label></div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12"><input class="transparent __passport_issue_authority" placeholder="кем выдан"><label></label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden" data-prev_tab_id="12" data-tab_id="13" data-next_tab_id="14" data-algorithm="check_company_by_tin">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Проверка компании по ИНН (subc)</center></h3></div>
+          <div class="col-xs-12 form-group">Введите ИНН своей компании, что бы убедиться, что компании нет в нашей БД. В противном случае, Вам необходимо восстановить доступ к своей компании.</div>
+          <div class="col-xs-8 col-md-10">
+            <input class="transparent __tin" placeholder="ИНН вашей компании" data-company_type="subcontractor">
+            <label></label>
+          </div>
+          <div class="col-xs-4 col-md-2">
+            <button class="btn btn-primary form-control" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span>">Проверить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden" data-prev_tab_id="13" data-tab_id="14" data-next_tab_id="15" data-algorithm="company_info">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Данные о компании (subc)</center></h3></div>
+          <div class="col-xs-12" data-content="__company_info"> </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden" data-prev_tab_id="14" data-tab_id="15" data-next_tab_id="16" data-algorithm="agency_notification">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Извещение агенства (subc)</center></h3></div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+              <input class="__notify_agency_name transparent" placeholder="Название агенства которое нужно известить (необязательно)">
+              <label></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden"  data-prev_tab_id="15" data-tab_id="16" data-next_tab_id="-1">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Отправление данных (subc)</center></h3></div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">Может занять несколько минут.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- approver -->
+    <div class="__tab tab_hidden" data-prev_tab_id="0" data-tab_id="20" data-next_tab_id="21" data-algorithm="eula">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><<template:prod/eula.htmlt>></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden" data-prev_tab_id="20" data-tab_id="21" data-next_tab_id="22"data-algorithm="personal_data">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Персональные данные (approver)</center></h3></div>
+          <div class="col-xs-4"><input class="transparent __last_name" placeholder="Фамилия"><label></label></label></div>
+          <div class="col-xs-4"><input class="transparent __first_name" placeholder="Имя"><label></label></label></div>
+          <div class="col-xs-4"><input class="transparent __middle_name" placeholder="Отчество"><label></label></label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden" data-prev_tab_id="21" data-tab_id="22" data-next_tab_id="23" data-algorithm="agency_notification">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Извещение агенства (approver)</center></h3></div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+              <input class="__notify_agency_name transparent" placeholder="Название агенства которое нужно известить (необязательно)">
+              <label></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden"  data-prev_tab_id="22" data-tab_id="23" data-next_tab_id="-1">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Отправление данных (approver)</center></h3></div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">Может занять несколько минут.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- agency owner -->
+    <div class="__tab tab_hidden" data-prev_tab_id="0" data-tab_id="30" data-next_tab_id="31" data-algorithm="eula">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><<template:prod/eula.htmlt>></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden"  data-prev_tab_id="30" data-tab_id="31" data-next_tab_id="32"data-algorithm="personal_data">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Персональные данные (agency owner)</center></h3></div>
+          <div class="col-xs-4"><input class="transparent __last_name" placeholder="Фамилия"><label></label></label></div>
+          <div class="col-xs-4"><input class="transparent __first_name" placeholder="Имя"><label></label></label></div>
+          <div class="col-xs-4"><input class="transparent __middle_name" placeholder="Отчество"><label></label></label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden" data-prev_tab_id="31" data-tab_id="32" data-next_tab_id="33" data-algorithm="check_company_by_tin">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Проверка компании по ИНН (agency owner)</center></h3></div>
+          <div class="col-xs-12 form-group">Введите ИНН своей компании, что бы убедиться, что компании нет в нашей  data-company_type="subcontractor"БД. В противном случае, Вам необходимо восстановить доступ к своей компании.</div>
+          <div class="col-xs-8 col-md-10">
+            <input class="transparent __tin" placeholder="ИНН вашей компании" data-company_type="agency">
+            <label></label>
+          </div>
+          <div class="col-xs-4 col-md-2">
+            <button class="btn btn-primary form-control" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span>">Проверить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden"  data-prev_tab_id="32" data-tab_id="33" data-next_tab_id="34" data-algorithm="company_info">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Данные о компании (agency owner)</center></h3></div>
+          <div class="col-xs-12" data-content="__company_info"> </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden"  data-prev_tab_id="33" data-tab_id="34" data-next_tab_id="-1">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Отправление данных (agency owner)</center></h3></div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">Может занять несколько минут.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- agency employee -->
+    <div class="__tab tab_hidden" data-prev_tab_id="0" data-tab_id="40" data-next_tab_id="41" data-algorithm="eula">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><<template:prod/eula.htmlt>></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden"  data-prev_tab_id="40" data-tab_id="41" data-next_tab_id="42"data-algorithm="personal_data">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Персональные данные (agency employee)</center></h3></div>
+          <div class="col-xs-4"><input class="transparent __last_name" placeholder="Фамилия"><label></label></label></div>
+          <div class="col-xs-4"><input class="transparent __first_name" placeholder="Имя"><label></label></label></div>
+          <div class="col-xs-4"><input class="transparent __middle_name" placeholder="Отчество"><label></label></label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden"  data-prev_tab_id="41" data-tab_id="42" data-next_tab_id="43" data-algorithm="agency_notification">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Извещение агенства (agency employee)</center></h3></div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+              <input class="__notify_agency_name transparent" placeholder="Название агенства которое нужно известить (необязательно)">
+              <label></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="__tab tab_hidden"  data-prev_tab_id="42" data-tab_id="43" data-next_tab_id="-1">
+      <div class="container single_block">
+        <div class="row">
+          <div class="col-xs-12"><h3><center>Отправление данных (agency employee)</center></h3></div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">Может занять несколько минут.</div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="container single_block __control_block">
+      <div class="row">
+        <div id="step_indicators" style="text-align:center;margin-top:40px;">
+          <span class="step"></span>
+          <span class="step"></span>
+          <span class="step"></span>
+          <span class="step"></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-md-offset-8 col-xs-6"><button class="btn btn-default form-control" id="navigate_prev">Назад</button></div>
+        <div class="col-md-2 col-xs-6"><button class="btn btn-primary form-control" id="navigate_next" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span>">Дальше</button></div>
+      </div>
+    </div>
+
+
+
+    <div id="scrollerToShow"></div>
+
+    <<template:prod/footer.htmlt>>
+  </body>
+</html>

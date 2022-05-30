@@ -10,8 +10,6 @@ name: SAST
 # Start the job on all push to master #
 #######################################
 on:
-  push:
-    branches-ignore: [master]
   pull_request:
     branches: [master]
     types: [opened, reopened, synchronize]

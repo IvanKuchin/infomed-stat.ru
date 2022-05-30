@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+    <script src="/js/pages/chat.js"></script>
+    
+
+    <title><<vars:title_head>></title>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/pages/chat.css" rel="stylesheet">
+
+    <!-- <script src="http://192.168.168.111:8080/target/target-script-min.js#anonymous"></script> -->
+
+
+  </head>
+
+  <body>
+  <<template:prod/navigation_menu.htmlt>>
+
+    <div class="container single_block box-shadow--6dp">
+    <div class="row">
+      <div id="ContactList" class="col-lg-3 col-md-3 col-sm-3 col-xs-4 " data-activeuserid="<<vars:activeuserid>>"> <!--- contact list -->
+      </div>
+      <div id="MessageList" class="col-lg-9 col-md-9 col-sm-9 col-xs-8 message_pane_div_space "> <!--- messagelist -->
+        <div id="MessageListContainer" class="container-fluid">
+        </div>
+      </div>
+      <div id="SendingMessage" class="col-lg-9 col-md-9 col-sm-9 col-xs-8 message_pane_div_space message_send_overflow_hidden animateClass ">  <!--- sending message -->
+        <div id="MessageTyping" class="message_pane_div_typing animateClass">
+           <img src="/images/pages/chat/typing.gif" height=10px> пишет сообщение
+        </div>
+        <div id="ControlButtons" class="message_pane_div_control_buttons animateClass">
+           &nbsp;&nbsp;
+
+           <img src="/images/pages/chat/control_button_photo.png" class="height_14px cursor_pointer" id="ControlButtonPhoto">
+           &nbsp;&nbsp;&nbsp;
+           <img src="/images/pages/chat/control_button_smiley2.png" class="height_14px cursor_pointer" id="ControlButtonSmiley">
+        </div>
+        <div class="container-flex message_pane_div_message">
+          <div class="row">
+            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9">
+              <textarea id="messageToSend" class="form-control" maxlength="1500" placeholder="Сообщение..."></textarea>
+            </div>
+            <div class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 padding_0px hidden-xs">
+              <button id="MessageListSendButton_1" class=" btn btn-primary animateClass " data-loading-text="Отправка...">Отправить</button>
+              <input id="FileSendButton_1" type="file" style="display:none;"  accept=".png,.jpg,.jpeg,.gif,.tif" multiple></button>
+            </div>
+            <div class=" col-lg-2 col-md-2 col-sm-3 col-xs-3 padding_0px visible-xs">
+              <button id="MessageListSendButton_2" class=" btn btn-primary animateClass message_send_padding_5px " data-loading-text="..."><span id="MessageListSendButton_2" class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- /row -->
+    </div> <!-- /container -->
+
+    <!-- loading modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="loadingModalHeader">Подождите секунду ...</h4>
+          </div>
+          <div class="modal-body">
+            <div class="cssload-jumping">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- image viewing modal -->
+    <div class="modal fade" id="ImageViewingModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="loadingModalHeader">Изображение присланное в чате</h4>
+          </div>
+          <div class="modal-body">
+            <img id="imageViewModal_image" class="message_viewin_modal_image_size">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+          <!-- Contact to site owner -->
+         <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="ContactAdministrationDialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title">Обнаружена необычная ситуация, необходимо отправить письмо владельцу сайта ! </h4>
+                </div>
+                <!-- <form> -->
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger" id="ContactAdministrationButton">Сообщить</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                  </div>
+                <!-- </form> -->
+              </div>
+            </div>
+          </div>
+
+  <audio id="SoundReceivedMessage">
+    <source src="/sound/pages/chat/received_message.mp3" type="audio/mpeg">
+  </audio>
+
+  <<template:prod/footer.htmlt>>
+
+  <!-- Corrector used for correct displaying layout devices with on-screen keyboard.
+        On some mob devices  "message textarea" was hidden by on-screen keyboard and 
+        corrector adding spare space at the bottom of the screen  
+   -->
+  <div id="ChatHeightCorrecter"></div>
+  </body>
+</html>

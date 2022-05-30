@@ -1,0 +1,30 @@
+To: <<vars:RECIPIENT_EMAIL>>
+From: "<<vars:SERVER_NAME>>" <noreply@<<vars:EMAIL_FROM_DOMAIN>>>
+Subject: <<vars:SERVER_NAME>>: incident update <<vars:case_id>>
+Content-type: multipart/alternative; boundary="<<vars:rand>>"
+
+--<<vars:rand>>
+Content-Type: text/plain; charset=utf-8
+
+Hello,
+
+  Incident update (<<vars:case_id>>) <<vars:case_title>> 
+  http://<<vars:SERVER_NAME>>/cgi-bin/helpdesk.cgi?action=view_case_template&case_id=<<vars:case_id>>&rand=<<vars:rand>>
+
+Best regards, <<vars:SERVER_NAME>>
+--<<vars:rand>>
+Content-Type: text/html; charset=utf-8
+
+<html>
+<body>
+Hello,
+<br>
+  Incident update (<<vars:case_id>>) <b><<vars:case_title>></b>
+<br>
+  <a href="http://<<vars:SERVER_NAME>>/cgi-bin/helpdesk.cgi?action=view_case_template&case_id=<<vars:case_id>>&rand=<<vars:rand>>">check it here</a>
+<br>
+<br>
+Best regards, <<vars:SERVER_NAME>>
+</body>
+</html>
+--<<vars:rand>>--

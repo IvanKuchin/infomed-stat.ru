@@ -1,52 +1,25 @@
-FROM ubuntu:xenial as libwebsocket
-
-RUN apt update && apt install --no-install-recommends --no-install-suggests -y \
-	    build-essential \
-	    ca-certificates \
-	    cmake \
-	    git \
-	    libssl-dev \
-	    pkg-config \
-
-	&& git clone -b v2.2.0 --depth 1 https://github.com/warmcat/libwebsockets.git \
-	&& cd /libwebsockets \
-	&& mkdir build \
-	&& cd build \
-	&& cmake -DLWS_WITHOUT_DAEMONIZE:BOOL=FALSE -DLWS_WITH_STATIC=1 -DLWS_WITH_SHARED=1 -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/share/libwebsockets/ .. \
-	&& make install \
-
-	&& apt remove --purge -y \
-	    build-essential \
-	    cmake \
-	    git \
-	&& apt autoremove -y \
-	&& apt clean
-
-
-############################################################################################
-
-
 FROM ubuntu:xenial
 
 ARG DB_NAME
 ARG DB_LOGIN
 ARG DB_PASSWORD
 ARG DB_HOST
+ARG BUILD_REPO
+
+ARG GIT_FOLDER=/backend
 
 LABEL maintainer="ivan.kuchin@gmail.com"
 LABEL org.opencontainers.image.source="https://github.com/IvanKuchin/__BUILD_REPO__"
 
+
+###########################################
+# check if all mandatory args are defined #
+###########################################
+RUN [ -z "$BUILD_REPO" ] && echo "BUILD_REPO is required" && exit 1 || true
+RUN echo repository is $BUILD_REPO
+
 # following two commands suppose to be reused from cache
 RUN apt update &&  apt install --no-install-recommends --no-install-suggests -y git ca-certificates
-
-##########################
-# copy from libwebsocket #
-##########################
-COPY --from=libwebsocket /usr/local/share/libwebsockets/ /usr/local/share/libwebsockets/
-
-COPY . /backend
-WORKDIR /backend
-RUN git clone --depth 1 https://github.com/IvanKuchin/backend_pi.git ./src/pi
 
 RUN apt-get install --no-install-recommends --no-install-suggests -y software-properties-common
 RUN add-apt-repository -y ppa:jonathonf/ffmpeg-4
@@ -84,8 +57,22 @@ RUN export LC_ALL=en_US.utf8
 #############################
 RUN apt-get install --no-install-recommends --no-install-suggests -y wget
 RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb
-RUN dpkg -i  wkhtmltox_0.12.5-1.trusty_amd64.deb || true     # trick to force dpkg return successfull return code
-RUN apt install -f --no-install-recommends --no-install-suggests -y
+RUN apt install --no-install-recommends --no-install-suggests -y ./wkhtmltox_0.12.5-1.trusty_amd64.deb
+
+###############
+# pull PI src #
+###############
+COPY . ${GIT_FOLDER}
+WORKDIR ${GIT_FOLDER}
+RUN git clone --depth 1 https://github.com/IvanKuchin/backend_pi.git ./src/pi
+
+######################################################
+# pull PD src                                        #
+# assume the repo name is xxxxxx-admin               #
+# below command cuts out "dash" and everything after #
+######################################################
+RUN git clone --depth 1 https://github.com/IvanKuchin/${BUILD_REPO%%-*}.git /tmp/${BUILD_REPO}/
+RUN cp -R /tmp/${BUILD_REPO}/src/pd ./src
 
 ##################
 # save commit id #
@@ -96,10 +83,13 @@ RUN git rev-parse HEAD > ./supplemental/git/git_commit_id
 # build from source #
 ##################### 
 RUN mkdir build
-RUN cd build && \
-    cmake -DMAIN_SUBDOMAIN=www -DIMAGE_SUBDOMAIN=images .. && \
-    make -j2 && \
-    make install
+RUN cd build \
+    && cmake \
+       -DPROJECT_NAME=__BUILD_REPO__ \
+       -DMAIN_SUBDOMAIN=www \
+       -DIMAGE_SUBDOMAIN=images \
+       .. \
+    && make -j2
 
 ###########################
 # test connectivity to DB #

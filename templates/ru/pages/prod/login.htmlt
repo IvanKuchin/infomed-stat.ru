@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+    <script src="/js/sha512/sha512.js"></script>
+    <script src="/js/pages/login.js"></script>
+    
+
+    <title>Добро пожаловать</title>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/pages/login.css" rel="stylesheet">
+    <script src="/js/pages/pi/domain_replacer.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        login_page.Init();
+        domain_replacer.Init();
+      });
+    </script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+      <<template:prod/login_header.htmlt>>
+
+    <div class="container">
+      <div class="row">
+        <div class="hidden-xs col-md-6">
+  <<template:prod/login_1.htmlt>>
+        </div>
+        <div class="col-md-6" id="registrationForm">
+            <h3 class="form-signin-heading"><center>Регистрация</center></h2>
+
+            <div>Для создания аккаунта, необходимо запросить доступ у администратора</div>
+            <br>
+            <div class="font_size_tiny margin_bottom_5">
+              Регистрируясь, вы принимаете <a href="/eula">Условия</a>, <a href="/privacy_policy">Политику конфиденциальности</a> и <a href="/cookie_policy">Политику cookie</a>.
+            </div>
+<!-- 
+            <div class="form-group has-feedback "  id="regDivEmail">
+              <label for="inputEmail" class="sr-only">E-mail</label>
+              <div class="input-group margin_bottom_5">
+                <span class="input-group-addon" id="tooltip_reg_email"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+                <input type="email" id="regInputEmail" name="regEmail" class="form-control" placeholder="Почта" required autofocus  value="<<vars:regEmail>>">
+              </div>
+              <span id="regSpanEmail" class="glyphicon form-control-feedback" aria-hidden="true"></span>
+            </div>
+
+            <<template:prod/create_password_block.htmlt>>
+
+            <div class="center-block margin_bottom_5"><img src="/images/captcha/<<vars:securityFile>>"></div>
+
+            <label for="securityCodeLabel" class="sr-only">Код безопасности</label>
+            <input type="text" id="regSecurityCode" name="regSecurityCode" class="form-control margin_bottom_5" placeholder="Код безопасности" required>
+            <input type="hidden" name="rand" value="<<vars:rand>>">
+            <input type="hidden" id="regEmail_checked" name="regEmail_checked" value="<<vars:regEmail_checked>>">
+            <input type="hidden" name="action" value="regNewUser">
+            <div class="font_size_tiny margin_bottom_5">
+              Нажимая кнопку Зарегистрироваться, вы принимаете <a href="/eula">Условия</a>, <a href="/privacy_policy">Политику конфиденциальности</a> и <a href="/cookie_policy">Политику cookie</a>.
+            </div>
+
+            <button class="btn btn-lg btn-primary btn-block dynamic_shadow" id="regSubmit" type="submit" data-loading-text="Регистрация...">Зарегистрироваться</button>
+ -->
+        </div>
+
+      </div>
+    </div>
+
+<div class="alert alert-info alert-dismissible z_index_100" role="alert" style="position: fixed; bottom: 0; width: 100%; ">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">Согласен</button>
+  <strong>Внимание !</strong> Пользуясь настоящим веб-сайтом, вы даете свое согласие на использование файлов cookies. <a href="/cookie_policy">Узнать подробнее</a>
+</div>
+
+
+  </div>
+
+  <div class="container-fluid login_block" >
+    <div class="row">
+      <div class="col-xs-6">
+        <small>
+          <a href="/eula" class="color_blue">Условия</a>
+          <a href="/privacy_policy" class="color_blue">Политика конфиденциальности</a>
+          <a href="/cookie_policy" class="color_blue">Политика cookie</a>
+        </small>  
+      </div>
+      <div class="col-xs-6">
+        <div class="float_right">
+          <a class="float_right color_blue __attr_email cursor_pointer">
+            <i class="fa fa-envelope" aria-hidden="true"></i> Напишите нам
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <<template:prod/sms_confirmation.htmlt>>
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>

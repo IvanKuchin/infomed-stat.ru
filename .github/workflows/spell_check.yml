@@ -13,8 +13,6 @@ name: Spell checking
 # Start the job on all push #
 #############################
 on:
-  push:
-    branches-ignore: [master]
   pull_request:
     branches: [master]
     types: [opened, reopened, synchronize]

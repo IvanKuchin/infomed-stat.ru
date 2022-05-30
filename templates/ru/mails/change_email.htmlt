@@ -1,0 +1,36 @@
+To: <<vars:RECIPIENT_EMAIL>>
+From: "<<vars:SERVER_NAME>>" <noreply@<<vars:EMAIL_FROM_DOMAIN>>>
+Subject: <<vars:SERVER_NAME>>: Запрос на изменение e-mail
+Content-type: multipart/alternative; boundary="<<vars:rand>>"
+
+--<<vars:rand>>
+Content-Type: text/plain; charset=utf-8
+
+Добрый день, <<vars:name>> <<vars:nameLast>> !
+
+  С сайта  http://<<vars:SERVER_NAME>> был запрос на изменение e-mail (IP-адреса: <<vars:REMOTE_ADDR>>)
+
+Вам необходимо подтвердить изменение e-mail (ссылка будет активна в течение часа):
+http://<<vars:SERVER_NAME>>/email_change?token=<<vars:token>>&rand=<<vars:rand>>
+
+Если Вы не запрашивали изменение e-mail, просто проигнорируйте письмо.
+
+Представительство сайта <<vars:SERVER_NAME>>
+--<<vars:rand>>
+Content-Type: text/html; charset=utf-8
+
+<html>
+<body>
+Добрый день, <<vars:name>> <<vars:nameLast>> !
+<br>
+  С сайта  http://<<vars:SERVER_NAME>> был запрос на изменение e-mail (IP-адрес: <<vars:REMOTE_ADDR>>)
+<br>
+Вам необходимо <a href="http://<<vars:SERVER_NAME>>/email_change?token=<<vars:token>>&rand=<<vars:rand>>">
+подтвердить изменение e-mail.</a> (ссылка будет активна в течение часа)
+<br>
+ Если Вы не запрашивали изменение e-mail, просто проигнорируйте письмо.
+<br>
+<b>Представительство сайта <<vars:SERVER_NAME>></b>
+</body>
+</html>
+--<<vars:rand>>--

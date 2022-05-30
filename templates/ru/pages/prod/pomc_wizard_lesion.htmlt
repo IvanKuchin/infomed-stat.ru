@@ -1,0 +1,41 @@
+          <div class="row form-group">
+            <div class="col-xs-8 col-md-2">Объем поражения:</div>
+            <div class="col-xs-4 col-md-4">
+              <select class="transparent ___lesion_volume">
+                <option>Не определено</option>
+                <option>менее 180°</option>
+                <option>более 180°</option>
+              </select>
+            </div>
+            <div class="col-xs-8 col-md-2">Неровность контура:</div>
+            <div class="col-xs-4 col-md-4">
+              <select class="transparent ___roughness_contour">
+                <option>Не определено</option>
+                <option>Есть</option>
+                <option>Нет</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-xs-8 col-md-2">Протяженность инвазии:</div>
+            <div class="col-xs-4 col-md-4">
+              <select class="transparent ___envasion_extent">
+                <option>Не определено</option>
+                <option>менее 1 см</option>
+                <option>1-2 см</option>
+                <option>2-3 см</option>
+                <option>3-4 см</option>
+                <option>более 5 см</option>
+              </select>
+            </div>
+            <div class="col-xs-8 col-md-2">Тромбоз:</div>
+            <div class="col-xs-4 col-md-4">
+              <select class="transparent ___thrombosis">
+                <option>Не определено</option>
+                <option>Есть</option>
+                <option>Нет</option>
+              </select>
+            </div>
+          </div>
+

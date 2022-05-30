@@ -1,0 +1,35 @@
+          <div class="row">
+            <div class="col-xs-6 col-md-2">Инвазия вен</div>
+            <div class="col-xs-6 col-md-4">
+              <label style="font-weight: normal;"><input type="checkbox" class="___portal_vein" data-toggle="collapse" data-target=".___ct_post_adj_therapy .collapse.___portal_vein"> Воротная вена</label><br>
+              <label style="font-weight: normal;"><input type="checkbox" class="___sup_mesent_vein" data-toggle="collapse" data-target=".___ct_post_adj_therapy .collapse.___sup_mesent_vein"> Верхнебрыжеечная вена</label><br>
+              <label style="font-weight: normal;"><input type="checkbox" class="___venous_confluence" data-toggle="collapse" data-target=".___ct_post_adj_therapy .collapse.___venous_confluence"> Венозный конфлюенс</label><br>
+              <label style="font-weight: normal;"><input type="checkbox" class="___top_branches"  data-toggle="collapse" data-target=".___ct_post_adj_therapy .collapse.___top_branches"> Ветви верхней брыжеечной вены</label><br>
+            </div>
+          </div>
+
+          <<template:prod/pomc_wizard_lesion_vein.htmlt>>
+
+          <div class="row">
+            <div class="col-xs-6 col-md-2">Инвазия артерий</div>
+            <div class="col-xs-6 col-md-4">
+              <label style="font-weight: normal;"><input type="checkbox" class="___sup_mesent_artery"  data-toggle="collapse" data-target=".___ct_post_adj_therapy .collapse.___sup_mesent_artery"> Верхнебрыжеечная артерия</label><br>
+              <label style="font-weight: normal;"><input type="checkbox" class="___celiac_trunk" data-toggle="collapse" data-target=".___ct_post_adj_therapy .collapse.___celiac_trunk"> Чревный ствол</label><br>
+              <label style="font-weight: normal;"><input type="checkbox" class="___common_hepatic_art" data-toggle="collapse" data-target=".___ct_post_adj_therapy .collapse.___common_hepatic_art"> Общая печеночная артерия</label><br>
+            </div>
+          </div>
+
+          <<template:prod/pomc_wizard_lesion_artery.htmlt>>
+
+          <div class="row">
+            <div class="col-xs-6 col-md-2">Ответ на лечение по RECIST</div>
+            <div class="col-xs-6 col-md-4">
+              <select class="transparent ___recist" placeholder="Ответ на лечение по RECIST">
+                <option>Не определено</option>
+                <option>Complete response</option>
+                <option>Partial response</option>
+                <option>Stable disease</option>
+                <option>Progression disease</option>
+              </select>
+            </div>
+          </div>

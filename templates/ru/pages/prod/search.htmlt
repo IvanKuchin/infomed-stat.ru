@@ -1,0 +1,5 @@
+<<template:prod/header.htmlt>>
+
+<<vars:content>>
+
+<<template:prod/footer.htmlt>>

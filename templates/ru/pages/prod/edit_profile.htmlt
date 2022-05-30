@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+	<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+	<<template:prod/header.htmlt>>
+
+    <script src="/js/sha512/sha512.js"></script>
+	 <!-- Image uploader -->
+	<script src="/js/imageuploader/js/vendor/jquery.ui.widget.js"></script>
+	<script src="/js/imageuploader/js/load-image.all.min.js"></script>
+	<script src="/js/imageuploader/js/jquery.iframe-transport.js"></script>
+	<script src="/js/imageuploader/js/jquery.fileupload.js"></script>
+	<script src="/js/imageuploader/js/jquery.fileupload-process.js"></script>
+	<script src="/js/imageuploader/js/jquery.fileupload-image.js"></script>
+	<script src="/js/imageuploader/js/jquery.fileupload-validate.js"></script>
+
+	<link href="/css/pages/switcher.css" rel="stylesheet">
+
+	<script src="/js/pages/edit_profile.js"></script>
+
+	<title><<vars:title_head>></title>
+
+	<!-- Custom styles for this template -->
+	<link href="/css/pages/edit_profile.css" rel="stylesheet">
+	<script>
+	  $(document).ready(function() {
+		edit_profile.Init();
+	  });
+	</script>
+
+  </head>
+
+  <body>
+  <<template:prod/<<vars:user_type>>_navigation_menu.htmlt>>
+  
+	<div class="container single_block box-shadow--6dp">
+
+		<div class="row form-group">
+			<div class="col-xs-6 col-md-2 col-md-offset-2" style="font-size: x-large;">
+				<input id="last_name_ru" class="transparent"  placeholder="Фамилия" data-id="fake" data-script="account.cgi" data-action="AJAX_updateLastName_Ru">
+				<label></label>
+			</div>
+			<div class="col-xs-6 col-md-2" style="font-size: x-large;">
+				<input id="first_name_ru" class="transparent"  placeholder="Имя" data-id="fake" data-script="account.cgi" data-action="AJAX_updateFirstName_Ru">
+				<label></label>
+			</div>
+			<div class="col-xs-12 col-md-2" style="font-size: x-large;">
+				<input id="middle_name_ru" class="transparent"  placeholder="Отчество" data-id="fake" data-script="account.cgi" data-action="AJAX_updateMiddleName_Ru">
+				<label></label>
+			</div>
+		</div>
+
+		<div class="row"> <!-- row photo block + resume -->
+		  <div class="col-md-2 col-xs-4"> <!-- columns photo block + First Name-->
+
+			<canvas id="canvasForAvatar" width="150" height="150" class="canvas-big-avatar cursor_pointer">
+			  Your browser does not support the HTML5 canvas tag.
+			</canvas>
+			<input id="fileupload" type="file" name="files[]" accept="image/*" style="width: 0px;height: 0px;">
+			<div hidden>
+				<p>
+				  <div class="previewShape">
+					<span class="overlay" id="canvasForAvatarPreview0_overlay"></span>
+					<div class="details"> 
+					  <img src="/images/pages/edit_profile/del.png" id="canvasForAvatarPreview0_del" class="del-sign">
+					</div>
+					<div class="base">
+					  <canvas id="canvasForAvatarPreview0" width="20" height="20" class="canvas-small-avatar">
+						Your browser does not support the HTML5 canvas tag.
+					  </canvas>
+					</div>
+				  </div>
+				  <div class="previewShape">
+					<span class="overlay" id="canvasForAvatarPreview1_overlay"></span>
+					<div class="details"> 
+					  <img src="/images/pages/edit_profile/del.png" id="canvasForAvatarPreview1_del" class="del-sign">
+					</div>
+					<div class="base">
+					  <canvas id="canvasForAvatarPreview1" width="20" height="20" class="canvas-small-avatar">
+						Your browser does not support the HTML5 canvas tag.
+					  </canvas>
+					</div>
+				  </div>
+				  <div class="previewShape">
+					<span class="overlay" id="canvasForAvatarPreview2_overlay"></span>
+					<div class="details"> 
+					  <img src="/images/pages/edit_profile/del.png" id="canvasForAvatarPreview2_del" class="del-sign">
+					</div>
+					<div class="base">
+					  <canvas id="canvasForAvatarPreview2" width="20" height="20" class="canvas-small-avatar">
+						Your browser does not support the HTML5 canvas tag.
+					  </canvas>
+					</div>
+				  </div>
+				  <div class="previewShape">
+					<span class="overlay" id="canvasForAvatarPreview3_overlay"></span>
+					<div class="details"> 
+					  <img src="/images/pages/edit_profile/del.png" id="canvasForAvatarPreview3_del" class="del-sign">
+					</div>
+					<div class="base">
+					  <canvas id="canvasForAvatarPreview3" width="20" height="20" class="canvas-small-avatar">
+						Your browser does not support the HTML5 canvas tag.
+					  </canvas>
+					</div>
+				  </div>
+				</p>
+				<!-- The container for the uploaded files -->
+				<div id="files" class="files"></div> 
+			</div>
+
+		   </div> <!-- columns photo block + First Name-->
+<!-- 
+			<div class="col-md-2 hidden-xs">Пол:</div>
+			<div class="col-xs-8">
+				<input type="radio" name="sex" id="sexMale" value="male">
+				<label for="sexMale" class="font_weight_normal">М</label>
+				&nbsp;
+				<input type="radio" name="sex" id="sexFemale" value="female">
+				<label for="sexFemale" class="font_weight_normal">Ж</label>
+			</div>
+
+			<div class="col-md-2 hidden-xs">Дата рождения:</div>
+			<div class="col-xs-8">
+				<input class="transparent birthday" placeholder="день рождения" data-id="fake" data-script="account.cgi" data-action="AJAX_updateBirthday">
+				<label></label>
+			</div>
+ -->
+		</div>
+<!-- 
+		<div class="row">
+			<div class="col-md-2 col-md-offset-2 col-xs-12">E-mail:</div>
+			<div class="col-xs-12 col-md-6 form-group has-feedback">
+			  <input type="input" id="changeEmail" class="form-control" value="<<vars:email>>">
+			</div>
+			<div class="hidden-xs hidden-sm col-md-2">
+			</div>
+			<div class="col-xs-12 col-md-2 form-group">
+			  <button class="btn btn-md btn-primary form-control" type="button" id="submitChangeEmail" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span> Отправление ...">Сменить email</button>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-2 col-md-offset-2 col-xs-12">Пароль:</div>
+			<div class="col-xs-6 col-md-3 form-group  has-feedback">
+			  <input type="password" id="changePassword1" name="changePassword1" class="form-control" placeholder="Новый пароль" required="" data-toggle="tooltip" data-placement="top">
+			  <span class="glyphicon form-control-feedback user-account-wid60px" aria-hidden="true"></span>
+			</div>
+			<div class="col-xs-6 col-md-3 form-group  has-feedback">
+			  <input type="password" id="changePassword2" name="changePassword2" class="form-control" placeholder="Повтор пароля" required="" data-toggle="tooltip" data-placement="top">
+			  <span class="glyphicon form-control-feedback user-account-wid60px" aria-hidden="true"></span>
+			</div>
+			<div class="hidden-xs hidden-sm col-md-2">
+			</div>
+			<div class="col-xs-12 col-md-2 form-group">
+			  <button class="btn btn-md btn-primary form-control" id="changePassword" type="button" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span> Смена пароля..">Сменить пароль</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 col-md-offset-2 col-xs-12">Логин:</div>
+			<div class="col-xs-12 col-md-6 form-group  has-feedback">
+				<input type="input" id="changeLogin" name="changeLogin" class="form-control" placeholder="логин" required="" data-toggle="tooltip" data-placement="top">
+				<span class="glyphicon form-control-feedback user-account-wid60px" aria-hidden="true"></span>
+			</div>
+			<div class="hidden-xs hidden-sm col-md-2">
+			</div>
+			<div class="col-xs-12 col-md-2 form-group">
+				<button class="btn btn-md btn-primary form-control" id="submitChangeLogin" type="button" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span> Смена ...">Сменить логин</button>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-2 col-md-offset-2 col-xs-12">Номер телефона:</div>
+			<div class="col-xs-4 col-md-1 form-group">
+			  <select id="country_code" class="form-control">
+			    <option value="7">+7 (Россия)</option>
+			    <option value="1">+1 (USA)</option>
+			  </select>
+			</div>
+			<div class="col-xs-8 col-md-5 form-group">
+				<input type="input" class="form-control" id="phone_number" placeholder="(xxx) xxx-xx-xx">
+			</div>
+			<div class="col-xs-12 col-md-2 form-group">
+				<button class="btn btn-md btn-primary form-control" id="submitConfirmPhoneNumber" type="button" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span> Отправление ...">Подтвердить</button>
+			</div>
+		</div>
+ -->
+	</div>
+
+<!-- Dialog Modal for Avatar preview delete (powered by jQueryUI) -->
+<div id="DeleteAvatarDialogBox" class="close" title="Удаление"><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Изображение будет удалено ?</p></div>
+
+<!-- Dialog modal for Aavatar preview delete (powered by bootstrap) -->
+<div class="modal fade" id="DeleteAvatarDialogBoxBS" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title">Удаление изображения</h4>
+	  </div>
+	  <div class="modal-body">
+		  Изображение будет удалено ?
+		<input type=hidden id="DeletedAvatarID_InBSForm">
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+		<button type="button" class="btn btn-danger" id="DeleteAvatarDialogBoxBS_Submit">Удалить</button>
+	  </div>
+	</div>
+  </div>
+</div>
+
+<!-- Dialog modal for error alerting in avatar uploading (powered by bootstrap) -->
+<div class="modal fade" id="UploadAvatarErrorBS" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title">Некорректное изображение</h4>
+	  </div>
+	  <div class="modal-body">
+		  Некорректное изображение <span id="UploadAvatarErrorBS_ImageName"></span>
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+	  </div>
+	</div>
+  </div>
+</div>
+<!-- 
+<div class="modal fade" id="DialogPhoneConfirmation" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Введите 4 цифры из смс отправленной на ваш номер</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-3 col-md-3">
+            <input class="__user-account-confirmation-code form-control" data-order="0" maxlength="1">
+          </div>
+          <div class="col-xs-3 col-md-3">
+            <input class="__user-account-confirmation-code form-control" data-order="1" maxlength="1">
+          </div>
+          <div class="col-xs-3 col-md-3">
+            <input class="__user-account-confirmation-code form-control" data-order="2" maxlength="1">
+          </div>
+          <div class="col-xs-3 col-md-3">
+            <input class="__user-account-confirmation-code form-control" data-order="3" maxlength="1">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <span id="phone_confirmation_status"></span>
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="ButtonAccountCancel2">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+ -->
+
+<!-- "Are you sure ?" modal  -->
+<div class="modal fade" id="AreYouSure" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title">Вы уверены ?</h4>
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" id="Remove" class="btn btn-danger">Удалить</button>
+		<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+	  </div>
+	</div>
+  </div>
+</div>
+
+<div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="ErrorModal">
+  <div class="modal-dialog modal-sm" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title">Ошибка</h4>
+	  </div>
+	  <div class="modal-body">
+		  <div class="row">
+			  <div class="col-xs-12" id="ErrorModal_ResultText">
+			  </div>
+		  </div>
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+	  </div>
+	</div>
+  </div>
+</div>
+
+<input type="file" id="AddGeneralCoverButton" accept="image/*" class="visibility_hidden width_0_height_0">
+<input type="file" id="AddGeneralCoverNoUploadButton" accept="image/*" class="visibility_hidden width_0_height_0">
+
+<div class="modal fade" id="PasswordChanged" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Пароль изменен !</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          Теперь вы должны использовать новый пароль для входа на сайт.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Я запомнил новый пароль</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="EmailChangeDialog" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Изменение email</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          Для подтверждения нового e-mail, Вам неодходимо проверить почту и подтвердить её нажатием на ссылку в письме <span class="color_red">в течение часа</span>.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Проверить почту</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <<template:prod/sms_confirmation.htmlt>>
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>
