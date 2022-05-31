@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
 
-    <<template:templates/us/pages/header.htmlt>>
+    <<template:prod/header.htmlt>>
 
     <title>Необходимо вмешательство</title>
 
@@ -31,7 +31,7 @@
 
 
 
-<<template:templates/us/pages/footer.htmlt>>
+<<template:prod/footer.htmlt>>
 
   </body>
 </html>

@@ -126,7 +126,7 @@ int main()
 
 			if(!indexPage.SetProdTemplate("autologin.htmlt"))
 			{
-				MESSAGE_ERROR("", action, "template file index.htmlt was missing");
+				MESSAGE_ERROR("", action, "template file autologin.htmlt was missing");
 				throw CException("Template file was missing");
 			}
 
@@ -4904,86 +4904,83 @@ int main()
 			}
 			else
 			{
-					string 			regSecurityCode, regPassword, regEmail;
+				string 			regSecurityCode, regPassword, regEmail;
 
-					regEmail = CheckHTTPParam_Text(indexPage.GetVarsHandler()->Get("regEmail"));
-					regPassword = CheckHTTPParam_Text(indexPage.GetVarsHandler()->Get("regPassword"));
-					regSecurityCode = CheckHTTPParam_Number(indexPage.GetVarsHandler()->Get("regSecurityCode"));
+				regEmail = CheckHTTPParam_Text(indexPage.GetVarsHandler()->Get("regEmail"));
+				regPassword = CheckHTTPParam_Text(indexPage.GetVarsHandler()->Get("regPassword"));
+				regSecurityCode = CheckHTTPParam_Number(indexPage.GetVarsHandler()->Get("regSecurityCode"));
 
-					if(regEmail.length() <= 3)
+				if(regEmail.length() <= 3)
+				{
+					MESSAGE_DEBUG("", action, "email is incorrect [" + regEmail + "]");
+					error_message = "Введен некорректный email";
+				}
+				else
+				{
+					if(CheckUserEmailExisting(regEmail, &db))
 					{
-						MESSAGE_DEBUG("", action, "email is incorrect [" + regEmail + "]");
-						error_message = "Введен некорректный email";
+						MESSAGE_DEBUG("", action, "login or email already registered");
+						error_message = "Пользователь с этим адресом уже зарегистрирован";
 					}
 					else
 					{
-						if(CheckUserEmailExisting(regEmail, &db))
+						// ----- Check captcha and session coincidence
+						if((affected = db.Query("SELECT id FROM `captcha` WHERE `purpose`='regNewUser' and `code`='" + regSecurityCode + "' and `session`='" + sessid + "' and `timestamp` > NOW() - INTERVAL " + to_string(SESSION_LEN) + " MINUTE")) == 0)
 						{
-							MESSAGE_DEBUG("", action, "login or email already registered");
-							error_message = "Пользователь с этим адресом уже зарегистрирован";
+							MESSAGE_DEBUG("", action, "check captcha fail");
+
+							error_message = "Некорректный код с картинки";
+							redirect_url = "/cgi-bin/index.cgi?action=weberror_captcha_template&regEmail=" + regEmail + "&rand=" + GetRandom(10);
 						}
 						else
 						{
-							// ----- Check captcha and session coincidence
-							if((affected = db.Query("SELECT id FROM `captcha` WHERE `purpose`='regNewUser' and `code`='" + regSecurityCode + "' and `session`='" + sessid + "' and `timestamp` > NOW() - INTERVAL " + to_string(SESSION_LEN) + " MINUTE")) == 0)
-							{
-								MESSAGE_DEBUG("", action, "check captcha fail");
+							CActivator 	act;
+							CMailLocal	mail;
+							CUser		userTemporary;
+							string		remoteIP;
 
-								error_message = "Некорректный код с картинки";
-								redirect_url = "/cgi-bin/index.cgi?action=weberror_captcha_template&regEmail=" + regEmail + "&rand=" + GetRandom(10);
+							MESSAGE_DEBUG("", action, "check captcha success");
+
+							remoteIP = getenv("REMOTE_ADDR");    /* Flawfinder: ignore */
+
+							affected = db.Query("DELETE FROM `captcha` WHERE `purpose`='regNewUser' and `code`=\"" + regSecurityCode + "\" and `session`=\"" + sessid + "\";");
+							if(affected != 0)
+							{
+								MESSAGE_ERROR("", action, "in cleanup captcha table for type=regNewUser and captcha=" + regSecurityCode + ", [affected rows = " + to_string(affected) + "]");
 							}
-							else
+
+							// --- Create temporarily user
+							userTemporary.SetLogin(regEmail);
+							userTemporary.SetEmail(regEmail);
+							userTemporary.SetPasswd(regPassword);
+							userTemporary.SetCountry(indexPage.GetCountry());
+							userTemporary.SetCity(indexPage.GetCity());
+							userTemporary.SetType("no role");
+							userTemporary.SetIP(getenv("REMOTE_ADDR"));    /* Flawfinder: ignore */
+							userTemporary.SetLng(indexPage.GetLanguage());
+							userTemporary.SetDB(&db);
+							userTemporary.Create();
+
+
+							// -----  Create activator for new user
+							act.SetCgi(&indexPage);
+							act.SetDB(&db);
+							act.SetUser(indexPage.GetVarsHandler()->Get("regEmail"));
+							act.SetType("regNewUser");
+							act.Save();
+							// act.Activate();
+
+							indexPage.RegisterVariableForce("activator_regNewUser", act.GetID());
+							mail.Send(regEmail, "activator_regNewUser", indexPage.GetVarsHandler(), &db);
+
+							if(!indexPage.SetProdTemplate("activator_regNewUser.htmlt"))
 							{
-								CActivator 	act;
-								CMailLocal	mail;
-								CUser		userTemporary;
-								string		remoteIP;
-
-								MESSAGE_DEBUG("", action, "check captcha success");
-
-								remoteIP = getenv("REMOTE_ADDR");    /* Flawfinder: ignore */
-
-								affected = db.Query("DELETE FROM `captcha` WHERE `purpose`='regNewUser' and `code`=\"" + regSecurityCode + "\" and `session`=\"" + sessid + "\";");
-								if(affected != 0)
-								{
-									MESSAGE_ERROR("", action, "in cleanup captcha table for type=regNewUser and captcha=" + regSecurityCode + ", [affected rows = " + to_string(affected) + "]");
-								}
-
-								// --- Create temporarily user
-								userTemporary.SetLogin(regEmail);
-								userTemporary.SetEmail(regEmail);
-								userTemporary.SetPasswd(regPassword);
-								userTemporary.SetCountry(indexPage.GetCountry());
-								userTemporary.SetCity(indexPage.GetCity());
-								userTemporary.SetType("no role");
-								userTemporary.SetIP(getenv("REMOTE_ADDR"));    /* Flawfinder: ignore */
-								userTemporary.SetLng(indexPage.GetLanguage());
-								userTemporary.SetDB(&db);
-								userTemporary.Create();
-
-
-								// -----  Create activator for new user
-								act.SetCgi(&indexPage);
-								act.SetDB(&db);
-								act.SetUser(indexPage.GetVarsHandler()->Get("regEmail"));
-								act.SetType("regNewUser");
-								act.Save();
-								// act.Activate();
-
-								indexPage.RegisterVariableForce("activator_regNewUser", act.GetID());
-								mail.Send(regEmail, "activator_regNewUser", indexPage.GetVarsHandler(), &db);
-
-								if(!indexPage.SetProdTemplate("activator_regNewUser.htmlt"))
-								{
-									MESSAGE_ERROR("", action, "template file index.htmlt was missing");
-									throw CException("Template file was missing");
-								} // if(!indexPage.SetProdTemplate("activator_regNewUser.htmlt"))
-
-							} // if captcha correct
-
-						} // if(CheckUserEmailExisting(regEmail))
+								MESSAGE_ERROR("", action, "template file activator_regNewUser.htmlt was missing");
+								throw CException("Template file was missing");
+							}
+						}
 					}
-
+				}
 			}
 
 			if(error_message.empty())
