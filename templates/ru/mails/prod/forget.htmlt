@@ -1,0 +1,36 @@
+To: <<vars:RECIPIENT_EMAIL>>
+From: "<<vars:SERVER_NAME>>" <noreply@<<vars:EMAIL_FROM_DOMAIN>>>
+Subject: <<vars:SERVER_NAME>>: Напоминание данных аккаунта
+Content-type: multipart/alternative; boundary="<<vars:rand>>"
+
+--<<vars:rand>>
+Content-Type: text/plain; charset=utf-8
+
+Добрый день, <<vars:name>> <<vars:nameLast>> !
+
+  На сайте  http://<<vars:SERVER_NAME>> был запрошен пароль c IP-адреса: <<vars:REMOTE_ADDR>>
+
+Вам необходимо создать новый пароль (ссылка будет активна 24 часа):
+http://<<vars:SERVER_NAME>>/password_recovery?token=<<vars:activator_id>>&rand=<<vars:rand>>
+
+Если Вы не запрашивали пароль, просто проигнорируйте письмо.
+
+Представительство сайта <<vars:SERVER_NAME>>
+--<<vars:rand>>
+Content-Type: text/html; charset=utf-8
+
+<html>
+<body>
+Добрый день, <<vars:name>> <<vars:nameLast>> !
+<br>
+  На сайте  http://<<vars:SERVER_NAME>> был запрошен пароль c IP-адреса: <<vars:REMOTE_ADDR>>.<br>
+<br>
+Вам необходимо создать <a href="http://<<vars:SERVER_NAME>>/password_recovery?token=<<vars:activator_id>>&rand=<<vars:rand>>">
+новый пароль.</a> (ссылка будет активна 24 часа)
+<br>
+Если Вы не запрашивали пароль, просто проигнорируйте письмо.<br>
+<br>
+<b>Представительство сайта <<vars:SERVER_NAME>></b>
+</body>
+</html>
+--<<vars:rand>>--

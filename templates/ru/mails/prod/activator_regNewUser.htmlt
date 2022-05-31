@@ -1,0 +1,29 @@
+To: <<vars:RECIPIENT_EMAIL>>
+From: "<<vars:SERVER_NAME>>" <noreply@<<vars:EMAIL_FROM_DOMAIN>>>
+Subject: <<vars:SERVER_NAME>>: Регистрация пользователя на сайте
+Content-type: multipart/alternative; boundary="<<vars:rand>>"
+
+--<<vars:rand>>
+Content-Type: text/plain; charset=utf-8
+
+Здравствуйте,
+
+  Для того что бы активировать аккаунт, вам необходимо перейти по ссылке (ссылка будет активна в течение 24 часов):
+http://<<vars:SERVER_NAME>>/activate_me/<<vars:activator_regNewUser>>
+
+Представительство сайта <<vars:SERVER_NAME>>
+--<<vars:rand>>
+Content-Type: text/html; charset=utf-8
+
+<html>
+<body>
+Здравствуйте,
+<br>
+  Для того что бы активировать аккаунт, вам необходимо 
+<b><a href="http://<<vars:SERVER_NAME>>/activate_me/<<vars:activator_regNewUser>>">
+перейти по ссылке.</a></b> (ссылка будет активна в течение 24 часов)<br>
+<br>
+<b>Представительство сайта <<vars:SERVER_NAME>></b>
+</body>
+</html>
+--<<vars:rand>>--
