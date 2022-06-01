@@ -182,8 +182,7 @@
         <div class="col-xs-6 col-sm-1">
           GUI:
         </div>
-        <div class="col-xs-12 col-sm-11">
-          <<template:templates/git_commit_id>>
+        <div class="col-xs-12 col-sm-11" git_commit_id>
         </div>
       </div>
     </div>

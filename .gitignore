@@ -78,7 +78,6 @@ build/
 doc
 docs/
 etc/
-ssl/
 /build2/
 /build3/
 /cov-int/
