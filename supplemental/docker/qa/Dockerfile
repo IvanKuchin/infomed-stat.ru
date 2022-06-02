@@ -66,6 +66,14 @@ COPY . ${GIT_FOLDER}
 WORKDIR ${GIT_FOLDER}
 RUN git clone --depth 1 https://github.com/IvanKuchin/backend_pi.git ./src/pi
 
+######################
+# libxl installation #
+######################
+RUN if test -f "./libxl-3.8.4.0/lib64/libxl.so"; then \
+       cp ./libxl-3.8.4.0/lib64/libxl.so /usr/local/lib/ \
+       && ldconfig; \
+    fi
+
 ##################
 # save commit id #
 ##################
