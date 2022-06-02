@@ -100,11 +100,11 @@ endforeach()
 
 # --- Install part
 
-install(TARGETS index.cgi			DESTINATION		${CGIDIR})
-install(TARGETS ajax_anyrole_1.cgi	DESTINATION		${CGIDIR})
-install(TARGETS system.cgi          DESTINATION     ${CGIDIR})
-install(TARGETS doctor.cgi          DESTINATION     ${CGIDIR})
+install(TARGETS index.cgi			DESTINATION		${CGIDIR} COMPONENT app)
+install(TARGETS ajax_anyrole_1.cgi	DESTINATION		${CGIDIR} COMPONENT app)
+install(TARGETS system.cgi          DESTINATION     ${CGIDIR} COMPONENT app)
+install(TARGETS doctor.cgi          DESTINATION     ${CGIDIR} COMPONENT app)
 
-install(TARGETS cron_daily_pd		DESTINATION		${CRON_INSTALL_DIR})
+install(TARGETS cron_daily_pd		DESTINATION		${CRON_INSTALL_DIR} COMPONENT cron)
 
 # print_all_variables()
