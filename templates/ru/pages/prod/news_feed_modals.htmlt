@@ -1,0 +1,292 @@
+	<!-- Post message to feed -->
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="NewsFeedNewMessage" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Написать в ленту</h4>
+				</div>
+				<!-- <form> -->
+					<div class="modal-body">
+						<div class="form-group">
+							<!-- <label for="newsFeedMessageTitle">Заголовок:</label> -->
+							<input class="form-control" id="newsFeedMessageTitle" placeholder="Заголовок">
+						</div>
+						<div class="form-group">
+							<!-- <label for="newsFeedMessageLink">Ссылка:</label> -->
+
+							<!-- this grid needed to align input and button on the same line -->
+							<div class="row">
+								<div class="col-md-9 col-xs-12">
+									<input class="form-control" id="newsFeedMessageLink" placeholder="Ссылка">
+								</div>
+								<div class="col-md-3 col-xs-12">
+									<button type="button" id="newsFeed_NewMessageLink_GetDataButton" class="btn btn-primary form-control" data-loading-text="Подождите" disabled>Получить данные</button>
+								</div>
+							</div>
+
+						</div>
+						<div class="form-group">
+							<textarea id="newsFeedMessageText" class="form-control" rows="3" placeholder="Сообщение"></textarea>
+						</div>
+						<div class="" role="alert" id="newsFeedNewMessageError">
+						</div>
+						<div class="form-group">
+<!-- 
+							<label for="exampleInputFile">Картинка:</label>
+							<input type="file" id="exampleInputFile">
+-->
+							<span id="spanForFileUploadButton" class="btn btn-default fileinput-button">
+									<i class="glyphicon glyphicon-picture"></i>
+									<span>Загрузить фото...</span>
+									<!-- The file input field used as target for the file upload widget -->
+									<input id="newMessageFileUpload" type="file" name="files[]" multiple accept="image/*, video/*">
+							<!-- The global progress bar -->
+							</span> 
+					 
+							<div id="NewMessageProgress" class="progress" width="100%" style="position:relative">
+									<div class="progress-bar progress-bar-primary progress-bar-striped" ></div>
+									<div class="progress-string" ></div>
+							</div>
+
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="newsFeedAccessRights" id="newsFeedAccessRights" value="public" checked>
+								Доступно всем
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="newsFeedAccessRights" id="newsFeedAccessRights" value="friends">
+								Только друзьям
+							</label>
+						</div>
+						<div class="radio">
+							<label class="active">
+								<input type="radio" name="newsFeedAccessRights" id="newsFeedAccessRights" value="private">
+								Только мне
+							</label>
+						</div>
+						<div class="form-group messageSrc hidden">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary" data-loading-text="Загрузка..." id="NewsFeedMessageSubmit">Написать</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+					</div>
+					<div id="PostMessage_PreviewImage" class="news_feed_preview_image"></div>
+					<!-- 2delete: debug function to check upload functionality -->
+					<div class="PostMessage_ListUnloaded news_feed_preview_image"></div>
+				<!-- </form> -->
+
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Edit feed message	-->
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="editNewsFeedMessage" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Редактирование сообщения</h4>
+				</div>
+				<!-- <form> -->
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="editNewsFeedMessageTitle">Заголовок:</label>
+							<input class="form-control" id="editNewsFeedMessageTitle" placeholder="Заголовок">
+						</div>
+						<div class="form-group">
+							<label for="editNewsFeedMessageLink">Ссылка:</label>
+							<input class="form-control" id="editNewsFeedMessageLink" placeholder="Ссылка">
+						</div>
+						<div class="form-group">
+							<textarea id="editNewsFeedMessageText" class="form-control" rows="3" placeholder="Сообщение"></textarea>
+						</div>
+						<div class="" role="alert" id="newsFeedEditMessageError">
+						</div>
+						<div class="form-group">
+							<span id="editSpanForFileUploadButton" class="btn btn-default fileinput-button">
+									<i class="glyphicon glyphicon-picture"></i>
+									<span>Загрузить фото...</span>
+									<!-- The file input field used as target for the file upload widget -->
+									<input id="editFileupload" type="file" name="files[]" multiple accept="image/*, video/*">
+							<!-- The global progress bar -->
+							</span> 
+							<div id="EditMessageProgress" class="progress" width="100%" style="position:relative">
+									<div class="progress-bar progress-bar-primary progress-bar-striped" ></div>
+									<div class="progress-string" ></div>
+							</div>
+						</div>
+						<div id="editNewsFeedAccessRights">
+							<div class="radio">
+								<label>
+									<input type="radio" name="editNewsFeedAccessRights" id="editNewsFeedAccessRightsPublic" value="public" checked>
+									Доступно всем
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="editNewsFeedAccessRights" id="editNewsFeedAccessRightsFriends" value="friends">
+									Только друзьям
+								</label>
+							</div>
+							<div class="radio">
+								<label class="active">
+									<input type="radio" name="editNewsFeedAccessRights" id="editNewsFeedAccessRightsPrivate" value="private">
+									Только мне
+								</label>
+							</div>
+							</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary" id="editNewsFeedMessageSubmit">Редактировать</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+					</div>
+				<!-- </form> -->
+					<div id="editPostMessage_PreviewImage" class="news_feed_preview_image"></div>
+					<!-- 2delete: debug function to check upload functionality -->
+					<div class="PostMessage_ListUnloaded	news_feed_preview_image"></div>
+
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Comment/View feed message	-->
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="viewNewsFeedMessage" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+
+					<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-11 col-md-11 col-sm-11 col-xs-10 modal-title news_feed_view_message_header"><h4 id="divNewsFeedMessageTitle"><!-- Просмотр сообщения / книги / сертификата --></h4></div>
+
+						<div class="col-lg-1 col-md-1 col-sm-1 col-xs-2 news_feed_close_button news_feed_view_message_header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 news_feed_view_message_header">
+							<span id="spanNewsFeedViewMessageUsername"> </span>
+							<span id="spanNewsFeedViewMessageTimestamp" class="news_feed_timestamp"></span>
+						</div>
+					</div>
+					</div>
+
+				</div>
+				<div class="modal-body" id="divNewsFeedMessageBody">
+				</div>
+				<div class="modal-body" id="divNewsFeedMessageComments">
+				</div>
+				<div class="modal-body padding_bottom_0px">
+					<span>Ответить: </span>
+					<span id="divNewsFeedMessageReplyTo"></span>
+				</div>
+				<div class="modal-body">
+					<textarea class="form-control" rows="3" id="textareaNewsFeedViewMessage" placeholder="Напишите коментарий ..."></textarea>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary animateClass" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span> Загрузка..." id="buttonNewsFeedViewMessageComment">Написать</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Username update -->
+	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="Username" id="UsernameCredentials" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Представьтесь пожалуйста</h4>
+				</div>
+				<!-- <form> -->
+				<div class="modal-body">
+					<div class="form-group">
+						<!-- <label for="firstName">Имя:</label> -->
+						<input class="form-control" id="UsernameCredentialsFirstName" placeholder="Имя">
+					</div>
+					<div class="form-group">
+						<!-- <label for="lastName">Фамилия:</label> -->
+						<input class="form-control" id="UsernameCredentialsLastName" placeholder="Фамилия">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary" id="userNameUpdateSubmit">Запомнить</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+				</div>
+				<!-- </form> -->
+			</div>
+		</div>
+	</div>
+
+	<!-- Book cover view -->
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="Username" id="NewsFeedBookCoverDisplayModal" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title"><span class="bookTitle"></span></h4>
+				</div>
+				<div class="modal-header">
+					<img class="div_content_center_alignment max_100percents_640px niceborder">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Delete message -->
+	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="Username" id="DeleteMessageFromFeed" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Удалить сообщение ?</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-danger" id="deleteMessageFromFeedSubmit">Удалить</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+					</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Delete comment -->
+	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="Username" id="DeleteCommentFromFeed" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Удалить коментарий ?</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-danger" id="deleteCommentFromFeedSubmit">Удалить</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+					</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Update avatar -->
+	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="Username" id="UsernameUpdateAvatar" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Перейти к загрузке вашей фото ?</h4>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary" id="usernameUpdateAvatarSubmit">Перейти</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+					</div>
+			</div>
+		</div>
+	</div>

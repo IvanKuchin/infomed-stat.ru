@@ -1,0 +1,47 @@
+        <div class="collapse ___portal_vein">
+          <div class="row collapse-top-shadow margin_bottom_20"><p></p></div>
+
+          <div class="row">
+            <div class="col-xs-12"><h4><center>Воротная вена</center></h4></div>
+          </div>
+
+          <<template:prod/pomc_wizard_resection.htmlt>>
+          
+          <div class="row collapse-bottom-shadow margin_top_20"><p></p></div>
+        </div>
+
+        <div class="collapse ___sup_mesent_vein">
+          <div class="row collapse-top-shadow margin_bottom_20"><p></p></div>
+
+          <div class="row">
+            <div class="col-xs-12"><h4><center>Верхнебрыжеечная вена</center></h4></div>
+          </div>
+
+          <<template:prod/pomc_wizard_resection.htmlt>>
+
+          <div class="row collapse-bottom-shadow margin_top_20"><p></p></div>
+        </div>
+
+        <div class="collapse ___venous_confluence">
+          <div class="row collapse-top-shadow margin_bottom_20"><p></p></div>
+
+          <div class="row">
+            <div class="col-xs-12"><h4><center>Венозный конфлюенс</center></h4></div>
+          </div>
+
+          <<template:prod/pomc_wizard_resection.htmlt>>
+
+          <div class="row collapse-bottom-shadow margin_top_20"><p></p></div>
+        </div>
+
+        <div class="collapse ___top_branches">
+          <div class="row collapse-top-shadow margin_bottom_20"><p></p></div>
+
+          <div class="row">
+            <div class="col-xs-12"><h4><center>Ветви верхней брыжеечной вены</center></h4></div>
+          </div>
+
+          <<template:prod/pomc_wizard_resection.htmlt>>
+
+          <div class="row collapse-bottom-shadow margin_top_20"><p></p></div>
+        </div>

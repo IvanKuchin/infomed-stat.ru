@@ -1,0 +1,57 @@
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#NavigationMenu">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/helpdesk_dashboard?rand=<<vars:rand>>"><img id="imageLogo" width=40px class="logo-transform logo-shift-up animateClass box-shadow--3dp" src="/images/pages/logo/logo_site.jpg"></a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="NavigationMenu">
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Профиль <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="/helpdesk_edit_profile?rand=<<vars:rand>>">Мой</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Кейсы <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="/cgi-bin/helpdesk.cgi?action=cases_list_template&filter=my_open&rand=<<vars:rand>>">Мои открытые</a></li>
+						<li><a href="/cgi-bin/helpdesk.cgi?action=cases_list_template&filter=my&rand=<<vars:rand>>">Мои все</a></li>
+						<li class="divider"></li>
+						<li><a href="/cgi-bin/helpdesk.cgi?action=cases_list_template&filter=open&rand=<<vars:rand>>">Открытые</a></li>
+						<li><a href="/cgi-bin/helpdesk.cgi?action=cases_list_template&rand=<<vars:rand>>">Все</a></li>
+
+					</ul>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown" id="navbar-notification">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="user-notification-ahref">
+						<!-- <span class="glyphicon glyphicon-pencil"></span> -->
+						<img src="/images/pages/common/notification_v2.png" class="width_20">
+						<div class="display_inline hidden-lg hidden-md">Мои извещения</div>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-long" role="menu" id="user-notification-ul">
+					</ul>
+				</li>
+
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span id="myFirstName"><<vars:myFirstName>></span> <span id="myLastName"><<vars:myLastName>></span> <span class="caret"></span><span id="myUserID" data-myUserID="<<vars:loginUserID>>" data-myUserAvatar="<<vars:myUserAvatar>>" data-myLogin="<<vars:myLogin>>"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="/user_account_properties?rand=<<vars:rand>>">Свойства аккаунта</a></li>
+						<li><a href="/logout?rand=<<vars:rand>>">Выйти</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>
+

@@ -59,7 +59,7 @@ int main()
 		indexPage.ParseURL();
 		indexPage.AddCookie("lng", "ru", nullptr, "", "/");
 
-		if(!indexPage.SetTemplate("index.htmlt"))
+		if(!indexPage.SetProdTemplate("index.htmlt"))
 		{
 			MESSAGE_ERROR("", action, "template file was missing");
 			throw CException("Template file was missing");
@@ -110,10 +110,10 @@ int main()
 
 			string		template_name = action.substr(0, action.length() - 9) + ".htmlt";
 
-			if(!indexPage.SetTemplate(template_name))
+			if(!indexPage.SetProdTemplate(template_name))
 			{
 				MESSAGE_DEBUG("", action, "can't find template " + template_name);
-			} // if(!indexPage.SetTemplate("my_network.htmlt"))
+			} // if(!indexPage.SetProdTemplate("my_network.htmlt"))
 
 			{
 				MESSAGE_DEBUG("", action, "finish");
@@ -126,7 +126,7 @@ int main()
 
 			MESSAGE_DEBUG("", action, "start");
 
-			if(!indexPage.SetTemplate(template_name))
+			if(!indexPage.SetProdTemplate(template_name))
 			{
 				MESSAGE_DEBUG("", action, "can't find template " + template_name);
 			}
@@ -885,7 +885,7 @@ int main()
 
 		MESSAGE_DEBUG("", action, "catch CExceptionHTML: DEBUG exception reason: [" + c.GetReason() + "]");
 
-		if(!indexPage.SetTemplate(c.GetTemplate()))
+		if(!indexPage.SetProdTemplate(c.GetTemplate()))
 		{
 			MESSAGE_ERROR("", "", "template (" + c.GetTemplate() + ") not found");
 			return(-1);

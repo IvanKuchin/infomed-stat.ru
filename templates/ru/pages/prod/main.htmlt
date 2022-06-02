@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+    <script src="/js/pages/main.js"></script>
+    <script src="/js/sha512/sha512.js"></script>
+
+    <title><<vars:title>></title>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/pages/main.css" rel="stylesheet">
+    <link href="/css/pages/main_carousel.css" rel="stylesheet">
+
+    <!--
+        loading circles
+        they put in-body to load as fast as possible
+        document.onload event will fire as soon as DOM-model ready.
+        window.onload event fire when all external dependencies loaded.
+     -->
+    <script>
+    $(document).ready(function() 
+    {
+      main_page.Init();
+    });
+    </script>
+  </head>
+
+ <body>
+    <h1>You shouldn't land here</h1>
+  </body>
+</html>

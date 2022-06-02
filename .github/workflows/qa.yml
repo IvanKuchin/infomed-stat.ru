@@ -16,8 +16,6 @@ name: QA testing
 # Start the job on all push to master #
 #######################################
 on:
-  push:
-    branches-ignore: [master]
   pull_request:
     branches: [master]
     types: [opened, reopened, synchronize]
@@ -50,7 +48,7 @@ jobs:
       # Checkout the code base #
       ##########################
       - name: Checkout Code
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2
 
      #############################
      # Init deployment variables #
@@ -119,8 +117,13 @@ jobs:
       - name: Run qa container
         if: success()
         run: |
-          docker build -f ./supplemental/docker/qa/Dockerfile_sql -t qa_sql:${{ github.sha }} .
-          docker build -f ./supplemental/docker/qa/Dockerfile -t qa_testing:${{ github.sha }} .
+          docker build -f ./supplemental/docker/qa/Dockerfile_sql \
+                       -t qa_sql:${{ github.sha }} \
+                       .
+          docker build -f ./supplemental/docker/qa/Dockerfile \
+                       -t qa_testing:${{ github.sha }} \
+                       --build-arg BUILD_REPO=${{ steps.set_variables.outputs.BUILD_REPO }} \
+                       .
           docker image ls
           docker network ls
           docker network ls --filter name=github --format "{{.Name}}"

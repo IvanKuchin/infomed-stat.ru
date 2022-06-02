@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+	<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+	<<template:prod/header.htmlt>>
+
+	<link href="/css/pages/switcher.css" rel="stylesheet">
+
+	<script src="/js/pages/pi/email_change.js"></script>
+
+	<title><<vars:title_head>></title>
+
+	<!-- Custom styles for this template -->
+	<script>
+	  $(document).ready(function() {
+		email_change.Init();
+	  });
+	</script>
+
+  </head>
+
+  <body>
+  <<template:prod/<<vars:user_type>>_navigation_menu.htmlt>>
+  
+	<div class="container single_block box-shadow--6dp">
+		<div class="row form-group">
+			<div class="col-xs-12" id="result"></div>
+		</div>
+	</div>
+
+
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>

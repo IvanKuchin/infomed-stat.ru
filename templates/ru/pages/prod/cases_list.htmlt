@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+
+    <title><<vars:title_head>></title>
+
+    <script src="/js/pages/helpdesk_ticket_obj.js"></script>
+    <script src="/js/pages/cases_list.js"></script>
+    <script src="/js/pages/open_case.js"></script>
+
+    <script src="/js/chartjs/2.7.2/Chart.bundle.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        open_case.Init();
+        cases_list.Init();
+      });
+    </script>
+
+  </head>
+
+  <body>
+  <<template:prod/<<vars:user_type>>_navigation_menu.htmlt>>
+
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-md-2 col-md-offset-10 form-group">
+          <button class="btn btn-primary form-control float_right __loading_indicator" data-target="#collapsible_new_ticket" data-toggle="collapse">Открыть кейс</button>
+        </div>
+      </div>
+
+      <div class="row collapse" id="collapsible_new_ticket">
+        <div class="col-xs-12 collapse-top-shadow margin_bottom_20"><p></p></div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <h3>
+              <center>
+                Открытие кейса
+              </center>
+            </h3>
+          </div>
+        </div>
+
+        <div id="form_dom">
+        </div>
+
+        <div class="col-xs-12 collapse-bottom-shadow margin_top_20"><p></p></div>
+      </div>
+
+
+    </div>
+
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h3>
+            <center>
+              <!-- Мои кейсы -->
+            </center>
+          </h3>
+        </div>
+      </div>
+
+
+      <div id="cases_list">
+      </div>
+    </div>
+
+    <div id="scrollerToShow"></div>
+
+    <div class="modal fade" id="S1_modal" tabindex="-1" role="dialog" aria-labelledby="">
+      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">S1 case</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-12 description">
+              <ul>
+                <li>Вы подтверждаете, что проблема имеет критическое значение и является значительным препятствием для дальнейшей работы</li>
+                <li>Вы подтверждаете, что у вас есть возможность отвечать на вопросы специалиста <b>в течение 2-ух часов</b> (в противном случае кейс будет понижен до S2)</li>
+                <li>В рамках S1, компания оставляет за собой право <b>не предоставлять долгосрочное решение</b>, а предложить "обходной вариант"</li>
+                <li>Кейс будет взят в работу в течение 2 часов в рабочее время (с 12:00 до 21:00 по Московскому времени)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Согласен (S1)</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Сделать (S2)</button>
+        </div>
+      </div>
+      </div>
+    </div>
+
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>

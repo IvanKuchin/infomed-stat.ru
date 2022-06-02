@@ -1,0 +1,28 @@
+        <div class="collapse ___pre_op_petct">
+          <div class="row collapse-top-shadow margin_bottom_20"><p></p></div>
+
+          <div class="row">
+            <div class="col-xs-6 col-md-2">Инвазия вен</div>
+            <div class="col-xs-6 col-md-4">
+              <label style="font-weight: normal;"><input type="checkbox" class="___portal_vein" data-toggle="collapse" data-target=".__preoperative .collapse.___portal_vein"> Воротная вена</label><br>
+              <label style="font-weight: normal;"><input type="checkbox" class="___sup_mesent_vein" data-toggle="collapse" data-target=".__preoperative .collapse.___sup_mesent_vein"> Верхнебрыжеечная вена</label><br>
+              <label style="font-weight: normal;"><input type="checkbox" class="___venous_confluence" data-toggle="collapse" data-target=".__preoperative .collapse.___venous_confluence"> Венозный конфлюенс</label><br>
+              <label style="font-weight: normal;"><input type="checkbox" class="___top_branches"  data-toggle="collapse" data-target=".__preoperative .collapse.___top_branches"> Ветви верхней брыжеечной вены</label><br>
+            </div>
+          </div>
+
+          <<template:prod/pomc_wizard_lesion_vein.htmlt>>
+
+          <div class="row">
+            <div class="col-xs-6 col-md-2">Инвазия артерий</div>
+            <div class="col-xs-6 col-md-4">
+              <label style="font-weight: normal;"><input type="checkbox" class="___sup_mesent_artery"  data-toggle="collapse" data-target=".__preoperative .collapse.___sup_mesent_artery"> Верхнебрыжеечная артерия</label><br>
+              <label style="font-weight: normal;"><input type="checkbox" class="___celiac_trunk" data-toggle="collapse" data-target=".__preoperative .collapse.___celiac_trunk"> Чревный ствол</label><br>
+              <label style="font-weight: normal;"><input type="checkbox" class="___common_hepatic_art" data-toggle="collapse" data-target=".__preoperative .collapse.___common_hepatic_art"> Общая печеночная артерия</label><br>
+            </div>
+          </div>
+
+          <<template:prod/pomc_wizard_lesion_artery.htmlt>>
+
+          <div class="row collapse-bottom-shadow margin_top_20"><p></p></div>
+        </div>

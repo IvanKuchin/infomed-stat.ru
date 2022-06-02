@@ -7,6 +7,7 @@ foreach(config_file ${CONFIG_FILES})
 
     install(FILES	"${CONFIG_PROJECT_DIR}/${file_wo_ext}"
 	DESTINATION	${CONFIG_INSTALL_DIR}
+	COMPONENT	infra
 	PERMISSIONS	OWNER_READ OWNER_WRITE GROUP_READ
     )
 

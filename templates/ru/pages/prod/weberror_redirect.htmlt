@@ -1,0 +1,22 @@
+<html lang="en">
+<head>
+<script>
+	redirect = (function()
+	{
+		var		Init = function()
+		{
+			// debugger;
+			setTimeout(function()
+			{
+				window.location.replace("<<vars:redirect_url>>");
+			}, 1000);
+
+		};
+
+		return {Init:Init};
+	})();
+
+	window.addEventListener("load", redirect.Init);
+</script>
+</head>
+</html>

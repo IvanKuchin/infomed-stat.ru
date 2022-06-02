@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+    <script src="/js/sha512/sha512.js"></script>
+    <script src="/js/pages/login.js"></script>
+
+
+    <title>Добро пожаловать</title>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/pages/login.css" rel="stylesheet">
+    <link href="/css/pages/common.css" rel="stylesheet">
+
+    <script>
+      $(document).ready(function() {
+        login_page.Init();
+      });
+    </script>
+
+  </head>
+
+  <body>
+    <div class="bg-image"></div>
+
+    <div class="container-fluid login_block">
+      <div class="row margin_top_10 margin_bottom_10">
+        <div class="hidden-xs col-md-offset-2 col-md-3">
+          <h2 class="margin_0 color_red">DEMO</h2>
+        </div>
+        <div class="col-xs-12 col-md-2">
+          <select class="form-control" id="user_role"  autofocus>
+            <option value="agency">Агенство</option>
+            <option value="approver">Апрувер</option>
+            <option value="subc">Субконтрактор</option>
+          </select>
+        </div>
+        <div class="col-xs-12 col-md-2">
+              <input type="email" id="signinInputLogin" name="signinInputEmail" class="form-control" placeholder="Почта" autocomplete="username">
+        </div>
+        <div class="col-xs-12 col-md-2">
+              <input type="password" id="signinInputPassword" name="signinInputPassword" class="form-control" placeholder="Пароль" autocomplete="current-password">
+        </div>
+        <div class="col-xs-12 col-md-1">
+              <input type="checkbox" value="remember-me" id="signinRemember" hidden>
+              <button class="btn btn-md btn-primary btn-block" id="signinSubmit" type="submit" data-loading-text="Вход...">Вход</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+      </div>
+
+      <div class="col-md-6" id="registrationForm">
+      </div>
+
+    </div> <!-- /row       -->
+    </div> <!-- /container -->
+
+
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>

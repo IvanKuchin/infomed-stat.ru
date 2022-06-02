@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+
+    <title><<vars:title_head>></title>
+
+    <script src="/js/pages/helpdesk_ticket_obj.js"></script>
+    <script src="/js/pages/view_case.js"></script>
+
+    <link href="/css/pages/helpdesk.css" rel="stylesheet">
+
+    <script src="/js/chartjs/2.7.2/Chart.bundle.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        view_case.Init();
+      });
+    </script>
+
+  </head>
+
+  <body>
+  <<template:prod/<<vars:user_type>>_navigation_menu.htmlt>>
+
+    <div class="container">
+      <div class="row from-group">
+        <div class="col-xs-8">
+          <h4>
+            <input id="case_title" class="transparent form-control" style="font-size: inherit;" data-script="helpdesk.cgi" data-action="AJAX_updateTicketTitle">
+            <label></label>
+          </h4>
+        </div>
+        <div class="col-xs-4">
+          <h4>
+            <span class="float_right">(<span id="case_id"></span>)</span>
+          </h4>
+        </div>
+      </div>
+    </div> <!-- /container -->
+
+    <div class="container single_block">
+      <div class="row from-group">
+        <div class="col-xs-6 col-md-9">Открыт: <span id="case_opener"></span></div>
+        <div class="col-xs-6 col-md-3"><span class="float_right"><span id="open_date"></span></span></div>
+      </div>
+      <div class="row from-group">
+        <div class="col-xs-6">Приоритет: <span id="current_severity"></span><span class="show_to_helpdesk" > (макс.: <span id="max_severity"></span>)</span></div>
+        <div class="col-xs-6"><span class="float_right">Статус: <span id="current_state"></span></span></div>
+      </div>
+      <div class="row from-group">
+        <div class="col-xs-12">Последний апдейт: <span id="last_update"></span> <span class="show_to_helpdesk"><span id="sla_badge"></span></span></div>
+      </div>
+    </div> <!-- /container -->
+    
+    <div id="case_view">
+    </div>
+
+    <div class="container">  
+      <div id="form_dom">
+      </div>
+    </div>
+
+    <div id="scrollerToShow"></div>
+
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>

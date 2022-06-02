@@ -15,5 +15,5 @@ if(NOT ${MAXMIND_DISABLE})
 	endif()
     endif()
 
-    install(FILES	"${MAXMIND_PROJECT_DIR}/GeoLite2-City.mmdb" DESTINATION ${MAXMIND_INSTALL_DIR})
+    install(FILES	"${MAXMIND_PROJECT_DIR}/GeoLite2-City.mmdb" DESTINATION ${MAXMIND_INSTALL_DIR} COMPONENT app)
 endif()

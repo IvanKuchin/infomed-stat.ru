@@ -1,0 +1,35 @@
+        <div class="collapse ___sup_mesent_artery">
+          <div class="row collapse-top-shadow margin_bottom_20"><p></p></div>
+
+          <div class="row">
+            <div class="col-xs-12"><h4><center>Верхнебрыжеечная артерия</center></h4></div>
+          </div>
+
+          <<template:prod/pomc_wizard_resection.htmlt>>
+
+          <div class="row collapse-bottom-shadow margin_top_20"><p></p></div>
+        </div>
+
+        <div class="collapse ___celiac_trunk">
+          <div class="row collapse-top-shadow margin_bottom_20"><p></p></div>
+
+          <div class="row">
+            <div class="col-xs-12"><h4><center>Чревный ствол</center></h4></div>
+          </div>
+
+          <<template:prod/pomc_wizard_resection.htmlt>>
+
+          <div class="row collapse-bottom-shadow margin_top_20"><p></p></div>
+        </div>
+
+        <div class="collapse ___common_hepatic_art">
+          <div class="row collapse-top-shadow margin_bottom_20"><p></p></div>
+
+          <div class="row">
+            <div class="col-xs-12"><h4><center>Общая печеночная артерия</center></h4></div>
+          </div>
+
+          <<template:prod/pomc_wizard_resection.htmlt>>
+
+          <div class="row collapse-bottom-shadow margin_top_20"><p></p></div>
+        </div>

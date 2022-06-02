@@ -1,0 +1,7 @@
+{
+"company_position": [<<vars:company_position>>],
+"geo_country": [<<vars:geo_country>>],
+"geo_region": [<<vars:geo_region>>],
+"geo_locality": [<<vars:geo_locality>>],
+"themes": [<<vars:themes>>]
+}

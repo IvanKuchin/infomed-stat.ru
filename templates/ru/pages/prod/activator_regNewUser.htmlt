@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <<template:prod/header.htmlt>>
+    <title>Активация пользователя на сайте</title>
+    <!-- Custom styles for this template -->
+    <link href="/css/pages/common_weberror.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <p class="text-left">Вам отправлено письмо со ссылкой на активацию аккаунта.</p>
+      <p class="text-left">Письмо может оказаться в SPAM-e, загляните и туда.</p>
+    </div> <!-- /container -->
+    <<template:prod/footer.htmlt>>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <<template:prod/header.htmlt>>
+
+    <title>Аккаунт активирован</title>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/pages/common_weberror.css" rel="stylesheet">
+    <script>
+      window.setTimeout(
+        function()
+        {
+          window.location.replace("/?rand=" + Math.random()*98765432123456);
+        }, 5000);
+    </script>
+
+  </head>
+
+
+
+
+
+  <body>
+
+    <div class="container">
+      <div class="row">
+       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        	Пользователь <<vars:login>> активирован.
+        </div>
+       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <p></p>
+          <p></p>
+          Вы будете перенаправлены на сайт в течение 5 секунд. Если этого не произошло <a href="/news_feed?rand=<<vars:rand>>">нажмите пожалуйста сюда.</a>
+        </div>
+      </div>
+    </div> <!-- /container -->
+
+
+
+
+<<template:prod/footer.htmlt>>
+
+  </body>
+</html>

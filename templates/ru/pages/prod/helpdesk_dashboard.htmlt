@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+
+    <title><<vars:title_head>></title>
+
+    <script src="/js/pages/helpdesk_dashboard.js"></script>
+
+    <script src="/js/chartjs/2.7.2/Chart.bundle.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        helpdesk_dashboard.Init();
+      });
+    </script>
+
+  </head>
+
+  <body>
+  <<template:prod/<<vars:user_type>>_navigation_menu.htmlt>>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h3>
+            <center>
+              Обзор
+            </center>
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="margin_sides_15">
+      <div class="row" id="dashboard">
+      </div>
+    </div> <!-- /container -->
+
+    <div class="margin_sides_15">
+      <div class="row" id="dashboard">
+        <div class="col-xs-6 col-md-2">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Мои кейсы:</div>
+            <div class="panel-body text-center" id="my_open_cases">
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-6 col-md-2">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Открытые кейсы:</div>
+            <div class="panel-body text-center" id="open_cases">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /container -->
+
+    <div id="scrollerToShow"></div>
+
+    <div class="modal fade" id="ResultModal" tabindex="-1" role="dialog" aria-labelledby="ResultModal">
+      <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-12 description">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+        </div>
+      </div>
+      </div>
+    </div>
+
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+		<<template:prod/header.htmlt>>
+
+		 <!-- Image uploader -->
+		<script src="/js/imageuploader/js/vendor/jquery.ui.widget.js"></script>
+		<script src="/js/imageuploader/js/load-image.all.min.js"></script>
+		<script src="/js/imageuploader/js/jquery.iframe-transport.js"></script>
+		<script src="/js/imageuploader/js/jquery.fileupload.js"></script>
+		<script src="/js/imageuploader/js/jquery.fileupload-process.js"></script>
+		<script src="/js/imageuploader/js/jquery.fileupload-image.js"></script>
+		<script src="/js/imageuploader/js/jquery.fileupload-validate.js"></script>
+		
+		<title><<vars:title_head>></title>
+
+		<script src="/js/pages/news_feed.js"></script>
+		<!-- Custom styles for this template -->
+		<link href="/css/pages/news_feed.css" rel="stylesheet">
+
+		<script>
+			$(document).ready(function() {
+				news_feed.Init();
+			});
+		</script>
+
+	</head>
+
+	<body>
+
+	<<template:prod/navigation_menu.htmlt>>
+
+
+    <!-- no need to post to feed directly, only from event -->
+<!--
+ 	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-offset-2 col-md-3">
+				<button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#NewsFeedNewMessage">Написать в ленту</button>
+			</div>
+		</div>
+	</div>
+ -->
+	<div id="news_feed" data-action="<<vars:action>>" data-id="<<vars:id>>" data-login="<<vars:login>>">
+	</div>
+	<div id="scrollerToShow"></div>
+
+	<!-- news feed modals: START -->
+	<<template:prod/news_feed_modals.htmlt>>
+	<!-- news feed modals: END -->
+
+	<<template:prod/footer.htmlt>>
+
+	</body>
+</html>

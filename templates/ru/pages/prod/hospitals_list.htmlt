@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+
+    <title><<vars:title_head>></title>
+
+    <script src="/js/sha512/sha512.js"></script>
+    <script src="/js/pages/doctor_obj.js"></script>
+    <script src="/js/pages/hospital_obj.js"></script>
+    <script src="/js/pages/hospitals_list.js"></script>
+
+    <link href="/css/pages/switcher.css" rel="stylesheet">
+    <script src="/js/chartjs/2.7.2/Chart.bundle.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        hospitals_list.Init();
+      });
+    </script>
+
+  </head>
+
+  <body>
+  <<template:prod/<<vars:user_type>>_navigation_menu.htmlt>>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h3>
+            <center>Список центров-участников</center>
+          </h3>
+        </div>
+        <div class="col-xs-6 col-md-offset-8 col-md-2 form-group">
+          <button class="btn btn-primary form-control" data-target="#collapsible_hospital_new_item" data-toggle="collapse">Добавить мед. центр</button>
+        </div>
+        <div class="col-xs-6 col-md-2 form-group">
+          <button class="btn btn-primary form-control" data-target="#collapsible_doctor_new_item" data-toggle="collapse">Добавить доктора</button>
+        </div>
+      </div>
+      <div class="row collapse" id="collapsible_hospital_new_item">
+        <div class="col-xs-12 collapse-top-shadow margin_bottom_20"><p></p></div>
+        <div class="col-xs-12">
+          <div class="row">
+            <div class="col-xs-12 form-group"><h5><center>Новый мед. центр</center></h5></div>
+          </div>
+          <div id="new_hospital_template"></div>
+        </div>
+        <div class="col-xs-12 collapse-bottom-shadow margin_top_20"><p></p></div>
+      </div>
+
+      <div class="row collapse" id="collapsible_doctor_new_item">
+        <div class="col-xs-12 collapse-top-shadow margin_bottom_20"><p></p></div>
+        <div class="col-xs-12">
+          <div class="row">
+            <div class="col-xs-12 form-group"><h5><center>Добавление доктора</center></h5></div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-md-11 col-md-offset-1">Можно заполнить или телефон или логин или email или любую комбинацию</div>
+          </div>
+<!--
+          <div class="row">
+            <div class="col-xs-4 col-md-2 col-md-offset-1"><input class="transparent login" placeholder="Логин"><label></label></div>
+            <div class="col-xs-4 col-md-2"><input class="transparent email" placeholder="Email"><label></label></div>
+            <div class="col-xs-4 col-md-2"><input class="transparent phone" placeholder="Телефон"><label></label></div>
+          </div>
+          <div class="row">
+            <div class=" col-xs-offset-6 col-xs-6 col-md-offset-10 col-md-2">
+              <button class="btn btn-primary form-control submit" data-id="0" data-action="AJAX_addDoctor">Сохранить</button>
+            </div>
+          </div>
+ -->
+          <div id="new_doctor_template"></div>
+        </div>
+        <div class="col-xs-12 collapse-bottom-shadow margin_top_20"><p></p></div>
+      </div>
+
+      <div id="hospitals_list">
+      </div>
+    </div>
+
+
+    <div id="scrollerToShow"></div>
+
+    <!-- "Are you sure remove cost center?" modal  -->
+    <div class="modal fade" id="AreYouSureRemoveHospital" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Вы уверены, что хотите удалить мед. центр?</h4>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-danger submit">Уверен</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- "Are you sure remove cost center?" modal  -->
+    <div class="modal fade" id="AreYouSureRemoveDoctor" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Вы уверены, что хотите удалить доктора?</h4>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-danger submit">Уверен</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="DataSharing" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Доступ к данным других центров</h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-primary submit">OK</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        </div>
+      </div>
+      </div>
+    </div>
+
+
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+
+    <title><<vars:title_head>></title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/pages/pd/survival_analysis/survival_analysis.js" type="module"></script>
+  </head>
+
+  <body>
+  <<template:prod/<<vars:user_type>>_navigation_menu.htmlt>>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h3>
+            <center>
+              Kaplan-Meier, Log-rank tests
+            </center>
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 form-group">
+          <button id="create_dataset" class="btn btn-primary float_right __loading_indicator">Новый график</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container single_block box-shadow--6dp">
+      <div class="row">
+        <div class="col-xs-12" dataset-group="0"></div>
+      </div>
+    </div>
+    <div class="container single_block box-shadow--6dp">
+      <div class="row">
+        <div class="col-xs-12">
+          <h2 class="text-center">Kaplan-Meier график</h2>
+            <span class="float_right fa fa-info-circle" onmouseover="system_calls.PopoverInfo($(this), 'Вычисления описаны <a href=\'https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_survival/BS704_Survival4.html\' target=\'_blank\'>тут</a>', true)"></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12" km-group="0">
+          <canvas></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="container single_block box-shadow--6dp" lr-group="0">
+      <div class="row">
+        <div class="col-xs-12">
+          <h2 class="text-center">Log Rank анализ</h2>
+            <span class="float_right fa fa-info-circle" onmouseover="system_calls.PopoverInfo($(this), 'Анализ описан <a href=\'https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_survival/BS704_Survival5.html\' target=\'_blank\'>тут</a>.<br>Нормальное распределение <a href=\'https://sphweb.bumc.bu.edu/otlt/MPH-Modules/PH717-QuantCore/PH717-Module6-RandomError/PH717-Module6-RandomError7.html\' target=\'_blank\'>тут</a>', true)"></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <select alpha-value>
+            <option value="2.575">α = 1%</option>
+            <option value="2.33">α = 2%</option>
+            <option value="2.17">α = 3%</option>
+            <option value="2.055">α = 4%</option>
+            <option value="1.96" selected>α = 5%</option>
+            <option value="1.88">α = 6%</option>
+            <option value="1.81">α = 7%</option>
+            <option value="1.75">α = 8%</option>
+            <option value="1.7">α = 9%</option>
+            <option value="1.645">α = 10%</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12" table-placeholder>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <canvas></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div id="scrollerToShow"></div>
+
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>
