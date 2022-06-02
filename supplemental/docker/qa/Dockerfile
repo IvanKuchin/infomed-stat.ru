@@ -71,7 +71,7 @@ RUN git clone --depth 1 https://github.com/IvanKuchin/backend_pi.git ./src/pi
 # assume the repo name is xxxxxx-admin               #
 # below command cuts out "dash" and everything after #
 ######################################################
-RUN git clone --depth 1 https://github.com/IvanKuchin/${BUILD_REPO%%-*}.git /tmp/${BUILD_REPO}/
+RUN git clone --depth 1 https://github.com/IvanKuchin/${BUILD_REPO%-*}.git /tmp/${BUILD_REPO}/
 RUN cp -R /tmp/${BUILD_REPO}/src/pd ./src
 
 ##################
