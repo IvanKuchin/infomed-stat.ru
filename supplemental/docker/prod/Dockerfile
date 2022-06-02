@@ -116,6 +116,14 @@ COPY . ${GIT_FOLDER}
 WORKDIR ${GIT_FOLDER}
 RUN git clone --depth 1 https://github.com/IvanKuchin/backend_pi.git ./src/pi
 
+######################
+# libxl installation #
+######################
+RUN if test -f "./libxl-3.8.4.0/lib64/libxl.so"; then \
+       cp ./libxl-3.8.4.0/lib64/libxl.so /usr/local/lib/ \
+       && ldconfig; \
+    fi
+
 ##################
 # save commit id #
 ##################
@@ -204,6 +212,12 @@ COPY --from=build ${GIT_FOLDER}/build/${BUILD_REPO}-infra.deb ./
 COPY --from=build ${GIT_FOLDER}/build/${BUILD_REPO}-app.deb ./
 COPY --from=build ${GIT_FOLDER}/supplemental/apache2/ /etc/apache2/
 
+###############
+# copy libxl  #
+###############
+COPY --from=build /usr/local/lib/libxl* /usr/local/lib/
+RUN ldconfig
+
 ####################
 # install binaries #
 ####################
@@ -213,9 +227,10 @@ RUN apt update \
                ssmtp \
                apache2 \
                gsfonts \
-    # && add-apt-repository -y ppa:jonathonf/ffmpeg-4 \
-    # && apt update \
+               wget \
+    && wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb \
     && apt install  --no-install-recommends --no-install-suggests -y ./*.deb \
+    && apt remove -y wget \
     && rm -rf /var/lib/apt/lists/*
 
 #########################
