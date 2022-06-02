@@ -118,7 +118,7 @@ add_subdirectory(supplemental/ci-scripts/)
 add_subdirectory(supplemental/libpdf-font/)
 add_subdirectory(supplemental/git/)
 add_subdirectory(supplemental/config/)
-add_subdirectory(supplemental/ssmtp/)
+# add_subdirectory(supplemental/ssmtp/)
 add_subdirectory(templates/)
 add_subdirectory(po/)
 
