@@ -41,7 +41,8 @@ RUN apt-get install --no-install-recommends --no-install-suggests -y \
         libwebp-dev \
         libarchive-dev \
         rapidjson-dev \
-        pkg-config
+        pkg-config \
+        wget
 
 #####################
 # locale generation #
@@ -51,13 +52,6 @@ RUN locale-gen ru_RU.utf8
 RUN locale-gen en_US.utf8
 RUN update-locale
 RUN export LC_ALL=en_US.utf8
-
-#############################
-# libwkhtmltox installation #
-#############################
-RUN apt-get install --no-install-recommends --no-install-suggests -y wget
-RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb
-RUN apt install --no-install-recommends --no-install-suggests -y ./wkhtmltox_0.12.5-1.trusty_amd64.deb
 
 ###############
 # pull PI src #
@@ -72,6 +66,14 @@ RUN git clone --depth 1 https://github.com/IvanKuchin/backend_pi.git ./src/pi
 RUN if test -f "./libxl-3.8.4.0/lib64/libxl.so"; then \
        cp ./libxl-3.8.4.0/lib64/libxl.so /usr/local/lib/ \
        && ldconfig; \
+    fi
+
+#############################
+# libwkhtmltox installation #
+#############################
+RUN if test -d "./wkhtmltox"; then \
+       wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb \
+       && apt install --no-install-recommends --no-install-suggests -y ./wkhtmltox*.deb; \
     fi
 
 ##################
