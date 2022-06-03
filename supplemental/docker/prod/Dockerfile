@@ -94,12 +94,6 @@ RUN apt update \
     && apt-get clean
 
 #############################
-# libwkhtmltox installation #
-#############################
-RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb
-RUN apt install --no-install-recommends --no-install-suggests -y ./wkhtmltox_0.12.5-1.trusty_amd64.deb
-
-#############################
 # libwebsocket installation #
 #############################
 #RUN git clone -b v2.2.0 --depth 1 https://github.com/warmcat/libwebsockets.git /libwebsockets
@@ -122,6 +116,14 @@ RUN git clone --depth 1 https://github.com/IvanKuchin/backend_pi.git ./src/pi
 RUN if test -f "./libxl-3.8.4.0/lib64/libxl.so"; then \
        cp ./libxl-3.8.4.0/lib64/libxl.so /usr/local/lib/ \
        && ldconfig; \
+    fi
+
+#############################
+# libwkhtmltox installation #
+#############################
+RUN if test -d "./wkhtmltox"; then \
+       wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb \
+       && apt install --no-install-recommends --no-install-suggests -y ./wkhtmltox*.deb; \
     fi
 
 ##################
@@ -169,9 +171,7 @@ RUN cd build \
         -DLOCAL_INSTALL_DIR=${LOCAL_INSTALL_DIR} \
         -DBUILD_RELEASE_NUMBER=${BUILD_RELEASE_NUMBER} \
         .. \
-    && make -j2 package \
-    && make install \
-    && make clean
+    && make -j2 package
 
 # EXPOSE 80
 
@@ -218,6 +218,11 @@ COPY --from=build ${GIT_FOLDER}/supplemental/apache2/ /etc/apache2/
 COPY --from=build /usr/local/lib/libxl* /usr/local/lib/
 RUN ldconfig
 
+###################
+# copy wkhtmltox  #
+###################
+COPY --from=build ${GIT_FOLDER}/wkhtmltox*.deb ./
+
 ####################
 # install binaries #
 ####################
@@ -228,7 +233,6 @@ RUN apt update \
                apache2 \
                gsfonts \
                wget \
-    && wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb \
     && apt install  --no-install-recommends --no-install-suggests -y ./*.deb \
     && apt remove -y wget \
     && rm -rf /var/lib/apt/lists/*
