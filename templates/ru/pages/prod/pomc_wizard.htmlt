@@ -9,8 +9,9 @@
         <div class="row">
           <div class="col-xs-4"><input class="transparent ___medical_history_number" placeholder="№ истории болезни"><label></label></div>
           <div class="col-xs-4"><input class="transparent ___phone" placeholder="Телефон 8(___)___ __ __"><label></label></div>
-          <div class="col-xs-4"><input class="transparent ___birthdate __date_picker" placeholder="Дата рождения"><label></label></div>
-        </div>
+           <div class="col-xs-4"><input type="date" class="transparent ___birthdate" placeholder="Дата рождения"><label></label></div>
+<!--          <div class="col-xs-4"><input class="transparent ___birthdate __date_picker" placeholder="Дата рождения"><label></label></div>
+ -->        </div>
         <div class="row">
           <div class="col-xs-4"><input class="transparent ___zip_code" placeholder="Индекс"><label></label></div>
           <div class="col-xs-4"><input class="transparent ___region" disabled placeholder="Регион"></div>
