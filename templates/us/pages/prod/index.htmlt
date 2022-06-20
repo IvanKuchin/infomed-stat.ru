@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+    
+
+    <title><<vars:title>></title>
+  </head>
+
+  <body>
+
+
+
+    <<vars:content>>
+
+
+
+    <<template:prod/footer.htmlt>>
+  </body>
+</html>
