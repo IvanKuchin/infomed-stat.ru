@@ -302,6 +302,7 @@ RUN apt update \
                apache2 \
     && add-apt-repository -y ppa:jonathonf/ffmpeg-4 \
     && apt update \
+    && apt install  --no-install-recommends --no-install-suggests -y ffmpeg \
     && apt install  --no-install-recommends --no-install-suggests -y ./*.deb \
     && apt autoremove -y software-properties-common \
     && rm -rf /var/lib/apt/lists/*
