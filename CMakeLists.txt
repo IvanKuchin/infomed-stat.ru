@@ -48,7 +48,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModu
 
 option(IMAGEMAGICK_DISABLE	"turn off ImageMagick++" OFF)
 option(MAXMIND_DISABLE		"turn off GeoIP" OFF)
-option(FFPMPEG_DISABLE		"turn off VideoConverter" OFF)
+option(FFMPEG_DISABLE		"turn off VideoConverter" OFF)
 
 # --- Set required variables
 # ---- build variables
