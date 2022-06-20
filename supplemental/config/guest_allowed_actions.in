@@ -1,3 +1,3 @@
 # enumerate actions using comma
 
-__default__	= getUserWall
+__default__	= getUserWall, API_login
