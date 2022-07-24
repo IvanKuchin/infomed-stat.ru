@@ -33,8 +33,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-6 col-md-9">
-          <p></p>
+        <div class="col-xs-6 col-md-1">
+          <p class="text-right">Фильтр</p>
         </div>
         <div class="col-xs-6 col-md-3">
           <select id="status_filter" class="form-group form-control">
@@ -44,6 +44,25 @@
             <option value="event">Умершие</option>
           </select>
         </div>
+        <div class="col-xs-6 col-md-3">
+          <p class="text-right">Сортировка</p>
+        </div>
+        <div class="col-xs-6 col-md-3">
+          <select id="sort_order" class="form-group form-control">
+            <option value="___last_name">Фамилия</option>
+            <option value="___birthdate">Дата рождения</option>
+            <option value="___op_done___invasion_date">Дата операции</option>
+            <option value="___neoadj_chemo___start_date">Дата химиотерапии</option>
+            <option value="___death_date">Дата смерти</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-2 col-md-1"></div>
+        <div class="col-xs-3 col-md-2">Фамилия</div>
+        <div class="col-xs-3 col-md-2">Имя</div>
+        <div class="col-xs-3 col-md-2">Отчество</div>
+        <div class="hidden-xs hidden-sm col-md-2">Дата рождения</div>
       </div>
       <div id="medical_record_list"></div>
     </div>
