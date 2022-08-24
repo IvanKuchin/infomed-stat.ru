@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <<template:prod/header.htmlt>>
+
+    <title><<vars:title_head>></title>
+
+    <script src="https://cdn.jsdelivr.net/npm/danfojs@latest/lib/bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis"></script>
+    <script src="/js/pages/pd/months_model/main.js" type="module"></script>
+  </head>
+
+  <body>
+  <<template:prod/<<vars:user_type>>_navigation_menu.htmlt>>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h3>
+            <center>
+              Предсказание длительности жизни в месяцах
+            </center>
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-2 col-md-1"><i class="_download-image fa fa-hourglass-o" aria-hidden="true"></i></div>
+        <div class="col-xs-5">Загрука данных с сервера</div>
+        <div class="col-xs-5"><span class="_download-comment"></span></div>
+      </div>
+      <div class="row">
+        <div class="col-xs-2 col-md-1"><i class="_preprocessing-image fa fa-hourglass-o" aria-hidden="true"></i></div>
+        <div class="col-xs-5">Подготовка данных</div>
+        <div class="col-xs-5"><span class="_preprocessing-comment"></span></div>
+      </div>
+      <div class="row">
+        <div class="col-xs-2 col-md-1"><i class="_train-image fa fa-hourglass-o" aria-hidden="true"></i></div>
+        <div class="col-xs-5">
+          Тренировка <button id="show-model" class="btn btn-link">нейронной сети</button> 
+        </div>
+        <div class="col-xs-5"><span class="_train-comment"></span></div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6" id="inference_records"></div>
+        <div class="col-xs-12 col-md-6">
+          <div> Длительность из записи: <span id="duration_from_record"></span> </div>
+          <div> Длительность предсказанная: <span id="duration_from_inference"></span> </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="scrollerToShow"></div>
+
+  <<template:prod/footer.htmlt>>
+
+  </body>
+</html>
