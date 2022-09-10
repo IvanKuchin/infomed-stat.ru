@@ -75,7 +75,7 @@
 	<link href="/css/pages/common.css" rel="stylesheet">
 	<script src="/js/pages/common.js"></script>
 	<script src="/js/pages/pi/session.js"></script>
-	<script src="/js/pages/infomed-stat.js"></script>
+	<script src="/js/pages/common_infomed-stat.js"></script>
 	<script>
 	$(document).ready(function()
 	{
