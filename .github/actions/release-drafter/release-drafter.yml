@@ -35,6 +35,8 @@ version-resolver:
       - 'maintenance'
       - 'documentation'
       - 'code refinement'
+      - 'infrastructure'
+      - 'performance'
   default: patch
 autolabeler:
   - label: 'breaking'
@@ -48,11 +50,20 @@ autolabeler:
     title:
       - '/fix/i'
       - '/bug/i'
+      - '/regression/i'
   - label: 'infrastructure'
     title:
       - '/infrastructure/i'
-      - '/documentation/i'
-      - '/code refinement/i'
+  - label: 'documentation'
+    title:
+      - '/doc/i'
+  - label: 'code refinement'
+    title:
+      - '/refine/i'
+      - '/clean/i'
+  - label: 'performance'
+    title:
+      - '/perf/i'
 template: |
   # Changelog ...
   $CHANGES
