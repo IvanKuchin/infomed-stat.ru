@@ -18,6 +18,8 @@ categories:
       - 'code refinement'
   - title: '🏎 Performance'
     label: 'performance'
+  - title: '🚑Security'
+    label: 'security'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 version-resolver:
   major:
@@ -37,6 +39,7 @@ version-resolver:
       - 'code refinement'
       - 'infrastructure'
       - 'performance'
+      - 'security'
   default: patch
 autolabeler:
   - label: 'breaking'
@@ -64,6 +67,9 @@ autolabeler:
   - label: 'performance'
     title:
       - '/perf/i'
+  - label: 'security'
+    title:
+      - '/security/i'
 template: |
   # Changelog ...
   $CHANGES
