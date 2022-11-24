@@ -40,7 +40,7 @@ jobs:
       # Run check spelling action #
       #############################
       - name: Check spelling
-        uses: check-spelling/check-spelling@master
+        uses: check-spelling/check-spelling@main
         with:
           bucket: .github/actions
           project: spelling

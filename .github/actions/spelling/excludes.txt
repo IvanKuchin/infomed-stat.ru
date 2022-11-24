@@ -1,0 +1,3 @@
+^\Qsrc/pd/include/ajax_anyrole.h\E$
+^\Qsrc/pd/include/company.h\E$
+^\Qsrc/pd/include/cron_daily_pd.h\E$
