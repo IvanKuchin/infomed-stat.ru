@@ -48,7 +48,7 @@
               <option>Аденокарцинома 12-ти перстной кишки</option>
               <option>Аденокарцинома БДС</option>
               <option>Аденокарцинома холедоха</option>
-              <option data-toggle="collapse" data-target=".__non_pancreatobiliary">Не панкреатобидиарные</option>
+              <option data-toggle="collapse" data-target=".__non_pancreatobiliary">Не панкреатобилиарные</option>
             </select>
           </div>
         </div>
