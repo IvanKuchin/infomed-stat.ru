@@ -378,7 +378,10 @@
 
         <div class="collapse ___op_done">
           <div class="row form-group">
-            <div class="col-xs-6 col-xs-offset-6 col-md-2 col-md-offset-2"><input class="transparent ___invasion_date __date_picker" placeholder="Дата операции"><label></label></div>
+            <div class="col-xs-6 col-md-2">Дата операции:</div>
+            <div class="col-xs-6 col-md-4"><input class="transparent ___invasion_date __date_picker" placeholder="Дата операции"><label></label></div>
+            <div class="col-xs-6 col-md-2">Время операции (мин):</div>
+            <div class="col-xs-6 col-md-4"><input class="transparent ___duration" placeholder="Время операции (мин)" type="number" step=10><label></label></div>
           </div>
 
           <div class="row form-group">
@@ -399,6 +402,35 @@
                 <option>Anterior RAMPS</option>
                 <option>Posterior RAMPS</option>
                 <option>Панкреатэктомия</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-xs-6 col-md-2">Кровопотеря мл.:</div>
+            <div class="col-xs-6 col-md-4"><input class="transparent ___blood_loss" placeholder="Кровопотеря мл." type="number" step=10><label></label></div>
+            <div class="col-xs-6 col-md-2">Трансфузии комп. крови:</div>
+            <div class="col-xs-6 col-md-4">
+              <select class="transparent ___blood_transfusion">
+                <option>Не определено</option>
+                <option>Да</option>
+                <option>Нет</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-xs-6 col-md-2">Послеоп. койкодень:</div>
+            <div class="col-xs-6 col-md-4"><input class="transparent ___recovery_days" placeholder="дни" type="number" step=2><label></label></div>
+            <div class="col-xs-6 col-md-2">Оператор:</div>
+            <div class="col-xs-6 col-md-4">
+              <select class="transparent ___assistant">
+                <option>Не определено</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
               </select>
             </div>
           </div>
