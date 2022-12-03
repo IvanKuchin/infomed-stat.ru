@@ -189,13 +189,13 @@
           </div>
         </div>
         <div class="row form-group">
-          <div class="col-xs-6 col-md-2">Уровень Хромогранин А:</div>
-          <div class="col-xs-6 col-md-4">
-            <input type="number" step="100" class="transparent ___pre_op_lab_chromo" placeholder="Уровень Хромогранин А"><label></label>
-          </div>
           <div class="col-xs-6 col-md-2">Уровень Серотонина:</div>
           <div class="col-xs-6 col-md-4">
             <input type="number" step="10" class="transparent ___pre_op_lab_serot " placeholder="Уровень Серотонина"><label></label>
+          </div>
+          <div class="col-xs-6 col-md-2">Уровень Хромогранин А:</div>
+          <div class="col-xs-6 col-md-4">
+            <input type="number" step="100" class="transparent ___pre_op_lab_chromo" placeholder="Уровень Хромогранин А"><label></label>
           </div>
         </div>
 
@@ -381,7 +381,7 @@
             <div class="col-xs-6 col-md-2">Дата операции:</div>
             <div class="col-xs-6 col-md-4"><input class="transparent ___invasion_date __date_picker" placeholder="Дата операции"><label></label></div>
             <div class="col-xs-6 col-md-2">Время операции (мин):</div>
-            <div class="col-xs-6 col-md-4"><input class="transparent ___duration" placeholder="Время операции (мин)" type="number" step=10><label></label></div>
+            <div class="col-xs-6 col-md-4"><input class="transparent ___duration" placeholder="(мин)" type="number" step=10><label></label></div>
           </div>
 
           <div class="row form-group">
@@ -420,7 +420,7 @@
           </div>
 
           <div class="row form-group">
-            <div class="col-xs-6 col-md-2">Послеоп. койкодень:</div>
+            <div class="col-xs-6 col-md-2">Послеоп. койко-день:</div>
             <div class="col-xs-6 col-md-4"><input class="transparent ___recovery_days" placeholder="дни" type="number" step=2><label></label></div>
             <div class="col-xs-6 col-md-2">Оператор:</div>
             <div class="col-xs-6 col-md-4">
