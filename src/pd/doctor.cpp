@@ -621,7 +621,7 @@ int main()
 									error_message = gettext("SQL syntax error");
 									MESSAGE_ERROR("", action, error_message);
 								}
-								if(error_message.empty() && db.InsertQuery("INSERT INTO `company_employment` (`user_id`, `company_id`) VALUES (" + quoted(user.GetID()) + "," + quoted(hospital) + ");"))
+								if(error_message.empty() && db.InsertQuery("INSERT INTO `users_visibility_scope` (`user_id`) VALUES (" + quoted(user.GetID()) + ");"))
 								{
 
 								}

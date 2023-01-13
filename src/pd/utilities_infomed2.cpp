@@ -38,7 +38,7 @@ auto GetUserVisibilityScope(string user_id, CMysql *db) -> string
 
 	if(result.empty())
 	{
-		MESSAGE_ERROR("", "", "this field can't be empty, it must be prepopulated with values on table creation");
+		MESSAGE_ERROR("", "", "this field can't be empty, the value must be set during entry creation");
 		result = "local";
 	}
 
