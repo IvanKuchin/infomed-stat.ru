@@ -10,6 +10,7 @@ company			= ${IMAGEROOTDIR}/html/images/companies
 company_profile_logo	= ${IMAGEROOTDIR}/html/images/companies
 group			= ${IMAGEROOTDIR}/html/images/groups
 ribbon			= ${IMAGEROOTDIR}/html/images/ribbons
+temp			= ${IMAGEROOTDIR}/html/images/temp
 
 gift			= ${IMAGEROOTDIR}/html/images/gifts
 event			= ${IMAGEROOTDIR}/html/images/events
