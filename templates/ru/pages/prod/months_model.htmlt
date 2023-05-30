@@ -8,7 +8,7 @@
     <title><<vars:title_head>></title>
 
     <script src="https://cdn.jsdelivr.net/npm/danfojs@latest/lib/bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.1.0/dist/tf.min.js"> </script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis"></script>
     <script src="/js/pages/pd/months_model/main.js" type="module"></script>
   </head>
