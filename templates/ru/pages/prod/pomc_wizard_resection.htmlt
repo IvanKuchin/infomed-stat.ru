@@ -6,6 +6,7 @@
                 <option>Краевая</option>
                 <option>Циркулярная</option>
                 <option>С использованием синтетического протеза</option>
+                <option>Без анастомоза</option>
               </select>
             </div>
 
