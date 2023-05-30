@@ -479,6 +479,8 @@
             <label style="font-weight: normal;"><input type="checkbox" class="___sup_mesent_artery"  data-toggle="collapse" data-target=".___vasc_resect .collapse.___sup_mesent_artery"> Верхнебрыжеечная артерия</label><br>
             <label style="font-weight: normal;"><input type="checkbox" class="___celiac_trunk" data-toggle="collapse" data-target=".___vasc_resect .collapse.___celiac_trunk"> Чревный ствол</label><br>
             <label style="font-weight: normal;"><input type="checkbox" class="___common_hepatic_art" data-toggle="collapse" data-target=".___vasc_resect .collapse.___common_hepatic_art"> Общая печеночная артерия</label><br>
+            <label style="font-weight: normal;"><input type="checkbox" class="___left_hepatic_art" data-toggle="collapse" data-target=".___vasc_resect .collapse.___left_hepatic_art"> Левая печеночная артерия</label><br>
+            <label style="font-weight: normal;"><input type="checkbox" class="___right_hepatic_art" data-toggle="collapse" data-target=".___vasc_resect .collapse.___right_hepatic_art"> Правая печеночная артерия</label><br>
           </div>
         </div>
 

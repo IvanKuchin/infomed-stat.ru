@@ -33,3 +33,27 @@
 
           <div class="row collapse-bottom-shadow margin_top_20"><p></p></div>
         </div>
+
+        <div class="collapse ___left_hepatic_art">
+          <div class="row collapse-top-shadow margin_bottom_20"><p></p></div>
+
+          <div class="row">
+            <div class="col-xs-12"><h4><center>Левая печеночная артерия</center></h4></div>
+          </div>
+
+          <<template:prod/pomc_wizard_resection.htmlt>>
+
+          <div class="row collapse-bottom-shadow margin_top_20"><p></p></div>
+        </div>
+
+        <div class="collapse ___right_hepatic_art">
+          <div class="row collapse-top-shadow margin_bottom_20"><p></p></div>
+
+          <div class="row">
+            <div class="col-xs-12"><h4><center>Правая печеночная артерия</center></h4></div>
+          </div>
+
+          <<template:prod/pomc_wizard_resection.htmlt>>
+
+          <div class="row collapse-bottom-shadow margin_top_20"><p></p></div>
+        </div>
