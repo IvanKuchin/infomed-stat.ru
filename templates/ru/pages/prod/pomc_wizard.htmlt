@@ -398,7 +398,7 @@
       <div class="row form-group">
         <div class="col-xs-6 col-md-2">Дата операции:</div>
         <div class="col-xs-6 col-md-4"><input class="transparent ___invasion_date __date_picker" placeholder="Дата операции"><label></label></div>
-        <div class="col-xs-6 col-md-2">Время операции (мин):</div>
+        <div class="col-xs-6 col-md-2">Длительность операции (мин):</div>
         <div class="col-xs-6 col-md-4"><input class="transparent ___duration" placeholder="Минут" type="number" step=10><label></label></div>
       </div>
 
