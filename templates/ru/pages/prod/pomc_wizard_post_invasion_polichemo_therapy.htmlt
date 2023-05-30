@@ -1,6 +1,8 @@
           <div class="row">
             <div class="col-xs-6 col-md-4 col-md-offset-2">
               <select class="transparent ___scheme_name" placeholder="Название схемы">
+                <option>FOLFOX</option>
+                <option>GEMOX</option>
                 <option>mFOLFIRINOX</option>
                 <option>GemCap</option>
                 <option>Гемцитабин</option>
