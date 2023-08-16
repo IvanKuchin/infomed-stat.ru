@@ -1,4 +1,4 @@
-FROM ubuntu:xenial as base
+FROM ubuntu:jammy as base
 
 ARG BUILD_REPO
 ARG MAIN_SUBDOMAIN=www
@@ -19,6 +19,19 @@ LABEL org.opencontainers.image.source="https://github.com/IvanKuchin/${BUILD_REP
 RUN [ -z "$BUILD_REPO" ] && echo "BUILD_REPO is required" && exit 1 || true
 RUN echo repository is $BUILD_REPO
 
+############################
+# make apt non-interactive #
+############################
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN true
+
+####################
+# preseed timezone #
+####################
+RUN echo tzdata tzdata/Areas select Europe > /tmp/preseed.txt \
+ && echo tzdata tzdata/Zones/Europe select Moscow >> /tmp/preseed.txt \
+ && debconf-set-selections /tmp/preseed.txt
+
 ###########################
 # install basic utilities #
 ###########################
@@ -29,15 +42,6 @@ RUN apt update \
            locales \
            gettext \
     && rm -rf /var/lib/apt/lists/*
-
-####################
-# install timezone #
-####################
-#RUN apt-get install --no-install-recommends --no-install-suggests -y tzdata \
-#    && rm -rf /var/lib/apt/lists/*
-RUN cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
-RUN echo "Europe/Moscow" > /etc/timezone
-RUN date
 
 ##############################
 # install additional locales #
@@ -66,9 +70,6 @@ ARG BUILD_RELEASE_NUMBER
 # install dependencies #
 ########################
 RUN apt update \
-    && apt-get install --no-install-recommends --no-install-suggests -y software-properties-common \
-    && add-apt-repository -y ppa:jonathonf/ffmpeg-4 \
-    && apt update \
     && apt-get install --no-install-recommends --no-install-suggests -y \ 
         build-essential \
         file \
@@ -190,7 +191,7 @@ RUN cd build \
 
 # STOPSIGNAL SIGTERM
 
-# CMD ["apachectl", "-D", "FOREGROUND", ""]
+# CMD ["apachectl", "-D", "FOREGROUND"]
 
 ############################################################################################
 
@@ -270,7 +271,7 @@ RUN chown -R www-data:www-data ${ROOTDIR} \
 
 EXPOSE 80
 
-CMD ["apachectl", "-D", "FOREGROUND", ""]
+CMD ["apachectl", "-D", "FOREGROUND"]
 
 ############################################################################################
 
@@ -297,11 +298,7 @@ COPY --from=build ${GIT_FOLDER}/supplemental/apache2/ /etc/apache2/
 ####################
 RUN apt update \
     && apt-get install --no-install-recommends --no-install-suggests -y \
-               software-properties-common \
-               # ssmtp \
                apache2 \
-    && add-apt-repository -y ppa:jonathonf/ffmpeg-4 \
-    && apt update \
     && apt install  --no-install-recommends --no-install-suggests -y ffmpeg \
     && apt install  --no-install-recommends --no-install-suggests -y ./*.deb \
     && apt autoremove -y software-properties-common \
@@ -340,7 +337,7 @@ RUN chown -R www-data:www-data ${ROOTDIR} \
 
 EXPOSE 80
 
-CMD ["apachectl", "-D", "FOREGROUND", ""]
+CMD ["apachectl", "-D", "FOREGROUND"]
 
 ############################################################################################
 
