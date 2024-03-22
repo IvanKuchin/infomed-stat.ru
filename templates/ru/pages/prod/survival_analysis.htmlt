@@ -87,6 +87,23 @@
       </div>
     </div>
 
+    <div class="container single_block box-shadow--6dp">
+      <div class="row">
+        <div class="col-xs-12">
+          <h2 class="text-center">Odds ratio</h2>
+            <span class="float_right fa fa-info-circle" onmouseover="system_calls.PopoverInfo($(this), 'Анализ описан <a href=\'https\://online.stat.psu.edu/stat504/lesson/3/3.6\' target=\'_blank\'>тут</a>.', true)"></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12" table-placeholder>
+        </div>
+      </div>
+      <div prob-explanation></div>
+      <div odds-explanation></div>
+      <div odds-ratio-explanation></div>
+      <div extra-explanation></div>
+    </div>
+
     <div id="scrollerToShow"></div>
 
   <<template:prod/footer.htmlt>>
