@@ -87,7 +87,7 @@
       </div>
     </div>
 
-    <div class="container single_block box-shadow--6dp">
+    <div class="container single_block box-shadow--6dp" odds-ratio>
       <div class="row">
         <div class="col-xs-12">
           <h2 class="text-center">Odds ratio</h2>
