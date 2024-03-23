@@ -100,16 +100,34 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12" patients-matrix>
+        <div class="col-xs-12" mortality-matrix>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12">
-          Таблица вероятности смертности по годам
+          Таблица выживаемости по годам
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12" probability-matrix>
+        <div class="col-xs-12" survivability-matrix>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          Вероятность выживаемости по годам
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12" probability-over-years-matrix>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          Вероятность выживаемости по группам
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12" probability-per-group-matrix>
         </div>
       </div>
       <div prob-explanation></div>
