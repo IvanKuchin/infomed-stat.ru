@@ -9,6 +9,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/pages/pd/survival_analysis/survival_analysis.js" type="module"></script>
+
+    <!--- MathJax: rendering math formulas --->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   </head>
 
   <body>
@@ -116,11 +120,11 @@
           <h4 class="text-center">Выбор периодов по месяцам</h4>
         </div>
       </div>
+      <div months-setup-explanation></div>
       <div class="row">
         <div class="col-xs-12" months-setup>
         </div>
       </div>
-      <div months-setup-explanation></div>
       <br>
       <br>
 
@@ -129,11 +133,11 @@
           <h4 class="text-center">Вероятность выживаемости по месяцам</h4>
         </div>
       </div>
+      <div prob-explanation></div>
       <div class="row">
         <div class="col-xs-12" probability-over-months-matrix>
         </div>
       </div>
-      <div prob-explanation></div>
       <br>
       <br>
 
@@ -142,12 +146,10 @@
           <h4 class="text-center">Шансы выживаемости по месяцам (odds)</h4>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12" odds-over-months-matrix>
-        </div>
-      </div>
-
       <div odds-explanation></div>
+      <div class="row">
+        <div class="col-xs-12" odds-over-months-matrix></div>
+      </div>
       <br>
       <br>
 
@@ -156,10 +158,54 @@
           <h4 class="text-center">Относительные шансы выживаемости (OR - Odds Ratio)</h4>
         </div>
       </div>
-      <div odds-ratio-over-months-matrix>
+      <div odds-ratio-explanation></div>
+      <div><br></div>
+      <div odds-ratio-over-months-matrix></div>
+
+    </div>
+
+    <div class="container single_block box-shadow--6dp" or-group="0">
+      <div class="row">
+        <div class="col-xs-12">
+          <h2 class="text-center">Chi square (χ2)</h2>
+          <span class="float_right fa fa-info-circle" onmouseover="system_calls.PopoverInfo($(this), 'Анализ описан <a href=\'https\://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/BS704_HypothesisTesting-ChiSquare/BS704_HypothesisTesting-ChiSquare3.html\' target=\'_blank\'>тут</a>.', true)"></span>
+        </div>
+        <div class="col-xs-12">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Входные данные для вычисления χ2 строятся по данным групп (живые пациенты), расчеты не могут производиться на основе данных LogRank, по причине невозможности расчета применимости χ2. Критерий применимости - количество наблюдений в одной из ячеек четырехпольной таблицы менее 10.
+        </div>
       </div>
 
-      <div odds-ratio-explanation></div>
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="text-center">Наблюдения и (ожидание)</h4>
+        </div>
+      </div>
+      <div chi-square-observation-explanation></div>
+      <div class="row">
+        <div class="col-xs-12" chi-square-observation-matrix></div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="text-center">Проверка возможности применения χ2</h4>
+        </div>
+        <div class="col-xs-12" chi-square-validity></div>
+      </div>
+        
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="text-center">Вычисление</h4>
+        </div>
+        <div class="col-xs-12" chi-square-equation></div>
+      </div>
+        
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="text-center">Вывод</h4>
+          <span class="float_right fa fa-info-circle" onmouseover="system_calls.PopoverInfo($(this), 'χ2 таблица взята <a href=\'https\://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/BS704_HypothesisTesting-ChiSquare/Chi-square-table.pdf\' target=\'_blank\'>отсюда</a>.', true)"></span>
+        </div>
+        <div class="col-xs-12" chi-square-conclusion></div>
+      </div>
     </div>
 
     <div id="scrollerToShow"></div>
