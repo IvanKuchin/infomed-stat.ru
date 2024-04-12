@@ -164,7 +164,7 @@
 
     </div>
 
-    <div class="container single_block box-shadow--6dp" or-group="0">
+    <div class="container single_block box-shadow--6dp" chi-group="0">
       <div class="row">
         <div class="col-xs-12">
           <h2 class="text-center">Chi square (χ2)</h2>
