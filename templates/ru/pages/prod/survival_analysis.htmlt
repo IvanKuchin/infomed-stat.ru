@@ -171,7 +171,7 @@
           <span class="float_right fa fa-info-circle" onmouseover="system_calls.PopoverInfo($(this), 'Анализ описан <a href=\'https\://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/BS704_HypothesisTesting-ChiSquare/BS704_HypothesisTesting-ChiSquare3.html\' target=\'_blank\'>тут</a>.', true)"></span>
         </div>
         <div class="col-xs-12">
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Входные данные для вычисления χ2 строятся по данным групп (живые пациенты), расчеты не могут производиться на основе данных LogRank, по причине невозможности расчета применимости χ2. Критерий применимости - количество наблюдений в одной из ячеек четырехпольной таблицы менее 10.
+          <span class="glyphicon glyphicon-warning-sign text-danger fa-2x" aria-hidden="true"></span> Входные данные для вычисления χ2 строятся по данным групп (живые пациенты), расчеты не могут производиться на основе данных Kaplan-Meier, по причине невозможности расчета применимости χ2. Критерий применимости - количество наблюдений в одной из ячеек четырехпольной таблицы менее 10.
         </div>
       </div>
 

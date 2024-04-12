@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col-xs-4"><input class="transparent ___medical_history_number" placeholder="№ истории болезни"><label></label></div>
       <div class="col-xs-4"><input class="transparent ___phone" placeholder="Телефон 8(___)___ __ __"><label></label></div>
-       <div class="col-xs-4"><input type="date" class="transparent ___birthdate" placeholder="Дата рождения"><label></label></div>
+      <div class="col-xs-4"><input type="date" class="transparent ___birthdate" placeholder="Дата рождения"><label></label></div>
 <!--          <div class="col-xs-4"><input class="transparent ___birthdate __date_picker" placeholder="Дата рождения"><label></label></div>
 -->
     </div>
@@ -398,7 +398,7 @@
     <div class="collapse ___op_done">
       <div class="row form-group">
         <div class="col-xs-6 col-md-2">Дата операции:</div>
-        <div class="col-xs-6 col-md-4"><input class="transparent ___invasion_date __date_picker" placeholder="Дата операции"><label></label></div>
+        <div class="col-xs-6 col-md-4"><input type="date" class="transparent ___invasion_date" placeholder="Дата операции"><label></label></div>
         <div class="col-xs-6 col-md-2">Длительность операции (мин):</div>
         <div class="col-xs-6 col-md-4"><input class="transparent ___duration" placeholder="Минут" type="number" step=10><label></label></div>
       </div>
@@ -769,7 +769,7 @@
 
     <div class="row form-group">
       <div class="col-xs-6 col-md-2">Дата рецидива заболевания:</div>
-      <div class="col-xs-6 col-md-2"><input class="transparent ___relapse_date __date_picker" placeholder="Дата рецидива"><label></label></div>
+      <div class="col-xs-6 col-md-2"><input type="date" class="transparent ___relapse_date" placeholder="Дата рецидива"><label></label></div>
     </div>
 
     <div class="row">
@@ -873,10 +873,10 @@
 
     <div class="row form-group">
       <div class="col-xs-12 col-md-2">Дата выбытия из исследования:</div>
-      <div class="col-xs-6 col-md-2 form-group"><input class="transparent ___study_retirement_date __date_picker" placeholder="Дата выбытия"><label></label></div>
+      <div class="col-xs-6 col-md-2 form-group"><input type="date" class="transparent ___study_retirement_date" placeholder="Дата выбытия"><label></label></div>
 
       <div class="col-xs-12 col-md-2 col-md-offset-2">Дата смерти:</div>
-      <div class="col-xs-6 col-md-2"><input class="transparent ___death_date __date_picker" placeholder="Дата смерти"><label></label></div>
+      <div class="col-xs-6 col-md-2"><input type="date" class="transparent ___death_date" placeholder="Дата смерти"><label></label></div>
     </div>
 
   </div>
