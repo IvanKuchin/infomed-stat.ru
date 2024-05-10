@@ -130,6 +130,19 @@
 
       <div class="row">
         <div class="col-xs-12">
+          <h4 class="text-center">Наблюдения</h4>
+        </div>
+      </div>
+      <div odds-observations-explanation></div>
+      <div class="row">
+        <div class="col-xs-12" odds-observations>
+        </div>
+      </div>
+      <br>
+      <br>
+
+      <div class="row">
+        <div class="col-xs-12">
           <h4 class="text-center">Вероятность выживаемости по месяцам</h4>
         </div>
       </div>
@@ -171,7 +184,7 @@
           <span class="float_right fa fa-info-circle" onmouseover="system_calls.PopoverInfo($(this), 'Анализ описан <a href=\'https\://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/BS704_HypothesisTesting-ChiSquare/BS704_HypothesisTesting-ChiSquare3.html\' target=\'_blank\'>тут</a>.', true)"></span>
         </div>
         <div class="col-xs-12">
-          <span class="glyphicon glyphicon-warning-sign text-danger fa-2x" aria-hidden="true"></span> Входные данные для вычисления χ2 строятся по данным групп (живые пациенты), расчеты не могут производиться на основе данных Kaplan-Meier, по причине невозможности расчета применимости χ2. Критерий применимости - количество наблюдений в одной из ячеек четырехпольной таблицы менее 10.
+          <div chi-observations-explanation></div>
         </div>
       </div>
 
@@ -206,6 +219,69 @@
         </div>
         <div class="col-xs-12" chi-square-conclusion></div>
       </div>
+    </div>
+
+    <div class="container single_block box-shadow--6dp" fisher-group="0">
+      <div class="row">
+        <div class="col-xs-12">
+          <h2 class="text-center">Точный тест Фишера</h2>
+          <span class="float_right fa fa-info-circle" onmouseover="system_calls.PopoverInfo($(this), 'Анализ описан <a href=\'https\://mathworld.wolfram.com/FishersExactTest.html\' target=\'_blank\'>тут</a>.', true)"></span>
+        </div>
+        <div class="col-xs-12">
+          <div fisher-observations-explanation></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="text-center">Наблюдения</h4>
+        </div>
+      </div>
+      <div fisher-square-observation-explanation></div>
+      <div class="row">
+        <div class="col-xs-12" fisher-observation-matrix></div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="text-center">Проверка возможности применения точного теста Фишера</h4>
+        </div>
+        <div class="col-xs-12" fisher-validity></div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="text-center">Таблица для вычисления точного критерия Фишера</h4>
+        </div>
+      </div>
+      <div fisher-square-calculation-explanation></div>
+      <div class="row">
+        <div class="col-xs-12" fisher-calculation-matrix></div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="text-center">Вычисление</h4>
+        </div>
+        <div class="col-xs-12" fisher-equation></div>
+      </div>
+      
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="text-center">Сумма вариантов матрицы</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12" fisher-p-sum></div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="text-center">Вывод</h4>
+        </div>
+        <div class="col-xs-12" fisher-conclusion></div>
+      </div>
+
     </div>
 
     <div id="scrollerToShow"></div>
