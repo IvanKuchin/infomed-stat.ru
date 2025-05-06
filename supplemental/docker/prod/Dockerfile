@@ -9,6 +9,16 @@ ARG GIT_FOLDER=/backend
 
 FROM ubuntu:jammy AS base
 
+ARG BUILD_REPO
+ARG MAIN_SUBDOMAIN=
+ARG IMAGE_SUBDOMAIN
+ARG ROOTDIR
+ARG IMAGEROOTDIR
+ARG LOCAL_INSTALL_DIR
+ARG BUILD_RELEASE_NUMBER
+ARG GIT_FOLDER
+
+
 LABEL maintainer="ivan.kuchin@gmail.com"
 LABEL org.opencontainers.image.source="https://github.com/IvanKuchin/${BUILD_REPO}"
 
