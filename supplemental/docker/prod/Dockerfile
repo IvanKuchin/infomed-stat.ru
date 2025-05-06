@@ -1,5 +1,3 @@
-FROM ubuntu:jammy as base
-
 ARG BUILD_REPO
 ARG MAIN_SUBDOMAIN=www
 ARG IMAGE_SUBDOMAIN=images
@@ -7,8 +5,9 @@ ARG ROOTDIR=/home/httpd/www
 ARG IMAGEROOTDIR=/home/httpd/images
 ARG LOCAL_INSTALL_DIR=/usr/local/share/www
 ARG BUILD_RELEASE_NUMBER=0.0.1
-
 ARG GIT_FOLDER=/backend
+
+FROM ubuntu:jammy as base
 
 LABEL maintainer="ivan.kuchin@gmail.com"
 LABEL org.opencontainers.image.source="https://github.com/IvanKuchin/${BUILD_REPO}"
@@ -22,8 +21,8 @@ RUN echo repository is $BUILD_REPO
 ############################
 # make apt non-interactive #
 ############################
-ENV DEBIAN_FRONTEND noninteractive
-ENV DEBCONF_NONINTERACTIVE_SEEN true
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN=true
 
 ####################
 # preseed timezone #
@@ -65,6 +64,7 @@ ARG ROOTDIR
 ARG IMAGEROOTDIR
 ARG LOCAL_INSTALL_DIR
 ARG BUILD_RELEASE_NUMBER
+ARG GIT_FOLDER
 
 ########################
 # install dependencies #
@@ -203,6 +203,7 @@ ARG IMAGE_SUBDOMAIN
 ARG ROOTDIR
 ARG IMAGEROOTDIR
 ARG LOCAL_INSTALL_DIR
+ARG GIT_FOLDER
 
 WORKDIR ${GIT_FOLDER}
 
@@ -283,6 +284,7 @@ ARG IMAGE_SUBDOMAIN
 ARG ROOTDIR
 ARG IMAGEROOTDIR
 ARG LOCAL_INSTALL_DIR
+ARG GIT_FOLDER
 
 WORKDIR ${GIT_FOLDER}
 
@@ -350,6 +352,7 @@ ARG IMAGE_SUBDOMAIN
 ARG ROOTDIR
 ARG IMAGEROOTDIR
 ARG LOCAL_INSTALL_DIR
+ARG GIT_FOLDER
 
 WORKDIR ${GIT_FOLDER}
 
