@@ -7,7 +7,7 @@ ARG LOCAL_INSTALL_DIR=/usr/local/share/www
 ARG BUILD_RELEASE_NUMBER=0.0.1
 ARG GIT_FOLDER=/backend
 
-FROM ubuntu:jammy as base
+FROM ubuntu:jammy AS base
 
 LABEL maintainer="ivan.kuchin@gmail.com"
 LABEL org.opencontainers.image.source="https://github.com/IvanKuchin/${BUILD_REPO}"
@@ -55,7 +55,7 @@ RUN update-locale LC_ALL=en_US.UTF8
 ############################################################################################
 
 
-FROM base as build
+FROM base AS build
 
 ARG BUILD_REPO
 ARG MAIN_SUBDOMAIN
@@ -195,7 +195,7 @@ RUN cd build \
 
 ############################################################################################
 
-FROM base as app
+FROM base AS app
 
 ARG BUILD_REPO
 ARG MAIN_SUBDOMAIN
@@ -276,7 +276,7 @@ CMD ["apachectl", "-D", "FOREGROUND"]
 
 ############################################################################################
 
-FROM base as uploaders
+FROM base AS uploaders
 
 ARG BUILD_REPO
 ARG MAIN_SUBDOMAIN
@@ -344,7 +344,7 @@ CMD ["apachectl", "-D", "FOREGROUND"]
 ############################################################################################
 
 
-FROM base as cron
+FROM base AS cron
 
 ARG BUILD_REPO
 ARG MAIN_SUBDOMAIN

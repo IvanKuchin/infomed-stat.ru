@@ -1,5 +1,3 @@
-FROM ubuntu:jammy as base
-
 ARG BUILD_REPO
 ARG MAIN_SUBDOMAIN=www
 ARG IMAGE_SUBDOMAIN=images
@@ -7,8 +5,9 @@ ARG ROOTDIR=/home/httpd/www
 ARG IMAGEROOTDIR=/home/httpd/images
 ARG LOCAL_INSTALL_DIR=/usr/local/share/www
 ARG BUILD_RELEASE_NUMBER=0.0.1
-
 ARG GIT_FOLDER=/backend
+
+FROM ubuntu:jammy AS base
 
 LABEL maintainer="ivan.kuchin@gmail.com"
 LABEL org.opencontainers.image.source="https://github.com/IvanKuchin/${BUILD_REPO}"
@@ -22,8 +21,8 @@ RUN echo repository is $BUILD_REPO
 ############################
 # make apt non-interactive #
 ############################
-ENV DEBIAN_FRONTEND noninteractive
-ENV DEBCONF_NONINTERACTIVE_SEEN true
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN=true
 
 ####################
 # preseed timezone #
@@ -56,7 +55,7 @@ RUN update-locale LC_ALL=en_US.UTF8
 ############################################################################################
 
 
-FROM base as build
+FROM base AS build
 
 ARG BUILD_REPO
 ARG MAIN_SUBDOMAIN
@@ -65,6 +64,7 @@ ARG ROOTDIR
 ARG IMAGEROOTDIR
 ARG LOCAL_INSTALL_DIR
 ARG BUILD_RELEASE_NUMBER
+ARG GIT_FOLDER
 
 ########################
 # install dependencies #
@@ -196,7 +196,7 @@ RUN cd build \
 
 ############################################################################################
 
-FROM build as app
+FROM build AS app
 
 ARG BUILD_REPO
 ARG MAIN_SUBDOMAIN
@@ -204,6 +204,7 @@ ARG IMAGE_SUBDOMAIN
 ARG ROOTDIR
 ARG IMAGEROOTDIR
 ARG LOCAL_INSTALL_DIR
+ARG GIT_FOLDER
 
 WORKDIR ${GIT_FOLDER}
 
@@ -249,7 +250,7 @@ CMD ["apachectl", "-D", "FOREGROUND"]
 
 ############################################################################################
 
-FROM build as uploaders
+FROM build AS uploaders
 
 ARG BUILD_REPO
 ARG MAIN_SUBDOMAIN
@@ -257,6 +258,7 @@ ARG IMAGE_SUBDOMAIN
 ARG ROOTDIR
 ARG IMAGEROOTDIR
 ARG LOCAL_INSTALL_DIR
+ARG GIT_FOLDER
 
 WORKDIR ${GIT_FOLDER}
 
@@ -316,7 +318,7 @@ CMD ["apachectl", "-D", "FOREGROUND"]
 ############################################################################################
 
 
-FROM build as cron
+FROM build AS cron
 
 ARG BUILD_REPO
 ARG MAIN_SUBDOMAIN
@@ -324,6 +326,7 @@ ARG IMAGE_SUBDOMAIN
 ARG ROOTDIR
 ARG IMAGEROOTDIR
 ARG LOCAL_INSTALL_DIR
+ARG GIT_FOLDER
 
 WORKDIR ${GIT_FOLDER}
 
