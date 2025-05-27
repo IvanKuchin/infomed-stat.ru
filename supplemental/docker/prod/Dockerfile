@@ -10,7 +10,7 @@ ARG GIT_FOLDER=/backend
 FROM ubuntu:jammy AS base
 
 ARG BUILD_REPO
-ARG MAIN_SUBDOMAIN=
+ARG MAIN_SUBDOMAIN
 ARG IMAGE_SUBDOMAIN
 ARG ROOTDIR
 ARG IMAGEROOTDIR
@@ -38,18 +38,18 @@ ENV DEBCONF_NONINTERACTIVE_SEEN=true
 # preseed timezone #
 ####################
 RUN echo tzdata tzdata/Areas select Europe > /tmp/preseed.txt \
- && echo tzdata tzdata/Zones/Europe select Moscow >> /tmp/preseed.txt \
- && debconf-set-selections /tmp/preseed.txt
+    && echo tzdata tzdata/Zones/Europe select Moscow >> /tmp/preseed.txt \
+    && debconf-set-selections /tmp/preseed.txt
 
 ###########################
 # install basic utilities #
 ###########################
 RUN apt update \
     && apt install --no-install-recommends --no-install-suggests -y \
-           ca-certificates \
-           tzdata \
-           locales \
-           gettext \
+    ca-certificates \
+    tzdata \
+    locales \
+    gettext \
     && rm -rf /var/lib/apt/lists/*
 
 ##############################
@@ -81,27 +81,27 @@ ARG GIT_FOLDER
 ########################
 RUN apt update \
     && apt-get install --no-install-recommends --no-install-suggests -y \ 
-        build-essential \
-        file \
-        cmake \
-        ffmpeg \
-        gsfonts \
-        graphicsmagick-libmagick-dev-compat \
-        libavcodec-dev \
-        libavformat-dev \
-        libavutil-dev \
-        libcurl4-openssl-dev \
-        libgraphicsmagick++-dev \
-        libhpdf-dev \
-        libmaxminddb-dev \
-        libmysqlclient-dev \
-        libssl-dev \
-        libwebp-dev \
-        libarchive-dev \
-        rapidjson-dev \
-        pkg-config \
-        git \
-        wget \
+    build-essential \
+    file \
+    cmake \
+    ffmpeg \
+    gsfonts \
+    graphicsmagick-libmagick-dev-compat \
+    libavcodec-dev \
+    libavformat-dev \
+    libavutil-dev \
+    libcurl4-openssl-dev \
+    libgraphicsmagick++-dev \
+    libhpdf-dev \
+    libmaxminddb-dev \
+    libmysqlclient-dev \
+    libssl-dev \
+    libwebp-dev \
+    libarchive-dev \
+    rapidjson-dev \
+    pkg-config \
+    git \
+    wget \
     && apt-get clean
 
 #############################
@@ -125,16 +125,16 @@ RUN git clone --depth 1 https://github.com/IvanKuchin/backend_pi.git ./src/pi
 # libxl installation #
 ######################
 RUN if test -f "./libxl-3.8.4.0/lib64/libxl.so"; then \
-       cp ./libxl-3.8.4.0/lib64/libxl.so /usr/local/lib/ \
-       && ldconfig; \
+    cp ./libxl-3.8.4.0/lib64/libxl.so /usr/local/lib/ \
+    && ldconfig; \
     fi
 
 #############################
 # libwkhtmltox installation #
 #############################
 RUN if test -d "./wkhtmltox"; then \
-       wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb \
-       && apt install --no-install-recommends --no-install-suggests -y ./wkhtmltox*.deb; \
+    wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb \
+    && apt install --no-install-recommends --no-install-suggests -y ./wkhtmltox*.deb; \
     fi
 
 ##################
@@ -174,14 +174,14 @@ RUN git rev-parse HEAD > ./supplemental/git/git_commit_id
 RUN mkdir build
 RUN cd build \ 
     && cmake \
-        -DPROJECT_NAME=${BUILD_REPO} \
-        -DMAIN_SUBDOMAIN=${MAIN_SUBDOMAIN} \
-        -DIMAGE_SUBDOMAIN=${IMAGE_SUBDOMAIN} \
-        -DROOTDIR=${ROOTDIR} \
-        -DIMAGEROOTDIR=${IMAGEROOTDIR} \
-        -DLOCAL_INSTALL_DIR=${LOCAL_INSTALL_DIR} \
-        -DBUILD_RELEASE_NUMBER=${BUILD_RELEASE_NUMBER} \
-        .. \
+    -DPROJECT_NAME=${BUILD_REPO} \
+    -DMAIN_SUBDOMAIN=${MAIN_SUBDOMAIN} \
+    -DIMAGE_SUBDOMAIN=${IMAGE_SUBDOMAIN} \
+    -DROOTDIR=${ROOTDIR} \
+    -DIMAGEROOTDIR=${IMAGEROOTDIR} \
+    -DLOCAL_INSTALL_DIR=${LOCAL_INSTALL_DIR} \
+    -DBUILD_RELEASE_NUMBER=${BUILD_RELEASE_NUMBER} \
+    .. \
     && make -j2 package
 
 # EXPOSE 80
@@ -240,11 +240,11 @@ COPY --from=build ${GIT_FOLDER}/wkhtmltox*.deb ./
 ####################
 RUN apt update \
     && apt-get install --no-install-recommends --no-install-suggests -y \
-               #software-properties-common \
-               ssmtp \
-               apache2 \
-               gsfonts \
-               wget \
+    #software-properties-common \
+    ssmtp \
+    apache2 \
+    gsfonts \
+    wget \
     && apt install  --no-install-recommends --no-install-suggests -y ./*.deb \
     && apt remove -y wget \
     && rm -rf /var/lib/apt/lists/*
@@ -271,14 +271,14 @@ RUN a2enmod cgi \
 ## forward request and error logs to docker log collector ##
 ############################################################
 RUN ln -sf /dev/stdout ${ROOTDIR}/logs/access.log \
- && ln -sf /dev/stderr ${ROOTDIR}/logs/error.log
+    && ln -sf /dev/stderr ${ROOTDIR}/logs/error.log
 
 ####################################################################
 # change folders to proper owner                                   #
 ####################################################################
 RUN chown -R www-data:www-data ${ROOTDIR} \
- && chown -R www-data:www-data ${IMAGEROOTDIR} \
- && chown -R www-data:www-data ${LOCAL_INSTALL_DIR}
+    && chown -R www-data:www-data ${IMAGEROOTDIR} \
+    && chown -R www-data:www-data ${LOCAL_INSTALL_DIR}
 
 EXPOSE 80
 
@@ -310,7 +310,7 @@ COPY --from=build ${GIT_FOLDER}/supplemental/apache2/ /etc/apache2/
 ####################
 RUN apt update \
     && apt-get install --no-install-recommends --no-install-suggests -y \
-               apache2 \
+    apache2 \
     && apt install  --no-install-recommends --no-install-suggests -y ffmpeg \
     && apt install  --no-install-recommends --no-install-suggests -y ./*.deb \
     && apt autoremove -y software-properties-common \
@@ -338,14 +338,14 @@ RUN a2enmod cgi \
 ## forward request and error logs to docker log collector ##
 ############################################################
 RUN ln -sf /dev/stdout ${ROOTDIR}/logs/access.log \
- && ln -sf /dev/stderr ${ROOTDIR}/logs/error.log
+    && ln -sf /dev/stderr ${ROOTDIR}/logs/error.log
 
 ####################################################################
 # change folders to proper owner                                   #
 ####################################################################
 RUN chown -R www-data:www-data ${ROOTDIR} \
- && chown -R www-data:www-data ${IMAGEROOTDIR} \
- && chown -R www-data:www-data ${LOCAL_INSTALL_DIR}
+    && chown -R www-data:www-data ${IMAGEROOTDIR} \
+    && chown -R www-data:www-data ${LOCAL_INSTALL_DIR}
 
 EXPOSE 80
 
@@ -377,8 +377,8 @@ COPY --from=build ${GIT_FOLDER}/build/${BUILD_REPO}-cron.deb ./
 ##############################
 RUN apt update \
     && apt-get install --no-install-recommends --no-install-suggests -y \
-               # software-properties-common \
-               cron \
+    # software-properties-common \
+    cron \
     && apt install  --no-install-recommends --no-install-suggests -y ./*.deb \
     && rm -rf /var/lib/apt/lists/*
 RUN cp ${LOCAL_INSTALL_DIR}/cron/cron_config /etc/cron.d/www
