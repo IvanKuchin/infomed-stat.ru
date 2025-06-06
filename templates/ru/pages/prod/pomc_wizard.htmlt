@@ -236,7 +236,7 @@
   </div>
 </div>
 
-<div class="__tab tab_hidden" data-prev_tab_id="14" data-tab_id="15" data-next_tab_id="16">
+<div class="__tab tab_hidden" data-prev_tab_id="14" data-tab_id="15" data-next_tab_id="16" data-algorithm="neoadjuvant_therapy">
   <div class="container single_block">
     <div class="row">
       <div class="col-xs-12"><h3><center>Неоадъювантная терапия</center></h3></div>
@@ -293,6 +293,7 @@
       </div>
 
       <<template:prod/pomc_wizard_ct_dates_and_adverse.htmlt>>
+      <<template:prod/pomc_wizard_ca_after_neoadj_therapy.htmlt>>
 
       <div class="row collapse-bottom-shadow margin_top_20"><p></p></div>
     </div>
@@ -899,7 +900,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-2 col-md-offset-8 col-xs-6"><button class="btn btn-default form-control" id="navigate_prev">Назад</button></div>
-    <div class="col-md-2 col-xs-6"><button class="btn btn-primary form-control" id="navigate_next" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span>">Дальше</button></div>
+    <div class="col-md-2 col-md-offset-8 col-xs-6"><button class="btn btn-default form-control" id="navigate_prev" accesskey="b">Назад</button></div>
+    <div class="col-md-2 col-xs-6"><button class="btn btn-primary form-control" id="navigate_next" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span>" accesskey="n">Дальше</button></div>
   </div>
 </div>

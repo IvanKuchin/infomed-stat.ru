@@ -286,8 +286,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-2 col-md-offset-8 col-xs-6"><button class="btn btn-default form-control" id="navigate_prev">Назад</button></div>
-        <div class="col-md-2 col-xs-6"><button class="btn btn-primary form-control" id="navigate_next" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span>">Дальше</button></div>
+        <div class="col-md-2 col-md-offset-8 col-xs-6"><button class="btn btn-default form-control" id="navigate_prev" accesskey="b">Назад</button></div>
+        <div class="col-md-2 col-xs-6"><button class="btn btn-primary form-control" id="navigate_next" accesskey="n" data-loading-text="<span class='fa fa-refresh fa-spin fa-fw animateClass'></span>">Дальше</button></div>
       </div>
     </div>
 
