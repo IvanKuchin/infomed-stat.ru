@@ -287,6 +287,27 @@
 
     </div>
 
+    <div class="container single_block box-shadow--6dp" coxph-group="0">
+      <div class="row">
+        <div class="col-xs-12">
+          <h2 class="text-center">Cox proportional hazard</h2>
+          <span class="float_right fa fa-info-circle" onmouseover="system_calls.PopoverInfo($(this), '<a href=\'https\://en.wikipedia.org/wiki/Proportional_hazards_model\' target=\'_blank\'>Cox proportional hazards (single binary covariate)</a>.', true)"></span>
+          <div>
+            Анализ сравнивает две группы, так-же называется однофакторный анализ.
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="text-center">Вычисления</h4>
+        </div>
+        <div class="col-xs-12" result>
+        </div>
+      </div>
+
+    </div>
+
     <div id="scrollerToShow"></div>
 
   <<template:prod/footer.htmlt>>
