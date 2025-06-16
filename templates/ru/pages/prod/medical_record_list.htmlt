@@ -69,7 +69,6 @@
 
     <div id="scrollerToShow"></div>
 
-    <!-- "Are you sure remove cost center?" modal  -->
     <div class="modal fade" id="AreYouSureRemovePatient" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
