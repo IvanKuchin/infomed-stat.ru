@@ -572,7 +572,7 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-xs-6 col-md-2">Степень дифференцировки:</div>
+      <div class="col-xs-6 col-md-2">Степень дифф-цировки:</div>
       <div class="col-xs-6 col-md-4">
         <select class="transparent ___differentiation_level">
           <option>Не определена</option>
