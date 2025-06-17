@@ -1,11 +1,11 @@
           <div class="row">
             <div class="col-xs-6 col-md-2">Дата начала</div>
             <div class="col-xs-6 col-md-4">
-              <input class="transparent ___start_date __date_picker" placeholder="Дата начала">
+              <input type="date" class="transparent ___start_date" placeholder="Дата начала">
             </div>
             <div class="col-xs-6 col-md-2">Дата окончания</div>
             <div class="col-xs-6 col-md-4">
-              <input class="transparent ___finish_date __date_picker" placeholder="Дата окончания">
+              <input type="date" class="transparent ___finish_date" placeholder="Дата окончания">
             </div>
           </div>
           <div class="row">

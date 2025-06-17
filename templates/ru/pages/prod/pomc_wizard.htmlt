@@ -125,16 +125,18 @@
       <div class="col-xs-12"><h3><center>Прочая информация</center></h3></div>
     </div>
     <div class="row form-group">
-      <div class="col-xs-12 col-md-2">Поражение лимфатических узлов:</div>
-      <div class="col-xs-12 col-md-4">
+      <div class="col-xs-6 col-md-2">Поражение лимфатических узлов:</div>
+      <div class="col-xs-6 col-md-4">
         <select class="transparent ___damage_to_lymph_nodes">
           <option>Не определено</option>
           <option>Есть</option>
           <option>Нет</option>
         </select>
       </div>
-      <div class="col-xs-12 col-md-2">Отдаленные метастазы:</div>
-      <div class="col-xs-12 col-md-4">
+    </div>
+    <div class="row form-group">
+      <div class="col-xs-6 col-md-2">Отдаленные метастазы:</div>
+      <div class="col-xs-6 col-md-4">
         <select class="transparent ___distant_metastases">
           <option>Не определено</option>
           <option>Есть</option>
@@ -570,8 +572,8 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-xs-12 col-md-2">Степень дифференцировки:</div>
-      <div class="col-xs-12 col-md-4">
+      <div class="col-xs-6 col-md-2">Степень дифф-цировки:</div>
+      <div class="col-xs-6 col-md-4">
         <select class="transparent ___differentiation_level">
           <option>Не определена</option>
           <option>G1</option>
@@ -579,8 +581,8 @@
           <option>G3</option>
         </select>
       </div>
-      <div class="col-xs-12 col-md-2">Размер опухоли:</div>
-      <div class="col-xs-12 col-md-4">
+      <div class="col-xs-6 col-md-2">Размер опухоли:</div>
+      <div class="col-xs-6 col-md-4">
         <select class="transparent ___cancer_size">
           <option>Не определен</option>
           <option>T1</option>
@@ -598,8 +600,8 @@
       </div>
 
       <div class="collapse ___lymph_nodes_collapse">
-        <div class="col-xs-12 col-md-2">Кол-во пораженных узлов:</div>
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-6 col-md-2">Кол-во пораженных узлов:</div>
+        <div class="col-xs-6 col-md-4">
           <select class="transparent ___number_lymph_node_damage">
             <option>1</option>
             <option>2</option>
@@ -629,8 +631,8 @@
 
 
     <div class="row form-group">
-      <div class="col-xs-12 col-md-2">Наличие отдаленных метастазов:</div>
-      <div class="col-xs-12 col-md-4">
+      <div class="col-xs-6 col-md-2">Наличие отдаленных метастазов:</div>
+      <div class="col-xs-6 col-md-4">
         <select class="transparent ___separate_metastases">
           <option>Не определено</option>
           <option>M0</option>
@@ -651,8 +653,8 @@
         <label style="font-weight: normal;"><input type="checkbox" class="___resect_edge_type_r1" data-toggle="collapse" data-target=".collapse.___resect_edge_collapse"> Границы резекции R1:</label><br>
       </div>
       <div class="collapse ___resect_edge_collapse">
-        <div class="col-xs-12 col-md-2">Границы:</div>
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-6 col-md-2">Границы:</div>
+        <div class="col-xs-6 col-md-4">
             <label style="font-weight: normal;"><input type="checkbox" class="___front"> Передняя</label><br>
             <label style="font-weight: normal;"><input type="checkbox" class="___back"> Задняя</label><br>
             <label style="font-weight: normal;"><input type="checkbox" class="___medial"> Медиальная</label><br>
@@ -676,8 +678,8 @@
         </div>
 
         <div class="collapse ___vascular_type_artery">
-          <div class="col-xs-12 col-md-2">Глубина инвазии:</div>
-          <div class="col-xs-12 col-md-4">
+          <div class="col-xs-6 col-md-2">Глубина инвазии:</div>
+          <div class="col-xs-6 col-md-4">
             <select class="transparent ___invasion_level">
               <option>Не определена</option>
               <option>Адвентиция</option>
@@ -695,8 +697,8 @@
         </div>
 
         <div class="collapse ___vascular_type_vein">
-          <div class="col-xs-12 col-md-2">Глубина инвазии:</div>
-          <div class="col-xs-12 col-md-4">
+          <div class="col-xs-6 col-md-2">Глубина инвазии:</div>
+          <div class="col-xs-6 col-md-4">
             <select class="transparent ___invasion_level">
               <option>Не определена</option>
               <option>Адвентиция</option>
@@ -712,8 +714,8 @@
 
 
     <div class="row form-group">
-      <div class="col-xs-12 col-md-2">Периневральная инвазия:</div>
-      <div class="col-xs-12 col-md-4">
+      <div class="col-xs-6 col-md-2">Периневральная инвазия:</div>
+      <div class="col-xs-6 col-md-4">
         <select class="transparent ___preneural_invasion">
           <option>Не определена</option>
           <option>Есть</option>
@@ -723,8 +725,8 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-xs-12 col-md-2">Степень патоморфоза (iDworak):</div>
-      <div class="col-xs-12 col-md-4">
+      <div class="col-xs-6 col-md-2">Степень патоморфоза (iDworak):</div>
+      <div class="col-xs-6 col-md-4">
         <select class="transparent ___neoadj_chemo___idworak">
           <option>Не определена</option>
           <option>0</option>
@@ -873,10 +875,10 @@
 
 
     <div class="row form-group">
-      <div class="col-xs-12 col-md-2">Дата выбытия из исследования:</div>
+      <div class="col-xs-6 col-md-2">Дата выбытия из исследования:</div>
       <div class="col-xs-6 col-md-2 form-group"><input type="date" class="transparent ___study_retirement_date" placeholder="Дата выбытия"><label></label></div>
 
-      <div class="col-xs-12 col-md-2 col-md-offset-2">Дата смерти:</div>
+      <div class="col-xs-6 col-md-2 col-md-offset-2">Дата смерти:</div>
       <div class="col-xs-6 col-md-2"><input type="date" class="transparent ___death_date" placeholder="Дата смерти"><label></label></div>
     </div>
 
